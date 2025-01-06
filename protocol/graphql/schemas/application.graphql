@@ -1,0 +1,248 @@
+enum ApplicationType {
+  UNDEFINED
+  SITE
+  APP
+  GAME
+}
+
+enum PlatformType {
+  UNDEFINED
+  WEB
+  DESKTOP
+  MOBILE
+  SMART_PHONE
+  TABLET
+  SMART_TV
+  GAME_STATION
+  SMART_WATCH
+  VR
+  SMART_GLASSES
+  SMART_BILLBOARD
+}
+
+"""
+Application object represents a site or mobile/desktop application.
+"""
+type Application {
+  ID: ID64!
+  accountID: ID64!
+  creatorID: ID64!
+
+  title: String!
+  description: String!
+  
+  """
+  Unique application identifier, e.g., site domain or app bundle
+  """
+  URI: String!
+  type: ApplicationType!
+  platform: PlatformType!
+  premium: Boolean!
+  
+  """
+  Status of the application
+  """
+  status: ApproveStatus!
+
+  """
+  Active status of the application
+  """
+  active: ActiveStatus!
+
+  """
+  Private status of the application
+  """
+  private: PrivateStatus!
+
+  """
+  Categories associated with the application
+  """
+  categories: [Int!]
+
+  """
+  Revenue share percentage with the publisher
+  """
+  revenueShare: Float
+
+  """
+  Time marks
+  """
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+}
+
+"""
+ApplicationEdge wrapper to access Application objects
+"""
+type ApplicationEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The Application at the end of ApplicationEdge.
+  """
+  node: Application!
+}
+
+"""
+ApplicationConnection wrapper to access Application objects
+"""
+type ApplicationConnection {
+  """
+  Total count of Application objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of Application objects
+  """
+  edges: [ApplicationEdge!]!
+
+  """
+  List of Application objects
+  """
+  list: [Application!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+ApplicationPayload wrapper to access Application operation results
+"""
+type ApplicationPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The Application that was created or updated by this mutation.
+  """
+  applicationID: ID64!
+
+  """
+  The Application object accessible by a client.
+  """
+  application: Application!
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+input ApplicationListFilter {
+  ID: [ID64!]
+  title: String
+  URI: String
+  accountID: ID64
+  type: [ApplicationType!]
+  platform: [PlatformType!]
+  premium: Boolean
+  status: ApproveStatus
+  active: ActiveStatus
+  private: PrivateStatus
+}
+
+input ApplicationListOrder {
+  ID: Ordering
+  title: Ordering
+  URI: Ordering
+  type: Ordering
+  platform: Ordering
+  premium: Ordering
+  status: Ordering
+  active: Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+  deletedAt: Ordering
+}
+
+###############################################################################
+# Mutations
+###############################################################################
+
+input ApplicationInput {
+  """
+  Account ID associated with the application and can be defined if have permission
+  """
+  accountID: ID64
+
+  title: String
+  description: String
+
+  """
+  Unique application identifier, e.g., site domain or app bundle
+  """
+  URI: String
+  type: ApplicationType
+  platform: PlatformType
+  premium: Boolean
+  status: ApproveStatus
+  active: ActiveStatus
+  private: PrivateStatus
+  categories: [Int!]
+  revenueShare: Float
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get Application object by ID
+  """
+  application(ID: ID64!): ApplicationPayload! @acl(permissions: ["adv_application.view.*"])
+
+  """
+  List of the application objects which can be filtered and ordered by some fields
+  """
+  listApplications(
+    filter: ApplicationListFilter = null,
+    order: ApplicationListOrder = null,
+    page: Page = null
+  ): ApplicationConnection @acl(permissions: ["adv_application.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create a new Application
+  """
+  createApplication(input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
+
+  """
+  Update Application information
+  """
+  updateApplication(ID: ID64!, input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+
+  """
+  Delete Application
+  """
+  deleteApplication(ID: ID64!, msg: String = null): ApplicationPayload @acl(permissions: ["adv_application.delete.*"])
+
+  """
+  Run the Application
+  """
+  runApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+
+  """
+  Pause the Application
+  """
+  pauseApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+
+  """
+  Approve the Application to be active
+  """
+  approveApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.approve.*"])
+
+  """
+  Reject the Application
+  """
+  rejectApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.reject.*"])
+}

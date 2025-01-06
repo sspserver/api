@@ -1,0 +1,187 @@
+services:
+  zookeeper:
+    restart: always
+    image: zookeeper:3.7
+    hostname: zookeeper
+    volumes:
+      - "zookeeper:/data"
+    # environment:
+    #   ZOO_MY_ID: 1
+    #   ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+
+  clickhouse-server:
+    user: root
+    restart: on-failure
+    image: clickhouse/clickhouse-server:24.5.1.1763
+    hostname: clickhouse-server
+    links:
+      - zookeeper
+    depends_on:
+      - zookeeper
+    volumes:
+      - "./clickhouse/config.xml:/etc/clickhouse-server/config.xml:ro"
+      - "./clickhouse/conf.d:/etc/clickhouse-server/conf.d:ro"
+      - "clickhouse:/clickhouse/"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "clickhouse-client --query \"SELECT value FROM system.settings WHERE name = 'readonly'\" | grep -q '0'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # ulimit:
+    #   nofile:
+    #     soft: 262144
+    #     hard: 262144
+
+  clickhouse-init:
+    image: clickhouse/clickhouse-server
+    entrypoint: [ './migrations.sh' ]
+    depends_on:
+      clickhouse-server:
+        condition: service_healthy
+      zookeeper:
+        condition: service_started
+    volumes:
+      - "./clickhouse/migrations.sh:/migrations.sh:ro"
+      - "../../submodules/archivarius/deploy/migrations/stats:/archivarius_migrations:ro"
+      - "state:/state/"
+
+  clickhouse-dump:
+    image: clickhouse/clickhouse-server
+    entrypoint: [ './dump.sh' ]
+    restart: on-failure
+    depends_on:
+      clickhouse-server:
+        condition: service_healthy
+      zookeeper:
+        condition: service_started
+    links:
+      - zookeeper
+      - database
+    volumes:
+      - "./clickhouse/dump.sh:/dump.sh:ro"
+      - "../../submodules/archivarius/deploy/develop/clickhouse/user_files/dump.csv:/clickhouse/user_files/archivarius_dump.csv:ro"
+      - "state:/state/"
+
+  database:
+    restart: always
+    image: postgres:16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_DB}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+
+  database-init:
+    entrypoint: [ './migrations.sh' ]
+    restart: always
+    image: adnet-project/postgresql-client
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${DATABASE_PASSWORD}
+      PGUSER: ${DATABASE_USER}
+      PGDATABASE: ${DATABASE_DB}
+    volumes:
+      - "../../submodules/blaze-api/migrations/initial:/blaze_migrations:ro"
+      - "./postgres/migrations.sh:/migrations.sh:ro"
+      - "../../submodules/billing/deploy/migrations:/billing_migrations:ro"
+      - "../migrations/project:/migrations:ro"
+      - "state:/state/"
+
+  database-dump:
+    entrypoint: [ './dump.sh' ]
+    restart: no
+    image: adnet-project/postgresql-client
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${DATABASE_PASSWORD}
+      PGUSER: ${DATABASE_USER}
+      PGDATABASE: ${DATABASE_DB}
+    volumes:
+      - "./postgres/dump.sh:/dump.sh:ro"
+      - "./postgres/dump.sql:/dump.sql:ro"
+      - "state:/state/"
+  redis:
+    image: redis
+    restart: always
+
+  nats:
+    image: nats
+    restart: always
+    expose: [ "4222" ]
+
+  npfs:
+    image: registry.gitlab.com/genrabbit/npfs:ubuntu-imagemagic
+    ports:
+      - "${DOCKER_NPFS_HTTP_PORT}:8080"
+      - "${DOCKER_NPFS_PROFILE_PORT}:8082"
+    depends_on: [ nats ]
+    volumes:
+      - npfsdata:/data:rw
+    env_file: ../../.env
+    environment:
+      JAEGER_AGENT_HOST: tracer
+      STORAGE_METADB_CONNECT: memory://
+      STORAGE_CONNECT: ${STORAGE_CONNECT}
+      EVENTSTREAM_CONNECT: ${NPFS_EVENTSTREAM_CONNECT}
+      EVENTSTREAM_CONCURRENCY: ${NPFS_EVENTSTREAM_CONCURRENCY}
+      TMPDIR: /tmp
+
+  api:
+    image: adnet-project/adnetapi:latest
+    ports:
+      - "${DOCKER_SERVER_HTTP_PORT}:8080"
+      - "${DOCKER_SERVER_PROFILE_PORT}:6060"
+    depends_on:
+      database:
+        condition: service_healthy
+      billing:
+        condition: service_started
+      archivarius:
+        condition: service_started
+    env_file: ../../.env
+
+  billing:
+    image: adnet-project/billing:latest
+    environment:
+      - POSTGRES_DSN=${SYSTEM_STORAGE_DATABASE_CONNECT}
+    depends_on:
+      database:
+        condition: service_healthy
+      # database-init:
+      #   condition: service_started
+    env_file: ../../.env
+
+  archivarius:
+    image: adnet-project/archivarius:latest
+    environment:
+      - GRPC_PORT=9500
+      - CLICKHOUSE_DSN=clickhouse://clickhouse-server:9000/stats?secure=false&skip_verify=true
+    depends_on:
+      clickhouse-server:
+        condition: service_healthy
+      # clickhouse-init:
+      #   condition: service_started
+    env_file: ../../.env
+
+volumes:
+  clickhouse:
+    driver: local
+  zookeeper:
+    driver: local
+  pgdata:
+    driver: local
+  npfsdata:
+    driver: local
+  state:
+    driver: local

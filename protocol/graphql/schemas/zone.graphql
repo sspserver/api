@@ -1,0 +1,247 @@
+"""
+Enumeration of possible Zone types.
+"""
+enum ZoneType {
+  DEFAULT
+  SMART_LINK
+}
+
+"""
+Zone object represents a specific advertising zone within an account.
+"""
+type Zone {
+  ID: ID64!
+  codename: String!
+  accountID: ID64!
+
+  title: String!
+  description: String!
+
+  type: ZoneType!
+
+  """
+  Status of the zone
+  """
+  status: ApproveStatus!
+
+  """
+  Active status of the zone
+  """
+  active: ActiveStatus!
+
+  defaultCode: NullableJSON!
+  context:     NullableJSON!
+  minECPM:     Float!
+  # minECPMByGeo: JSON
+
+  fixedPurchasePrice: Float!
+
+  allowedFormats:    [String!]
+  allowedTypes:      [Int64!]
+  allowedSources:    [Int64!]
+  disallowedSources: [Int64!]
+
+  campaigns: [Int64!]
+
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+}
+
+"""
+ZoneEdge wrapper to access Zone objects
+"""
+type ZoneEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The Zone at the end of ZoneEdge.
+  """
+  node: Zone!
+}
+
+"""
+ZoneConnection wrapper to access Zone objects
+"""
+type ZoneConnection {
+  """
+  Total count of Zone objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of Zone objects
+  """
+  edges: [ZoneEdge!]
+
+  """
+  List of Zone objects
+  """
+  list: [Zone!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+ZonePayload wrapper to access Zone operation results
+"""
+type ZonePayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The Zone that was created or updated by this mutation.
+  """
+  zoneID: ID64!
+
+  """
+  The Zone object accessible by a client.
+  """
+  zone: Zone!
+}
+
+###############################################################################
+# Input Types
+###############################################################################
+
+"""
+Filter input for listing Zones.
+"""
+input ZoneListFilter {
+  ID: [ID64!]
+  codename: [String!]
+  accountID: [ID64!]
+
+  type: ZoneType
+  status: ApproveStatus
+  active: ActiveStatus
+
+  minECPM: Float
+  maxECPM: Float
+}
+
+"""
+Order input for listing Zones.
+"""
+input ZoneListOrder {
+  ID: Ordering
+  codename: Ordering
+
+  title: Ordering
+  accountID: Ordering
+
+  type: Ordering
+  status: Ordering
+  active: Ordering
+
+  minECPM: Ordering
+
+  createdAt: Ordering
+  updatedAt: Ordering
+}
+
+"""
+Input type for creating or updating a Zone.
+"""
+input ZoneInput {
+  """
+  Account ID associated with the Zone. Must have appropriate permissions.
+  """
+  accountID: ID64
+
+  """
+  Unique codename for the Zone.
+  """
+  codename: String
+
+  """
+  Title of the Zone.
+  """
+  title: String
+
+  """
+  Description of the Zone.
+  """
+  description: String
+
+  type: ZoneType
+
+  defaultCode: JSON
+  context: JSON
+  minECPM: Float
+  minECPMByGeo: JSON
+
+  fixedPurchasePrice: Float
+
+  allowedFormats:    [String!]
+  allowedTypes:      [Int64!]
+  allowedSources:    [Int64!]
+  disallowedSources: [Int64!]
+
+  campaigns: [Int64!]
+}
+
+###############################################################################
+# Query & Mutation Definitions
+###############################################################################
+
+extend type Query {
+  """
+  Get Zone object by ID
+  """
+  zone(ID: ID64!): ZonePayload! @acl(permissions: ["adv_zone.view.*"])
+
+  """
+  List of the Zone objects which can be filtered and ordered by some fields
+  """
+  listZones(
+    filter: ZoneListFilter = null,
+    order: ZoneListOrder = null,
+    page: Page = null
+  ): ZoneConnection @acl(permissions: ["adv_zone.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create a new Zone
+  """
+  createZone(input: ZoneInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"])
+
+  """
+  Update Zone information
+  """
+  updateZone(ID: ID64!, input: ZoneInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+
+  """
+  Delete Zone
+  """
+  deleteZone(ID: ID64!, msg: String = null): ZonePayload @acl(permissions: ["adv_zone.delete.*"])
+
+  """
+  Activate the Zone
+  """
+  activateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+
+  """
+  Deactivate the Zone
+  """
+  deactivateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+
+  """
+  Approve the Zone to be active
+  """
+  approveZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.approve.*"])
+
+  """
+  Reject the Zone
+  """
+  rejectZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.reject.*"])
+}

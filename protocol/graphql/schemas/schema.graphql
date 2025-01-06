@@ -1,0 +1,14 @@
+# https://github.com/prisma/graphql-import
+# Pagination https://graphql.org/learn/pagination/#pagination-and-edges
+
+# scalar Time
+# scalar TimeDuration
+# scalar DateTime
+# scalar Map
+# scalar JSON
+# scalar NullableJSON
+# scalar UUID
+# scalar ID64
+scalar Int64
+scalar Uint64
+scalar Any

@@ -1,0 +1,172 @@
+# Statistic of advertisement items: ad, campaign, creative, link, rtb_source, etc.
+
+enum StatisticOrderingKey {
+  UNDEFINED
+  DATEMARK
+  TIMEMARK
+  CLUSTER
+  PROJECT_ID
+  PUB_ACCOUNT_ID
+  ADV_ACCOUNT_ID
+  SOURCE_ID
+  ACCESS_POINT_ID
+  PLATFORM
+  DOMAIN
+  APP_ID
+  ZONE_ID
+  CAMPAIGN_ID
+  AD_ID
+  FORMAT_ID
+  JUMPER_ID
+  CARRIER_ID
+  COUNTRY
+  CITY
+  LANGUAGE
+  IP
+  DEVICE_TYPE
+  DEVICE_ID
+  OS_ID
+  BROWSER_ID
+  SPENT
+  PROFIT
+  BID_PRICE
+  REQUESTS
+  IMPRESSIONS
+  VIEWS
+  DIRECTS
+  CLICKS
+  LEADS
+  BIDS
+  WINS
+  SKIPS
+  NOBIDS
+  ERRORS
+  CTR
+  ECPM
+  ECPC
+  ECPA
+}
+
+enum StatisticKey {
+  UNDEFINED
+  DATEMARK
+  TIMEMARK
+  CLUSTER
+  PROJECT_ID
+  ACCOUNT_ID
+  PUB_ACCOUNT_ID
+  ADV_ACCOUNT_ID
+  SOURCE_ID
+  ACCESS_POINT_ID
+  PLATFORM
+  DOMAIN
+  APP_ID
+  ZONE_ID
+  CAMPAIGN_ID
+  AD_ID
+  FORMAT_ID
+  JUMPER_ID
+  CARRIER_ID
+  COUNTRY
+  CITY
+  LANGUAGE
+  IP
+  DEVICE_TYPE
+  DEVICE_ID
+  OS_ID
+  BROWSER_ID
+}
+
+type StatisticItemKey {
+  key:    StatisticKey!
+  value:  Any!
+  text:   String!
+}
+
+type StatisticAdItem {
+  keys: [StatisticItemKey!]
+
+  # Money counters
+  spent:        Float!
+  profit:       Float!
+  bidPrice:     Float!
+
+  # Counters
+  requests:     Uint64!
+  impressions:  Uint64!
+  views:        Uint64!
+  directs:      Uint64!
+  clicks:       Uint64!
+  leads:        Uint64!
+  bids:         Uint64!
+  wins:         Uint64!
+  skips:        Uint64!
+  nobids:       Uint64!
+  errors:       Uint64!
+
+  ## Calculated fields
+  CTR:          Float!
+  eCPM:         Float!
+  eCPC:         Float!
+  eCPA:         Float!
+}
+
+type StatisticAdItemEdge {
+  next: String!
+  node: StatisticAdItem!
+}
+
+"""
+StatisticAdItemConnection is a paginated list of StatisticAdItem objects.
+"""
+type StatisticAdItemConnection {
+  """
+  Total count of StatisticAdItem objects.
+  """
+  totalCount: Int!
+
+  edges: [StatisticAdItemEdge!]!
+
+  """
+  List of StatisticAdItem objects.
+  """
+  list: [StatisticAdItem!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+input StatisticAdKeyCondition {
+  key:    StatisticKey!
+  op:     StatisticCondition!
+  value: [Any!]!
+}
+
+input StatisticAdListFilter {
+  conditions: [StatisticAdKeyCondition!]
+  startDate:  DateTime
+  endDate:    DateTime
+}
+
+input StatisticAdKeyOrder {
+  key:    StatisticOrderingKey!
+  order:  Ordering!
+}
+
+extend type Query {
+  """
+  Get a list of StatisticAdItem objects.
+  """
+  statisticAdList(
+    filter: StatisticAdListFilter = null,
+    group:  [StatisticKey!] = null,
+    order:  [StatisticAdKeyOrder!] = null,
+    page: Page = null
+  ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
+}

@@ -1,0 +1,248 @@
+type AdFormat {
+  """
+  Ad format ID
+  """
+  ID: ID64!
+
+  """
+  Codename of the ad format
+  """
+  codename: String!
+
+  """
+  Ad format type
+  """
+  type: String!
+
+  """
+  Ad format title
+  """
+  title: String!
+
+  """
+  Ad format description
+  """
+  description: String!
+
+  """
+  Active status of the ad format
+  """
+  active: ActiveStatus!
+
+  """
+  Width of the ad format
+  """
+  width: Int!
+
+  """
+  Height of the ad format
+  """
+  height: Int!
+
+  """
+  Minimum width of the ad format
+  """
+  minWidth: Int!
+
+  """
+  Minimum height of the ad format
+  """
+  minHeight: Int!
+
+  """
+  Configurations of the ad format which includes structure of assets and their properties
+  """
+  config: NullableJSON!
+
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+}
+
+type AdFormatEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The AdFormat at the end of the edge
+  """
+  node: AdFormat!
+}
+
+type AdFormatConnection {
+  """
+  Total count of AdFormat objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of AdFormat objects
+  """
+  edges: [AdFormatEdge!]!
+
+  """
+  List of AdFormat objects
+  """
+  list: [AdFormat!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type AdFormatPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The AdFormat that was created by this mutation.
+  """
+  formatID: ID64!
+
+  """
+  The AdFormat object accessible by a client.
+  """
+  format: AdFormat!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input AdFormatListFilter {
+  ID:        [ID64!]
+  codename:  [String!]
+  type:      [String!]
+  title:     [String!]
+  active:    [ActiveStatus!]
+}
+
+input AdFormatListOrder {
+  ID:        Ordering
+  codename:  Ordering
+  type:      Ordering
+  title:     Ordering
+  active:    Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+}
+
+"""
+Input for querying ad formats
+"""
+input AdFormatInput {
+  """
+  Codename of the ad format
+  """
+  codename: String
+
+  """
+  Ad format type
+  """
+  type: String
+
+  """
+  Ad format title
+  """
+  title: String
+
+  """
+  Ad format description
+  """
+  description: String
+
+  """
+  Active status of the ad format
+  """
+  active: ActiveStatus
+
+  """
+  Width of the ad format
+  """
+  width: Int
+
+  """
+  Height of the ad format
+  """
+  height: Int
+
+  """
+  Minimum width of the ad format
+  """
+  minWidth: Int
+
+  """
+  Minimum height of the ad format
+  """
+  minHeight: Int
+
+  """
+  Configurations of the ad format which includes structure of assets and their properties
+  """
+  config: JSON
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  format(
+    """
+    Ad format ID
+    """
+    ID: ID64! = 0,
+
+    """
+    Codename of the ad format
+    """
+    codename: String! = ""
+  ): AdFormatPayload @acl(permissions: ["adv_format.view.*"])
+
+  """
+  List of ad formats
+  """
+  listFormats(
+    filter: AdFormatListFilter = null,
+    order: AdFormatListOrder = null,
+    page: Page = null
+  ): AdFormatConnection @acl(permissions: ["adv_format.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new ad format
+  """
+  createFormat(input: AdFormatInput!): AdFormatPayload @acl(permissions: ["adv_format.create.*"])
+
+  """
+  Update ad format
+  """
+  updateFormat(ID: ID64!, input: AdFormatInput!): AdFormatPayload @acl(permissions: ["adv_format.update.*"])
+
+  """
+  Delete ad format
+  """
+  deleteFormat(
+    """
+    Ad format ID
+    """
+    ID: ID64! = 0,
+
+    """
+    Codename of the ad format
+    """
+    codename: String! = "",
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): AdFormatPayload @acl(permissions: ["adv_format.delete.*"])
+}
+

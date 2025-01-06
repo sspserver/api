@@ -1,0 +1,266 @@
+"""
+RTBSource object represents a source of RTB advertising
+"""
+type RTBSource {
+  ID: ID64!
+  accountID: ID64!
+
+  title: String!
+  description: String!
+
+  """
+  Status of source approval
+  """
+  status: ApproveStatus!
+  
+  """
+  Active status of source
+  """
+  active: ActiveStatus!
+
+  """
+  Flags of source
+  """
+  flags: NullableJSON!
+
+  # Protocol configs
+  protocol: String!
+  minimalWeight: Float!
+  
+  """
+  After approval URL can't be changed
+  """
+  URL: String!
+  method: String!
+  requestType: RTBRequestFormatType!
+  headers: NullableJSON!
+  RPS: Int!
+  timeout: Int!
+
+  # Money configs
+  accuracy: Float!
+  priceCorrectionReduce: Float!
+  auctionType: AuctionType!
+
+  # Price limits
+  minBid: Float!
+  maxBid: Float!
+
+  # Targeting filters
+  formats:         [String!]
+  deviceTypes:     [Int64!]
+  devices:         [Int64!]
+  OS:              [Int64!]
+  browsers:        [Int64!]
+  carriers:        [Int64!]
+  categories:      [Int64!]
+  countries:       [String!]
+  languages:       [String!]
+  applications:    [Int64!]
+  domains:         [String!]
+  zones:           [Int64!]
+  secure:          AnyOnlyExclude!
+  adBlock:         AnyOnlyExclude!
+  privateBrowsing: AnyOnlyExclude!
+  IP:              AnyIPv4IPv6!
+
+  config: NullableJSON!
+
+  createdAt: Time!
+  updatedAt: Time!
+	deletedAt: Time
+}
+
+"""
+RTBSourceEdge wrapper to access of RTBSource objects
+"""
+type RTBSourceEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The RTBSource at the end of RTBSourceEdge.
+  """
+  node: RTBSource!
+}
+
+"""
+RTBSourceConnection wrapper to access of RTBSource objects
+"""
+type RTBSourceConnection {
+  """
+  Total count of RTBSource objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of RTBSource objects
+  """
+  edges: [RTBSourceEdge!]!
+
+  """
+  List of RTBSource objects
+  """
+  list: [RTBSource!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+RTBSourcePayload wrapper to access of RTBSource oprtation results
+"""
+type RTBSourcePayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The RTBSource that was created by this mutation.
+  """
+  sourceID: ID64!
+
+  """
+  The RTBSource object accessible by a client.
+  """
+  source: RTBSource!
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+input RTBSourceListFilter {
+  ID: [ID64!]
+  accountID: ID64
+}
+
+input RTBSourceListOrder {
+  ID:        Ordering
+  accountID: Ordering
+  title:     Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+  deletedAt: Ordering
+}
+
+###############################################################################
+# Mutations
+###############################################################################
+
+input RTBSourceInput {
+  accountID: ID64
+
+  title: String
+  description: String
+
+  """
+  Flags of source
+  """
+  flags: NullableJSON
+
+  # Protocol configs
+  protocol: String
+  minimalWeight: Float
+
+  """
+  After approval URL can't be changed
+  """
+  URL: String
+  method: String
+  requestType: RTBRequestFormatType
+  headers: NullableJSON
+  RPS: Int
+  timeout: Int
+
+  # Money configs
+  accuracy: Float
+  priceCorrectionReduce: Float
+  auctionType: AuctionType
+
+  # Price limits
+  minBid: Float
+  maxBid: Float
+
+  # Targeting filters
+  formats:         [String!]
+  deviceTypes:     [Int64!]
+  devices:         [Int64!]
+  OS:              [Int64!]
+  browsers:        [Int64!]
+  carriers:        [Int64!]
+  categories:      [Int64!]
+  countries:       [String!]
+  languages:       [String!]
+  applications:    [Int64!]
+  domains:         [String!]
+  zones:           [Int64!]
+  secure:          AnyOnlyExclude
+  adBlock:         AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP:              AnyIPv4IPv6
+
+  config: NullableJSON
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get RTBSource object by ID
+  """
+  RTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.view.*"])
+
+  """
+  List of the tag objects which can be filtered and ordered by some fields
+  """
+  listRTBSources(
+    filter: RTBSourceListFilter = null,
+    order: RTBSourceListOrder = null,
+    page: Page = null
+  ): RTBSourceConnection @acl(permissions: ["rtb_source.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create the new RTBSource
+  """
+  createRTBSource(input: RTBSourceInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"])
+
+  """
+  Update RTBSource info
+  """
+  updateRTBSource(ID: ID64!, input: RTBSourceInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+
+  """
+  Delete RTBSource
+  """
+  deleteRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload @acl(permissions: ["rtb_source.delete.*"])
+
+  """
+  Run RTBSource to receive data from it
+  """
+  runRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+
+  """
+  Pause RTBSource to stop receiving data from it
+  """
+  pauseRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+
+  """
+  Approve RTBSource to start receiving data from it
+  """
+  approveRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.approve.*"])
+
+  """
+  Reject RTBSource to stop receiving data from it
+  """
+  rejectRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.reject.*"])
+}

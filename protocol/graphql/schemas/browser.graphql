@@ -1,0 +1,233 @@
+"""
+BrowserVersion model schema
+"""
+type BrowserVersion {
+  """
+  Minimum version
+  """
+  min: String!
+
+  """
+  Maximum version
+  """
+  max: String!
+
+  """
+  Name of the version
+  """
+  name: String!
+}
+
+"""
+Browser model schema
+"""
+type Browser {
+  """
+  Browser ID
+  """
+  ID: ID64!
+
+  """
+  Name of the browser
+  """
+  name: String!
+
+  """
+  Description of the browser
+  """
+  description: String!
+
+  """
+  Match expression for the browser
+  """
+  matchExp: String!
+
+  """
+  Active status of the browser
+  """
+  active: ActiveStatus!
+
+  """
+  List of browser versions
+  """
+  versions: [BrowserVersion!]
+
+  """
+  Creation time of the browser
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the browser
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the browser
+  """
+  deletedAt: Time
+}
+
+type BrowserEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The Browser at the end of the edge
+  """
+  node: Browser!
+}
+
+type BrowserConnection {
+  """
+  Total count of Browser objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of Browser objects
+  """
+  edges: [BrowserEdge!]!
+
+  """
+  List of Browser objects
+  """
+  list: [Browser!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type BrowserPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The Browser that was created by this mutation.
+  """
+  browserID: ID64!
+
+  """
+  The Browser object accessible by a client.
+  """
+  browser: Browser!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input BrowserListFilter {
+  ID:        [ID64!]
+  name:      [String!]
+  active:    [ActiveStatus!]
+}
+
+input BrowserListOrder {
+  ID:        Ordering
+  name:      Ordering
+  active:    Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+}
+
+
+"""
+Input for browser versions
+"""
+input BrowserVersionInput {
+  """
+  Minimum version
+  """
+  min: String
+
+  """
+  Maximum version
+  """
+  max: String
+
+  """
+  Name of the version
+  """
+  name: String
+}
+
+"""
+Input for querying browsers
+"""
+input BrowserInput {
+  """
+  Name of the browser
+  """
+  name: String
+
+  """
+  Description of the browser
+  """
+  description: String
+
+  """
+  Match expression for the browser
+  """
+  matchExp: String
+
+  """
+  Active status of the browser
+  """
+  active: ActiveStatus
+
+  """
+  List of browser versions
+  """
+  versions: [BrowserVersionInput!]
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  browser(ID: ID64! = 0): BrowserPayload @acl(permissions: ["type_browser.view.*"])
+
+  """
+  List of browsers
+  """
+  listBrowsers(
+    filter: BrowserListFilter = null,
+    order: BrowserListOrder = null,
+    page: Page = null
+  ): BrowserConnection @acl(permissions: ["type_browser.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new browser
+  """
+  createBrowser(input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
+
+  """
+  Update browser
+  """
+  updateBrowser(ID: ID64!, input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
+
+  """
+  Delete browser
+  """
+  deleteBrowser(
+    """
+    Browser ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): BrowserPayload @acl(permissions: ["type_browser.delete.*"])
+}

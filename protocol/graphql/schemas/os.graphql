@@ -1,0 +1,234 @@
+"""
+OSVersion model schema
+"""
+type OSVersion {
+  """
+  Minimum version
+  """
+  min: String!
+
+  """
+  Maximum version
+  """
+  max: String!
+
+  """
+  Name of the version
+  """
+  name: String!
+}
+
+"""
+OS model schema
+"""
+type OS {
+  """
+  OS ID
+  """
+  ID: ID64!
+
+  """
+  Name of the OS
+  """
+  name: String!
+
+  """
+  Description of the OS
+  """
+  description: String!
+
+  """
+  Expression to match the OS
+  """
+  matchExp: String!
+
+  """
+  Active status of the OS
+  """
+  active: ActiveStatus!
+
+  """
+  List of OS versions
+  """
+  versions: [OSVersion!]
+
+  """
+  Creation time of the OS
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the OS
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the OS
+  """
+  deletedAt: Time
+}
+
+type OSEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The OS at the end of the edge
+  """
+  node: OS!
+}
+
+type OSConnection {
+  """
+  Total count of OS objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of OS objects
+  """
+  edges: [OSEdge!]
+
+  """
+  List of OS objects
+  """
+  list: [OS!]
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type OSPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The OS that was created by this mutation.
+  """
+  OSID: ID64!
+
+  """
+  The OS object accessible by a client.
+  """
+  OS: OS!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input OSListFilter {
+  ID:         [ID64!]
+  name:       [String!]
+  active:     [ActiveStatus!]
+  minVersion: String
+  maxVersion: String
+}
+
+input OSListOrder {
+  ID:        Ordering
+  name:      Ordering
+  active:    Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+}
+
+"""
+Input for OS versions
+"""
+input OSVersionInput {
+  """
+  Minimum version
+  """
+  min: String
+
+  """
+  Maximum version
+  """
+  max: String
+
+  """
+  Name of the version
+  """
+  name: String
+}
+
+"""
+Input for querying OS
+"""
+input OSInput {
+  """
+  Name of the OS
+  """
+  name: String
+
+  """
+  Description of the OS
+  """
+  description: String
+
+  """
+  Expression to match the OS
+  """
+  matchExp: String
+
+  """
+  Active status of the OS
+  """
+  active: ActiveStatus
+
+  """
+  List of OS versions
+  """
+  versions: [OSVersionInput!]
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  OS(ID: ID64! = 0): OSPayload @acl(permissions: ["type_os.view.*"])
+
+  """
+  List of OS
+  """
+  listOS(
+    filter: OSListFilter = null,
+    order: OSListOrder = null,
+    page: Page = null
+  ): OSConnection @acl(permissions: ["type_os.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new OS
+  """
+  createOS(input: OSInput!): OSPayload @acl(permissions: ["type_os.create.*"])
+
+  """
+  Update OS
+  """
+  updateOS(ID: ID64!, input: OSInput!): OSPayload @acl(permissions: ["type_os.update.*"])
+
+  """
+  Delete OS
+  """
+  deleteOS(
+    """
+    OS ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): OSPayload @acl(permissions: ["type_os.delete.*"])
+}

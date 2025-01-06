@@ -1,0 +1,489 @@
+"""
+Device type schema
+"""
+type DeviceType {
+  """
+  Device type ID
+  """
+  ID: ID64!
+
+  """
+  Name of the device type
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  List of device models
+  """
+  models: [DeviceModel!]
+
+  """
+  Active status of the device type
+  """
+  active: ActiveStatus!
+}
+
+###############################################################################
+
+"""
+DeviceModelVersion model schema
+"""
+type DeviceModelVersion {
+  """
+  Minimum version
+  """
+  min: String!
+
+  """
+  Maximum version
+  """
+  max: String!
+
+  """
+  Name of the version
+  """
+  name: String!
+}
+
+"""
+Device model schema
+"""
+type DeviceModel {
+  """
+  Device model ID
+  """
+  ID: ID64!
+
+  """
+  Name of the device model
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String!
+
+  """
+  Device type ID
+  """
+  typeID: ID64!
+
+  """
+  Device type object
+  """
+  type: DeviceType
+
+  """
+  Device maker ID
+  """
+  makerID: ID64!
+
+  """
+  Device maker object
+  """
+  maker: DeviceMaker
+
+  """
+  List of device model versions
+  """
+  versions: [DeviceModelVersion!]
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus!
+
+  """
+  Creation time of the device model
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the device model
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the device model
+  """
+  deletedAt: Time
+}
+
+type DeviceModelEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The DeviceModel at the end of the edge
+  """
+  node: DeviceModel!
+}
+
+type DeviceModelConnection {
+  """
+  Total count of DeviceModel objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of DeviceModel objects
+  """
+  edges: [DeviceModelEdge!]!
+
+  """
+  List of DeviceModel objects
+  """
+  list: [DeviceModel!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type DeviceModelPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The DeviceModel that was created by this mutation.
+  """
+  modelID: ID64!
+
+  """
+  The DeviceModel object accessible by a client.
+  """
+  model: DeviceModel!
+}
+
+###############################################################################
+
+"""
+Device maker schema
+"""
+type DeviceMaker {
+  """
+  Device maker ID
+  """
+  ID: ID64!
+
+  """
+  Name of the device maker
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String!
+
+  """
+  List of device types
+  """
+  types: [DeviceType!]
+
+  """
+  List of device models
+  """
+  models: [DeviceModel!]
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus!
+
+  """
+  Creation time of the device maker
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the device maker
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the device maker
+  """
+  deletedAt: Time
+}
+
+type DeviceMakerEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The DeviceMaker at the end of the edge
+  """
+  node: DeviceMaker!
+}
+
+type DeviceMakerConnection {
+  """
+  Total count of DeviceMaker objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of DeviceMaker objects
+  """
+  edges: [DeviceMakerEdge!]!
+
+  """
+  List of DeviceMaker objects
+  """
+  list: [DeviceMaker!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type DeviceMakerPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The DeviceMaker that was created by this mutation.
+  """
+  makerID: ID64!
+
+  """
+  The DeviceMaker object accessible by a client.
+  """
+  maker: DeviceMaker!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input DeviceMakerListFilter {
+  ID:         [ID64!]
+  name:       [String!]
+  active:     [ActiveStatus!]
+}
+
+input DeviceMakerListOrder {
+  ID:         Ordering
+  name:       Ordering
+  active:     Ordering
+  createdAt:  Ordering
+  updatedAt:  Ordering
+}
+
+"""
+Input for querying device makers
+"""
+input DeviceMakerInput {
+  """
+  Name of the device maker
+  """
+  name: String
+
+  """
+  Description of the device maker
+  """
+  description: String
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus
+}
+
+input DeviceModelListFilter {
+  ID:         [ID64!]
+  name:       [String!]
+  typeID:     [ID64!]
+  makerID:    [ID64!]
+  active:     [ActiveStatus!]
+}
+
+input DeviceModelListOrder {
+  ID:         Ordering
+  name:       Ordering
+  typeID:     Ordering
+  makerID:    Ordering
+  active:     Ordering
+  createdAt:  Ordering
+  updatedAt:  Ordering
+}
+
+input DeviceModelVersionInput {
+  """
+  Minimum version
+  """
+  min: String
+
+  """
+  Maximum version
+  """
+  max: String
+
+  """
+  Name of the version
+  """
+  name: String
+}
+
+"""
+Input for querying device models
+"""
+input DeviceModelInput {
+  """
+  Name of the device model
+  """
+  name: String
+
+  """
+  Description of the device model
+  """
+  description: String
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String
+
+  """
+  Device type ID
+  """
+  typeID: ID64
+
+  """
+  Device maker ID
+  """
+  makerID: ID64
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus
+
+  """
+  List of device model versions
+  """
+  versions: [DeviceModelVersionInput!]
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  List of device types
+  """
+  listDeviceTypes: [DeviceType!] @acl(permissions: ["device_type.list.*"])
+
+  """
+  Get device maker by ID
+  """
+  deviceMaker(ID: ID64!): DeviceMakerPayload @acl(permissions: ["device_maker.view.*"])
+
+  """
+  List of device makers
+  """
+  listDeviceMakers(
+    filter: DeviceMakerListFilter = null,
+    order: DeviceMakerListOrder = null,
+    page: Page = null
+  ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
+
+  """
+  Get device model by ID
+  """
+  deviceModel(ID: ID64!): DeviceModelPayload @acl(permissions: ["device_model.view.*"])
+
+  """
+  List of device models
+  """
+  listDeviceModels(
+    filter: DeviceModelListFilter = null,
+    order: DeviceModelListOrder = null,
+    page: Page = null
+  ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new device maker
+  """
+  createDeviceMaker(input: DeviceMakerInput!): DeviceMakerPayload @acl(permissions: ["device_maker.create.*"])
+
+  """
+  Update device maker
+  """
+  updateDeviceMaker(ID: ID64!, input: DeviceMakerInput!): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
+
+  """
+  Delete device maker
+  """
+  deleteDeviceMaker(
+    """
+    Device maker ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): DeviceMakerPayload @acl(permissions: ["device_maker.delete.*"])
+
+  """
+  Create new device model
+  """
+  createDeviceModel(input: DeviceModelInput!): DeviceModelPayload @acl(permissions: ["device_model.create.*"])
+
+  """
+  Update device model
+  """
+  updateDeviceModel(ID: ID64!, input: DeviceModelInput!): DeviceModelPayload @acl(permissions: ["device_model.update.*"])
+
+  """
+  Delete device model
+  """
+  deleteDeviceModel(
+    """
+    Device model ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): DeviceModelPayload @acl(permissions: ["device_model.delete.*"])
+}

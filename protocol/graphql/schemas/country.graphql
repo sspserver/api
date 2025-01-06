@@ -1,0 +1,114 @@
+type TimeZone {
+  name: String!
+  lon: Float!
+}
+
+type Coordinates {
+  lat: Float!
+  lon: Float!
+}
+
+type Continent {
+  """
+  Continent ID
+  """
+  ID: ID64!
+
+  """
+  Continent code2
+  """
+  code2: String!
+
+  """
+  Continent name
+  """
+  name: String!
+
+  """
+  List of countries
+  """
+  countries: [Country!]
+}
+
+type Country {
+  """
+  Country ID
+  """
+  ID: ID64!
+
+  """
+  Country code2
+  """
+  code2: String!
+
+  """
+  Country code3
+  """
+  code3: String!
+
+  """
+  Country name
+  """
+  name: String!
+
+  """
+  Country native name
+  """
+  nativeName: String!
+
+  """
+  Continent code
+  """
+  continentCode: String!
+
+  """
+  Continent object
+  """
+  continent: Continent!
+
+  """
+  Name of the capital city
+  """
+  capital: String!
+
+  """
+  Languages spoken in the country
+  """
+  languages: [String!]
+
+  """
+  Phone codes for the country
+  """
+  phoneCodes: [String!]
+
+  """
+  Time zones for the country
+  """
+  timeZones: [TimeZone!]
+
+  """
+  Coordinates of the country
+  """
+  coordinates: Coordinates!
+
+  """
+  List of currencies
+  """
+  currency: [String!]
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+extend type Query {
+  """
+  List of continents
+  """
+  continents: [Continent!]
+
+  """
+  List of countries
+  """
+  countries: [Country!]
+}

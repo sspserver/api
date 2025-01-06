@@ -1,0 +1,50 @@
+enum RTBRequestFormatType {
+  UNDEFINED
+  JSON
+  XML
+}
+
+enum AuctionType {
+  UNDEFINED
+  FIRST_PRICE
+  SECOND_PRICE
+}
+
+enum AnyOnlyExclude {
+  ANY
+  ONLY
+  EXCLUDE
+}
+
+enum AnyIPv4IPv6 {
+  ANY
+  IPv4
+  IPv6
+}
+
+enum StatisticCondition {
+  EQ # Equal (==)
+  NE # Not equal (!=)
+  GT # Greater than (>)
+  GE # Greater than or equal (>=)
+  LT # Less than (<)
+  LE # Less than or equal (<=)
+  IN # In list
+  NI # Not in list
+  BT # Between
+  NB # Not between
+  LI # Like
+  NL # Not like
+}
+
+enum PrivateStatus {
+  PUBLIC
+  PRIVATE
+}
+
+enum PricingModel {
+  UNDEFINED
+  CPM
+  CPC
+  CPA
+}

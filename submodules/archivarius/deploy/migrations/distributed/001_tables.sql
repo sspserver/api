@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS distributed.event_aggregated_live AS stats.v_event_aggregated_live Engine = Distributed (stats, stats, v_event_aggregated_live, rand());
