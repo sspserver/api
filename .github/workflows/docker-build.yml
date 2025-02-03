@@ -10,7 +10,8 @@ on:
 
 env:
   GO_VERSION: "1.23"
-  GOPRIVATE: github.com/${{ github.repository_owner }}/*
+  GOPRIVATE: github.com/${{ github.repository_owner }}/*,github.com/geniusrabbit/*
+  GIT_CONFIG_CMD: git config --global url."https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://github.com/
   IMAGE_NAME: ghcr.io/${{ github.repository }}
   DEPLOY_OS_LIST: linux
   BUILD_GOAMD64_LIST: 1 2 3 4
@@ -94,6 +95,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-golang-
             ${{ runner.os }}-
+
+      - name: Setup access for private go modules
+        run: ${{ env.GIT_CONFIG_CMD }}
 
       - name: Build app
         run: make build

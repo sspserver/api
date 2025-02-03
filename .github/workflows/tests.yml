@@ -14,6 +14,8 @@ on:
 
 env:
   GO_VERSION: "1.23"
+  GOPRIVATE: github.com/${{ github.repository_owner }}/*,github.com/geniusrabbit/*
+  GIT_CONFIG_CMD: git config --global url."https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://github.com/
 
 jobs:
   can_continue:
@@ -54,6 +56,9 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ~${{ env.GO_VERSION }}
+
+      - name: Setup access for private go modules
+        run: ${{ env.GIT_CONFIG_CMD }}
 
       - name: Install dependencies
         run: go mod download
