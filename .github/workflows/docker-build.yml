@@ -59,7 +59,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
-          submodules: true
+          # token: ${{ secrets.GH_TOKEN }}
+          # submodules: true
 
       - run: |
           git submodule sync --recursive
