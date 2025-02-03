@@ -7,7 +7,7 @@ APP_BUILD_TAGS ?= postgres,migrate,redis,jaeger
 
 include deploy/build.mk
 
-PROJECT_WORKSPACE ?= adnet-project
+PROJECT_WORKSPACE ?= ssp-project
 PROJECT_NAME ?= api
 DOCKER_COMPOSE := docker compose -p $(PROJECT_WORKSPACE) -f deploy/develop/docker-compose.yml
 DOCKER_CONTAINER_IMAGE := ${PROJECT_WORKSPACE}/${PROJECT_NAME}
@@ -89,10 +89,9 @@ run: build-docker-dev ## Run API service by docker-compose
 
 .PHONY: cleanup
 cleanup: ## Remove containers and volumes
-	-docker ps | grep "adnet-project" | awk '{print $$1}' | xargs --no-run-if-empty docker kill
-	-docker ps -a  | grep "adnet-project" | awk '{print $$1}' | xargs --no-run-if-empty docker rm
-	-docker volume ls  | grep "adnet-project" | awk '{print $$2}' | xargs --no-run-if-empty docker volume rm
-
+	-docker ps | grep "${PROJECT_WORKSPACE}" | awk '{print $$1}' | xargs --no-run-if-empty docker kill
+	-docker ps -a  | grep "${PROJECT_WORKSPACE}" | awk '{print $$1}' | xargs --no-run-if-empty docker rm
+	-docker volume ls  | grep "${PROJECT_WORKSPACE}" | awk '{print $$2}' | xargs --no-run-if-empty docker volume rm
 
 .PHONY: import-clickhouse-dump
 import-clickhouse-dump:
@@ -130,6 +129,10 @@ init-submodules: ## Init submodules
 .PHONY: pull-submodules
 pull-submodules: ## Pull submodules
 	git submodule update --recursive --remote
+
+.PHONY: reset-dev-env
+reset-dev-env: ## Reset dev environment
+	@${DOCKER_COMPOSE} down -v --rmi all
 
 .PHONY: help
 help:

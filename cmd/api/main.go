@@ -67,6 +67,7 @@ func init() {
 
 	// Migrate database schemas
 	if *runMigrations {
+		fmt.Println("Run database migrations")
 		fatalError(migratedb.Migrate(conf.System.Storage.MasterConnect, []migratedb.MigrateSource{
 			{
 				URI:                   []string{"file:///data/migrations/initial"},

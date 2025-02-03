@@ -63,6 +63,9 @@ jobs:
           # token: ${{ secrets.GH_TOKEN }}
           # submodules: true
 
+      - name: Setup access for private go modules
+        run: ${{ env.GIT_CONFIG_CMD }}
+
       - run: |
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --depth=1 --recursive
@@ -95,9 +98,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-golang-
             ${{ runner.os }}-
-
-      - name: Setup access for private go modules
-        run: ${{ env.GIT_CONFIG_CMD }}
 
       - name: Build app
         run: make build
