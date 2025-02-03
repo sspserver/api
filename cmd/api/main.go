@@ -55,6 +55,17 @@ var (
 )
 
 func init() {
+	fmt.Println()
+	fmt.Println("███████ ███████ ██████         █████  ██████  ██")
+	fmt.Println("██      ██      ██   ██       ██   ██ ██   ██ ██")
+	fmt.Println("███████ ███████ ██████  █████ ███████ ██████  ██")
+	fmt.Println("     ██      ██ ██            ██   ██ ██      ██")
+	fmt.Println("███████ ███████ ██            ██   ██ ██      ██")
+	fmt.Println()
+	fmt.Println("Version:", buildVersion, " (", buildCommit, ")")
+	fmt.Println("Build date:", buildDate)
+	fmt.Println()
+
 	runMigrations := flag.Bool("run-migrations", false, "Run database migrations")
 	flag.Parse()
 
