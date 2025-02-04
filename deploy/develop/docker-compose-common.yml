@@ -61,11 +61,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_DB: ${DATABASE_DB}
-      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
+    env_file:
+      - .db.env
 
   redis:
     image: redis

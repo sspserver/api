@@ -1,3 +1,4 @@
+include deploy/develop/.db.env
 include .env
 export
 
@@ -45,22 +46,6 @@ tidy: ## Run go mod tidy
 vendor: ## Run go mod vendor
 	go mod vendor
 
-.PHONY: cover
-cover:
-	@mkdir -p $(TMP_ETC)
-	@rm -f $(TMP_ETC)/coverage.txt $(TMP_ETC)/coverage.html
-	go test -race -coverprofile=$(TMP_ETC)/coverage.txt -coverpkg=./... ./...
-	@go tool cover -html=$(TMP_ETC)/coverage.txt -o $(TMP_ETC)/coverage.html
-	@echo
-	@go tool cover -func=$(TMP_ETC)/coverage.txt | grep total
-	@echo
-	@echo Open the coverage report:
-	@echo open $(TMP_ETC)/coverage.html
-
-.PHONY: __eval_srcs
-__eval_srcs:
-	$(eval SRCS := $(shell find . -not -path 'bazel-*' -not -path '.tmp*' -name '*.go'))
-
 .PHONY: generate-code
 generate-code: ## Run codegeneration procedure
 	@echo "Generate code"
@@ -85,21 +70,6 @@ build-docker-dev: build ## Build docker image for development
 .PHONY: run
 run: build-docker-dev ## Run API service by docker-compose
 	@echo "Run API service http://localhost:${DOCKER_SERVER_HTTP_PORT}"
-	$(DOCKER_COMPOSE) up api
-
-.PHONY: cleanup
-cleanup: ## Remove containers and volumes
-	-docker ps | grep "${PROJECT_WORKSPACE}" | awk '{print $$1}' | xargs --no-run-if-empty docker kill
-	-docker ps -a  | grep "${PROJECT_WORKSPACE}" | awk '{print $$1}' | xargs --no-run-if-empty docker rm
-	-docker volume ls  | grep "${PROJECT_WORKSPACE}" | awk '{print $$2}' | xargs --no-run-if-empty docker volume rm
-
-.PHONY: import-clickhouse-dump
-import-clickhouse-dump:
-	$(DOCKER_COMPOSE) up clickhouse-dump --remove-orphans
-
-.PHONY: import-postgres-dump
-import-postgres-dump:
-	$(DOCKER_COMPOSE) up database-dump --remove-orphans
 
 .PHONY: stop
 stop: ## Stop all services
@@ -121,6 +91,15 @@ chin: ## Connect to dev clickhouse
 .PHONY: chidump
 chidump:
 	@$(DOCKER_COMPOSE) exec clickhouse-server clickhouse-client --query="SELECT * FROM stats.events_local" --format SQLInsert
+	$(DOCKER_COMPOSE) up api
+
+.PHONY: import-clickhouse-dump
+import-clickhouse-dump:
+	$(DOCKER_COMPOSE) up clickhouse-dump --remove-orphans
+
+.PHONY: import-postgres-dump
+import-postgres-dump:
+	$(DOCKER_COMPOSE) up database-dump --remove-orphans
 
 .PHONY: init-submodules
 init-submodules: ## Init submodules
