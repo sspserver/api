@@ -1,1 +1,0 @@
-CREATE DATABASE stats ENGINE=Replicated('clickhouse/stats','{shard}','{replica}');
