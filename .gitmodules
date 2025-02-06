@@ -1,0 +1,3 @@
+[submodule "submodules/blaze-api"]
+	path = submodules/blaze-api
+	url = https://github.com/geniusrabbit/blaze-api
