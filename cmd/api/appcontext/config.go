@@ -47,6 +47,11 @@ type storageConfig struct {
 	SlaveConnect  string `json:"slave_connect" yaml:"slave_connect" env:"SYSTEM_STORAGE_DATABASE_SLAVE_CONNECT"`
 }
 
+// StatisticConfig contains statistic configuration options
+type statisticConfig struct {
+	Connect string `json:"connect" yaml:"connect" env:"SYSTEM_STATISTIC_CONNECT"`
+}
+
 type socialAuthProviderEndpoint struct {
 	AuthURL       string `json:"auth_url" yaml:"auth_url" env:"AUTH_URL"`
 	DeviceAuthURL string `json:"device_auth_url" yaml:"device_auth_url" env:"DEVICE_AUTH_URL"`
@@ -161,17 +166,8 @@ type permissionConfig struct {
 }
 
 type systemConfig struct {
-	Storage storageConfig `json:"storage" yaml:"storage"`
-}
-
-// BillingConfig contains billing configuration options
-type billingConfig struct {
-	Connect string `json:"connect" yaml:"connect" env:"BILLING_CONNECT"`
-}
-
-// StatisticConfig contains statistic configuration options
-type statisticConfig struct {
-	Connect string `json:"connect" yaml:"connect" env:"STATISTIC_CONNECT"`
+	Storage   storageConfig   `json:"storage" yaml:"storage"`
+	Statistic statisticConfig `json:"statistic" yaml:"statistic"`
 }
 
 // MessangerConfig contains email configuration options for messanger
@@ -213,8 +209,6 @@ type ConfigType struct {
 	OAuth2      oauth2Config     `json:"oauth2" yaml:"oauth2"`
 	Messanger   messangerConfig  `json:"messanger" yaml:"messanger"`
 	Permissions permissionConfig `json:"permissions" yaml:"permissions"`
-	Billing     billingConfig    `json:"billing" yaml:"billing"`
-	Statistic   statisticConfig  `json:"statistic" yaml:"statistic"`
 }
 
 // String implementation of Stringer interface

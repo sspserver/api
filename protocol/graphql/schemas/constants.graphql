@@ -23,18 +23,20 @@ enum AnyIPv4IPv6 {
 }
 
 enum StatisticCondition {
-  EQ # Equal (==)
-  NE # Not equal (!=)
-  GT # Greater than (>)
-  GE # Greater than or equal (>=)
-  LT # Less than (<)
-  LE # Less than or equal (<=)
-  IN # In list
-  NI # Not in list
-  BT # Between
-  NB # Not between
-  LI # Like
-  NL # Not like
+  EQ          # Equal (==)
+  NOT_EQ      # Not equal (!=)
+  GT          # Greater than (>)
+  GT_EQ       # Greater than or equal (>=)
+  LT          # Less than (<)
+  LT_EQ       # Less than or equal (<=)
+  IN          # In list
+  NOT_IN      # Not in list
+  BETWEEN     # Between
+  NOT_BETWEEN # Not between
+  LIKE        # Like
+  NOT_LIKE    # Not like
+  IS_NULL     # Is null
+  IS_NOT_NULL # Is not null
 }
 
 enum PrivateStatus {

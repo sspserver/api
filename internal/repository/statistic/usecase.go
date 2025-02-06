@@ -4,18 +4,13 @@ package statistic
 import (
 	"context"
 
-	"github.com/geniusrabbit/archivarius/client"
-
-	"github.com/sspserver/api/internal/server/graphql/models"
+	"github.com/sspserver/api/models"
 )
 
 // Usecase of access to the statistic
+//
+//go:generate mockgen -source $GOFILE -package mocks -destination mocks/usecase.go
 type Usecase interface {
-	Statistic(
-		ctx context.Context,
-		group []models.StatisticKey,
-		order []*models.StatisticAdKeyOrder,
-		filter *models.StatisticAdListFilter,
-		page *models.Page,
-	) (*client.StatisticResponse, error)
+	Statistic(ctx context.Context, opts ...Option) ([]*models.StatisticAdItem, error)
+	Count(ctx context.Context, opts ...Option) (int64, error)
 }

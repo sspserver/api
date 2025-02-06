@@ -116,3 +116,5 @@ models:
     model: github.com/sspserver/api/internal/server/graphql/connectors.ApplicationConnection
   ZoneConnection:
     model: github.com/sspserver/api/internal/server/graphql/connectors.ZoneConnection
+  StatisticAdItemConnection:
+    model: github.com/sspserver/api/internal/server/graphql/connectors.StatisticAdItemConnection

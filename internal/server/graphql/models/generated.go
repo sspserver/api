@@ -786,7 +786,6 @@ type RTBSourcePayload struct {
 
 type StatisticAdItem struct {
 	Keys        []*StatisticItemKey `json:"keys,omitempty"`
-	Spent       float64             `json:"spent"`
 	Profit      float64             `json:"profit"`
 	BidPrice    float64             `json:"bidPrice"`
 	Requests    uint64              `json:"requests"`
@@ -794,7 +793,6 @@ type StatisticAdItem struct {
 	Views       uint64              `json:"views"`
 	Directs     uint64              `json:"directs"`
 	Clicks      uint64              `json:"clicks"`
-	Leads       uint64              `json:"leads"`
 	Bids        uint64              `json:"bids"`
 	Wins        uint64              `json:"wins"`
 	Skips       uint64              `json:"skips"`
@@ -803,23 +801,6 @@ type StatisticAdItem struct {
 	Ctr         float64             `json:"CTR"`
 	ECpm        float64             `json:"eCPM"`
 	ECpc        float64             `json:"eCPC"`
-	ECpa        float64             `json:"eCPA"`
-}
-
-// StatisticAdItemConnection is a paginated list of StatisticAdItem objects.
-type StatisticAdItemConnection struct {
-	// Total count of StatisticAdItem objects.
-	TotalCount int                    `json:"totalCount"`
-	Edges      []*StatisticAdItemEdge `json:"edges"`
-	// List of StatisticAdItem objects.
-	List []*StatisticAdItem `json:"list,omitempty"`
-	// Information to aid in pagination.
-	PageInfo *models.PageInfo `json:"pageInfo"`
-}
-
-type StatisticAdItemEdge struct {
-	Next string           `json:"next"`
-	Node *StatisticAdItem `json:"node"`
 }
 
 type StatisticAdKeyCondition struct {
@@ -969,7 +950,7 @@ func (e AnyIPv4IPv6) String() string {
 	return string(e)
 }
 
-func (e *AnyIPv4IPv6) UnmarshalGQL(v interface{}) error {
+func (e *AnyIPv4IPv6) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1012,7 +993,7 @@ func (e AnyOnlyExclude) String() string {
 	return string(e)
 }
 
-func (e *AnyOnlyExclude) UnmarshalGQL(v interface{}) error {
+func (e *AnyOnlyExclude) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1057,7 +1038,7 @@ func (e ApplicationType) String() string {
 	return string(e)
 }
 
-func (e *ApplicationType) UnmarshalGQL(v interface{}) error {
+func (e *ApplicationType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1100,7 +1081,7 @@ func (e AuctionType) String() string {
 	return string(e)
 }
 
-func (e *AuctionType) UnmarshalGQL(v interface{}) error {
+func (e *AuctionType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1161,7 +1142,7 @@ func (e PlatformType) String() string {
 	return string(e)
 }
 
-func (e *PlatformType) UnmarshalGQL(v interface{}) error {
+func (e *PlatformType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1206,7 +1187,7 @@ func (e PricingModel) String() string {
 	return string(e)
 }
 
-func (e *PricingModel) UnmarshalGQL(v interface{}) error {
+func (e *PricingModel) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1247,7 +1228,7 @@ func (e PrivateStatus) String() string {
 	return string(e)
 }
 
-func (e *PrivateStatus) UnmarshalGQL(v interface{}) error {
+func (e *PrivateStatus) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1290,7 +1271,7 @@ func (e RTBRequestFormatType) String() string {
 	return string(e)
 }
 
-func (e *RTBRequestFormatType) UnmarshalGQL(v interface{}) error {
+func (e *RTBRequestFormatType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1310,38 +1291,42 @@ func (e RTBRequestFormatType) MarshalGQL(w io.Writer) {
 type StatisticCondition string
 
 const (
-	StatisticConditionEq StatisticCondition = "EQ"
-	StatisticConditionNe StatisticCondition = "NE"
-	StatisticConditionGt StatisticCondition = "GT"
-	StatisticConditionGe StatisticCondition = "GE"
-	StatisticConditionLt StatisticCondition = "LT"
-	StatisticConditionLe StatisticCondition = "LE"
-	StatisticConditionIn StatisticCondition = "IN"
-	StatisticConditionNi StatisticCondition = "NI"
-	StatisticConditionBt StatisticCondition = "BT"
-	StatisticConditionNb StatisticCondition = "NB"
-	StatisticConditionLi StatisticCondition = "LI"
-	StatisticConditionNl StatisticCondition = "NL"
+	StatisticConditionEq         StatisticCondition = "EQ"
+	StatisticConditionNotEq      StatisticCondition = "NOT_EQ"
+	StatisticConditionGt         StatisticCondition = "GT"
+	StatisticConditionGtEq       StatisticCondition = "GT_EQ"
+	StatisticConditionLt         StatisticCondition = "LT"
+	StatisticConditionLtEq       StatisticCondition = "LT_EQ"
+	StatisticConditionIn         StatisticCondition = "IN"
+	StatisticConditionNotIn      StatisticCondition = "NOT_IN"
+	StatisticConditionBetween    StatisticCondition = "BETWEEN"
+	StatisticConditionNotBetween StatisticCondition = "NOT_BETWEEN"
+	StatisticConditionLike       StatisticCondition = "LIKE"
+	StatisticConditionNotLike    StatisticCondition = "NOT_LIKE"
+	StatisticConditionIsNull     StatisticCondition = "IS_NULL"
+	StatisticConditionIsNotNull  StatisticCondition = "IS_NOT_NULL"
 )
 
 var AllStatisticCondition = []StatisticCondition{
 	StatisticConditionEq,
-	StatisticConditionNe,
+	StatisticConditionNotEq,
 	StatisticConditionGt,
-	StatisticConditionGe,
+	StatisticConditionGtEq,
 	StatisticConditionLt,
-	StatisticConditionLe,
+	StatisticConditionLtEq,
 	StatisticConditionIn,
-	StatisticConditionNi,
-	StatisticConditionBt,
-	StatisticConditionNb,
-	StatisticConditionLi,
-	StatisticConditionNl,
+	StatisticConditionNotIn,
+	StatisticConditionBetween,
+	StatisticConditionNotBetween,
+	StatisticConditionLike,
+	StatisticConditionNotLike,
+	StatisticConditionIsNull,
+	StatisticConditionIsNotNull,
 }
 
 func (e StatisticCondition) IsValid() bool {
 	switch e {
-	case StatisticConditionEq, StatisticConditionNe, StatisticConditionGt, StatisticConditionGe, StatisticConditionLt, StatisticConditionLe, StatisticConditionIn, StatisticConditionNi, StatisticConditionBt, StatisticConditionNb, StatisticConditionLi, StatisticConditionNl:
+	case StatisticConditionEq, StatisticConditionNotEq, StatisticConditionGt, StatisticConditionGtEq, StatisticConditionLt, StatisticConditionLtEq, StatisticConditionIn, StatisticConditionNotIn, StatisticConditionBetween, StatisticConditionNotBetween, StatisticConditionLike, StatisticConditionNotLike, StatisticConditionIsNull, StatisticConditionIsNotNull:
 		return true
 	}
 	return false
@@ -1351,7 +1336,7 @@ func (e StatisticCondition) String() string {
 	return string(e)
 }
 
-func (e *StatisticCondition) UnmarshalGQL(v interface{}) error {
+func (e *StatisticCondition) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1371,68 +1356,48 @@ func (e StatisticCondition) MarshalGQL(w io.Writer) {
 type StatisticKey string
 
 const (
-	StatisticKeyUndefined     StatisticKey = "UNDEFINED"
-	StatisticKeyDatemark      StatisticKey = "DATEMARK"
-	StatisticKeyTimemark      StatisticKey = "TIMEMARK"
-	StatisticKeyCluster       StatisticKey = "CLUSTER"
-	StatisticKeyProjectID     StatisticKey = "PROJECT_ID"
-	StatisticKeyAccountID     StatisticKey = "ACCOUNT_ID"
-	StatisticKeyPubAccountID  StatisticKey = "PUB_ACCOUNT_ID"
-	StatisticKeyAdvAccountID  StatisticKey = "ADV_ACCOUNT_ID"
-	StatisticKeySourceID      StatisticKey = "SOURCE_ID"
-	StatisticKeyAccessPointID StatisticKey = "ACCESS_POINT_ID"
-	StatisticKeyPlatform      StatisticKey = "PLATFORM"
-	StatisticKeyDomain        StatisticKey = "DOMAIN"
-	StatisticKeyAppID         StatisticKey = "APP_ID"
-	StatisticKeyZoneID        StatisticKey = "ZONE_ID"
-	StatisticKeyCampaignID    StatisticKey = "CAMPAIGN_ID"
-	StatisticKeyAdID          StatisticKey = "AD_ID"
-	StatisticKeyFormatID      StatisticKey = "FORMAT_ID"
-	StatisticKeyJumperID      StatisticKey = "JUMPER_ID"
-	StatisticKeyCarrierID     StatisticKey = "CARRIER_ID"
-	StatisticKeyCountry       StatisticKey = "COUNTRY"
-	StatisticKeyCity          StatisticKey = "CITY"
-	StatisticKeyLanguage      StatisticKey = "LANGUAGE"
-	StatisticKeyIP            StatisticKey = "IP"
-	StatisticKeyDeviceType    StatisticKey = "DEVICE_TYPE"
-	StatisticKeyDeviceID      StatisticKey = "DEVICE_ID"
-	StatisticKeyOsID          StatisticKey = "OS_ID"
-	StatisticKeyBrowserID     StatisticKey = "BROWSER_ID"
+	StatisticKeyUndefined    StatisticKey = "UNDEFINED"
+	StatisticKeyDatemark     StatisticKey = "DATEMARK"
+	StatisticKeyTimemark     StatisticKey = "TIMEMARK"
+	StatisticKeySourceID     StatisticKey = "SOURCE_ID"
+	StatisticKeyPlatformType StatisticKey = "PLATFORM_TYPE"
+	StatisticKeyDomain       StatisticKey = "DOMAIN"
+	StatisticKeyAppID        StatisticKey = "APP_ID"
+	StatisticKeyZoneID       StatisticKey = "ZONE_ID"
+	StatisticKeyFormatID     StatisticKey = "FORMAT_ID"
+	StatisticKeyCarrierID    StatisticKey = "CARRIER_ID"
+	StatisticKeyCountry      StatisticKey = "COUNTRY"
+	StatisticKeyLanguage     StatisticKey = "LANGUAGE"
+	StatisticKeyIP           StatisticKey = "IP"
+	StatisticKeyDeviceID     StatisticKey = "DEVICE_ID"
+	StatisticKeyDeviceType   StatisticKey = "DEVICE_TYPE"
+	StatisticKeyOsID         StatisticKey = "OS_ID"
+	StatisticKeyBrowserID    StatisticKey = "BROWSER_ID"
 )
 
 var AllStatisticKey = []StatisticKey{
 	StatisticKeyUndefined,
 	StatisticKeyDatemark,
 	StatisticKeyTimemark,
-	StatisticKeyCluster,
-	StatisticKeyProjectID,
-	StatisticKeyAccountID,
-	StatisticKeyPubAccountID,
-	StatisticKeyAdvAccountID,
 	StatisticKeySourceID,
-	StatisticKeyAccessPointID,
-	StatisticKeyPlatform,
+	StatisticKeyPlatformType,
 	StatisticKeyDomain,
 	StatisticKeyAppID,
 	StatisticKeyZoneID,
-	StatisticKeyCampaignID,
-	StatisticKeyAdID,
 	StatisticKeyFormatID,
-	StatisticKeyJumperID,
 	StatisticKeyCarrierID,
 	StatisticKeyCountry,
-	StatisticKeyCity,
 	StatisticKeyLanguage,
 	StatisticKeyIP,
-	StatisticKeyDeviceType,
 	StatisticKeyDeviceID,
+	StatisticKeyDeviceType,
 	StatisticKeyOsID,
 	StatisticKeyBrowserID,
 }
 
 func (e StatisticKey) IsValid() bool {
 	switch e {
-	case StatisticKeyUndefined, StatisticKeyDatemark, StatisticKeyTimemark, StatisticKeyCluster, StatisticKeyProjectID, StatisticKeyAccountID, StatisticKeyPubAccountID, StatisticKeyAdvAccountID, StatisticKeySourceID, StatisticKeyAccessPointID, StatisticKeyPlatform, StatisticKeyDomain, StatisticKeyAppID, StatisticKeyZoneID, StatisticKeyCampaignID, StatisticKeyAdID, StatisticKeyFormatID, StatisticKeyJumperID, StatisticKeyCarrierID, StatisticKeyCountry, StatisticKeyCity, StatisticKeyLanguage, StatisticKeyIP, StatisticKeyDeviceType, StatisticKeyDeviceID, StatisticKeyOsID, StatisticKeyBrowserID:
+	case StatisticKeyUndefined, StatisticKeyDatemark, StatisticKeyTimemark, StatisticKeySourceID, StatisticKeyPlatformType, StatisticKeyDomain, StatisticKeyAppID, StatisticKeyZoneID, StatisticKeyFormatID, StatisticKeyCarrierID, StatisticKeyCountry, StatisticKeyLanguage, StatisticKeyIP, StatisticKeyDeviceID, StatisticKeyDeviceType, StatisticKeyOsID, StatisticKeyBrowserID:
 		return true
 	}
 	return false
@@ -1442,7 +1407,7 @@ func (e StatisticKey) String() string {
 	return string(e)
 }
 
-func (e *StatisticKey) UnmarshalGQL(v interface{}) error {
+func (e *StatisticKey) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1462,80 +1427,59 @@ func (e StatisticKey) MarshalGQL(w io.Writer) {
 type StatisticOrderingKey string
 
 const (
-	StatisticOrderingKeyUndefined     StatisticOrderingKey = "UNDEFINED"
-	StatisticOrderingKeyDatemark      StatisticOrderingKey = "DATEMARK"
-	StatisticOrderingKeyTimemark      StatisticOrderingKey = "TIMEMARK"
-	StatisticOrderingKeyCluster       StatisticOrderingKey = "CLUSTER"
-	StatisticOrderingKeyProjectID     StatisticOrderingKey = "PROJECT_ID"
-	StatisticOrderingKeyPubAccountID  StatisticOrderingKey = "PUB_ACCOUNT_ID"
-	StatisticOrderingKeyAdvAccountID  StatisticOrderingKey = "ADV_ACCOUNT_ID"
-	StatisticOrderingKeySourceID      StatisticOrderingKey = "SOURCE_ID"
-	StatisticOrderingKeyAccessPointID StatisticOrderingKey = "ACCESS_POINT_ID"
-	StatisticOrderingKeyPlatform      StatisticOrderingKey = "PLATFORM"
-	StatisticOrderingKeyDomain        StatisticOrderingKey = "DOMAIN"
-	StatisticOrderingKeyAppID         StatisticOrderingKey = "APP_ID"
-	StatisticOrderingKeyZoneID        StatisticOrderingKey = "ZONE_ID"
-	StatisticOrderingKeyCampaignID    StatisticOrderingKey = "CAMPAIGN_ID"
-	StatisticOrderingKeyAdID          StatisticOrderingKey = "AD_ID"
-	StatisticOrderingKeyFormatID      StatisticOrderingKey = "FORMAT_ID"
-	StatisticOrderingKeyJumperID      StatisticOrderingKey = "JUMPER_ID"
-	StatisticOrderingKeyCarrierID     StatisticOrderingKey = "CARRIER_ID"
-	StatisticOrderingKeyCountry       StatisticOrderingKey = "COUNTRY"
-	StatisticOrderingKeyCity          StatisticOrderingKey = "CITY"
-	StatisticOrderingKeyLanguage      StatisticOrderingKey = "LANGUAGE"
-	StatisticOrderingKeyIP            StatisticOrderingKey = "IP"
-	StatisticOrderingKeyDeviceType    StatisticOrderingKey = "DEVICE_TYPE"
-	StatisticOrderingKeyDeviceID      StatisticOrderingKey = "DEVICE_ID"
-	StatisticOrderingKeyOsID          StatisticOrderingKey = "OS_ID"
-	StatisticOrderingKeyBrowserID     StatisticOrderingKey = "BROWSER_ID"
-	StatisticOrderingKeySpent         StatisticOrderingKey = "SPENT"
-	StatisticOrderingKeyProfit        StatisticOrderingKey = "PROFIT"
-	StatisticOrderingKeyBidPrice      StatisticOrderingKey = "BID_PRICE"
-	StatisticOrderingKeyRequests      StatisticOrderingKey = "REQUESTS"
-	StatisticOrderingKeyImpressions   StatisticOrderingKey = "IMPRESSIONS"
-	StatisticOrderingKeyViews         StatisticOrderingKey = "VIEWS"
-	StatisticOrderingKeyDirects       StatisticOrderingKey = "DIRECTS"
-	StatisticOrderingKeyClicks        StatisticOrderingKey = "CLICKS"
-	StatisticOrderingKeyLeads         StatisticOrderingKey = "LEADS"
-	StatisticOrderingKeyBids          StatisticOrderingKey = "BIDS"
-	StatisticOrderingKeyWins          StatisticOrderingKey = "WINS"
-	StatisticOrderingKeySkips         StatisticOrderingKey = "SKIPS"
-	StatisticOrderingKeyNobids        StatisticOrderingKey = "NOBIDS"
-	StatisticOrderingKeyErrors        StatisticOrderingKey = "ERRORS"
-	StatisticOrderingKeyCtr           StatisticOrderingKey = "CTR"
-	StatisticOrderingKeyEcpm          StatisticOrderingKey = "ECPM"
-	StatisticOrderingKeyEcpc          StatisticOrderingKey = "ECPC"
-	StatisticOrderingKeyEcpa          StatisticOrderingKey = "ECPA"
+	StatisticOrderingKeyUndefined    StatisticOrderingKey = "UNDEFINED"
+	StatisticOrderingKeyDatemark     StatisticOrderingKey = "DATEMARK"
+	StatisticOrderingKeyTimemark     StatisticOrderingKey = "TIMEMARK"
+	StatisticOrderingKeySourceID     StatisticOrderingKey = "SOURCE_ID"
+	StatisticOrderingKeyPlatformType StatisticOrderingKey = "PLATFORM_TYPE"
+	StatisticOrderingKeyDomain       StatisticOrderingKey = "DOMAIN"
+	StatisticOrderingKeyAppID        StatisticOrderingKey = "APP_ID"
+	StatisticOrderingKeyZoneID       StatisticOrderingKey = "ZONE_ID"
+	StatisticOrderingKeyFormatID     StatisticOrderingKey = "FORMAT_ID"
+	StatisticOrderingKeyCarrierID    StatisticOrderingKey = "CARRIER_ID"
+	StatisticOrderingKeyCountry      StatisticOrderingKey = "COUNTRY"
+	StatisticOrderingKeyLanguage     StatisticOrderingKey = "LANGUAGE"
+	StatisticOrderingKeyIP           StatisticOrderingKey = "IP"
+	StatisticOrderingKeyDeviceID     StatisticOrderingKey = "DEVICE_ID"
+	StatisticOrderingKeyDeviceType   StatisticOrderingKey = "DEVICE_TYPE"
+	StatisticOrderingKeyOsID         StatisticOrderingKey = "OS_ID"
+	StatisticOrderingKeyBrowserID    StatisticOrderingKey = "BROWSER_ID"
+	StatisticOrderingKeyProfit       StatisticOrderingKey = "PROFIT"
+	StatisticOrderingKeyBidPrice     StatisticOrderingKey = "BID_PRICE"
+	StatisticOrderingKeyRequests     StatisticOrderingKey = "REQUESTS"
+	StatisticOrderingKeyImpressions  StatisticOrderingKey = "IMPRESSIONS"
+	StatisticOrderingKeyViews        StatisticOrderingKey = "VIEWS"
+	StatisticOrderingKeyDirects      StatisticOrderingKey = "DIRECTS"
+	StatisticOrderingKeyClicks       StatisticOrderingKey = "CLICKS"
+	StatisticOrderingKeyBids         StatisticOrderingKey = "BIDS"
+	StatisticOrderingKeyWins         StatisticOrderingKey = "WINS"
+	StatisticOrderingKeySkips        StatisticOrderingKey = "SKIPS"
+	StatisticOrderingKeyNobids       StatisticOrderingKey = "NOBIDS"
+	StatisticOrderingKeyErrors       StatisticOrderingKey = "ERRORS"
+	StatisticOrderingKeyCtr          StatisticOrderingKey = "CTR"
+	StatisticOrderingKeyEcpm         StatisticOrderingKey = "ECPM"
+	StatisticOrderingKeyEcpc         StatisticOrderingKey = "ECPC"
+	StatisticOrderingKeyEcpa         StatisticOrderingKey = "ECPA"
 )
 
 var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyUndefined,
 	StatisticOrderingKeyDatemark,
 	StatisticOrderingKeyTimemark,
-	StatisticOrderingKeyCluster,
-	StatisticOrderingKeyProjectID,
-	StatisticOrderingKeyPubAccountID,
-	StatisticOrderingKeyAdvAccountID,
 	StatisticOrderingKeySourceID,
-	StatisticOrderingKeyAccessPointID,
-	StatisticOrderingKeyPlatform,
+	StatisticOrderingKeyPlatformType,
 	StatisticOrderingKeyDomain,
 	StatisticOrderingKeyAppID,
 	StatisticOrderingKeyZoneID,
-	StatisticOrderingKeyCampaignID,
-	StatisticOrderingKeyAdID,
 	StatisticOrderingKeyFormatID,
-	StatisticOrderingKeyJumperID,
 	StatisticOrderingKeyCarrierID,
 	StatisticOrderingKeyCountry,
-	StatisticOrderingKeyCity,
 	StatisticOrderingKeyLanguage,
 	StatisticOrderingKeyIP,
-	StatisticOrderingKeyDeviceType,
 	StatisticOrderingKeyDeviceID,
+	StatisticOrderingKeyDeviceType,
 	StatisticOrderingKeyOsID,
 	StatisticOrderingKeyBrowserID,
-	StatisticOrderingKeySpent,
 	StatisticOrderingKeyProfit,
 	StatisticOrderingKeyBidPrice,
 	StatisticOrderingKeyRequests,
@@ -1543,7 +1487,6 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyViews,
 	StatisticOrderingKeyDirects,
 	StatisticOrderingKeyClicks,
-	StatisticOrderingKeyLeads,
 	StatisticOrderingKeyBids,
 	StatisticOrderingKeyWins,
 	StatisticOrderingKeySkips,
@@ -1557,7 +1500,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 
 func (e StatisticOrderingKey) IsValid() bool {
 	switch e {
-	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeyCluster, StatisticOrderingKeyProjectID, StatisticOrderingKeyPubAccountID, StatisticOrderingKeyAdvAccountID, StatisticOrderingKeySourceID, StatisticOrderingKeyAccessPointID, StatisticOrderingKeyPlatform, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyCampaignID, StatisticOrderingKeyAdID, StatisticOrderingKeyFormatID, StatisticOrderingKeyJumperID, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyCity, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceType, StatisticOrderingKeyDeviceID, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeySpent, StatisticOrderingKeyProfit, StatisticOrderingKeyBidPrice, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyLeads, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc, StatisticOrderingKeyEcpa:
+	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyProfit, StatisticOrderingKeyBidPrice, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc, StatisticOrderingKeyEcpa:
 		return true
 	}
 	return false
@@ -1567,7 +1510,7 @@ func (e StatisticOrderingKey) String() string {
 	return string(e)
 }
 
-func (e *StatisticOrderingKey) UnmarshalGQL(v interface{}) error {
+func (e *StatisticOrderingKey) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -1609,7 +1552,7 @@ func (e ZoneType) String() string {
 	return string(e)
 }
 
-func (e *ZoneType) UnmarshalGQL(v interface{}) error {
+func (e *ZoneType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
