@@ -3,7 +3,7 @@ include .env
 export
 
 export GOPRIVATE="github.com/geniusrabbit/*"
-APP_BUILD_TAGS ?= postgres,migrate,redis,jaeger
+APP_BUILD_TAGS ?= postgres,clickhouse,migrate,redis,jaeger
 # doctl kubernetes cluster kubeconfig save use_your_cluster_name
 
 include deploy/build.mk
@@ -70,6 +70,7 @@ build-docker-dev: build ## Build docker image for development
 .PHONY: run
 run: build-docker-dev ## Run API service by docker-compose
 	@echo "Run API service http://localhost:${DOCKER_SERVER_HTTP_PORT}"
+	$(DOCKER_COMPOSE) up api
 
 .PHONY: stop
 stop: ## Stop all services

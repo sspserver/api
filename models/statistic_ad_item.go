@@ -10,7 +10,6 @@ type StatisticAdItem struct {
 	Keys []StatisticAdItemKey `json:"keys"`
 
 	// Money counters
-	Spent    float64 `json:"spent"`
 	Profit   float64 `json:"profit"`
 	BidPrice float64 `json:"bid_price"`
 
@@ -20,7 +19,6 @@ type StatisticAdItem struct {
 	Views       uint64 `json:"views"`
 	Directs     uint64 `json:"directs"`
 	Clicks      uint64 `json:"clicks"`
-	Leads       uint64 `json:"leads"`
 	Wins        uint64 `json:"wins"`
 	Bids        uint64 `json:"bids"`
 	Skips       uint64 `json:"skips"`
@@ -39,19 +37,12 @@ func (it *StatisticAdItem) ECPM() float64 {
 	if it.Impressions == 0 {
 		return 0
 	}
-	return it.Spent / float64(it.Impressions) * 1000
+	return it.Profit / float64(it.Impressions) * 1000
 }
 
 func (it *StatisticAdItem) ECPC() float64 {
 	if it.Clicks == 0 {
 		return 0
 	}
-	return it.Spent / float64(it.Clicks)
-}
-
-func (it *StatisticAdItem) ECPA() float64 {
-	if it.Leads == 0 {
-		return 0
-	}
-	return it.Spent / float64(it.Leads)
+	return it.Profit / float64(it.Clicks)
 }

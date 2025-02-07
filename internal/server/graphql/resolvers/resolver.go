@@ -87,6 +87,6 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		device_makers: devicemaker_graphql.NewQueryResolver(),
 		app:           application_graphql.NewQueryResolver(),
 		zone:          zone_graphql.NewQueryResolver(),
-		statistic:     statistic_graphql.NewQueryResolver(usecases.Stats, usecases.RTBSource),
+		statistic:     statistic_graphql.NewQueryResolver(usecases.Stats),
 	}
 }

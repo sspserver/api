@@ -9,4 +9,4 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS stats.v_rtb_wins TO stats.rtb_wins
   , network
   , win_url
   FROM stats.events_local
-  WHERE event IN ('src.win', 'ap.win');
+  WHERE event IN ('src.win');

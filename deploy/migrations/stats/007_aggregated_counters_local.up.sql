@@ -77,10 +77,10 @@ ORDER BY (
 , source_id
 -- Targeting
 , platform_type
-, domain
 , app_id
 , zone_id
 , format_id
+, domain
 -- Wide targeting information
 , carrier_id
 , country

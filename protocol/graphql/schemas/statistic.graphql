@@ -1,33 +1,23 @@
-# Statistic of advertisement items: ad, campaign, creative, link, rtb_source, etc.
+# Statistic of advertisement items: rtb_source, etc.
 
 enum StatisticOrderingKey {
   UNDEFINED
   DATEMARK
   TIMEMARK
-  CLUSTER
-  PROJECT_ID
-  PUB_ACCOUNT_ID
-  ADV_ACCOUNT_ID
   SOURCE_ID
-  ACCESS_POINT_ID
-  PLATFORM
+  PLATFORM_TYPE
   DOMAIN
   APP_ID
   ZONE_ID
-  CAMPAIGN_ID
-  AD_ID
   FORMAT_ID
-  JUMPER_ID
   CARRIER_ID
   COUNTRY
-  CITY
   LANGUAGE
   IP
-  DEVICE_TYPE
   DEVICE_ID
+  DEVICE_TYPE
   OS_ID
   BROWSER_ID
-  SPENT
   PROFIT
   BID_PRICE
   REQUESTS
@@ -35,7 +25,6 @@ enum StatisticOrderingKey {
   VIEWS
   DIRECTS
   CLICKS
-  LEADS
   BIDS
   WINS
   SKIPS
@@ -51,28 +40,18 @@ enum StatisticKey {
   UNDEFINED
   DATEMARK
   TIMEMARK
-  CLUSTER
-  PROJECT_ID
-  ACCOUNT_ID
-  PUB_ACCOUNT_ID
-  ADV_ACCOUNT_ID
   SOURCE_ID
-  ACCESS_POINT_ID
-  PLATFORM
+  PLATFORM_TYPE
   DOMAIN
   APP_ID
   ZONE_ID
-  CAMPAIGN_ID
-  AD_ID
   FORMAT_ID
-  JUMPER_ID
   CARRIER_ID
   COUNTRY
-  CITY
   LANGUAGE
   IP
-  DEVICE_TYPE
   DEVICE_ID
+  DEVICE_TYPE
   OS_ID
   BROWSER_ID
 }
@@ -87,7 +66,6 @@ type StatisticAdItem {
   keys: [StatisticItemKey!]
 
   # Money counters
-  spent:        Float!
   profit:       Float!
   bidPrice:     Float!
 
@@ -97,7 +75,6 @@ type StatisticAdItem {
   views:        Uint64!
   directs:      Uint64!
   clicks:       Uint64!
-  leads:        Uint64!
   bids:         Uint64!
   wins:         Uint64!
   skips:        Uint64!
@@ -108,12 +85,6 @@ type StatisticAdItem {
   CTR:          Float!
   eCPM:         Float!
   eCPC:         Float!
-  eCPA:         Float!
-}
-
-type StatisticAdItemEdge {
-  next: String!
-  node: StatisticAdItem!
 }
 
 """
@@ -124,8 +95,6 @@ type StatisticAdItemConnection {
   Total count of StatisticAdItem objects.
   """
   totalCount: Int!
-
-  edges: [StatisticAdItemEdge!]!
 
   """
   List of StatisticAdItem objects.

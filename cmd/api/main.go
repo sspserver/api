@@ -35,14 +35,12 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
 	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
 
-	statsClient "github.com/geniusrabbit/archivarius/client"
-	billingClient "github.com/geniusrabbit/billing/client"
-
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/appinit"
 	"github.com/sspserver/api/cmd/api/server"
 	rtbsourceuc "github.com/sspserver/api/internal/repository/rtbsource/usecase"
-	"github.com/sspserver/api/internal/repository/statistic"
+	statisticrc "github.com/sspserver/api/internal/repository/statistic/repository"
+	statisticuc "github.com/sspserver/api/internal/repository/statistic/usecase"
 	"github.com/sspserver/api/internal/server/graphql"
 	"github.com/sspserver/api/internal/server/graphql/resolvers"
 	"github.com/sspserver/api/private/emails"
@@ -179,23 +177,14 @@ func main() {
 
 	messangerWrap := messangerWrapper(messangerObj)
 
-	// Establish connection to Billing
-	billingCl, err := billingClient.ConnectAPI(ctx, conf.Billing.Connect)
-	fatalError(err, "connect to billing")
-	defer func() {
-		if err := billingCl.Close(); err != nil {
-			loggerObj.Error("Close billing connection", zap.Error(err))
-		}
-	}()
-
 	// Establish connection to Statistic
-	statisticCl, err := statsClient.ConnectAPI(ctx, conf.Statistic.Connect)
+	statDatabase, err := database.Connect(ctx, conf.System.Statistic.Connect, conf.IsDebug())
 	fatalError(err, "connect to statistic")
 
 	rtbSourceUsecase := rtbsourceuc.New()
 
-	statisticUsecase := statistic.NewUsecase(
-		statistic.NewRepository(statisticCl))
+	statisticUsecase := statisticuc.NewUsecase(
+		statisticrc.NewRepository(statDatabase))
 
 	// Prepare context
 	ctx = ctxlogger.WithLogger(ctx, loggerObj)

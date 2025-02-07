@@ -1,5 +1,0 @@
-liveness_addr: :8083
-metrics_addr: :8084
-clickhouse:
-  dsn: clickhouse://clickhouse-server:9000/stats?secure=false&skip_verify=true
-grpc_port: 9500

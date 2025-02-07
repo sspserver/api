@@ -48,7 +48,8 @@ services:
         condition: service_started
     volumes:
       - "./clickhouse/migrations.sh:/migrations.sh:ro"
-      - "../migrations/stats:/archivarius_migrations:ro"
+      - "../migrations/stats:/migrations:ro"
+      - "../migrations/stats-gen:/migrations-gen:ro"
       - "state:/state"
 
   database:

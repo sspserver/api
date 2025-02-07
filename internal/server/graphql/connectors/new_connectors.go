@@ -15,6 +15,7 @@ import (
 	"github.com/sspserver/api/internal/repository/devicemodel"
 	"github.com/sspserver/api/internal/repository/os"
 	"github.com/sspserver/api/internal/repository/rtbsource"
+	"github.com/sspserver/api/internal/repository/statistic"
 	"github.com/sspserver/api/internal/repository/zone"
 	gqlmodels "github.com/sspserver/api/internal/server/graphql/models"
 )
@@ -224,6 +225,28 @@ func NewZoneConnection(ctx context.Context, zoneAccessor zone.Usecase, filter *g
 				Cursor: gocast.Str(obj.ID),
 				Node:   obj,
 			}
+		},
+	}, page)
+}
+
+// StatisticAdItemConnection implements collection accessor interface with pagination.
+type StatisticAdItemConnection = connectors.CollectionConnection[gqlmodels.StatisticAdItem, struct{}]
+
+// NewStatisticAdItemConnection based on query object
+func NewStatisticAdItemConnection(ctx context.Context, statisticAccessor statistic.Usecase, filter *gqlmodels.StatisticAdListFilter, group []gqlmodels.StatisticKey, order []*gqlmodels.StatisticAdKeyOrder, page *gqlmodels.Page) *StatisticAdItemConnection {
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.StatisticAdItem, struct{}]{
+		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.StatisticAdItem, error) {
+			list, err := statisticAccessor.Statistic(ctx,
+				filter.Filter(), gqlmodels.StatisticGroup(group),
+				gqlmodels.StatisticAdListOrder(order), page.Pagination())
+			return gqlmodels.FromStatisticAdItemModelList(list), err
+		},
+		CountDataFunc: func(ctx context.Context) (int64, error) {
+			return statisticAccessor.Count(ctx, filter.Filter(), gqlmodels.StatisticGroup(group))
+		},
+		ConvertToEdgeFunc: func(obj *gqlmodels.StatisticAdItem) *struct{} {
+			var edge struct{}
+			return &edge
 		},
 	}, page)
 }
