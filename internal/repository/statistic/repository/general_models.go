@@ -59,11 +59,11 @@ type AggregatedCountersLocal struct {
 	CustomClicks       uint64 `db:"custom_clicks" json:"custom_clicks"`
 	BackupClicks       uint64 `db:"backup_clicks" json:"backup_clicks"`
 
-	SrcBidRequests uint64 `db:"src_bid_requests" json:"src_bid_requests"`
-	SrcBidWins     uint64 `db:"src_bid_wins" json:"src_bid_wins"`
-	SrcBidSkips    uint64 `db:"src_bid_skips" json:"src_bid_skips"`
-	SrcBidNobids   uint64 `db:"src_bid_nobids" json:"src_bid_nobids"`
-	SrcBidErrors   uint64 `db:"src_bid_errors" json:"src_bid_errors"`
+	BidRequests uint64 `db:"bid_requests" json:"bid_requests"`
+	BidWins     uint64 `db:"bid_wins" json:"bid_wins"`
+	BidSkips    uint64 `db:"bid_skips" json:"bid_skips"`
+	BidNobids   uint64 `db:"bid_nobids" json:"bid_nobids"`
+	BidErrors   uint64 `db:"bid_errors" json:"bid_errors"`
 
 	Adblocks uint64 `db:"adblocks" json:"adblocks"`
 	Privates uint64 `db:"privates" json:"privates"`
@@ -118,10 +118,10 @@ func (m *AggregatedCountersLocal) AsStatisticItem() *models.StatisticAdItem {
 		Views:       m.Views,
 		Directs:     m.Directs,
 		Clicks:      m.Clicks,
-		Wins:        m.SrcBidWins,
-		Bids:        m.SrcBidRequests,
-		Skips:       m.SrcBidSkips,
-		Nobids:      m.SrcBidNobids,
-		Errors:      m.SrcBidErrors,
+		Wins:        m.BidWins,
+		Bids:        m.BidRequests,
+		Skips:       m.BidSkips,
+		Nobids:      m.BidNobids,
+		Errors:      m.BidErrors,
 	}
 }

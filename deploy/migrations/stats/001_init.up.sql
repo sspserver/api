@@ -1,1 +1,1 @@
-CREATE DATABASE stats ENGINE=Replicated('clickhouse/stats','{shard}','{replica}');
+CREATE DATABASE IF NOT EXISTS stats ENGINE=Replicated('clickhouse/stats','{shard}','{replica}');

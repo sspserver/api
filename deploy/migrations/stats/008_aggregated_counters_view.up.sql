@@ -78,11 +78,11 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS stats.v_aggregated_counters_view TO stats
     , CAST(IF(event = 'click'      AND status = 4, sign, 0) AS UInt64) AS custom_clicks
     , CAST(IF(event = 'click'      AND backup = 1, sign, 0) AS UInt64) AS backup_clicks
 
-    , CAST(IF(event = 'src.bid'                  , sign, 0) AS UInt64) AS src_bid_requests
-    , CAST(IF(event = 'src.win'                  , sign, 0) AS UInt64) AS src_bid_wins
-    , CAST(IF(event = 'src.skip'                 , sign, 0) AS UInt64) AS src_bid_skips
-    , CAST(IF(event = 'src.nobid'                , sign, 0) AS UInt64) AS src_bid_nobids
-    , CAST(IF(event = 'src.fail'                 , sign, 0) AS UInt64) AS src_bid_errors
+    , CAST(IF(event = 'src.bid'                  , sign, 0) AS UInt64) AS bid_requests
+    , CAST(IF(event = 'src.win'                  , sign, 0) AS UInt64) AS bid_wins
+    , CAST(IF(event = 'src.skip'                 , sign, 0) AS UInt64) AS bid_skips
+    , CAST(IF(event = 'src.nobid'                , sign, 0) AS UInt64) AS bid_nobids
+    , CAST(IF(event = 'src.fail'                 , sign, 0) AS UInt64) AS bid_errors
 
     , CAST(IF(adblock > 0, sign, 0) AS UInt64) AS adblocks
     , CAST(IF(private > 0, sign, 0) AS UInt64) AS privates
