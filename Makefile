@@ -65,7 +65,10 @@ build: ## Build API application
 .PHONY: build-docker-dev
 build-docker-dev: build ## Build docker image for development
 	echo "Build develop docker image"
-	DOCKER_BUILDKIT=${DOCKER_BUILDKIT} docker build -t ${DOCKER_CONTAINER_IMAGE} -f deploy/develop/Dockerfile .
+	DOCKER_BUILDKIT=${DOCKER_BUILDKIT} docker build \
+		--build-arg TARGETPLATFORM=${LOCAL_TARGETPLATFORM} \
+		-t ${DOCKER_CONTAINER_IMAGE} \
+		-f deploy/develop/Dockerfile .
 
 .PHONY: run
 run: build-docker-dev ## Run API service by docker-compose
