@@ -29,4 +29,4 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS stats.v_source_state_local TO stats.sourc
   , SUM(CAST(CASE WHEN event = 'src.nobid'  AND status IN (0, 1) THEN sign ELSE 0 END AS UInt64)) AS nobids
   , SUM(CAST(CASE WHEN event = 'src.fail'                        THEN sign ELSE 0 END AS UInt64)) AS errors
   FROM stats.events_local
-  GROUP BY datemark, protocol, id;
+  GROUP BY datemark, id;
