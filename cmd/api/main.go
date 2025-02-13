@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/99designs/basicauth-go"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/goconfig"
@@ -82,13 +81,13 @@ func init() {
 				URI:                   []string{"file:///data/migrations/initial"},
 				SchemaMigrationsTable: "schema_migrations_initial",
 			},
-			// {
-			// 	URI:                   []string{"file:///data/migrations/fixtures"},
-			// 	SchemaMigrationsTable: "schema_migrations_dev",
-			// },
 			{
 				URI:                   []string{"file:///data/migrations/project"},
 				SchemaMigrationsTable: "schema_migrations",
+			},
+			{
+				URI:                   []string{"file:///data/migrations/fixtures"},
+				SchemaMigrationsTable: "schema_migrations_fixtures",
 			},
 		}), "migrate database")
 	}
@@ -213,8 +212,7 @@ func main() {
 		},
 		InitWrap: func(mux *chi.Mux) {
 			// Register graphql playground with basic auth
-			mux.With(basicauth.NewFromEnv("Graph", "GRAPHQL_USERS_")).
-				Handle("/playground", playground.Handler("Query console", "/graphql"))
+			mux.Handle("/playground", playground.Handler("Query console", "/graphql"))
 
 			// Init GraphQL API
 			mux.Handle("/graphql", graphql.GraphQL(&resolvers.Usecases{

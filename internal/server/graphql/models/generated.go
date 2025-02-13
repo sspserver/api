@@ -288,6 +288,8 @@ type Category struct {
 	ParentID *uint64 `json:"parentID,omitempty"`
 	// Parent category object
 	Parent *Category `json:"parent,omitempty"`
+	// Child categories
+	Childrens []*Category `json:"childrens"`
 	// Position of the category
 	Position int `json:"position"`
 	// Active status of the category

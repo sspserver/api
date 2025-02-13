@@ -33,6 +33,11 @@ type Category {
   parent: Category
 
   """
+  Child categories
+  """
+  childrens: [Category!]!
+
+  """
   Position of the category
   """
   position: Int!

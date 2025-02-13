@@ -9,8 +9,30 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/internal/server/graphql/generated"
 	"github.com/sspserver/api/internal/server/graphql/models"
 )
+
+// Childrens is the resolver for the childrens field.
+func (r *categoryResolver) Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error) {
+	if obj == nil {
+		return nil, nil
+	}
+	if len(obj.Childrens) > 0 {
+		return obj.Childrens, nil
+	}
+	list, err := r.Resolver.catergories.List(ctx,
+		&models.CategoryListFilter{
+			ParentID: []uint64{obj.ID},
+			Active:   []models.ActiveStatus{models1.ActiveStatusActive},
+		}, &models.CategoryListOrder{
+			Position: &[]models1.Ordering{models1.OrderingAsc}[0],
+		}, nil)
+	if err != nil {
+		return nil, err
+	}
+	return list.List(), nil
+}
 
 // CreateCategory is the resolver for the createCategory field.
 func (r *mutationResolver) CreateCategory(ctx context.Context, input models.CategoryInput) (*models.CategoryPayload, error) {
@@ -36,3 +58,8 @@ func (r *queryResolver) Category(ctx context.Context, id uint64) (*models.Catego
 func (r *queryResolver) ListCategories(ctx context.Context, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Category, models.CategoryEdge], error) {
 	return r.catergories.List(ctx, filter, order, page)
 }
+
+// Category returns generated.CategoryResolver implementation.
+func (r *Resolver) Category() generated.CategoryResolver { return &categoryResolver{r} }
+
+type categoryResolver struct{ *Resolver }

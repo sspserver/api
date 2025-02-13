@@ -28,7 +28,11 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 		query = query.Where(`name IN (?)`, fl.Name)
 	}
 	if len(fl.ParentID) > 0 {
-		query = query.Where(`parent_id IN (?)`, fl.ParentID)
+		if fl.ParentID[0] == 0 && len(fl.ParentID) == 1 {
+			query = query.Where(`parent_id IS NULL`)
+		} else {
+			query = query.Where(`parent_id IN (?)`, fl.ParentID)
+		}
 	}
 	if len(fl.IABCode) > 0 {
 		query = query.Where(`iab_code IN (?)`, fl.IABCode)

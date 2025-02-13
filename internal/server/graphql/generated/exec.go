@@ -43,8 +43,10 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Category() CategoryResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
+	StatisticItemKey() StatisticItemKeyResolver
 }
 
 type DirectiveRoot struct {
@@ -243,6 +245,7 @@ type ComplexityRoot struct {
 
 	Category struct {
 		Active      func(childComplexity int) int
+		Childrens   func(childComplexity int) int
 		CreatedAt   func(childComplexity int) int
 		DeletedAt   func(childComplexity int) int
 		Description func(childComplexity int) int
@@ -947,6 +950,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type CategoryResolver interface {
+	Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error)
+}
 type MutationResolver interface {
 	Poke(ctx context.Context) (string, error)
 	Login(ctx context.Context, login string, password string) (*models1.SessionToken, error)
@@ -1065,6 +1071,9 @@ type QueryResolver interface {
 	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models.StatisticAdItem, struct{}], error)
 	Zone(ctx context.Context, id uint64) (*models.ZonePayload, error)
 	ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Zone, models.ZoneEdge], error)
+}
+type StatisticItemKeyResolver interface {
+	Text(ctx context.Context, obj *models.StatisticItemKey) (string, error)
 }
 
 type executableSchema struct {
@@ -1932,6 +1941,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Category.Active(childComplexity), true
+
+	case "Category.childrens":
+		if e.complexity.Category.Childrens == nil {
+			break
+		}
+
+		return e.complexity.Category.Childrens(childComplexity), true
 
 	case "Category.createdAt":
 		if e.complexity.Category.CreatedAt == nil {
@@ -8719,6 +8735,11 @@ type Category {
   Parent category object
   """
   parent: Category
+
+  """
+  Child categories
+  """
+  childrens: [Category!]!
 
   """
   Position of the category
@@ -21611,6 +21632,75 @@ func (ec *executionContext) fieldContext_Category_parent(_ context.Context, fiel
 				return ec.fieldContext_Category_parentID(ctx, field)
 			case "parent":
 				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
+			case "position":
+				return ec.fieldContext_Category_position(ctx, field)
+			case "active":
+				return ec.fieldContext_Category_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Category_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Category_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Category_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Category", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Category_childrens(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Category_childrens(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Category().Childrens(rctx, obj)
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Category)
+	fc.Result = res
+	return ec.marshalNCategory2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Category_childrens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Category_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Category_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Category_description(ctx, field)
+			case "IABCode":
+				return ec.fieldContext_Category_IABCode(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Category_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
 			case "position":
 				return ec.fieldContext_Category_position(ctx, field)
 			case "active":
@@ -21966,6 +22056,8 @@ func (ec *executionContext) fieldContext_CategoryConnection_list(_ context.Conte
 				return ec.fieldContext_Category_parentID(ctx, field)
 			case "parent":
 				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
 			case "position":
 				return ec.fieldContext_Category_position(ctx, field)
 			case "active":
@@ -22129,6 +22221,8 @@ func (ec *executionContext) fieldContext_CategoryEdge_node(_ context.Context, fi
 				return ec.fieldContext_Category_parentID(ctx, field)
 			case "parent":
 				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
 			case "position":
 				return ec.fieldContext_Category_position(ctx, field)
 			case "active":
@@ -22276,6 +22370,8 @@ func (ec *executionContext) fieldContext_CategoryPayload_category(_ context.Cont
 				return ec.fieldContext_Category_parentID(ctx, field)
 			case "parent":
 				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
 			case "position":
 				return ec.fieldContext_Category_position(ctx, field)
 			case "active":
@@ -45828,7 +45924,7 @@ func (ec *executionContext) _StatisticItemKey_text(ctx context.Context, field gr
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Text, nil
+		return ec.resolvers.StatisticItemKey().Text(rctx, obj)
 	})
 
 	if resTmp == nil {
@@ -45846,8 +45942,8 @@ func (ec *executionContext) fieldContext_StatisticItemKey_text(_ context.Context
 	fc = &graphql.FieldContext{
 		Object:     "StatisticItemKey",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
@@ -54762,46 +54858,82 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 		case "ID":
 			out.Values[i] = ec._Category_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Category_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "description":
 			out.Values[i] = ec._Category_description(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "IABCode":
 			out.Values[i] = ec._Category_IABCode(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "parentID":
 			out.Values[i] = ec._Category_parentID(ctx, field, obj)
 		case "parent":
 			out.Values[i] = ec._Category_parent(ctx, field, obj)
+		case "childrens":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Category_childrens(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "position":
 			out.Values[i] = ec._Category_position(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "active":
 			out.Values[i] = ec._Category_active(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._Category_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._Category_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "deletedAt":
 			out.Values[i] = ec._Category_deletedAt(ctx, field, obj)
@@ -59580,18 +59712,49 @@ func (ec *executionContext) _StatisticItemKey(ctx context.Context, sel ast.Selec
 		case "key":
 			out.Values[i] = ec._StatisticItemKey_key(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "value":
 			out.Values[i] = ec._StatisticItemKey_value(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "text":
-			out.Values[i] = ec._StatisticItemKey_text(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._StatisticItemKey_text(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

@@ -7,8 +7,10 @@ package resolvers
 import (
 	"context"
 
+	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/internal/server/graphql/generated"
 	models2 "github.com/sspserver/api/internal/server/graphql/models"
 )
 
@@ -16,3 +18,29 @@ import (
 func (r *queryResolver) StatisticAdList(ctx context.Context, filter *models2.StatisticAdListFilter, group []models2.StatisticKey, order []*models2.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models2.StatisticAdItem, struct{}], error) {
 	return r.statistic.Statistic(ctx, filter, group, order, page)
 }
+
+// Text is the resolver for the text field.
+func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.StatisticItemKey) (string, error) {
+	if obj == nil || gocast.IsEmpty(obj.Value) {
+		return "", nil
+	}
+	if obj.Text != "" {
+		return obj.Text, nil
+	}
+	switch obj.Key {
+	case models2.StatisticKeySourceID:
+		src, err := r.Resolver.rtbsource.Get(ctx, gocast.Uint64(obj.Value))
+		if err != nil {
+			return "", err
+		}
+		return src.Source.Title, nil
+	}
+	return obj.Text, nil
+}
+
+// StatisticItemKey returns generated.StatisticItemKeyResolver implementation.
+func (r *Resolver) StatisticItemKey() generated.StatisticItemKeyResolver {
+	return &statisticItemKeyResolver{r}
+}
+
+type statisticItemKeyResolver struct{ *Resolver }

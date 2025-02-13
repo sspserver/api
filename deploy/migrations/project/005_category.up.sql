@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS adv_category
 , name                   VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
-, iab_code               VARCHAR(255)               NOT NULL
+, iab_code               VARCHAR(255)               NOT NULL        UNIQUE -- IAB code
 
 , parent_id              BIGINT                     REFERENCES adv_category(id) MATCH SIMPLE
                                                                        ON UPDATE NO ACTION
@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS adv_category
 , position               BIGINT                     NOT NULL
 
 -- Is Active advertisement
-, active                 ActiveStatus               NOT NULL      DEFAULT 'pause'
+, active                 ActiveStatus               NOT NULL        DEFAULT 'pause'
 
 -- Time marks
-, created_at             TIMESTAMP                  NOT NULL      DEFAULT NOW()
-, updated_at             TIMESTAMP                  NOT NULL      DEFAULT NOW()
+, created_at             TIMESTAMP                  NOT NULL        DEFAULT NOW()
+, updated_at             TIMESTAMP                  NOT NULL        DEFAULT NOW()
 , deleted_at             TIMESTAMP
 );
 

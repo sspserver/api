@@ -80,16 +80,16 @@ stop: ## Stop all services
 	@echo "Stop all services"
 	$(DOCKER_COMPOSE) stop
 
-.PHONY: dbcli
-dbcli: ## Open development database
+.PHONY: db-cli
+db-cli: ## Open development database
 	$(DOCKER_COMPOSE) exec $(DOCKER_DATABASE_NAME) psql -U $(DATABASE_USER) $(DATABASE_DB)
 
 .PHONY: dbdump
 dbdump: ## Dump development database
 	$(DOCKER_COMPOSE) exec $(DOCKER_DATABASE_NAME) pg_dump -U $(DATABASE_USER) $(DATABASE_DB)
 
-.PHONY: chin
-chin: ## Connect to dev clickhouse
+.PHONY: ch-cli
+ch-cli: ## Connect to dev clickhouse
 	$(DOCKER_COMPOSE) exec clickhouse-server clickhouse-client
 
 .PHONY: chidump
