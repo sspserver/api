@@ -16,16 +16,23 @@ def random_category_ids():
     arr = [random.randint(1, 100) for _ in range(cnt)]
     return "[" + ",".join(str(x) for x in arr) + "]"
 
-num_rows = 20000
+num_rows = 50000
 # Данные за предыдущие 3 месяца до сегодня
 start_date = datetime.now() - timedelta(days=90)
+num_days = 180
+num_seconds = num_days * 24 * 3600
+num_back_step_days = 90
+num_back_step_seconds = num_back_step_days * 24 * 3600
 
-for _ in range(num_rows):
-    random_seconds = random.randint(0, 90 * 24 * 3600)
+one_step_seconds = num_seconds // num_rows
+
+for step in range(num_rows):
+    random_seconds = random.randint(0, 180 * 24 * 3600)
     timemark_dt = start_date + timedelta(seconds=random_seconds)
     timemark = timemark_dt.strftime('%Y-%m-%d %H:%M:%S')
     datehourmark = timemark_dt.replace(minute=0, second=0, microsecond=0).strftime('%Y-%m-%d %H:%M:%S')
     datemark = timemark_dt.strftime('%Y-%m-%d')
+    time_step = -num_back_step_seconds + one_step_seconds * step
     
     sign = 1
     delay = random.randint(0, 1000000)
@@ -94,9 +101,9 @@ for _ in range(num_rows):
 
     values = [
         sign,
-        sql_str(timemark),
-        sql_str(datehourmark),
-        sql_str(datemark),
+        f"now() + {time_step}", #sql_str(timemark),
+        f"toStartOfHour(now() + {time_step})", # sql_str(datehourmark),
+        f"toDate(now() + {time_step})", # sql_str(datemark),
         delay,
         duration,
         sql_str(event_val),
