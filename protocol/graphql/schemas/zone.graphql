@@ -1,12 +1,4 @@
 """
-Enumeration of possible Zone types.
-"""
-enum ZoneType {
-  DEFAULT
-  SMART_LINK
-}
-
-"""
 Zone object represents a specific advertising zone within an account.
 """
 type Zone {
@@ -16,8 +8,6 @@ type Zone {
 
   title: String!
   description: String!
-
-  type: ZoneType!
 
   """
   Status of the zone
@@ -120,7 +110,6 @@ input ZoneListFilter {
   codename: [String!]
   accountID: [ID64!]
 
-  type: ZoneType
   status: ApproveStatus
   active: ActiveStatus
 
@@ -171,8 +160,6 @@ input ZoneInput {
   Description of the Zone.
   """
   description: String
-
-  type: ZoneType
 
   defaultCode: JSON
   context: JSON

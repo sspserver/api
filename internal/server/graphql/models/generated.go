@@ -835,12 +835,11 @@ type TimeZone struct {
 
 // Zone object represents a specific advertising zone within an account.
 type Zone struct {
-	ID          uint64   `json:"ID"`
-	Codename    string   `json:"codename"`
-	AccountID   uint64   `json:"accountID"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Type        ZoneType `json:"type"`
+	ID          uint64 `json:"ID"`
+	Codename    string `json:"codename"`
+	AccountID   uint64 `json:"accountID"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 	// Status of the zone
 	Status models.ApproveStatus `json:"status"`
 	// Active status of the zone
@@ -877,7 +876,6 @@ type ZoneInput struct {
 	Title *string `json:"title,omitempty"`
 	// Description of the Zone.
 	Description        *string     `json:"description,omitempty"`
-	Type               *ZoneType   `json:"type,omitempty"`
 	DefaultCode        *types.JSON `json:"defaultCode,omitempty"`
 	Context            *types.JSON `json:"context,omitempty"`
 	MinEcpm            *float64    `json:"minECPM,omitempty"`
@@ -895,7 +893,6 @@ type ZoneListFilter struct {
 	ID        []uint64              `json:"ID,omitempty"`
 	Codename  []string              `json:"codename,omitempty"`
 	AccountID []uint64              `json:"accountID,omitempty"`
-	Type      *ZoneType             `json:"type,omitempty"`
 	Status    *models.ApproveStatus `json:"status,omitempty"`
 	Active    *models.ActiveStatus  `json:"active,omitempty"`
 	MinEcpm   *float64              `json:"minECPM,omitempty"`
@@ -1526,47 +1523,5 @@ func (e *StatisticOrderingKey) UnmarshalGQL(v any) error {
 }
 
 func (e StatisticOrderingKey) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-// Enumeration of possible Zone types.
-type ZoneType string
-
-const (
-	ZoneTypeDefault   ZoneType = "DEFAULT"
-	ZoneTypeSmartLink ZoneType = "SMART_LINK"
-)
-
-var AllZoneType = []ZoneType{
-	ZoneTypeDefault,
-	ZoneTypeSmartLink,
-}
-
-func (e ZoneType) IsValid() bool {
-	switch e {
-	case ZoneTypeDefault, ZoneTypeSmartLink:
-		return true
-	}
-	return false
-}
-
-func (e ZoneType) String() string {
-	return string(e)
-}
-
-func (e *ZoneType) UnmarshalGQL(v any) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = ZoneType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid ZoneType", str)
-	}
-	return nil
-}
-
-func (e ZoneType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

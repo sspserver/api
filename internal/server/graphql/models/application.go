@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 
 	"github.com/sspserver/api/internal/repository/application"
 	"github.com/sspserver/api/models"
@@ -47,13 +48,19 @@ func (inp *ApplicationInput) FillModel(trg *models.Application) {
 	trg.Description = gocast.PtrAsValue(inp.Description, trg.Description)
 
 	trg.URI = gocast.PtrAsValue(inp.URI, trg.URI)
-	trg.Type = gocast.IfThen(inp.Type != nil, inp.Type.ModelType(), trg.Type)
-	trg.Platform = gocast.IfThen(inp.Platform != nil, inp.Platform.ModelType(), trg.Platform)
+	trg.Type = gocast.IfThenExec(inp.Type != nil,
+		func() types.ApplicationType { return inp.Type.ModelType() },
+		func() types.ApplicationType { return trg.Type })
+	trg.Platform = gocast.IfThenExec(inp.Platform != nil,
+		func() types.PlatformType { return inp.Platform.ModelType() },
+		func() types.PlatformType { return trg.Platform })
 	trg.Premium = gocast.PtrAsValue(inp.Premium, trg.Premium)
 
 	trg.Status = gocast.PtrAsValue(ApproveStatusPtr(inp.Status), trg.Status)
 	trg.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), trg.Active)
-	trg.Private = gocast.IfThen(inp.Private != nil, inp.Private.ModelStatus(), trg.Private)
+	trg.Private = gocast.IfThenExec(inp.Private != nil,
+		func() types.PrivateStatus { return inp.Private.ModelStatus() },
+		func() types.PrivateStatus { return trg.Private })
 
 	trg.Categories = gocast.IfThen(inp.Categories != nil, gocast.Slice[uint](inp.Categories), trg.Categories)
 	trg.RevenueShare = gocast.PtrAsValue(inp.RevenueShare, trg.RevenueShare)

@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/demdxx/gocast/v2"
+	gocast "github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
 	"github.com/sspserver/api/internal/server/graphql/generated"
@@ -48,6 +48,24 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 			return fmt.Sprintf("App #%d", gocast.Uint64(obj.Value)), nil
 		}
 		return app.Application.Title, nil
+	case models2.StatisticKeyZoneID:
+		zone, err := r.Resolver.zone.Get(ctx, gocast.Uint64(obj.Value))
+		if err != nil {
+			return "", err
+		}
+		if zone == nil || zone.Zone == nil || zone.Zone.Title == "" {
+			return fmt.Sprintf("Zone #%d", gocast.Uint64(obj.Value)), nil
+		}
+		return zone.Zone.Title, nil
+	case models2.StatisticKeyFormatID:
+		format, err := r.Resolver.adformat.Get(ctx, gocast.Uint64(obj.Value), "")
+		if err != nil {
+			return "", err
+		}
+		if format == nil || format.Format == nil || format.Format.Title == "" {
+			return fmt.Sprintf("Format #%d", gocast.Uint64(obj.Value)), nil
+		}
+		return format.Format.Title, nil
 	}
 	return obj.Text, nil
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/adformat"
 	"github.com/sspserver/api/internal/repository/adformat/usecase"
 	"github.com/sspserver/api/internal/server/graphql/connectors"
@@ -25,17 +26,32 @@ func NewQueryResolver() *QueryResolver {
 // Get RTBAccessPoint is the resolver for the RTBAccessPoint field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64, codename string) (*qmodels.AdFormatPayload, error) {
 	var (
-		err    error
-		object *models.Format
+		err error
+		obj any
 	)
 	if id == 0 {
-		object, err = r.uc.GetByCodename(ctx, codename)
+		obj, err = ctxcache.GetCache(ctx, "AdFormat").GetOrCache("code_"+codename, func(key any) (any, error) {
+			f, err := r.uc.GetByCodename(ctx, key.(string))
+			if err != nil {
+				return nil, err
+			}
+			return f, nil
+		})
 	} else {
-		object, err = r.uc.Get(ctx, id)
+		obj, err = ctxcache.GetCache(ctx, "AdFormat").GetOrCache(id, func(key any) (any, error) {
+			f, err := r.uc.Get(ctx, key.(uint64))
+			if err != nil {
+				return nil, err
+			}
+			return f, nil
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
+	object := gocast.IfThenExec(obj != nil,
+		func() *models.Format { return obj.(*models.Format) },
+		func() *models.Format { return nil })
 	return &qmodels.AdFormatPayload{
 		ClientMutationID: requestid.Get(ctx),
 		FormatID:         gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),

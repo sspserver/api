@@ -295,37 +295,6 @@ func (e PlatformType) ModelType() models.PlatformType {
 	return models.PlatformUndefined
 }
 
-func FromZoneType(tp models.ZoneType) ZoneType {
-	switch tp {
-	case models.ZoneTypeDefault:
-		return ZoneTypeDefault
-	case models.ZoneTypeSmartlink:
-		return ZoneTypeSmartLink
-	}
-	return ZoneTypeDefault
-}
-
-func (e *ZoneType) ModelType() models.ZoneType {
-	if e == nil {
-		return models.ZoneTypeDefault
-	}
-	switch *e {
-	case ZoneTypeDefault:
-		return models.ZoneTypeDefault
-	case ZoneTypeSmartLink:
-		return models.ZoneTypeSmartlink
-	}
-	return models.ZoneTypeDefault
-}
-
-func (e *ZoneType) ModelTypePtr() *models.ZoneType {
-	if e == nil {
-		return nil
-	}
-	t := e.ModelType()
-	return &t
-}
-
 func FromPricingModel(pm models.PricingModel) PricingModel {
 	switch pm {
 	case models.PricingModelCPM:

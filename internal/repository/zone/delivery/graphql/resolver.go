@@ -7,6 +7,7 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/zone"
 	"github.com/sspserver/api/internal/repository/zone/usecase"
 	"github.com/sspserver/api/internal/server/graphql/connectors"
@@ -24,13 +25,18 @@ func NewQueryResolver() *QueryResolver {
 
 // Get is the resolver for the zone field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.ZonePayload, error) {
-	obj, err := r.uc.Get(ctx, id)
+	obj, err := ctxcache.GetCache(ctx, "Zone").GetOrCache(id, func(key any) (any, error) {
+		return r.uc.Get(ctx, id)
+	})
 	if err != nil {
 		return nil, err
 	}
+	zone := gocast.IfThenExec(obj != nil,
+		func() *models.Zone { return obj.(*models.Zone) },
+		func() *models.Zone { return nil })
 	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Zone:             qlmodels.FromZoneModel(obj),
+		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
 }
 

@@ -927,7 +927,6 @@ type ComplexityRoot struct {
 		MinEcpm            func(childComplexity int) int
 		Status             func(childComplexity int) int
 		Title              func(childComplexity int) int
-		Type               func(childComplexity int) int
 		UpdatedAt          func(childComplexity int) int
 	}
 
@@ -5839,13 +5838,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Zone.Title(childComplexity), true
 
-	case "Zone.type":
-		if e.complexity.Zone.Type == nil {
-			break
-		}
-
-		return e.complexity.Zone.Type(childComplexity), true
-
 	case "Zone.updatedAt":
 		if e.complexity.Zone.UpdatedAt == nil {
 			break
@@ -10237,14 +10229,6 @@ extend type Query {
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/zone.graphql", Input: `"""
-Enumeration of possible Zone types.
-"""
-enum ZoneType {
-  DEFAULT
-  SMART_LINK
-}
-
-"""
 Zone object represents a specific advertising zone within an account.
 """
 type Zone {
@@ -10254,8 +10238,6 @@ type Zone {
 
   title: String!
   description: String!
-
-  type: ZoneType!
 
   """
   Status of the zone
@@ -10358,7 +10340,6 @@ input ZoneListFilter {
   codename: [String!]
   accountID: [ID64!]
 
-  type: ZoneType
   status: ApproveStatus
   active: ActiveStatus
 
@@ -10409,8 +10390,6 @@ input ZoneInput {
   Description of the Zone.
   """
   description: String
-
-  type: ZoneType
 
   defaultCode: JSON
   context: JSON
@@ -47022,47 +47001,6 @@ func (ec *executionContext) fieldContext_Zone_description(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Zone_type(ctx context.Context, field graphql.CollectedField, obj *models.Zone) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Zone_type(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Type, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(models.ZoneType)
-	fc.Result = res
-	return ec.marshalNZoneType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Zone_type(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Zone",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ZoneType does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Zone_status(ctx context.Context, field graphql.CollectedField, obj *models.Zone) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Zone_status(ctx, field)
 	if err != nil {
@@ -47747,8 +47685,6 @@ func (ec *executionContext) fieldContext_ZoneConnection_list(_ context.Context, 
 				return ec.fieldContext_Zone_title(ctx, field)
 			case "description":
 				return ec.fieldContext_Zone_description(ctx, field)
-			case "type":
-				return ec.fieldContext_Zone_type(ctx, field)
 			case "status":
 				return ec.fieldContext_Zone_status(ctx, field)
 			case "active":
@@ -47928,8 +47864,6 @@ func (ec *executionContext) fieldContext_ZoneEdge_node(_ context.Context, field 
 				return ec.fieldContext_Zone_title(ctx, field)
 			case "description":
 				return ec.fieldContext_Zone_description(ctx, field)
-			case "type":
-				return ec.fieldContext_Zone_type(ctx, field)
 			case "status":
 				return ec.fieldContext_Zone_status(ctx, field)
 			case "active":
@@ -48093,8 +48027,6 @@ func (ec *executionContext) fieldContext_ZonePayload_zone(_ context.Context, fie
 				return ec.fieldContext_Zone_title(ctx, field)
 			case "description":
 				return ec.fieldContext_Zone_description(ctx, field)
-			case "type":
-				return ec.fieldContext_Zone_type(ctx, field)
 			case "status":
 				return ec.fieldContext_Zone_status(ctx, field)
 			case "active":
@@ -53270,7 +53202,7 @@ func (ec *executionContext) unmarshalInputZoneInput(ctx context.Context, obj any
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "codename", "title", "description", "type", "defaultCode", "context", "minECPM", "minECPMByGeo", "fixedPurchasePrice", "allowedFormats", "allowedTypes", "allowedSources", "disallowedSources", "campaigns"}
+	fieldsInOrder := [...]string{"accountID", "codename", "title", "description", "defaultCode", "context", "minECPM", "minECPMByGeo", "fixedPurchasePrice", "allowedFormats", "allowedTypes", "allowedSources", "disallowedSources", "campaigns"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53305,13 +53237,6 @@ func (ec *executionContext) unmarshalInputZoneInput(ctx context.Context, obj any
 				return it, err
 			}
 			it.Description = data
-		case "type":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalOZoneType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Type = data
 		case "defaultCode":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("defaultCode"))
 			data, err := ec.unmarshalOJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx, v)
@@ -53395,7 +53320,7 @@ func (ec *executionContext) unmarshalInputZoneListFilter(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "codename", "accountID", "type", "status", "active", "minECPM", "maxECPM"}
+	fieldsInOrder := [...]string{"ID", "codename", "accountID", "status", "active", "minECPM", "maxECPM"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53423,13 +53348,6 @@ func (ec *executionContext) unmarshalInputZoneListFilter(ctx context.Context, ob
 				return it, err
 			}
 			it.AccountID = data
-		case "type":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalOZoneType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Type = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
 			data, err := ec.unmarshalOApproveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐApproveStatus(ctx, v)
@@ -60100,11 +60018,6 @@ func (ec *executionContext) _Zone(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "type":
-			out.Values[i] = ec._Zone_type(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		case "status":
 			out.Values[i] = ec._Zone_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -62584,16 +62497,6 @@ func (ec *executionContext) marshalNZonePayload2ᚖgithubᚗcomᚋsspserverᚋap
 		return graphql.Null
 	}
 	return ec._ZonePayload(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNZoneType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx context.Context, v any) (models.ZoneType, error) {
-	var res models.ZoneType
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNZoneType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx context.Context, sel ast.SelectionSet, v models.ZoneType) graphql.Marshaler {
-	return v
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -65989,22 +65892,6 @@ func (ec *executionContext) marshalOZonePayload2ᚖgithubᚗcomᚋsspserverᚋap
 		return graphql.Null
 	}
 	return ec._ZonePayload(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOZoneType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx context.Context, v any) (*models.ZoneType, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var res = new(models.ZoneType)
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOZoneType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneType(ctx context.Context, sel ast.SelectionSet, v *models.ZoneType) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return v
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

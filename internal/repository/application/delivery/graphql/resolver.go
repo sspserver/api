@@ -6,6 +6,7 @@ import (
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 
 	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/application"
@@ -50,6 +51,18 @@ func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationLi
 func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationInput) (*qlmodels.ApplicationPayload, error) {
 	var obj models.Application
 	input.FillModel(&obj)
+
+	// Validation rules
+	if obj.Title == "" {
+		return nil, &gqlerror.Error{
+			Message: "Title is required",
+			Extensions: map[string]any{
+				"code":     "validation",
+				"required": true,
+				"field":    "title",
+			},
+		}
+	}
 
 	id, err := r.uc.Create(ctx, &obj)
 	if err != nil {

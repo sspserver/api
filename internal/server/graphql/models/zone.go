@@ -22,7 +22,6 @@ func FromZoneModel(obj *models.Zone) *Zone {
 		Title:       obj.Title,
 		Description: obj.Description,
 
-		Type:   FromZoneType(obj.Type),
 		Status: FromApproveStatus(obj.Status),
 		Active: FromActiveStatus(obj.Active),
 
@@ -55,7 +54,6 @@ func (fl *ZoneListFilter) Filter() *zone.Filter {
 		ID:        fl.ID,
 		Codename:  fl.Codename,
 		AccountID: fl.AccountID,
-		Type:      fl.Type.ModelTypePtr(),
 		Status: gocast.IfThenExec(fl.Status != nil,
 			func() *types.ApproveStatus {
 				st := types.ApproveStatus(fl.Status.ModelStatus())
@@ -99,8 +97,6 @@ func (inp *ZoneInput) FillModel(obj *models.Zone) {
 
 	obj.Title = gocast.PtrAsValue(inp.Title, obj.Title)
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
-
-	obj.Type = gocast.IfThen(inp.Type != nil, inp.Type.ModelType(), obj.Type)
 
 	if inp.DefaultCode != nil && inp.DefaultCode.Data != nil {
 		_ = obj.DefaultCode.SetValue(inp.DefaultCode.Data)
