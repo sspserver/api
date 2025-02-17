@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strings"
+
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/adcorelib/admodels/types"
@@ -44,10 +46,10 @@ func (inp *ApplicationInput) FillModel(trg *models.Application) {
 	if inp == nil || trg == nil {
 		return
 	}
-	trg.Title = gocast.PtrAsValue(inp.Title, trg.Title)
-	trg.Description = gocast.PtrAsValue(inp.Description, trg.Description)
+	trg.Title = strings.TrimSpace(gocast.PtrAsValue(inp.Title, trg.Title))
+	trg.Description = strings.TrimSpace(gocast.PtrAsValue(inp.Description, trg.Description))
 
-	trg.URI = gocast.PtrAsValue(inp.URI, trg.URI)
+	trg.URI = strings.TrimSpace(gocast.PtrAsValue(inp.URI, trg.URI))
 	trg.Type = gocast.IfThenExec(inp.Type != nil,
 		func() types.ApplicationType { return inp.Type.ModelType() },
 		func() types.ApplicationType { return trg.Type })

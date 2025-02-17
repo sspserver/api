@@ -64,6 +64,17 @@ func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationIn
 		}
 	}
 
+	if obj.URI == "" {
+		return nil, &gqlerror.Error{
+			Message: "URI is required",
+			Extensions: map[string]any{
+				"code":     "validation",
+				"required": true,
+				"field":    "URI",
+			},
+		}
+	}
+
 	id, err := r.uc.Create(ctx, &obj)
 	if err != nil {
 		return nil, err
