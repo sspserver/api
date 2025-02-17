@@ -17,6 +17,7 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"github.com/vektah/gqlparser/v2/ast"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/server/graphql/generated"
 	"github.com/sspserver/api/internal/server/graphql/resolvers"
 )
@@ -55,7 +56,9 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		span, ctx := opentracing.StartSpanFromContext(r.Context(), "graphql.request")
 		defer span.Finish()
+		ctx = ctxcache.WithCacheBlock(ctx)
 		srv.ServeHTTP(rw, r.WithContext(ctx))
+		ctxcache.ReleaseCacheBlock(ctx)
 	})
 }
 

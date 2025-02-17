@@ -7,6 +7,7 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/application"
 	"github.com/sspserver/api/internal/repository/application/usecase"
 	"github.com/sspserver/api/internal/server/graphql/connectors"
@@ -24,10 +25,15 @@ func NewQueryResolver() *QueryResolver {
 
 // Get is the resolver for the application field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.ApplicationPayload, error) {
-	obj, err := r.uc.Get(ctx, id)
+	appObj, err := ctxcache.GetCache(ctx, "Application").GetOrCache(id, func(key any) (any, error) {
+		return r.uc.Get(ctx, id)
+	})
 	if err != nil {
 		return nil, err
 	}
+	obj := gocast.IfThenExec(appObj != nil,
+		func() *models.Application { return appObj.(*models.Application) },
+		func() *models.Application { return nil })
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    gocast.IfThenExec(obj != nil, func() uint64 { return obj.ID }, func() uint64 { return 0 }),

@@ -6,6 +6,7 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
@@ -27,13 +28,26 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 	if obj.Text != "" {
 		return obj.Text, nil
 	}
+
 	switch obj.Key {
 	case models2.StatisticKeySourceID:
 		src, err := r.Resolver.rtbsource.Get(ctx, gocast.Uint64(obj.Value))
 		if err != nil {
 			return "", err
 		}
+		if src == nil || src.Source == nil || src.Source.Title == "" {
+			return fmt.Sprintf("Source #%d", gocast.Uint64(obj.Value)), err
+		}
 		return src.Source.Title, nil
+	case models2.StatisticKeyAppID:
+		app, err := r.Resolver.app.Get(ctx, gocast.Uint64(obj.Value))
+		if err != nil {
+			return "", err
+		}
+		if app == nil || app.Application == nil || app.Application.Title == "" {
+			return fmt.Sprintf("App #%d", gocast.Uint64(obj.Value)), nil
+		}
+		return app.Application.Title, nil
 	}
 	return obj.Text, nil
 }

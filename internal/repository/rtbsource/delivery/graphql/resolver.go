@@ -7,6 +7,7 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/rtbsource"
 	"github.com/sspserver/api/internal/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/internal/server/graphql/models"
@@ -23,14 +24,19 @@ func NewQueryResolver(uc rtbsource.Usecase) *QueryResolver {
 
 // Get RTBSource is the resolver for the RTBSource field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.RTBSourcePayload, error) {
-	source, err := r.uc.Get(ctx, id)
+	source, err := ctxcache.GetCache(ctx, "RTBSource").GetOrCache(id, func(key any) (any, error) {
+		return r.uc.Get(ctx, id)
+	})
 	if err != nil {
 		return nil, err
 	}
+	src := gocast.IfThenExec(source != nil,
+		func() *models.RTBSource { return source.(*models.RTBSource) },
+		func() *models.RTBSource { return nil })
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
-		SourceID:         gocast.IfThenExec(source != nil, func() uint64 { return source.ID }, func() uint64 { return 0 }),
-		Source:           qmodels.FromRTBSourceModel(source),
+		SourceID:         gocast.IfThenExec(src != nil, func() uint64 { return src.ID }, func() uint64 { return 0 }),
+		Source:           qmodels.FromRTBSourceModel(src),
 	}, nil
 }
 
