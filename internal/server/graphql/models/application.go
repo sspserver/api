@@ -42,7 +42,22 @@ func FromApplicationModelList(list []*models.Application) []*Application {
 	return xtypes.SliceApply(list, FromApplicationModel)
 }
 
-func (inp *ApplicationInput) FillModel(trg *models.Application) {
+func (inp *ApplicationCreateInput) FillModel(trg *models.Application) {
+	if inp == nil || trg == nil {
+		return
+	}
+	trg.Title = strings.TrimSpace(inp.Title)
+	trg.Description = strings.TrimSpace(gocast.PtrAsValue(inp.Description, trg.Description))
+
+	trg.URI = strings.TrimSpace(inp.URI)
+	trg.Type = inp.Type.ModelType()
+	trg.Platform = inp.Platform.ModelType()
+
+	trg.Categories = gocast.Slice[uint](inp.Categories)
+	trg.RevenueShare = gocast.PtrAsValue(inp.RevenueShare, trg.RevenueShare)
+}
+
+func (inp *ApplicationUpdateInput) FillModel(trg *models.Application) {
 	if inp == nil || trg == nil {
 		return
 	}
@@ -56,13 +71,6 @@ func (inp *ApplicationInput) FillModel(trg *models.Application) {
 	trg.Platform = gocast.IfThenExec(inp.Platform != nil,
 		func() types.PlatformType { return inp.Platform.ModelType() },
 		func() types.PlatformType { return trg.Platform })
-	trg.Premium = gocast.PtrAsValue(inp.Premium, trg.Premium)
-
-	trg.Status = gocast.PtrAsValue(ApproveStatusPtr(inp.Status), trg.Status)
-	trg.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), trg.Active)
-	trg.Private = gocast.IfThenExec(inp.Private != nil,
-		func() types.PrivateStatus { return inp.Private.ModelStatus() },
-		func() types.PrivateStatus { return trg.Private })
 
 	trg.Categories = gocast.IfThen(inp.Categories != nil, gocast.Slice[uint](inp.Categories), trg.Categories)
 	trg.RevenueShare = gocast.PtrAsValue(inp.RevenueShare, trg.RevenueShare)

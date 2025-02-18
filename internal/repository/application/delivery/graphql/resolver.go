@@ -48,7 +48,7 @@ func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationLi
 }
 
 // Create Application is the resolver for the createApplication field.
-func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationInput) (*qlmodels.ApplicationPayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationCreateInput) (*qlmodels.ApplicationPayload, error) {
 	var obj models.Application
 	input.FillModel(&obj)
 
@@ -88,7 +88,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationIn
 }
 
 // Update Application is the resolver for the updateApplication field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.ApplicationInput) (*qlmodels.ApplicationPayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.ApplicationUpdateInput) (*qlmodels.ApplicationPayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err

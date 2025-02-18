@@ -13,12 +13,12 @@ import (
 )
 
 // CreateApplication is the resolver for the createApplication field.
-func (r *mutationResolver) CreateApplication(ctx context.Context, input models.ApplicationInput) (*models.ApplicationPayload, error) {
+func (r *mutationResolver) CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error) {
 	return r.app.Create(ctx, input)
 }
 
 // UpdateApplication is the resolver for the updateApplication field.
-func (r *mutationResolver) UpdateApplication(ctx context.Context, id uint64, input models.ApplicationInput) (*models.ApplicationPayload, error) {
+func (r *mutationResolver) UpdateApplication(ctx context.Context, id uint64, input models.ApplicationUpdateInput) (*models.ApplicationPayload, error) {
 	return r.app.Update(ctx, id, input)
 }
 

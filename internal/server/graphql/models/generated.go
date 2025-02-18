@@ -126,29 +126,25 @@ type Application struct {
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 }
 
+type ApplicationCreateInput struct {
+	// Account ID associated with the application and can be defined if have permission
+	AccountID   *uint64 `json:"accountID,omitempty"`
+	Title       string  `json:"title"`
+	Description *string `json:"description,omitempty"`
+	// Unique application identifier, e.g., site domain or app bundle
+	URI          string          `json:"URI"`
+	Type         ApplicationType `json:"type"`
+	Platform     PlatformType    `json:"platform"`
+	Categories   []int           `json:"categories,omitempty"`
+	RevenueShare *float64        `json:"revenueShare,omitempty"`
+}
+
 // ApplicationEdge wrapper to access Application objects
 type ApplicationEdge struct {
 	// A cursor for use in pagination.
 	Cursor string `json:"cursor"`
 	// The Application at the end of ApplicationEdge.
 	Node *Application `json:"node"`
-}
-
-type ApplicationInput struct {
-	// Account ID associated with the application and can be defined if have permission
-	AccountID   *uint64 `json:"accountID,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	Description *string `json:"description,omitempty"`
-	// Unique application identifier, e.g., site domain or app bundle
-	URI          *string               `json:"URI,omitempty"`
-	Type         *ApplicationType      `json:"type,omitempty"`
-	Platform     *PlatformType         `json:"platform,omitempty"`
-	Premium      *bool                 `json:"premium,omitempty"`
-	Status       *models.ApproveStatus `json:"status,omitempty"`
-	Active       *models.ActiveStatus  `json:"active,omitempty"`
-	Private      *PrivateStatus        `json:"private,omitempty"`
-	Categories   []int                 `json:"categories,omitempty"`
-	RevenueShare *float64              `json:"revenueShare,omitempty"`
 }
 
 type ApplicationListFilter struct {
@@ -186,6 +182,19 @@ type ApplicationPayload struct {
 	ApplicationID uint64 `json:"applicationID"`
 	// The Application object accessible by a client.
 	Application *Application `json:"application"`
+}
+
+type ApplicationUpdateInput struct {
+	// Account ID associated with the application and can be defined if have permission
+	AccountID   *uint64 `json:"accountID,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	Description *string `json:"description,omitempty"`
+	// Unique application identifier, e.g., site domain or app bundle
+	URI          *string          `json:"URI,omitempty"`
+	Type         *ApplicationType `json:"type,omitempty"`
+	Platform     *PlatformType    `json:"platform,omitempty"`
+	Categories   []int            `json:"categories,omitempty"`
+	RevenueShare *float64         `json:"revenueShare,omitempty"`
 }
 
 // Browser model schema

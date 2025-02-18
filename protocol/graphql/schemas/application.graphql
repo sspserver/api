@@ -167,7 +167,27 @@ input ApplicationListOrder {
 # Mutations
 ###############################################################################
 
-input ApplicationInput {
+input ApplicationCreateInput {
+  """
+  Account ID associated with the application and can be defined if have permission
+  """
+  accountID: ID64
+
+  title: String! @length(min: 3, max: 255, trim: true)
+  description: String
+
+  """
+  Unique application identifier, e.g., site domain or app bundle
+  """
+  URI: String! @length(min: 1, max: 255, trim: true)
+  type: ApplicationType!
+  platform: PlatformType!
+  categories: [Int!]
+  revenueShare: Float
+}
+
+
+input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
@@ -179,13 +199,9 @@ input ApplicationInput {
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String
+  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", strict: false)
   type: ApplicationType
   platform: PlatformType
-  premium: Boolean
-  status: ApproveStatus
-  active: ActiveStatus
-  private: PrivateStatus
   categories: [Int!]
   revenueShare: Float
 }
@@ -214,12 +230,12 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Delete Application

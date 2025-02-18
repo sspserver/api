@@ -53,6 +53,9 @@ type DirectiveRoot struct {
 	Acl               func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 	Auth              func(ctx context.Context, obj any, next graphql.Resolver) (res any, err error)
 	HasPermissions    func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
+	Length            func(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim bool) (res any, err error)
+	Notempty          func(ctx context.Context, obj any, next graphql.Resolver, trim bool) (res any, err error)
+	Regex             func(ctx context.Context, obj any, next graphql.Resolver, pattern string, strict bool) (res any, err error)
 	SkipNoPermissions func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 }
 
@@ -480,7 +483,7 @@ type ComplexityRoot struct {
 		ApproveRTBSource          func(childComplexity int, id uint64, msg *string) int
 		ApproveUser               func(childComplexity int, id uint64, msg *string) int
 		ApproveZone               func(childComplexity int, id uint64, msg *string) int
-		CreateApplication         func(childComplexity int, input models.ApplicationInput) int
+		CreateApplication         func(childComplexity int, input models.ApplicationCreateInput) int
 		CreateAuthClient          func(childComplexity int, input models1.AuthClientInput) int
 		CreateBrowser             func(childComplexity int, input models.BrowserInput) int
 		CreateCategory            func(childComplexity int, input models.CategoryInput) int
@@ -528,7 +531,7 @@ type ComplexityRoot struct {
 		SwitchAccount             func(childComplexity int, id uint64) int
 		UpdateAccount             func(childComplexity int, id uint64, input models1.AccountInput) int
 		UpdateAccountMember       func(childComplexity int, memberID uint64, member models1.MemberInput) int
-		UpdateApplication         func(childComplexity int, id uint64, input models.ApplicationInput) int
+		UpdateApplication         func(childComplexity int, id uint64, input models.ApplicationUpdateInput) int
 		UpdateAuthClient          func(childComplexity int, id string, input models1.AuthClientInput) int
 		UpdateBrowser             func(childComplexity int, id uint64, input models.BrowserInput) int
 		UpdateCategory            func(childComplexity int, id uint64, input models.CategoryInput) int
@@ -985,8 +988,8 @@ type MutationResolver interface {
 	CreateFormat(ctx context.Context, input models.AdFormatInput) (*models.AdFormatPayload, error)
 	UpdateFormat(ctx context.Context, id uint64, input models.AdFormatInput) (*models.AdFormatPayload, error)
 	DeleteFormat(ctx context.Context, id uint64, codename string, msg *string) (*models.AdFormatPayload, error)
-	CreateApplication(ctx context.Context, input models.ApplicationInput) (*models.ApplicationPayload, error)
-	UpdateApplication(ctx context.Context, id uint64, input models.ApplicationInput) (*models.ApplicationPayload, error)
+	CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error)
+	UpdateApplication(ctx context.Context, id uint64, input models.ApplicationUpdateInput) (*models.ApplicationPayload, error)
 	DeleteApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
 	RunApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	PauseApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
@@ -3022,7 +3025,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateApplication(childComplexity, args["input"].(models.ApplicationInput)), true
+		return e.complexity.Mutation.CreateApplication(childComplexity, args["input"].(models.ApplicationCreateInput)), true
 
 	case "Mutation.createAuthClient":
 		if e.complexity.Mutation.CreateAuthClient == nil {
@@ -3588,7 +3591,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateApplication(childComplexity, args["ID"].(uint64), args["input"].(models.ApplicationInput)), true
+		return e.complexity.Mutation.UpdateApplication(childComplexity, args["ID"].(uint64), args["input"].(models.ApplicationUpdateInput)), true
 
 	case "Mutation.updateAuthClient":
 		if e.complexity.Mutation.UpdateAuthClient == nil {
@@ -5923,9 +5926,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputAdFormatInput,
 		ec.unmarshalInputAdFormatListFilter,
 		ec.unmarshalInputAdFormatListOrder,
-		ec.unmarshalInputApplicationInput,
+		ec.unmarshalInputApplicationCreateInput,
 		ec.unmarshalInputApplicationListFilter,
 		ec.unmarshalInputApplicationListOrder,
+		ec.unmarshalInputApplicationUpdateInput,
 		ec.unmarshalInputAuthClientInput,
 		ec.unmarshalInputAuthClientListFilter,
 		ec.unmarshalInputAuthClientListOrder,
@@ -8380,7 +8384,27 @@ input ApplicationListOrder {
 # Mutations
 ###############################################################################
 
-input ApplicationInput {
+input ApplicationCreateInput {
+  """
+  Account ID associated with the application and can be defined if have permission
+  """
+  accountID: ID64
+
+  title: String! @length(min: 3, max: 255, trim: true)
+  description: String
+
+  """
+  Unique application identifier, e.g., site domain or app bundle
+  """
+  URI: String! @length(min: 1, max: 255, trim: true)
+  type: ApplicationType!
+  platform: PlatformType!
+  categories: [Int!]
+  revenueShare: Float
+}
+
+
+input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
@@ -8392,13 +8416,9 @@ input ApplicationInput {
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String
+  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", strict: false)
   type: ApplicationType
   platform: PlatformType
-  premium: Boolean
-  status: ApproveStatus
-  active: ActiveStatus
-  private: PrivateStatus
   categories: [Int!]
   revenueShare: Float
 }
@@ -8427,12 +8447,12 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Delete Application
@@ -10228,6 +10248,10 @@ extend type Query {
   ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
 }
 `, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/validation.graphql", Input: `directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @notempty(trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @regex(pattern: String!, strict: Boolean! = true) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/zone.graphql", Input: `"""
 Zone object represents a specific advertising zone within an account.
 """
@@ -10522,6 +10546,159 @@ func (ec *executionContext) dir_hasPermissions_argsPermissions(
 	}
 
 	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_length_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.dir_length_argsMin(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["min"] = arg0
+	arg1, err := ec.dir_length_argsMax(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["max"] = arg1
+	arg2, err := ec.dir_length_argsTrim(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["trim"] = arg2
+	return args, nil
+}
+func (ec *executionContext) dir_length_argsMin(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (int, error) {
+	if _, ok := rawArgs["min"]; !ok {
+		var zeroVal int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("min"))
+	if tmp, ok := rawArgs["min"]; ok {
+		return ec.unmarshalNInt2int(ctx, tmp)
+	}
+
+	var zeroVal int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_length_argsMax(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (int, error) {
+	if _, ok := rawArgs["max"]; !ok {
+		var zeroVal int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("max"))
+	if tmp, ok := rawArgs["max"]; ok {
+		return ec.unmarshalNInt2int(ctx, tmp)
+	}
+
+	var zeroVal int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_length_argsTrim(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["trim"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("trim"))
+	if tmp, ok := rawArgs["trim"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_notempty_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.dir_notempty_argsTrim(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["trim"] = arg0
+	return args, nil
+}
+func (ec *executionContext) dir_notempty_argsTrim(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["trim"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("trim"))
+	if tmp, ok := rawArgs["trim"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_regex_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.dir_regex_argsPattern(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["pattern"] = arg0
+	arg1, err := ec.dir_regex_argsStrict(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["strict"] = arg1
+	return args, nil
+}
+func (ec *executionContext) dir_regex_argsPattern(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["pattern"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("pattern"))
+	if tmp, ok := rawArgs["pattern"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_regex_argsStrict(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["strict"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("strict"))
+	if tmp, ok := rawArgs["strict"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
 	return zeroVal, nil
 }
 
@@ -10923,18 +11100,18 @@ func (ec *executionContext) field_Mutation_createApplication_args(ctx context.Co
 func (ec *executionContext) field_Mutation_createApplication_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.ApplicationInput, error) {
+) (models.ApplicationCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.ApplicationInput
+		var zeroVal models.ApplicationCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNApplicationInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationInput(ctx, tmp)
+		return ec.unmarshalNApplicationCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.ApplicationInput
+	var zeroVal models.ApplicationCreateInput
 	return zeroVal, nil
 }
 
@@ -12878,18 +13055,18 @@ func (ec *executionContext) field_Mutation_updateApplication_argsID(
 func (ec *executionContext) field_Mutation_updateApplication_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.ApplicationInput, error) {
+) (models.ApplicationUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.ApplicationInput
+		var zeroVal models.ApplicationUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNApplicationInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationInput(ctx, tmp)
+		return ec.unmarshalNApplicationUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.ApplicationInput
+	var zeroVal models.ApplicationUpdateInput
 	return zeroVal, nil
 }
 
@@ -30552,7 +30729,7 @@ func (ec *executionContext) _Mutation_createApplication(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateApplication(rctx, fc.Args["input"].(models.ApplicationInput))
+			return ec.resolvers.Mutation().CreateApplication(rctx, fc.Args["input"].(models.ApplicationCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -30639,7 +30816,7 @@ func (ec *executionContext) _Mutation_updateApplication(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateApplication(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.ApplicationInput))
+			return ec.resolvers.Mutation().UpdateApplication(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.ApplicationUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -50157,14 +50334,14 @@ func (ec *executionContext) unmarshalInputAdFormatListOrder(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputApplicationInput(ctx context.Context, obj any) (models.ApplicationInput, error) {
-	var it models.ApplicationInput
+func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Context, obj any) (models.ApplicationCreateInput, error) {
+	var it models.ApplicationCreateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "title", "description", "URI", "type", "platform", "premium", "status", "active", "private", "categories", "revenueShare"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "URI", "type", "platform", "categories", "revenueShare"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -50180,11 +50357,41 @@ func (ec *executionContext) unmarshalInputApplicationInput(ctx context.Context, 
 			it.AccountID = data
 		case "title":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 3)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim)
 			}
-			it.Title = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Title = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -50194,53 +50401,55 @@ func (ec *executionContext) unmarshalInputApplicationInput(ctx context.Context, 
 			it.Description = data
 		case "URI":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URI"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim)
 			}
-			it.URI = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.URI = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "type":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalOApplicationType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx, v)
+			data, err := ec.unmarshalNApplicationType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Type = data
 		case "platform":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("platform"))
-			data, err := ec.unmarshalOPlatformType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPlatformType(ctx, v)
+			data, err := ec.unmarshalNPlatformType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPlatformType(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Platform = data
-		case "premium":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("premium"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Premium = data
-		case "status":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOApproveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐApproveStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Status = data
-		case "active":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Active = data
-		case "private":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("private"))
-			data, err := ec.unmarshalOPrivateStatus2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPrivateStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Private = data
 		case "categories":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
 			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
@@ -50442,6 +50651,109 @@ func (ec *executionContext) unmarshalInputApplicationListOrder(ctx context.Conte
 				return it, err
 			}
 			it.DeletedAt = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputApplicationUpdateInput(ctx context.Context, obj any) (models.ApplicationUpdateInput, error) {
+	var it models.ApplicationUpdateInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"accountID", "title", "description", "URI", "type", "platform", "categories", "revenueShare"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Title = data
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "URI":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URI"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^[a-zA-Z0-9.-]*$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				strict, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, strict)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.URI = data
+			} else if tmp == nil {
+				it.URI = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "type":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+			data, err := ec.unmarshalOApplicationType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Type = data
+		case "platform":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("platform"))
+			data, err := ec.unmarshalOPlatformType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPlatformType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Platform = data
+		case "categories":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Categories = data
+		case "revenueShare":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("revenueShare"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RevenueShare = data
 		}
 	}
 
@@ -60873,6 +61185,11 @@ func (ec *executionContext) marshalNApplication2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._Application(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNApplicationCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationCreateInput(ctx context.Context, v any) (models.ApplicationCreateInput, error) {
+	res, err := ec.unmarshalInputApplicationCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNApplicationEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.ApplicationEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -60927,11 +61244,6 @@ func (ec *executionContext) marshalNApplicationEdge2ᚖgithubᚗcomᚋsspserver�
 	return ec._ApplicationEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNApplicationInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationInput(ctx context.Context, v any) (models.ApplicationInput, error) {
-	res, err := ec.unmarshalInputApplicationInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalNApplicationPayload2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx context.Context, sel ast.SelectionSet, v models.ApplicationPayload) graphql.Marshaler {
 	return ec._ApplicationPayload(ctx, sel, &v)
 }
@@ -60954,6 +61266,11 @@ func (ec *executionContext) unmarshalNApplicationType2githubᚗcomᚋsspserver�
 
 func (ec *executionContext) marshalNApplicationType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx context.Context, sel ast.SelectionSet, v models.ApplicationType) graphql.Marshaler {
 	return v
+}
+
+func (ec *executionContext) unmarshalNApplicationUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationUpdateInput(ctx context.Context, v any) (models.ApplicationUpdateInput, error) {
+	res, err := ec.unmarshalInputApplicationUpdateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNApproveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐApproveStatus(ctx context.Context, v any) (models1.ApproveStatus, error) {

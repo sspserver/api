@@ -1,0 +1,3 @@
+directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @notempty(trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @regex(pattern: String!, strict: Boolean! = true) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR

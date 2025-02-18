@@ -13,11 +13,12 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
-	"github.com/geniusrabbit/blaze-api/server/graphql/directives"
+	blazeDirectives "github.com/geniusrabbit/blaze-api/server/graphql/directives"
 	"github.com/opentracing/opentracing-go"
 	"github.com/vektah/gqlparser/v2/ast"
 
 	"github.com/sspserver/api/internal/context/ctxcache"
+	"github.com/sspserver/api/internal/server/graphql/directives"
 	"github.com/sspserver/api/internal/server/graphql/generated"
 	"github.com/sspserver/api/internal/server/graphql/resolvers"
 )
@@ -28,10 +29,13 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 		generated.NewExecutableSchema(generated.Config{
 			Resolvers: resolvers.NewResolver(usecases, provider),
 			Directives: generated.DirectiveRoot{
-				HasPermissions:    directives.HasPermissions,
-				Auth:              directives.Auth,
-				Acl:               directives.HasPermissions,
-				SkipNoPermissions: directives.SkipNoPermissions,
+				HasPermissions:    blazeDirectives.HasPermissions,
+				Auth:              blazeDirectives.Auth,
+				Acl:               blazeDirectives.HasPermissions,
+				SkipNoPermissions: blazeDirectives.SkipNoPermissions,
+				Length:            directives.ValidateLength,
+				Notempty:          directives.ValidateNotEmpty,
+				Regex:             directives.ValidateRegex,
 			},
 		}),
 	)
