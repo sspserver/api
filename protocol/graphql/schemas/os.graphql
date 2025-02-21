@@ -1,24 +1,4 @@
 """
-OSVersion model schema
-"""
-type OSVersion {
-  """
-  Minimum version
-  """
-  min: String!
-
-  """
-  Maximum version
-  """
-  max: String!
-
-  """
-  Name of the version
-  """
-  name: String!
-}
-
-"""
 OS model schema
 """
 type OS {
@@ -38,19 +18,45 @@ type OS {
   description: String!
 
   """
-  Expression to match the OS
+  Version of the OS
   """
-  matchExp: String!
+  version: String!
+
+  """
+  Year of release of the OS
+  """
+  yearRelease: Int!
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int!
 
   """
   Active status of the OS
   """
   active: ActiveStatus!
 
+  # Match expressions
+  matchNameExp: String!
+  matchUserAgentExp: String!
+  matchVersionMinExp: String!
+  matchVersionMaxExp: String!
+
   """
-  List of OS versions
+  Parent ID of the OS group
   """
-  versions: [OSVersion!]
+  parentID: ID64!
+
+  """
+  Parent object of the OS
+  """
+  parent: OS
+
+  """
+  List of child OS
+  """
+  versions: [OS!]
 
   """
   Creation time of the OS
@@ -125,58 +131,43 @@ type OSPayload {
 
 input OSListFilter {
   ID:         [ID64!]
+  parentID:   [ID64!]
   name:       [String!]
-  active:     [ActiveStatus!]
-  minVersion: String
-  maxVersion: String
+  active:     ActiveStatus
 }
 
 input OSListOrder {
-  ID:        Ordering
-  name:      Ordering
-  active:    Ordering
-  createdAt: Ordering
-  updatedAt: Ordering
-}
-
-"""
-Input for OS versions
-"""
-input OSVersionInput {
-  """
-  Minimum version
-  """
-  min: String
-
-  """
-  Maximum version
-  """
-  max: String
-
-  """
-  Name of the version
-  """
-  name: String
+  ID:           Ordering
+  name:         Ordering
+  active:       Ordering
+  createdAt:    Ordering
+  updatedAt:    Ordering
+  yearRelease:  Ordering
 }
 
 """
 Input for querying OS
 """
-input OSInput {
+input OSCreateInput {
+  """
+  Parent ID of the OS group
+  """
+  parentID: ID64
+
   """
   Name of the OS
   """
-  name: String
+  name: String! @length(min: 1, max: 255, trim: true)
+
+  """
+  Version of the OS
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the OS
   """
-  description: String
-
-  """
-  Expression to match the OS
-  """
-  matchExp: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the OS
@@ -184,9 +175,58 @@ input OSInput {
   active: ActiveStatus
 
   """
-  List of OS versions
+  Year of release of the OS
   """
-  versions: [OSVersionInput!]
+  yearRelease: Int
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
+}
+
+input OSUpdateInput {
+  """
+  Name of the OS
+  """
+  name: String @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Version of the OS
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+
+  """
+  Description of the OS
+  """
+  description: String @notempty(trim: true, ornil: true)
+
+  """
+  Active status of the OS
+  """
+  active: ActiveStatus
+
+  """
+  Year of release of the OS
+  """
+  yearRelease: Int
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
 
 ###############################################################################
@@ -201,7 +241,7 @@ extend type Query {
   """
   listOS(
     filter: OSListFilter = null,
-    order: OSListOrder = null,
+    order: [OSListOrder!]! = null,
     page: Page = null
   ): OSConnection @acl(permissions: ["type_os.list.*"])
 }
@@ -210,12 +250,12 @@ extend type Mutation {
   """
   Create new OS
   """
-  createOS(input: OSInput!): OSPayload @acl(permissions: ["type_os.create.*"])
+  createOS(input: OSCreateInput!): OSPayload @acl(permissions: ["type_os.create.*"])
 
   """
   Update OS
   """
-  updateOS(ID: ID64!, input: OSInput!): OSPayload @acl(permissions: ["type_os.update.*"])
+  updateOS(ID: ID64!, input: OSUpdateInput!): OSPayload @acl(permissions: ["type_os.update.*"])
 
   """
   Delete OS

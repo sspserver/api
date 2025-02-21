@@ -45,6 +45,7 @@ type Config struct {
 type ResolverRoot interface {
 	Category() CategoryResolver
 	Mutation() MutationResolver
+	OS() OSResolver
 	Query() QueryResolver
 	StatisticItemKey() StatisticItemKeyResolver
 }
@@ -53,9 +54,9 @@ type DirectiveRoot struct {
 	Acl               func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 	Auth              func(ctx context.Context, obj any, next graphql.Resolver) (res any, err error)
 	HasPermissions    func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
-	Length            func(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim bool) (res any, err error)
-	Notempty          func(ctx context.Context, obj any, next graphql.Resolver, trim bool) (res any, err error)
-	Regex             func(ctx context.Context, obj any, next graphql.Resolver, pattern string, strict bool) (res any, err error)
+	Length            func(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim bool, ornil bool) (res any, err error)
+	Notempty          func(ctx context.Context, obj any, next graphql.Resolver, trim bool, ornil bool) (res any, err error)
+	Regex             func(ctx context.Context, obj any, next graphql.Resolver, pattern string, trim bool, ornil bool) (res any, err error)
 	SkipNoPermissions func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 }
 
@@ -490,7 +491,7 @@ type ComplexityRoot struct {
 		CreateDeviceMaker         func(childComplexity int, input models.DeviceMakerInput) int
 		CreateDeviceModel         func(childComplexity int, input models.DeviceModelInput) int
 		CreateFormat              func(childComplexity int, input models.AdFormatInput) int
-		CreateOs                  func(childComplexity int, input models.OSInput) int
+		CreateOs                  func(childComplexity int, input models.OSCreateInput) int
 		CreateRTBSource           func(childComplexity int, input models.RTBSourceInput) int
 		CreateRole                func(childComplexity int, input models1.RBACRoleInput) int
 		CreateUser                func(childComplexity int, input models1.UserInput) int
@@ -538,7 +539,7 @@ type ComplexityRoot struct {
 		UpdateDeviceMaker         func(childComplexity int, id uint64, input models.DeviceMakerInput) int
 		UpdateDeviceModel         func(childComplexity int, id uint64, input models.DeviceModelInput) int
 		UpdateFormat              func(childComplexity int, id uint64, input models.AdFormatInput) int
-		UpdateOs                  func(childComplexity int, id uint64, input models.OSInput) int
+		UpdateOs                  func(childComplexity int, id uint64, input models.OSUpdateInput) int
 		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceInput) int
 		UpdateRole                func(childComplexity int, id uint64, input models1.RBACRoleInput) int
 		UpdateUser                func(childComplexity int, id uint64, input models1.UserInput) int
@@ -547,15 +548,23 @@ type ComplexityRoot struct {
 	}
 
 	OS struct {
-		Active      func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		DeletedAt   func(childComplexity int) int
-		Description func(childComplexity int) int
-		ID          func(childComplexity int) int
-		MatchExp    func(childComplexity int) int
-		Name        func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-		Versions    func(childComplexity int) int
+		Active             func(childComplexity int) int
+		CreatedAt          func(childComplexity int) int
+		DeletedAt          func(childComplexity int) int
+		Description        func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		MatchNameExp       func(childComplexity int) int
+		MatchUserAgentExp  func(childComplexity int) int
+		MatchVersionMaxExp func(childComplexity int) int
+		MatchVersionMinExp func(childComplexity int) int
+		Name               func(childComplexity int) int
+		Parent             func(childComplexity int) int
+		ParentID           func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		Version            func(childComplexity int) int
+		Versions           func(childComplexity int) int
+		YearEndSupport     func(childComplexity int) int
+		YearRelease        func(childComplexity int) int
 	}
 
 	OSConnection struct {
@@ -574,12 +583,6 @@ type ComplexityRoot struct {
 		ClientMutationID func(childComplexity int) int
 		Os               func(childComplexity int) int
 		Osid             func(childComplexity int) int
-	}
-
-	OSVersion struct {
-		Max  func(childComplexity int) int
-		Min  func(childComplexity int) int
-		Name func(childComplexity int) int
 	}
 
 	Option struct {
@@ -667,7 +670,7 @@ type ComplexityRoot struct {
 		ListMembers                    func(childComplexity int, filter *models1.MemberListFilter, order *models1.MemberListOrder, page *models1.Page) int
 		ListMyPermissions              func(childComplexity int, patterns []string) int
 		ListOptions                    func(childComplexity int, filter *models1.OptionListFilter, order *models1.OptionListOrder, page *models1.Page) int
-		ListOs                         func(childComplexity int, filter *models.OSListFilter, order *models.OSListOrder, page *models1.Page) int
+		ListOs                         func(childComplexity int, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) int
 		ListPermissions                func(childComplexity int, patterns []string) int
 		ListRTBSources                 func(childComplexity int, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) int
 		ListRoles                      func(childComplexity int, filter *models1.RBACRoleListFilter, order *models1.RBACRoleListOrder, page *models1.Page) int
@@ -1007,8 +1010,8 @@ type MutationResolver interface {
 	CreateDeviceModel(ctx context.Context, input models.DeviceModelInput) (*models.DeviceModelPayload, error)
 	UpdateDeviceModel(ctx context.Context, id uint64, input models.DeviceModelInput) (*models.DeviceModelPayload, error)
 	DeleteDeviceModel(ctx context.Context, id uint64, msg *string) (*models.DeviceModelPayload, error)
-	CreateOs(ctx context.Context, input models.OSInput) (*models.OSPayload, error)
-	UpdateOs(ctx context.Context, id uint64, input models.OSInput) (*models.OSPayload, error)
+	CreateOs(ctx context.Context, input models.OSCreateInput) (*models.OSPayload, error)
+	UpdateOs(ctx context.Context, id uint64, input models.OSUpdateInput) (*models.OSPayload, error)
 	DeleteOs(ctx context.Context, id uint64, msg *string) (*models.OSPayload, error)
 	CreateRTBSource(ctx context.Context, input models.RTBSourceInput) (*models.RTBSourcePayload, error)
 	UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceInput) (*models.RTBSourcePayload, error)
@@ -1024,6 +1027,9 @@ type MutationResolver interface {
 	DeactivateZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	ApproveZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	RejectZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
+}
+type OSResolver interface {
+	Versions(ctx context.Context, obj *models.Os) ([]*models.Os, error)
 }
 type QueryResolver interface {
 	ServiceVersion(ctx context.Context) (string, error)
@@ -1067,7 +1073,7 @@ type QueryResolver interface {
 	DeviceModel(ctx context.Context, id uint64) (*models.DeviceModelPayload, error)
 	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order *models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
-	ListOs(ctx context.Context, filter *models.OSListFilter, order *models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
+	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
 	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error)
 	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models.StatisticAdItem, struct{}], error)
@@ -3109,7 +3115,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateOs(childComplexity, args["input"].(models.OSInput)), true
+		return e.complexity.Mutation.CreateOs(childComplexity, args["input"].(models.OSCreateInput)), true
 
 	case "Mutation.createRTBSource":
 		if e.complexity.Mutation.CreateRTBSource == nil {
@@ -3675,7 +3681,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateOs(childComplexity, args["ID"].(uint64), args["input"].(models.OSInput)), true
+		return e.complexity.Mutation.UpdateOs(childComplexity, args["ID"].(uint64), args["input"].(models.OSUpdateInput)), true
 
 	case "Mutation.updateRTBSource":
 		if e.complexity.Mutation.UpdateRTBSource == nil {
@@ -3772,12 +3778,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.OS.ID(childComplexity), true
 
-	case "OS.matchExp":
-		if e.complexity.OS.MatchExp == nil {
+	case "OS.matchNameExp":
+		if e.complexity.OS.MatchNameExp == nil {
 			break
 		}
 
-		return e.complexity.OS.MatchExp(childComplexity), true
+		return e.complexity.OS.MatchNameExp(childComplexity), true
+
+	case "OS.matchUserAgentExp":
+		if e.complexity.OS.MatchUserAgentExp == nil {
+			break
+		}
+
+		return e.complexity.OS.MatchUserAgentExp(childComplexity), true
+
+	case "OS.matchVersionMaxExp":
+		if e.complexity.OS.MatchVersionMaxExp == nil {
+			break
+		}
+
+		return e.complexity.OS.MatchVersionMaxExp(childComplexity), true
+
+	case "OS.matchVersionMinExp":
+		if e.complexity.OS.MatchVersionMinExp == nil {
+			break
+		}
+
+		return e.complexity.OS.MatchVersionMinExp(childComplexity), true
 
 	case "OS.name":
 		if e.complexity.OS.Name == nil {
@@ -3786,6 +3813,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.OS.Name(childComplexity), true
 
+	case "OS.parent":
+		if e.complexity.OS.Parent == nil {
+			break
+		}
+
+		return e.complexity.OS.Parent(childComplexity), true
+
+	case "OS.parentID":
+		if e.complexity.OS.ParentID == nil {
+			break
+		}
+
+		return e.complexity.OS.ParentID(childComplexity), true
+
 	case "OS.updatedAt":
 		if e.complexity.OS.UpdatedAt == nil {
 			break
@@ -3793,12 +3834,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.OS.UpdatedAt(childComplexity), true
 
+	case "OS.version":
+		if e.complexity.OS.Version == nil {
+			break
+		}
+
+		return e.complexity.OS.Version(childComplexity), true
+
 	case "OS.versions":
 		if e.complexity.OS.Versions == nil {
 			break
 		}
 
 		return e.complexity.OS.Versions(childComplexity), true
+
+	case "OS.yearEndSupport":
+		if e.complexity.OS.YearEndSupport == nil {
+			break
+		}
+
+		return e.complexity.OS.YearEndSupport(childComplexity), true
+
+	case "OS.yearRelease":
+		if e.complexity.OS.YearRelease == nil {
+			break
+		}
+
+		return e.complexity.OS.YearRelease(childComplexity), true
 
 	case "OSConnection.edges":
 		if e.complexity.OSConnection.Edges == nil {
@@ -3862,27 +3924,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.OSPayload.Osid(childComplexity), true
-
-	case "OSVersion.max":
-		if e.complexity.OSVersion.Max == nil {
-			break
-		}
-
-		return e.complexity.OSVersion.Max(childComplexity), true
-
-	case "OSVersion.min":
-		if e.complexity.OSVersion.Min == nil {
-			break
-		}
-
-		return e.complexity.OSVersion.Min(childComplexity), true
-
-	case "OSVersion.name":
-		if e.complexity.OSVersion.Name == nil {
-			break
-		}
-
-		return e.complexity.OSVersion.Name(childComplexity), true
 
 	case "Option.name":
 		if e.complexity.Option.Name == nil {
@@ -4460,7 +4501,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ListOs(childComplexity, args["filter"].(*models.OSListFilter), args["order"].(*models.OSListOrder), args["page"].(*models1.Page)), true
+		return e.complexity.Query.ListOs(childComplexity, args["filter"].(*models.OSListFilter), args["order"].([]*models.OSListOrder), args["page"].(*models1.Page)), true
 
 	case "Query.listPermissions":
 		if e.complexity.Query.ListPermissions == nil {
@@ -5955,10 +5996,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputMemberInput,
 		ec.unmarshalInputMemberListFilter,
 		ec.unmarshalInputMemberListOrder,
-		ec.unmarshalInputOSInput,
+		ec.unmarshalInputOSCreateInput,
 		ec.unmarshalInputOSListFilter,
 		ec.unmarshalInputOSListOrder,
-		ec.unmarshalInputOSVersionInput,
+		ec.unmarshalInputOSUpdateInput,
 		ec.unmarshalInputOptionInput,
 		ec.unmarshalInputOptionListFilter,
 		ec.unmarshalInputOptionListOrder,
@@ -8388,18 +8429,19 @@ input ApplicationCreateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID: ID64
+  accountID:    ID64
 
-  title: String! @length(min: 3, max: 255, trim: true)
-  description: String
+  title:        String! @length(min: 3, max: 255, trim: true)
+  description:  String  @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String! @length(min: 1, max: 255, trim: true)
-  type: ApplicationType!
-  platform: PlatformType!
-  categories: [Int!]
+  URI:          String! @length(min: 1, max: 255, trim: true)
+
+  type:         ApplicationType
+  platform:     PlatformType
+  categories:   [Int!]
   revenueShare: Float
 }
 
@@ -8408,18 +8450,19 @@ input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID: ID64
+  accountID:    ID64
 
-  title: String
-  description: String
+  title:        String @notempty(trim: true, ornil: true)
+  description:  String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", strict: false)
-  type: ApplicationType
-  platform: PlatformType
-  categories: [Int!]
+  URI:          String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
+
+  type:         ApplicationType
+  platform:     PlatformType
+  categories:   [Int!]
   revenueShare: Float
 }
 
@@ -9589,27 +9632,12 @@ extend type Mutation {
     msg: String = null
   ): DeviceModelPayload @acl(permissions: ["device_model.delete.*"])
 }`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/directives.graphql", Input: `# Validation directives
+directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/os.graphql", Input: `"""
-OSVersion model schema
-"""
-type OSVersion {
-  """
-  Minimum version
-  """
-  min: String!
-
-  """
-  Maximum version
-  """
-  max: String!
-
-  """
-  Name of the version
-  """
-  name: String!
-}
-
-"""
 OS model schema
 """
 type OS {
@@ -9629,19 +9657,45 @@ type OS {
   description: String!
 
   """
-  Expression to match the OS
+  Version of the OS
   """
-  matchExp: String!
+  version: String!
+
+  """
+  Year of release of the OS
+  """
+  yearRelease: Int!
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int!
 
   """
   Active status of the OS
   """
   active: ActiveStatus!
 
+  # Match expressions
+  matchNameExp: String!
+  matchUserAgentExp: String!
+  matchVersionMinExp: String!
+  matchVersionMaxExp: String!
+
   """
-  List of OS versions
+  Parent ID of the OS group
   """
-  versions: [OSVersion!]
+  parentID: ID64!
+
+  """
+  Parent object of the OS
+  """
+  parent: OS
+
+  """
+  List of child OS
+  """
+  versions: [OS!]
 
   """
   Creation time of the OS
@@ -9716,58 +9770,43 @@ type OSPayload {
 
 input OSListFilter {
   ID:         [ID64!]
+  parentID:   [ID64!]
   name:       [String!]
-  active:     [ActiveStatus!]
-  minVersion: String
-  maxVersion: String
+  active:     ActiveStatus
 }
 
 input OSListOrder {
-  ID:        Ordering
-  name:      Ordering
-  active:    Ordering
-  createdAt: Ordering
-  updatedAt: Ordering
-}
-
-"""
-Input for OS versions
-"""
-input OSVersionInput {
-  """
-  Minimum version
-  """
-  min: String
-
-  """
-  Maximum version
-  """
-  max: String
-
-  """
-  Name of the version
-  """
-  name: String
+  ID:           Ordering
+  name:         Ordering
+  active:       Ordering
+  createdAt:    Ordering
+  updatedAt:    Ordering
+  yearRelease:  Ordering
 }
 
 """
 Input for querying OS
 """
-input OSInput {
+input OSCreateInput {
+  """
+  Parent ID of the OS group
+  """
+  parentID: ID64
+
   """
   Name of the OS
   """
-  name: String
+  name: String! @length(min: 1, max: 255, trim: true)
+
+  """
+  Version of the OS
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the OS
   """
-  description: String
-
-  """
-  Expression to match the OS
-  """
-  matchExp: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the OS
@@ -9775,9 +9814,58 @@ input OSInput {
   active: ActiveStatus
 
   """
-  List of OS versions
+  Year of release of the OS
   """
-  versions: [OSVersionInput!]
+  yearRelease: Int
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
+}
+
+input OSUpdateInput {
+  """
+  Name of the OS
+  """
+  name: String @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Version of the OS
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+
+  """
+  Description of the OS
+  """
+  description: String @notempty(trim: true, ornil: true)
+
+  """
+  Active status of the OS
+  """
+  active: ActiveStatus
+
+  """
+  Year of release of the OS
+  """
+  yearRelease: Int
+
+  """
+  Year of end of support of the OS
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
 
 ###############################################################################
@@ -9792,7 +9880,7 @@ extend type Query {
   """
   listOS(
     filter: OSListFilter = null,
-    order: OSListOrder = null,
+    order: [OSListOrder!]! = null,
     page: Page = null
   ): OSConnection @acl(permissions: ["type_os.list.*"])
 }
@@ -9801,12 +9889,12 @@ extend type Mutation {
   """
   Create new OS
   """
-  createOS(input: OSInput!): OSPayload @acl(permissions: ["type_os.create.*"])
+  createOS(input: OSCreateInput!): OSPayload @acl(permissions: ["type_os.create.*"])
 
   """
   Update OS
   """
-  updateOS(ID: ID64!, input: OSInput!): OSPayload @acl(permissions: ["type_os.update.*"])
+  updateOS(ID: ID64!, input: OSUpdateInput!): OSPayload @acl(permissions: ["type_os.update.*"])
 
   """
   Delete OS
@@ -10248,10 +10336,6 @@ extend type Query {
   ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
 }
 `, BuiltIn: false},
-	{Name: "../../../../protocol/graphql/schemas/validation.graphql", Input: `directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-directive @notempty(trim: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-directive @regex(pattern: String!, strict: Boolean! = true) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/zone.graphql", Input: `"""
 Zone object represents a specific advertising zone within an account.
 """
@@ -10567,6 +10651,11 @@ func (ec *executionContext) dir_length_args(ctx context.Context, rawArgs map[str
 		return nil, err
 	}
 	args["trim"] = arg2
+	arg3, err := ec.dir_length_argsOrnil(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ornil"] = arg3
 	return args, nil
 }
 func (ec *executionContext) dir_length_argsMin(
@@ -10623,6 +10712,24 @@ func (ec *executionContext) dir_length_argsTrim(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) dir_length_argsOrnil(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["ornil"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ornil"))
+	if tmp, ok := rawArgs["ornil"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
 func (ec *executionContext) dir_notempty_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -10631,6 +10738,11 @@ func (ec *executionContext) dir_notempty_args(ctx context.Context, rawArgs map[s
 		return nil, err
 	}
 	args["trim"] = arg0
+	arg1, err := ec.dir_notempty_argsOrnil(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ornil"] = arg1
 	return args, nil
 }
 func (ec *executionContext) dir_notempty_argsTrim(
@@ -10651,6 +10763,24 @@ func (ec *executionContext) dir_notempty_argsTrim(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) dir_notempty_argsOrnil(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["ornil"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ornil"))
+	if tmp, ok := rawArgs["ornil"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
 func (ec *executionContext) dir_regex_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -10659,11 +10789,16 @@ func (ec *executionContext) dir_regex_args(ctx context.Context, rawArgs map[stri
 		return nil, err
 	}
 	args["pattern"] = arg0
-	arg1, err := ec.dir_regex_argsStrict(ctx, rawArgs)
+	arg1, err := ec.dir_regex_argsTrim(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["strict"] = arg1
+	args["trim"] = arg1
+	arg2, err := ec.dir_regex_argsOrnil(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ornil"] = arg2
 	return args, nil
 }
 func (ec *executionContext) dir_regex_argsPattern(
@@ -10684,17 +10819,35 @@ func (ec *executionContext) dir_regex_argsPattern(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) dir_regex_argsStrict(
+func (ec *executionContext) dir_regex_argsTrim(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (bool, error) {
-	if _, ok := rawArgs["strict"]; !ok {
+	if _, ok := rawArgs["trim"]; !ok {
 		var zeroVal bool
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("strict"))
-	if tmp, ok := rawArgs["strict"]; ok {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("trim"))
+	if tmp, ok := rawArgs["trim"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_regex_argsOrnil(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["ornil"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ornil"))
+	if tmp, ok := rawArgs["ornil"]; ok {
 		return ec.unmarshalNBoolean2bool(ctx, tmp)
 	}
 
@@ -11296,18 +11449,18 @@ func (ec *executionContext) field_Mutation_createOS_args(ctx context.Context, ra
 func (ec *executionContext) field_Mutation_createOS_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.OSInput, error) {
+) (models.OSCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.OSInput
+		var zeroVal models.OSCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNOSInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSInput(ctx, tmp)
+		return ec.unmarshalNOSCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.OSInput
+	var zeroVal models.OSCreateInput
 	return zeroVal, nil
 }
 
@@ -13412,18 +13565,18 @@ func (ec *executionContext) field_Mutation_updateOS_argsID(
 func (ec *executionContext) field_Mutation_updateOS_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.OSInput, error) {
+) (models.OSUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.OSInput
+		var zeroVal models.OSUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNOSInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSInput(ctx, tmp)
+		return ec.unmarshalNOSUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.OSInput
+	var zeroVal models.OSUpdateInput
 	return zeroVal, nil
 }
 
@@ -15146,18 +15299,18 @@ func (ec *executionContext) field_Query_listOS_argsFilter(
 func (ec *executionContext) field_Query_listOS_argsOrder(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*models.OSListOrder, error) {
+) ([]*models.OSListOrder, error) {
 	if _, ok := rawArgs["order"]; !ok {
-		var zeroVal *models.OSListOrder
+		var zeroVal []*models.OSListOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
 	if tmp, ok := rawArgs["order"]; ok {
-		return ec.unmarshalOOSListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrder(ctx, tmp)
+		return ec.unmarshalNOSListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *models.OSListOrder
+	var zeroVal []*models.OSListOrder
 	return zeroVal, nil
 }
 
@@ -15954,6 +16107,62 @@ func (ec *executionContext) field_Query_zone_argsID(
 	}
 
 	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field___Directive_args_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field___Directive_args_argsIncludeDeprecated(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["includeDeprecated"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field___Directive_args_argsIncludeDeprecated(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*bool, error) {
+	if _, ok := rawArgs["includeDeprecated"]; !ok {
+		var zeroVal *bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("includeDeprecated"))
+	if tmp, ok := rawArgs["includeDeprecated"]; ok {
+		return ec.unmarshalOBoolean2ᚖbool(ctx, tmp)
+	}
+
+	var zeroVal *bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field___Field_args_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field___Field_args_argsIncludeDeprecated(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["includeDeprecated"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field___Field_args_argsIncludeDeprecated(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*bool, error) {
+	if _, ok := rawArgs["includeDeprecated"]; !ok {
+		var zeroVal *bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("includeDeprecated"))
+	if tmp, ok := rawArgs["includeDeprecated"]; ok {
+		return ec.unmarshalOBoolean2ᚖbool(ctx, tmp)
+	}
+
+	var zeroVal *bool
 	return zeroVal, nil
 }
 
@@ -32343,7 +32552,7 @@ func (ec *executionContext) _Mutation_createOS(ctx context.Context, field graphq
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateOs(rctx, fc.Args["input"].(models.OSInput))
+			return ec.resolvers.Mutation().CreateOs(rctx, fc.Args["input"].(models.OSCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -32427,7 +32636,7 @@ func (ec *executionContext) _Mutation_updateOS(ctx context.Context, field graphq
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateOs(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.OSInput))
+			return ec.resolvers.Mutation().UpdateOs(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.OSUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -33915,8 +34124,8 @@ func (ec *executionContext) fieldContext_OS_description(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _OS_matchExp(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_OS_matchExp(ctx, field)
+func (ec *executionContext) _OS_version(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_version(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -33929,7 +34138,7 @@ func (ec *executionContext) _OS_matchExp(ctx context.Context, field graphql.Coll
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MatchExp, nil
+		return obj.Version, nil
 	})
 
 	if resTmp == nil {
@@ -33943,7 +34152,7 @@ func (ec *executionContext) _OS_matchExp(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_OS_matchExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_OS_version(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "OS",
 		Field:      field,
@@ -33951,6 +34160,88 @@ func (ec *executionContext) fieldContext_OS_matchExp(_ context.Context, field gr
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_yearRelease(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_yearRelease(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.YearRelease, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_yearRelease(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_yearEndSupport(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_yearEndSupport(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.YearEndSupport, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_yearEndSupport(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -33997,6 +34288,285 @@ func (ec *executionContext) fieldContext_OS_active(_ context.Context, field grap
 	return fc, nil
 }
 
+func (ec *executionContext) _OS_matchNameExp(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_matchNameExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchNameExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_matchNameExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_matchUserAgentExp(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchUserAgentExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_matchUserAgentExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_matchVersionMinExp(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchVersionMinExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_matchVersionMinExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_matchVersionMaxExp(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchVersionMaxExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_matchVersionMaxExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_parentID(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_parentID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ParentID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_parentID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _OS_parent(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OS_parent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Parent, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Os)
+	fc.Result = res
+	return ec.marshalOOS2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOs(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_OS_parent(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "OS",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_OS_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_OS_name(ctx, field)
+			case "description":
+				return ec.fieldContext_OS_description(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_OS_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_OS_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_OS_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_OS_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type OS", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _OS_versions(ctx context.Context, field graphql.CollectedField, obj *models.Os) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_OS_versions(ctx, field)
 	if err != nil {
@@ -34011,33 +34581,61 @@ func (ec *executionContext) _OS_versions(ctx context.Context, field graphql.Coll
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Versions, nil
+		return ec.resolvers.OS().Versions(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.OSVersion)
+	res := resTmp.([]*models.Os)
 	fc.Result = res
-	return ec.marshalOOSVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionᚄ(ctx, field.Selections, res)
+	return ec.marshalOOS2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOsᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_OS_versions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "OS",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "min":
-				return ec.fieldContext_OSVersion_min(ctx, field)
-			case "max":
-				return ec.fieldContext_OSVersion_max(ctx, field)
+			case "ID":
+				return ec.fieldContext_OS_ID(ctx, field)
 			case "name":
-				return ec.fieldContext_OSVersion_name(ctx, field)
+				return ec.fieldContext_OS_name(ctx, field)
+			case "description":
+				return ec.fieldContext_OS_description(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_OS_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_OS_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_OS_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_OS_deletedAt(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type OSVersion", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type OS", field.Name)
 		},
 	}
 	return fc, nil
@@ -34287,10 +34885,26 @@ func (ec *executionContext) fieldContext_OSConnection_list(_ context.Context, fi
 				return ec.fieldContext_OS_name(ctx, field)
 			case "description":
 				return ec.fieldContext_OS_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_OS_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_OS_versions(ctx, field)
 			case "createdAt":
@@ -34446,10 +35060,26 @@ func (ec *executionContext) fieldContext_OSEdge_node(_ context.Context, field gr
 				return ec.fieldContext_OS_name(ctx, field)
 			case "description":
 				return ec.fieldContext_OS_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_OS_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_OS_versions(ctx, field)
 			case "createdAt":
@@ -34589,10 +35219,26 @@ func (ec *executionContext) fieldContext_OSPayload_OS(_ context.Context, field g
 				return ec.fieldContext_OS_name(ctx, field)
 			case "description":
 				return ec.fieldContext_OS_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_OS_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_OS_versions(ctx, field)
 			case "createdAt":
@@ -34603,129 +35249,6 @@ func (ec *executionContext) fieldContext_OSPayload_OS(_ context.Context, field g
 				return ec.fieldContext_OS_deletedAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type OS", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _OSVersion_min(ctx context.Context, field graphql.CollectedField, obj *models.OSVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_OSVersion_min(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Min, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_OSVersion_min(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "OSVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _OSVersion_max(ctx context.Context, field graphql.CollectedField, obj *models.OSVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_OSVersion_max(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Max, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_OSVersion_max(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "OSVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _OSVersion_name(ctx context.Context, field graphql.CollectedField, obj *models.OSVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_OSVersion_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_OSVersion_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "OSVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -39498,7 +40021,7 @@ func (ec *executionContext) _Query_listOS(ctx context.Context, field graphql.Col
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListOs(rctx, fc.Args["filter"].(*models.OSListFilter), fc.Args["order"].(*models.OSListOrder), fc.Args["page"].(*models1.Page))
+			return ec.resolvers.Query().ListOs(rctx, fc.Args["filter"].(*models.OSListFilter), fc.Args["order"].([]*models.OSListOrder), fc.Args["page"].(*models1.Page))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -40055,6 +40578,8 @@ func (ec *executionContext) fieldContext_Query___type(ctx context.Context, field
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -48387,7 +48912,7 @@ func (ec *executionContext) ___Directive_args(ctx context.Context, field graphql
 	return ec.marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐInputValueᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext___Directive_args(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext___Directive_args(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "__Directive",
 		Field:      field,
@@ -48403,9 +48928,24 @@ func (ec *executionContext) fieldContext___Directive_args(_ context.Context, fie
 				return ec.fieldContext___InputValue_type(ctx, field)
 			case "defaultValue":
 				return ec.fieldContext___InputValue_defaultValue(ctx, field)
+			case "isDeprecated":
+				return ec.fieldContext___InputValue_isDeprecated(ctx, field)
+			case "deprecationReason":
+				return ec.fieldContext___InputValue_deprecationReason(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __InputValue", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field___Directive_args_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -48716,7 +49256,7 @@ func (ec *executionContext) ___Field_args(ctx context.Context, field graphql.Col
 	return ec.marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐInputValueᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext___Field_args(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext___Field_args(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "__Field",
 		Field:      field,
@@ -48732,9 +49272,24 @@ func (ec *executionContext) fieldContext___Field_args(_ context.Context, field g
 				return ec.fieldContext___InputValue_type(ctx, field)
 			case "defaultValue":
 				return ec.fieldContext___InputValue_defaultValue(ctx, field)
+			case "isDeprecated":
+				return ec.fieldContext___InputValue_isDeprecated(ctx, field)
+			case "deprecationReason":
+				return ec.fieldContext___InputValue_deprecationReason(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __InputValue", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field___Field_args_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -48795,6 +49350,8 @@ func (ec *executionContext) fieldContext___Field_type(_ context.Context, field g
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49016,6 +49573,8 @@ func (ec *executionContext) fieldContext___InputValue_type(_ context.Context, fi
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49053,6 +49612,85 @@ func (ec *executionContext) fieldContext___InputValue_defaultValue(_ context.Con
 		Object:     "__InputValue",
 		Field:      field,
 		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) ___InputValue_isDeprecated(ctx context.Context, field graphql.CollectedField, obj *introspection.InputValue) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext___InputValue_isDeprecated(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsDeprecated(), nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext___InputValue_isDeprecated(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "__InputValue",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) ___InputValue_deprecationReason(ctx context.Context, field graphql.CollectedField, obj *introspection.InputValue) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext___InputValue_deprecationReason(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeprecationReason(), nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext___InputValue_deprecationReason(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "__InputValue",
+		Field:      field,
+		IsMethod:   true,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
@@ -49155,6 +49793,8 @@ func (ec *executionContext) fieldContext___Schema_types(_ context.Context, field
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49218,6 +49858,8 @@ func (ec *executionContext) fieldContext___Schema_queryType(_ context.Context, f
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49278,6 +49920,8 @@ func (ec *executionContext) fieldContext___Schema_mutationType(_ context.Context
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49338,6 +49982,8 @@ func (ec *executionContext) fieldContext___Schema_subscriptionType(_ context.Con
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49631,6 +50277,8 @@ func (ec *executionContext) fieldContext___Type_interfaces(_ context.Context, fi
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49691,6 +50339,8 @@ func (ec *executionContext) fieldContext___Type_possibleTypes(_ context.Context,
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49798,6 +50448,10 @@ func (ec *executionContext) fieldContext___Type_inputFields(_ context.Context, f
 				return ec.fieldContext___InputValue_type(ctx, field)
 			case "defaultValue":
 				return ec.fieldContext___InputValue_defaultValue(ctx, field)
+			case "isDeprecated":
+				return ec.fieldContext___InputValue_isDeprecated(ctx, field)
+			case "deprecationReason":
+				return ec.fieldContext___InputValue_deprecationReason(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __InputValue", field.Name)
 		},
@@ -49858,6 +50512,8 @@ func (ec *executionContext) fieldContext___Type_ofType(_ context.Context, field 
 				return ec.fieldContext___Type_ofType(ctx, field)
 			case "specifiedByURL":
 				return ec.fieldContext___Type_specifiedByURL(ctx, field)
+			case "isOneOf":
+				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
 		},
@@ -49898,6 +50554,44 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) ___Type_isOneOf(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext___Type_isOneOf(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsOneOf(), nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalOBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext___Type_isOneOf(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "__Type",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50375,11 +51069,16 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 					var zeroVal string
 					return zeroVal, err
 				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
 				if ec.directives.Length == nil {
 					var zeroVal string
 					return zeroVal, errors.New("directive length is not implemented")
 				}
-				return ec.directives.Length(ctx, obj, directive0, min, max, trim)
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
 
 			tmp, err := directive1(ctx)
@@ -50394,11 +51093,38 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "URI":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URI"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
@@ -50419,11 +51145,16 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 					var zeroVal string
 					return zeroVal, err
 				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
 				if ec.directives.Length == nil {
 					var zeroVal string
 					return zeroVal, errors.New("directive length is not implemented")
 				}
-				return ec.directives.Length(ctx, obj, directive0, min, max, trim)
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
 
 			tmp, err := directive1(ctx)
@@ -50438,14 +51169,14 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 			}
 		case "type":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalNApplicationType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx, v)
+			data, err := ec.unmarshalOApplicationType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationType(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Type = data
 		case "platform":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("platform"))
-			data, err := ec.unmarshalNPlatformType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPlatformType(ctx, v)
+			data, err := ec.unmarshalOPlatformType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐPlatformType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -50680,18 +51411,72 @@ func (ec *executionContext) unmarshalInputApplicationUpdateInput(ctx context.Con
 			it.AccountID = data
 		case "title":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Title = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Title = data
+			} else if tmp == nil {
+				it.Title = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "URI":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URI"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
@@ -50702,7 +51487,12 @@ func (ec *executionContext) unmarshalInputApplicationUpdateInput(ctx context.Con
 					var zeroVal *string
 					return zeroVal, err
 				}
-				strict, err := ec.unmarshalNBoolean2bool(ctx, false)
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
 				if err != nil {
 					var zeroVal *string
 					return zeroVal, err
@@ -50711,7 +51501,7 @@ func (ec *executionContext) unmarshalInputApplicationUpdateInput(ctx context.Con
 					var zeroVal *string
 					return zeroVal, errors.New("directive regex is not implemented")
 				}
-				return ec.directives.Regex(ctx, obj, directive0, pattern, strict)
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
 			}
 
 			tmp, err := directive1(ctx)
@@ -52234,41 +53024,142 @@ func (ec *executionContext) unmarshalInputMemberListOrder(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputOSInput(ctx context.Context, obj any) (models.OSInput, error) {
-	var it models.OSInput
+func (ec *executionContext) unmarshalInputOSCreateInput(ctx context.Context, obj any) (models.OSCreateInput, error) {
+	var it models.OSCreateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "matchExp", "active", "versions"}
+	fieldsInOrder := [...]string{"parentID", "name", "version", "description", "active", "yearRelease", "yearEndSupport", "matchNameExp", "matchUserAgentExp", "matchVersionMinExp", "matchVersionMaxExp"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ParentID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Name = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Name = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Version = data
+			} else if tmp == nil {
+				it.Version = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
-		case "matchExp":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+
+			tmp, err := directive1(ctx)
 			if err != nil {
-				return it, err
+				return it, graphql.ErrorOnPath(ctx, err)
 			}
-			it.MatchExp = data
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
@@ -52276,13 +53167,156 @@ func (ec *executionContext) unmarshalInputOSInput(ctx context.Context, obj any) 
 				return it, err
 			}
 			it.Active = data
-		case "versions":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("versions"))
-			data, err := ec.unmarshalOOSVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionInputᚄ(ctx, v)
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Versions = data
+			it.YearRelease = data
+		case "yearEndSupport":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearEndSupport"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearEndSupport = data
+		case "matchNameExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchNameExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchNameExp = data
+			} else if tmp == nil {
+				it.MatchNameExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchUserAgentExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchUserAgentExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchUserAgentExp = data
+			} else if tmp == nil {
+				it.MatchUserAgentExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMinExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMinExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMinExp = data
+			} else if tmp == nil {
+				it.MatchVersionMinExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMaxExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMaxExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMaxExp = data
+			} else if tmp == nil {
+				it.MatchVersionMaxExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		}
 	}
 
@@ -52296,7 +53330,7 @@ func (ec *executionContext) unmarshalInputOSListFilter(ctx context.Context, obj 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active", "minVersion", "maxVersion"}
+	fieldsInOrder := [...]string{"ID", "parentID", "name", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52310,6 +53344,13 @@ func (ec *executionContext) unmarshalInputOSListFilter(ctx context.Context, obj 
 				return it, err
 			}
 			it.ID = data
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ParentID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -52319,25 +53360,11 @@ func (ec *executionContext) unmarshalInputOSListFilter(ctx context.Context, obj 
 			it.Name = data
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalOActiveStatus2ᚕgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Active = data
-		case "minVersion":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("minVersion"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.MinVersion = data
-		case "maxVersion":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("maxVersion"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.MaxVersion = data
 		}
 	}
 
@@ -52351,7 +53378,7 @@ func (ec *executionContext) unmarshalInputOSListOrder(ctx context.Context, obj a
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "name", "active", "createdAt", "updatedAt", "yearRelease"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52393,47 +53420,307 @@ func (ec *executionContext) unmarshalInputOSListOrder(ctx context.Context, obj a
 				return it, err
 			}
 			it.UpdatedAt = data
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearRelease = data
 		}
 	}
 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputOSVersionInput(ctx context.Context, obj any) (models.OSVersionInput, error) {
-	var it models.OSVersionInput
+func (ec *executionContext) unmarshalInputOSUpdateInput(ctx context.Context, obj any) (models.OSUpdateInput, error) {
+	var it models.OSUpdateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"min", "max", "name"}
+	fieldsInOrder := [...]string{"name", "version", "description", "active", "yearRelease", "yearEndSupport", "matchNameExp", "matchUserAgentExp", "matchVersionMinExp", "matchVersionMaxExp"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "min":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("min"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Min = data
-		case "max":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("max"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Max = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Name = data
+			} else if tmp == nil {
+				it.Name = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Version = data
+			} else if tmp == nil {
+				it.Version = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Name = data
+			it.Active = data
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearRelease = data
+		case "yearEndSupport":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearEndSupport"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearEndSupport = data
+		case "matchNameExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchNameExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchNameExp = data
+			} else if tmp == nil {
+				it.MatchNameExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchUserAgentExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchUserAgentExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchUserAgentExp = data
+			} else if tmp == nil {
+				it.MatchUserAgentExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMinExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMinExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMinExp = data
+			} else if tmp == nil {
+				it.MatchVersionMinExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMaxExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMaxExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMaxExp = data
+			} else if tmp == nil {
+				it.MatchVersionMaxExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		}
 	}
 
@@ -57174,39 +58461,107 @@ func (ec *executionContext) _OS(ctx context.Context, sel ast.SelectionSet, obj *
 		case "ID":
 			out.Values[i] = ec._OS_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._OS_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "description":
 			out.Values[i] = ec._OS_description(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "matchExp":
-			out.Values[i] = ec._OS_matchExp(ctx, field, obj)
+		case "version":
+			out.Values[i] = ec._OS_version(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "yearRelease":
+			out.Values[i] = ec._OS_yearRelease(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "yearEndSupport":
+			out.Values[i] = ec._OS_yearEndSupport(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "active":
 			out.Values[i] = ec._OS_active(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "matchNameExp":
+			out.Values[i] = ec._OS_matchNameExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "matchUserAgentExp":
+			out.Values[i] = ec._OS_matchUserAgentExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "matchVersionMinExp":
+			out.Values[i] = ec._OS_matchVersionMinExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "matchVersionMaxExp":
+			out.Values[i] = ec._OS_matchVersionMaxExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "parentID":
+			out.Values[i] = ec._OS_parentID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "parent":
+			out.Values[i] = ec._OS_parent(ctx, field, obj)
 		case "versions":
-			out.Values[i] = ec._OS_versions(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._OS_versions(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "createdAt":
 			out.Values[i] = ec._OS_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._OS_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "deletedAt":
 			out.Values[i] = ec._OS_deletedAt(ctx, field, obj)
@@ -57348,55 +58703,6 @@ func (ec *executionContext) _OSPayload(ctx context.Context, sel ast.SelectionSet
 			}
 		case "OS":
 			out.Values[i] = ec._OSPayload_OS(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var oSVersionImplementors = []string{"OSVersion"}
-
-func (ec *executionContext) _OSVersion(ctx context.Context, sel ast.SelectionSet, obj *models.OSVersion) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, oSVersionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("OSVersion")
-		case "min":
-			out.Values[i] = ec._OSVersion_min(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "max":
-			out.Values[i] = ec._OSVersion_max(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "name":
-			out.Values[i] = ec._OSVersion_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -60733,6 +62039,13 @@ func (ec *executionContext) ___InputValue(ctx context.Context, sel ast.Selection
 			}
 		case "defaultValue":
 			out.Values[i] = ec.___InputValue_defaultValue(ctx, field, obj)
+		case "isDeprecated":
+			out.Values[i] = ec.___InputValue_isDeprecated(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deprecationReason":
+			out.Values[i] = ec.___InputValue_deprecationReason(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -60845,6 +62158,8 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec.___Type_ofType(ctx, field, obj)
 		case "specifiedByURL":
 			out.Values[i] = ec.___Type_specifiedByURL(ctx, field, obj)
+		case "isOneOf":
+			out.Values[i] = ec.___Type_isOneOf(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -62063,6 +63378,11 @@ func (ec *executionContext) marshalNOS2ᚖgithubᚗcomᚋsspserverᚋapiᚋinter
 	return ec._OS(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNOSCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSCreateInput(ctx context.Context, v any) (models.OSCreateInput, error) {
+	res, err := ec.unmarshalInputOSCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNOSEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSEdge(ctx context.Context, sel ast.SelectionSet, v *models.OSEdge) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -62073,24 +63393,31 @@ func (ec *executionContext) marshalNOSEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋi
 	return ec._OSEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNOSInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSInput(ctx context.Context, v any) (models.OSInput, error) {
-	res, err := ec.unmarshalInputOSInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNOSVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersion(ctx context.Context, sel ast.SelectionSet, v *models.OSVersion) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
+func (ec *executionContext) unmarshalNOSListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrderᚄ(ctx context.Context, v any) ([]*models.OSListOrder, error) {
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	return ec._OSVersion(ctx, sel, v)
+	var err error
+	res := make([]*models.OSListOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNOSListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
-func (ec *executionContext) unmarshalNOSVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionInput(ctx context.Context, v any) (*models.OSVersionInput, error) {
-	res, err := ec.unmarshalInputOSVersionInput(ctx, v)
+func (ec *executionContext) unmarshalNOSListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrder(ctx context.Context, v any) (*models.OSListOrder, error) {
+	res, err := ec.unmarshalInputOSListOrder(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNOSUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSUpdateInput(ctx context.Context, v any) (models.OSUpdateInput, error) {
+	res, err := ec.unmarshalInputOSUpdateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNOption2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.Option) graphql.Marshaler {
@@ -64792,6 +66119,13 @@ func (ec *executionContext) marshalOOS2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋin
 	return ret
 }
 
+func (ec *executionContext) marshalOOS2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOs(ctx context.Context, sel ast.SelectionSet, v *models.Os) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._OS(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalOOSConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Os, models.OSEdge]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -64854,86 +66188,11 @@ func (ec *executionContext) unmarshalOOSListFilter2ᚖgithubᚗcomᚋsspserver�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOOSListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrder(ctx context.Context, v any) (*models.OSListOrder, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputOSListOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalOOSPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSPayload(ctx context.Context, sel ast.SelectionSet, v *models.OSPayload) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._OSPayload(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOOSVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.OSVersion) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNOSVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersion(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) unmarshalOOSVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionInputᚄ(ctx context.Context, v any) ([]*models.OSVersionInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*models.OSVersionInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNOSVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSVersionInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
 }
 
 func (ec *executionContext) marshalOOption2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models1.Option) graphql.Marshaler {

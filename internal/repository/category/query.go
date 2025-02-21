@@ -17,6 +17,10 @@ type Filter struct {
 	Active   *types.ActiveStatus
 }
 
+func (fl *Filter) IsChildrensPreload() bool {
+	return len(fl.ParentID) > 0
+}
+
 func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 	if fl == nil {
 		return query

@@ -14,7 +14,6 @@ type (
 	RTBSource          = models.RTBSource
 	Category           = models.Category
 	OS                 = models.OS
-	OSVersion          = models.OSVersion
 	Browser            = models.Browser
 	BrowserVersion     = models.BrowserVersion
 	DeviceType         = models.DeviceType

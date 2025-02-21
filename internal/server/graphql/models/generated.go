@@ -132,11 +132,11 @@ type ApplicationCreateInput struct {
 	Title       string  `json:"title"`
 	Description *string `json:"description,omitempty"`
 	// Unique application identifier, e.g., site domain or app bundle
-	URI          string          `json:"URI"`
-	Type         ApplicationType `json:"type"`
-	Platform     PlatformType    `json:"platform"`
-	Categories   []int           `json:"categories,omitempty"`
-	RevenueShare *float64        `json:"revenueShare,omitempty"`
+	URI          string           `json:"URI"`
+	Type         *ApplicationType `json:"type,omitempty"`
+	Platform     *PlatformType    `json:"platform,omitempty"`
+	Categories   []int            `json:"categories,omitempty"`
+	RevenueShare *float64         `json:"revenueShare,omitempty"`
 }
 
 // ApplicationEdge wrapper to access Application objects
@@ -596,18 +596,52 @@ type Os struct {
 	Name string `json:"name"`
 	// Description of the OS
 	Description string `json:"description"`
-	// Expression to match the OS
-	MatchExp string `json:"matchExp"`
+	// Version of the OS
+	Version string `json:"version"`
+	// Year of release of the OS
+	YearRelease int `json:"yearRelease"`
+	// Year of end of support of the OS
+	YearEndSupport int `json:"yearEndSupport"`
 	// Active status of the OS
-	Active models.ActiveStatus `json:"active"`
-	// List of OS versions
-	Versions []*OSVersion `json:"versions,omitempty"`
+	Active             models.ActiveStatus `json:"active"`
+	MatchNameExp       string              `json:"matchNameExp"`
+	MatchUserAgentExp  string              `json:"matchUserAgentExp"`
+	MatchVersionMinExp string              `json:"matchVersionMinExp"`
+	MatchVersionMaxExp string              `json:"matchVersionMaxExp"`
+	// Parent ID of the OS group
+	ParentID uint64 `json:"parentID"`
+	// Parent object of the OS
+	Parent *Os `json:"parent,omitempty"`
+	// List of child OS
+	Versions []*Os `json:"versions,omitempty"`
 	// Creation time of the OS
 	CreatedAt time.Time `json:"createdAt"`
 	// Last update time of the OS
 	UpdatedAt time.Time `json:"updatedAt"`
 	// Deletion time of the OS
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+}
+
+// Input for querying OS
+type OSCreateInput struct {
+	// Parent ID of the OS group
+	ParentID *uint64 `json:"parentID,omitempty"`
+	// Name of the OS
+	Name string `json:"name"`
+	// Version of the OS
+	Version *string `json:"version,omitempty"`
+	// Description of the OS
+	Description *string `json:"description,omitempty"`
+	// Active status of the OS
+	Active *models.ActiveStatus `json:"active,omitempty"`
+	// Year of release of the OS
+	YearRelease *int `json:"yearRelease,omitempty"`
+	// Year of end of support of the OS
+	YearEndSupport     *int    `json:"yearEndSupport,omitempty"`
+	MatchNameExp       *string `json:"matchNameExp,omitempty"`
+	MatchUserAgentExp  *string `json:"matchUserAgentExp,omitempty"`
+	MatchVersionMinExp *string `json:"matchVersionMinExp,omitempty"`
+	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
 type OSEdge struct {
@@ -617,34 +651,20 @@ type OSEdge struct {
 	Node *Os `json:"node"`
 }
 
-// Input for querying OS
-type OSInput struct {
-	// Name of the OS
-	Name *string `json:"name,omitempty"`
-	// Description of the OS
-	Description *string `json:"description,omitempty"`
-	// Expression to match the OS
-	MatchExp *string `json:"matchExp,omitempty"`
-	// Active status of the OS
-	Active *models.ActiveStatus `json:"active,omitempty"`
-	// List of OS versions
-	Versions []*OSVersionInput `json:"versions,omitempty"`
-}
-
 type OSListFilter struct {
-	ID         []uint64              `json:"ID,omitempty"`
-	Name       []string              `json:"name,omitempty"`
-	Active     []models.ActiveStatus `json:"active,omitempty"`
-	MinVersion *string               `json:"minVersion,omitempty"`
-	MaxVersion *string               `json:"maxVersion,omitempty"`
+	ID       []uint64             `json:"ID,omitempty"`
+	ParentID []uint64             `json:"parentID,omitempty"`
+	Name     []string             `json:"name,omitempty"`
+	Active   *models.ActiveStatus `json:"active,omitempty"`
 }
 
 type OSListOrder struct {
-	ID        *models.Ordering `json:"ID,omitempty"`
-	Name      *models.Ordering `json:"name,omitempty"`
-	Active    *models.Ordering `json:"active,omitempty"`
-	CreatedAt *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt *models.Ordering `json:"updatedAt,omitempty"`
+	ID          *models.Ordering `json:"ID,omitempty"`
+	Name        *models.Ordering `json:"name,omitempty"`
+	Active      *models.Ordering `json:"active,omitempty"`
+	CreatedAt   *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt   *models.Ordering `json:"updatedAt,omitempty"`
+	YearRelease *models.Ordering `json:"yearRelease,omitempty"`
 }
 
 type OSPayload struct {
@@ -656,24 +676,23 @@ type OSPayload struct {
 	Os *Os `json:"OS"`
 }
 
-// OSVersion model schema
-type OSVersion struct {
-	// Minimum version
-	Min string `json:"min"`
-	// Maximum version
-	Max string `json:"max"`
-	// Name of the version
-	Name string `json:"name"`
-}
-
-// Input for OS versions
-type OSVersionInput struct {
-	// Minimum version
-	Min *string `json:"min,omitempty"`
-	// Maximum version
-	Max *string `json:"max,omitempty"`
-	// Name of the version
+type OSUpdateInput struct {
+	// Name of the OS
 	Name *string `json:"name,omitempty"`
+	// Version of the OS
+	Version *string `json:"version,omitempty"`
+	// Description of the OS
+	Description *string `json:"description,omitempty"`
+	// Active status of the OS
+	Active *models.ActiveStatus `json:"active,omitempty"`
+	// Year of release of the OS
+	YearRelease *int `json:"yearRelease,omitempty"`
+	// Year of end of support of the OS
+	YearEndSupport     *int    `json:"yearEndSupport,omitempty"`
+	MatchNameExp       *string `json:"matchNameExp,omitempty"`
+	MatchUserAgentExp  *string `json:"matchUserAgentExp,omitempty"`
+	MatchVersionMinExp *string `json:"matchVersionMinExp,omitempty"`
+	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
 // RTBSource object represents a source of RTB advertising

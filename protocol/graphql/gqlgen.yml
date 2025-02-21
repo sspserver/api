@@ -127,3 +127,7 @@ models:
     fields:
       text:
         resolver: true
+  OS:
+    fields:
+      versions:
+        resolver: true

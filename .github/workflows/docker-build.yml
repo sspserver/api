@@ -1,25 +1,23 @@
 name: Build docker image
 
 on:
-  # schedule:
-  #   - cron: '44 0 * * *'
   workflow_run:
     workflows: [ Tests ]
     types: [ completed ]
   workflow_dispatch:
 
 env:
-  GO_VERSION: "1.23"
-  GOPRIVATE: github.com/${{ github.repository_owner }}/*,github.com/geniusrabbit/*
-  GIT_CONFIG_CMD: git config --global url."https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://github.com/
-  IMAGE_NAME: ghcr.io/${{ github.repository }}
-  DEPLOY_OS_LIST: linux
-  BUILD_GOAMD64_LIST: 1 2 3 4
-  DEPLOY_ARCH_LIST: amd64 arm64 arm
-  BUILD_GOARM_LIST: 6 7
+  GO_VERSION:           "1.24"
+  GOPRIVATE:            github.com/${{ github.repository_owner }}/*,github.com/geniusrabbit/*
+  GIT_CONFIG_CMD:       git config --global url."https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://github.com/
+  IMAGE_NAME:           ghcr.io/${{ github.repository }}
+  DEPLOY_OS_LIST:       linux
+  BUILD_GOAMD64_LIST:   1 2 3 4
+  DEPLOY_ARCH_LIST:     amd64 arm64 arm
+  BUILD_GOARM_LIST:     6 7
   DEPLOY_COMMIT_NUMBER: ${{ github.sha }}
-  DEPLOY_TAG_VALUE: ${{ github.event.workflow_run.head_branch }}
-  APP_BUILD_TAGS: nats,kafka,postgres,clickhouse,migrate
+  DEPLOY_TAG_VALUE:     ${{ github.event.workflow_run.head_branch }}
+  APP_BUILD_TAGS:       nats,kafka,postgres,clickhouse,migrate
 
 jobs:
   can_continue:
@@ -46,7 +44,6 @@ jobs:
     needs: [can_continue]
     if: needs.can_continue.outputs.is == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    # environment: "docker hub"
 
     permissions:
       contents: read
