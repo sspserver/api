@@ -28,6 +28,11 @@ func (r *mutationResolver) DeleteOs(ctx context.Context, id uint64, msg *string)
 	return r.os.Delete(ctx, id, msg)
 }
 
+// Versions is the resolver for the versions field.
+func (r *oSResolver) Versions(ctx context.Context, obj *models.Os) ([]*models.Os, error) {
+	return r.os.Versions(ctx, obj)
+}
+
 // Os is the resolver for the OS field.
 func (r *queryResolver) Os(ctx context.Context, id uint64) (*models.OSPayload, error) {
 	return r.os.Get(ctx, id)
@@ -42,8 +47,3 @@ func (r *queryResolver) ListOs(ctx context.Context, filter *models.OSListFilter,
 func (r *Resolver) OS() generated.OSResolver { return &oSResolver{r} }
 
 type oSResolver struct{ *Resolver }
-
-// Versions is the resolver for the versions field.
-func (r *oSResolver) Versions(ctx context.Context, obj *models.Os) ([]*models.Os, error) {
-	return r.os.Versions(ctx, obj)
-}

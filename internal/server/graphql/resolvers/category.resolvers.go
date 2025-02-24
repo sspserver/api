@@ -13,6 +13,11 @@ import (
 	"github.com/sspserver/api/internal/server/graphql/models"
 )
 
+// Childrens is the resolver for the childrens field.
+func (r *categoryResolver) Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error) {
+	return r.catergories.Childrens(ctx, obj)
+}
+
 // CreateCategory is the resolver for the createCategory field.
 func (r *mutationResolver) CreateCategory(ctx context.Context, input models.CategoryInput) (*models.CategoryPayload, error) {
 	return r.catergories.Create(ctx, input)
@@ -42,8 +47,3 @@ func (r *queryResolver) ListCategories(ctx context.Context, filter *models.Categ
 func (r *Resolver) Category() generated.CategoryResolver { return &categoryResolver{r} }
 
 type categoryResolver struct{ *Resolver }
-
-// Childrens is the resolver for the childrens field.
-func (r *categoryResolver) Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error) {
-	return r.catergories.Childrens(ctx, obj)
-}

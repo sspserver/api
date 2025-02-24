@@ -4,6 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS type_device_maker
 ( id                     BIGSERIAL                  PRIMARY KEY
+, codename               VARCHAR(255)               NOT NULL       UNIQUE
 , name                   VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
@@ -31,6 +32,7 @@ AFTER INSERT OR UPDATE OR DELETE ON type_device_maker
 
 CREATE TABLE IF NOT EXISTS type_device_model
 ( id                     BIGSERIAL                  PRIMARY KEY
+, codename               VARCHAR(255)               NOT NULL       UNIQUE
 , name                   VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
@@ -40,12 +42,12 @@ CREATE TABLE IF NOT EXISTS type_device_model
 , active                 ActiveStatus               NOT NULL      DEFAULT 'pause'
 
 -- Maker
-, maker_id               BIGINT                     NOT NULL      REFERENCES type_device_maker(id) MATCH SIMPLE
+, maker_codename         VARCHAR(255)               NOT NULL      REFERENCES type_device_maker(codename) MATCH SIMPLE
                                                                        ON UPDATE NO ACTION
                                                                        ON DELETE RESTRICT
 
 -- Device Type
-, type_id                BIGINT                     NOT NULL       CHECK (type_id > 0)
+, type_codename          VARCHAR(255)               NOT NULL       CHECK (type_codename <> '')
 
 -- Versions
 , versions               JSONB

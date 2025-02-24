@@ -29,9 +29,9 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 		generated.NewExecutableSchema(generated.Config{
 			Resolvers: resolvers.NewResolver(usecases, provider),
 			Directives: generated.DirectiveRoot{
-				HasPermissions:    blazeDirectives.HasPermissions,
 				Auth:              blazeDirectives.Auth,
 				Acl:               blazeDirectives.HasPermissions,
+				HasPermissions:    blazeDirectives.HasPermissions,
 				SkipNoPermissions: blazeDirectives.SkipNoPermissions,
 				Length:            directives.ValidateLength,
 				Notempty:          directives.ValidateNotEmpty,

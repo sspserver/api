@@ -12,6 +12,7 @@ import (
 //go:generate mockgen -source $GOFILE -package mocks -destination mocks/repository.go
 type Repository interface {
 	Get(ctx context.Context, id uint64, preloads ...string) (*models.DeviceMaker, error)
+	GetByCodename(ctx context.Context, codename string, preloads ...string) (*models.DeviceMaker, error)
 	FetchList(ctx context.Context, qops ...Option) ([]*models.DeviceMaker, error)
 	Count(ctx context.Context, qops ...Option) (int64, error)
 	Create(ctx context.Context, object *models.DeviceMaker) (uint64, error)

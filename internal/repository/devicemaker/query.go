@@ -10,9 +10,10 @@ import (
 
 // Filter of the objects list
 type Filter struct {
-	ID     []uint64
-	Name   []string
-	Active *types.ActiveStatus
+	ID       []uint64
+	Codename []string
+	Name     []string
+	Active   *types.ActiveStatus
 }
 
 func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
@@ -21,6 +22,9 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 	}
 	if len(fl.ID) > 0 {
 		query = query.Where(`id IN (?)`, fl.ID)
+	}
+	if len(fl.Codename) > 0 {
+		query = query.Where(`codename IN (?)`, fl.Codename)
 	}
 	if len(fl.Name) > 0 {
 		query = query.Where(`name IN (?)`, fl.Name)

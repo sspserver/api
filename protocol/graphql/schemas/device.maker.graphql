@@ -1,0 +1,234 @@
+
+"""
+Device maker schema
+"""
+type DeviceMaker {
+  """
+  Device maker ID
+  """
+  ID: ID64!
+
+  """
+  Codename of the device maker, equivalent to the device maker ID
+  Example: "apple", "samsung", "xiaomi", etc.
+  """
+  codename: String!
+
+  """
+  Name of the device maker
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String!
+
+  """
+  List of device models
+  """
+  models: [DeviceModel!]
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus!
+
+  """
+  Creation time of the device maker
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the device maker
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the device maker
+  """
+  deletedAt: Time
+}
+
+type DeviceMakerEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The DeviceMaker at the end of the edge
+  """
+  node: DeviceMaker!
+}
+
+type DeviceMakerConnection {
+  """
+  Total count of DeviceMaker objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of DeviceMaker objects
+  """
+  edges: [DeviceMakerEdge!]!
+
+  """
+  List of DeviceMaker objects
+  """
+  list: [DeviceMaker!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type DeviceMakerPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The DeviceMaker that was created by this mutation.
+  """
+  makerID: ID64!
+
+  """
+  The DeviceMaker object accessible by a client.
+  """
+  maker: DeviceMaker!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input DeviceMakerListFilter {
+  ID:         [ID64!]
+  codename:   [String!]
+  name:       [String!]
+  active:     [ActiveStatus!]
+}
+
+input DeviceMakerListOrder {
+  ID:         Ordering
+  codename:   Ordering
+  name:       Ordering
+  active:     Ordering
+  createdAt:  Ordering
+  updatedAt:  Ordering
+}
+
+"""
+Input for querying device maker create
+"""
+input DeviceMakerCreateInput {
+  """
+  Codename of the device maker
+  """
+  codename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Name of the device maker
+  """
+  name: String! @length(min: 1, max: 128, trim: true)
+
+  """
+  Description of the device maker
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus!
+}
+
+"""
+Input for querying device maker update
+"""
+input DeviceMakerUpdateInput {
+  """
+  Codename of the device maker
+  """
+  codename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Name of the device maker
+  """
+  name: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Description of the device maker
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get device maker by ID
+  """
+  deviceMaker(ID: ID64! = 0, codename: String! = ""): DeviceMakerPayload @acl(permissions: ["device_maker.view.*"])
+
+  """
+  List of device makers
+  """
+  listDeviceMakers(
+    filter: DeviceMakerListFilter = null,
+    order: DeviceMakerListOrder = null,
+    page: Page = null
+  ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new device maker
+  """
+  createDeviceMaker(input: DeviceMakerCreateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.create.*"])
+
+  """
+  Update device maker
+  """
+  updateDeviceMaker(ID: ID64!, input: DeviceMakerUpdateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
+
+  """
+  Delete device maker
+  """
+  deleteDeviceMaker(
+    """
+    Device maker ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): DeviceMakerPayload @acl(permissions: ["device_maker.delete.*"])
+}

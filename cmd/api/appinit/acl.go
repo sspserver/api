@@ -156,6 +156,7 @@ func InitModelPermissions(pm *permissions.Manager) {
 			rbac.WithPermissions(
 				`user.{view|list|count}.owner`, `user.password.{set|reset}.owner`,
 				`account.{view|list|count}.owner`, PermAccountRegister,
+				`option.{get|set|list|count}.owner`,
 				`directaccesstoken.{view|list|count}.owner`,
 				`role.check`,
 				`rtb_source.{view|list|count}.owner`,

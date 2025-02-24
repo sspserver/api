@@ -1,0 +1,316 @@
+"""
+Device model schema
+"""
+type DeviceModel {
+  """
+  Device model ID
+  """
+  ID: ID64!
+
+  """
+  Device model codename
+  """
+  codename: String!
+
+  """
+  Name of the device model
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Version of the device model
+  """
+  version: String!
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Device parent object if exists
+  """
+  parent: DeviceModel
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String!
+
+  """
+  Device type codename
+  """
+  typeCodename: String!
+
+  """
+  Device type object
+  """
+  type: DeviceType
+
+  """
+  Device maker codename
+  """
+  makerCodename: String!
+
+  """
+  Device maker object
+  """
+  maker: DeviceMaker
+
+  """
+  List of device model versions
+  """
+  versions: [DeviceModel!]
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus!
+
+  """
+  Creation time of the device model
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the device model
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the device model
+  """
+  deletedAt: Time
+}
+
+type DeviceModelEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The DeviceModel at the end of the edge
+  """
+  node: DeviceModel!
+}
+
+type DeviceModelConnection {
+  """
+  Total count of DeviceModel objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of DeviceModel objects
+  """
+  edges: [DeviceModelEdge!]!
+
+  """
+  List of DeviceModel objects
+  """
+  list: [DeviceModel!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type DeviceModelPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The DeviceModel that was created by this mutation.
+  """
+  modelID: ID64!
+
+  """
+  The DeviceModel object accessible by a client.
+  """
+  model: DeviceModel!
+}
+
+###############################################################################
+# Input
+
+input DeviceModelListOrder {
+  ID:             Ordering
+  codename:       Ordering
+  name:           Ordering
+  typeCodename:   Ordering
+  makerCodename:  Ordering
+  active:         Ordering
+  createdAt:      Ordering
+  updatedAt:      Ordering
+}
+
+"""
+Input model list filter
+"""
+input DeviceModelListFilter {
+  ID:             [ID64!]
+  codename:       [String!]
+  name:           [String!]
+  typeCodename:   [String!]
+  makerCodename:  [String!]
+  active:         [ActiveStatus!]
+}
+
+"""
+Input for querying create device models
+"""
+input DeviceModelCreateInput {
+  """
+  Name of the device model
+  """
+  name: String! @length(min: 1, max: 128, trim: true)
+
+  """
+  Code name of the device model
+  """
+  codename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Description of the device model
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Version of the device model
+  """
+  version: String! @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true)
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Device type codename
+  """
+  typeCodename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Device maker codename
+  """
+  makerCodename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus!
+}
+
+"""
+Input for querying update device models
+"""
+input DeviceModelUpdateInput {
+  """
+  Name of the device model
+  """
+  name: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Code name of the device model
+  """
+  codename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Description of the device model
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Version of the device model
+  """
+  version: String @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true, ornil: true)
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Device type codename
+  """
+  typeCodename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Device maker codename
+  """
+  makerCodename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get device model by ID
+  """
+  deviceModel(ID: ID64! = 0, codename: String! = ""): DeviceModelPayload @acl(permissions: ["device_model.view.*"])
+
+  """
+  List of device models
+  """
+  listDeviceModels(
+    filter: DeviceModelListFilter = null,
+    order: DeviceModelListOrder = null,
+    page: Page = null
+  ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
+}
+
+extend type Mutation {
+  """
+  Create new device model
+  """
+  createDeviceModel(input: DeviceModelCreateInput!): DeviceModelPayload @acl(permissions: ["device_model.create.*"])
+
+  """
+  Update device model
+  """
+  updateDeviceModel(
+    ID: ID64!,
+    input: DeviceModelUpdateInput!
+  ): DeviceModelPayload @acl(permissions: ["device_model.update.*"])
+
+  """
+  Delete device model
+  """
+  deleteDeviceModel(
+    """
+    Device model ID
+    """
+    ID: ID64!,
+
+    """
+    Message for deletion
+    """
+    msg: String = null
+  ): DeviceModelPayload @acl(permissions: ["device_model.delete.*"])
+}

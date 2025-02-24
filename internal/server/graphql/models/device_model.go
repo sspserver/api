@@ -1,41 +1,36 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/adcorelib/admodels/types"
-	"github.com/geniusrabbit/gosql/v2"
 
 	"github.com/sspserver/api/internal/repository/devicemodel"
 	"github.com/sspserver/api/models"
 )
-
-func FromDeviceModelVersion(ver models.DeviceModelVersion) *DeviceModelVersion {
-	return &DeviceModelVersion{
-		Min:  ver.Min.String(),
-		Max:  ver.Max.String(),
-		Name: ver.Name,
-	}
-}
 
 func FromDeviceModelModel(m *models.DeviceModel) *DeviceModel {
 	if m == nil {
 		return nil
 	}
 	return &DeviceModel{
-		ID:          m.ID,
-		Name:        m.Name,
-		Description: m.Description,
-		MatchExp:    m.MatchExp,
-		Active:      FromActiveStatus(m.Active),
-		MakerID:     m.MakerID,
-		Maker:       FromDeviceMakerModel(m.Maker),
-		TypeID:      m.TypeID,
-		Type:        FromDeviceTypeModel(m.Type),
-		Versions:    xtypes.SliceApply(m.Versions, FromDeviceModelVersion),
-		CreatedAt:   m.CreatedAt,
-		UpdatedAt:   m.UpdatedAt,
-		DeletedAt:   DeletedAt(m.DeletedAt),
+		ID:            m.ID,
+		Name:          m.Name,
+		Codename:      m.Codename,
+		Description:   m.Description,
+		Active:        FromActiveStatus(m.Active),
+		MatchExp:      m.MatchExp,
+		ParentID:      gocast.IfThen(m.ParentID > 0, &m.ParentID, nil),
+		MakerCodename: m.MakerCodename,
+		Maker:         FromDeviceMakerModel(m.Maker),
+		TypeCodename:  m.TypeCodename,
+		Type:          FromDeviceTypeModel(m.Type),
+		Versions:      xtypes.SliceApply(m.Versions, FromDeviceModelModel),
+		CreatedAt:     m.CreatedAt,
+		UpdatedAt:     m.UpdatedAt,
+		DeletedAt:     DeletedAt(m.DeletedAt),
 	}
 }
 
@@ -70,30 +65,37 @@ func (ol *DeviceModelListOrder) Order() *devicemodel.ListOrder {
 	}
 }
 
-func (v *DeviceModelVersionInput) Model() models.DeviceModelVersion {
-	if v == nil {
-		return models.DeviceModelVersion{}
+func (inp *DeviceModelCreateInput) FillModel(m *models.DeviceModel) error {
+	if inp == nil || m == nil {
+		return nil
 	}
-	return models.DeviceModelVersion{
-		Min:  types.IgnoreParseVersion(gocast.PtrAsValue(v.Min, "")),
-		Max:  types.IgnoreParseVersion(gocast.PtrAsValue(v.Max, "")),
-		Name: gocast.PtrAsValue(v.Name, ""),
+	if inp.Codename == "" {
+		return errors.New("codename is required")
 	}
+	if inp.Name == "" {
+		return errors.New("name is required")
+	}
+	m.Codename = inp.Codename
+	m.ParentID = gocast.PtrAsValue(inp.ParentID, m.ParentID)
+	m.Name = inp.Name
+	m.Description = gocast.PtrAsValue(inp.Description, m.Description)
+	m.MatchExp = gocast.PtrAsValue(inp.MatchExp, m.MatchExp)
+	m.TypeCodename = inp.TypeCodename
+	m.MakerCodename = inp.MakerCodename
+	m.Active = ActiveStatusFrom(inp.Active)
+	return nil
 }
 
-func (inp *DeviceModelInput) FillModel(m *models.DeviceModel) {
+func (inp *DeviceModelUpdateInput) FillModel(m *models.DeviceModel) {
 	if inp == nil || m == nil {
 		return
 	}
+	m.Codename = gocast.PtrAsValue(inp.Codename, m.Codename)
+	m.ParentID = gocast.PtrAsValue(inp.ParentID, m.ParentID)
 	m.Name = gocast.PtrAsValue(inp.Name, m.Name)
 	m.Description = gocast.PtrAsValue(inp.Description, m.Description)
 	m.MatchExp = gocast.PtrAsValue(inp.MatchExp, m.MatchExp)
-	m.TypeID = gocast.PtrAsValue(inp.TypeID, m.TypeID)
-	m.MakerID = gocast.PtrAsValue(inp.MakerID, m.MakerID)
+	m.TypeCodename = gocast.PtrAsValue(inp.TypeCodename, m.TypeCodename)
+	m.MakerCodename = gocast.PtrAsValue(inp.MakerCodename, m.MakerCodename)
 	m.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), m.Active)
-	m.Versions = gosql.NullableJSONArray[models.DeviceModelVersion](
-		gocast.IfThen(inp.Versions != nil,
-			xtypes.SliceApply(inp.Versions, func(v *DeviceModelVersionInput) models.DeviceModelVersion { return v.Model() }),
-			xtypes.Slice[models.DeviceModelVersion](m.Versions)),
-	)
 }

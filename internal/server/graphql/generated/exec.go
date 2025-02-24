@@ -310,6 +310,7 @@ type ComplexityRoot struct {
 
 	DeviceMaker struct {
 		Active      func(childComplexity int) int
+		Codename    func(childComplexity int) int
 		CreatedAt   func(childComplexity int) int
 		DeletedAt   func(childComplexity int) int
 		Description func(childComplexity int) int
@@ -317,7 +318,6 @@ type ComplexityRoot struct {
 		MatchExp    func(childComplexity int) int
 		Models      func(childComplexity int) int
 		Name        func(childComplexity int) int
-		Types       func(childComplexity int) int
 		UpdatedAt   func(childComplexity int) int
 	}
 
@@ -340,19 +340,23 @@ type ComplexityRoot struct {
 	}
 
 	DeviceModel struct {
-		Active      func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		DeletedAt   func(childComplexity int) int
-		Description func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Maker       func(childComplexity int) int
-		MakerID     func(childComplexity int) int
-		MatchExp    func(childComplexity int) int
-		Name        func(childComplexity int) int
-		Type        func(childComplexity int) int
-		TypeID      func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-		Versions    func(childComplexity int) int
+		Active        func(childComplexity int) int
+		Codename      func(childComplexity int) int
+		CreatedAt     func(childComplexity int) int
+		DeletedAt     func(childComplexity int) int
+		Description   func(childComplexity int) int
+		ID            func(childComplexity int) int
+		Maker         func(childComplexity int) int
+		MakerCodename func(childComplexity int) int
+		MatchExp      func(childComplexity int) int
+		Name          func(childComplexity int) int
+		Parent        func(childComplexity int) int
+		ParentID      func(childComplexity int) int
+		Type          func(childComplexity int) int
+		TypeCodename  func(childComplexity int) int
+		UpdatedAt     func(childComplexity int) int
+		Version       func(childComplexity int) int
+		Versions      func(childComplexity int) int
 	}
 
 	DeviceModelConnection struct {
@@ -373,17 +377,11 @@ type ComplexityRoot struct {
 		ModelID          func(childComplexity int) int
 	}
 
-	DeviceModelVersion struct {
-		Max  func(childComplexity int) int
-		Min  func(childComplexity int) int
-		Name func(childComplexity int) int
-	}
-
 	DeviceType struct {
 		Active      func(childComplexity int) int
+		Codename    func(childComplexity int) int
 		Description func(childComplexity int) int
 		ID          func(childComplexity int) int
-		Models      func(childComplexity int) int
 		Name        func(childComplexity int) int
 	}
 
@@ -488,8 +486,8 @@ type ComplexityRoot struct {
 		CreateAuthClient          func(childComplexity int, input models1.AuthClientInput) int
 		CreateBrowser             func(childComplexity int, input models.BrowserInput) int
 		CreateCategory            func(childComplexity int, input models.CategoryInput) int
-		CreateDeviceMaker         func(childComplexity int, input models.DeviceMakerInput) int
-		CreateDeviceModel         func(childComplexity int, input models.DeviceModelInput) int
+		CreateDeviceMaker         func(childComplexity int, input models.DeviceMakerCreateInput) int
+		CreateDeviceModel         func(childComplexity int, input models.DeviceModelCreateInput) int
 		CreateFormat              func(childComplexity int, input models.AdFormatInput) int
 		CreateOs                  func(childComplexity int, input models.OSCreateInput) int
 		CreateRTBSource           func(childComplexity int, input models.RTBSourceInput) int
@@ -536,8 +534,8 @@ type ComplexityRoot struct {
 		UpdateAuthClient          func(childComplexity int, id string, input models1.AuthClientInput) int
 		UpdateBrowser             func(childComplexity int, id uint64, input models.BrowserInput) int
 		UpdateCategory            func(childComplexity int, id uint64, input models.CategoryInput) int
-		UpdateDeviceMaker         func(childComplexity int, id uint64, input models.DeviceMakerInput) int
-		UpdateDeviceModel         func(childComplexity int, id uint64, input models.DeviceModelInput) int
+		UpdateDeviceMaker         func(childComplexity int, id uint64, input models.DeviceMakerUpdateInput) int
+		UpdateDeviceModel         func(childComplexity int, id uint64, input models.DeviceModelUpdateInput) int
 		UpdateFormat              func(childComplexity int, id uint64, input models.AdFormatInput) int
 		UpdateOs                  func(childComplexity int, id uint64, input models.OSUpdateInput) int
 		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceInput) int
@@ -651,8 +649,8 @@ type ComplexityRoot struct {
 		CurrentSession                 func(childComplexity int) int
 		CurrentSocialAccounts          func(childComplexity int, filter *models1.SocialAccountListFilter, order *models1.SocialAccountListOrder) int
 		CurrentUser                    func(childComplexity int) int
-		DeviceMaker                    func(childComplexity int, id uint64) int
-		DeviceModel                    func(childComplexity int, id uint64) int
+		DeviceMaker                    func(childComplexity int, id uint64, codename string) int
+		DeviceModel                    func(childComplexity int, id uint64, codename string) int
 		Format                         func(childComplexity int, id uint64, codename string) int
 		GetDirectAccessToken           func(childComplexity int, id uint64) int
 		ListAccountRolesAndPermissions func(childComplexity int, accountID uint64, order *models1.RBACRoleListOrder) int
@@ -1004,11 +1002,11 @@ type MutationResolver interface {
 	CreateCategory(ctx context.Context, input models.CategoryInput) (*models.CategoryPayload, error)
 	UpdateCategory(ctx context.Context, id uint64, input models.CategoryInput) (*models.CategoryPayload, error)
 	DeleteCategory(ctx context.Context, id uint64, msg *string) (*models.CategoryPayload, error)
-	CreateDeviceMaker(ctx context.Context, input models.DeviceMakerInput) (*models.DeviceMakerPayload, error)
-	UpdateDeviceMaker(ctx context.Context, id uint64, input models.DeviceMakerInput) (*models.DeviceMakerPayload, error)
+	CreateDeviceMaker(ctx context.Context, input models.DeviceMakerCreateInput) (*models.DeviceMakerPayload, error)
+	UpdateDeviceMaker(ctx context.Context, id uint64, input models.DeviceMakerUpdateInput) (*models.DeviceMakerPayload, error)
 	DeleteDeviceMaker(ctx context.Context, id uint64, msg *string) (*models.DeviceMakerPayload, error)
-	CreateDeviceModel(ctx context.Context, input models.DeviceModelInput) (*models.DeviceModelPayload, error)
-	UpdateDeviceModel(ctx context.Context, id uint64, input models.DeviceModelInput) (*models.DeviceModelPayload, error)
+	CreateDeviceModel(ctx context.Context, input models.DeviceModelCreateInput) (*models.DeviceModelPayload, error)
+	UpdateDeviceModel(ctx context.Context, id uint64, input models.DeviceModelUpdateInput) (*models.DeviceModelPayload, error)
 	DeleteDeviceModel(ctx context.Context, id uint64, msg *string) (*models.DeviceModelPayload, error)
 	CreateOs(ctx context.Context, input models.OSCreateInput) (*models.OSPayload, error)
 	UpdateOs(ctx context.Context, id uint64, input models.OSUpdateInput) (*models.OSPayload, error)
@@ -1067,11 +1065,11 @@ type QueryResolver interface {
 	ListCategories(ctx context.Context, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Category, models.CategoryEdge], error)
 	Continents(ctx context.Context) ([]*models.Continent, error)
 	Countries(ctx context.Context) ([]*models.Country, error)
-	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
-	DeviceMaker(ctx context.Context, id uint64) (*models.DeviceMakerPayload, error)
+	DeviceMaker(ctx context.Context, id uint64, codename string) (*models.DeviceMakerPayload, error)
 	ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order *models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error)
-	DeviceModel(ctx context.Context, id uint64) (*models.DeviceModelPayload, error)
+	DeviceModel(ctx context.Context, id uint64, codename string) (*models.DeviceModelPayload, error)
 	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order *models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
+	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
 	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
@@ -2230,6 +2228,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceMaker.Active(childComplexity), true
 
+	case "DeviceMaker.codename":
+		if e.complexity.DeviceMaker.Codename == nil {
+			break
+		}
+
+		return e.complexity.DeviceMaker.Codename(childComplexity), true
+
 	case "DeviceMaker.createdAt":
 		if e.complexity.DeviceMaker.CreatedAt == nil {
 			break
@@ -2278,13 +2283,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.DeviceMaker.Name(childComplexity), true
-
-	case "DeviceMaker.types":
-		if e.complexity.DeviceMaker.Types == nil {
-			break
-		}
-
-		return e.complexity.DeviceMaker.Types(childComplexity), true
 
 	case "DeviceMaker.updatedAt":
 		if e.complexity.DeviceMaker.UpdatedAt == nil {
@@ -2363,6 +2361,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceModel.Active(childComplexity), true
 
+	case "DeviceModel.codename":
+		if e.complexity.DeviceModel.Codename == nil {
+			break
+		}
+
+		return e.complexity.DeviceModel.Codename(childComplexity), true
+
 	case "DeviceModel.createdAt":
 		if e.complexity.DeviceModel.CreatedAt == nil {
 			break
@@ -2398,12 +2403,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceModel.Maker(childComplexity), true
 
-	case "DeviceModel.makerID":
-		if e.complexity.DeviceModel.MakerID == nil {
+	case "DeviceModel.makerCodename":
+		if e.complexity.DeviceModel.MakerCodename == nil {
 			break
 		}
 
-		return e.complexity.DeviceModel.MakerID(childComplexity), true
+		return e.complexity.DeviceModel.MakerCodename(childComplexity), true
 
 	case "DeviceModel.matchExp":
 		if e.complexity.DeviceModel.MatchExp == nil {
@@ -2419,6 +2424,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceModel.Name(childComplexity), true
 
+	case "DeviceModel.parent":
+		if e.complexity.DeviceModel.Parent == nil {
+			break
+		}
+
+		return e.complexity.DeviceModel.Parent(childComplexity), true
+
+	case "DeviceModel.parentID":
+		if e.complexity.DeviceModel.ParentID == nil {
+			break
+		}
+
+		return e.complexity.DeviceModel.ParentID(childComplexity), true
+
 	case "DeviceModel.type":
 		if e.complexity.DeviceModel.Type == nil {
 			break
@@ -2426,12 +2445,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceModel.Type(childComplexity), true
 
-	case "DeviceModel.typeID":
-		if e.complexity.DeviceModel.TypeID == nil {
+	case "DeviceModel.typeCodename":
+		if e.complexity.DeviceModel.TypeCodename == nil {
 			break
 		}
 
-		return e.complexity.DeviceModel.TypeID(childComplexity), true
+		return e.complexity.DeviceModel.TypeCodename(childComplexity), true
 
 	case "DeviceModel.updatedAt":
 		if e.complexity.DeviceModel.UpdatedAt == nil {
@@ -2439,6 +2458,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.DeviceModel.UpdatedAt(childComplexity), true
+
+	case "DeviceModel.version":
+		if e.complexity.DeviceModel.Version == nil {
+			break
+		}
+
+		return e.complexity.DeviceModel.Version(childComplexity), true
 
 	case "DeviceModel.versions":
 		if e.complexity.DeviceModel.Versions == nil {
@@ -2510,33 +2536,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeviceModelPayload.ModelID(childComplexity), true
 
-	case "DeviceModelVersion.max":
-		if e.complexity.DeviceModelVersion.Max == nil {
-			break
-		}
-
-		return e.complexity.DeviceModelVersion.Max(childComplexity), true
-
-	case "DeviceModelVersion.min":
-		if e.complexity.DeviceModelVersion.Min == nil {
-			break
-		}
-
-		return e.complexity.DeviceModelVersion.Min(childComplexity), true
-
-	case "DeviceModelVersion.name":
-		if e.complexity.DeviceModelVersion.Name == nil {
-			break
-		}
-
-		return e.complexity.DeviceModelVersion.Name(childComplexity), true
-
 	case "DeviceType.active":
 		if e.complexity.DeviceType.Active == nil {
 			break
 		}
 
 		return e.complexity.DeviceType.Active(childComplexity), true
+
+	case "DeviceType.codename":
+		if e.complexity.DeviceType.Codename == nil {
+			break
+		}
+
+		return e.complexity.DeviceType.Codename(childComplexity), true
 
 	case "DeviceType.description":
 		if e.complexity.DeviceType.Description == nil {
@@ -2551,13 +2563,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.DeviceType.ID(childComplexity), true
-
-	case "DeviceType.models":
-		if e.complexity.DeviceType.Models == nil {
-			break
-		}
-
-		return e.complexity.DeviceType.Models(childComplexity), true
 
 	case "DeviceType.name":
 		if e.complexity.DeviceType.Name == nil {
@@ -3079,7 +3084,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateDeviceMaker(childComplexity, args["input"].(models.DeviceMakerInput)), true
+		return e.complexity.Mutation.CreateDeviceMaker(childComplexity, args["input"].(models.DeviceMakerCreateInput)), true
 
 	case "Mutation.createDeviceModel":
 		if e.complexity.Mutation.CreateDeviceModel == nil {
@@ -3091,7 +3096,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateDeviceModel(childComplexity, args["input"].(models.DeviceModelInput)), true
+		return e.complexity.Mutation.CreateDeviceModel(childComplexity, args["input"].(models.DeviceModelCreateInput)), true
 
 	case "Mutation.createFormat":
 		if e.complexity.Mutation.CreateFormat == nil {
@@ -3645,7 +3650,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateDeviceMaker(childComplexity, args["ID"].(uint64), args["input"].(models.DeviceMakerInput)), true
+		return e.complexity.Mutation.UpdateDeviceMaker(childComplexity, args["ID"].(uint64), args["input"].(models.DeviceMakerUpdateInput)), true
 
 	case "Mutation.updateDeviceModel":
 		if e.complexity.Mutation.UpdateDeviceModel == nil {
@@ -3657,7 +3662,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateDeviceModel(childComplexity, args["ID"].(uint64), args["input"].(models.DeviceModelInput)), true
+		return e.complexity.Mutation.UpdateDeviceModel(childComplexity, args["ID"].(uint64), args["input"].(models.DeviceModelUpdateInput)), true
 
 	case "Mutation.updateFormat":
 		if e.complexity.Mutation.UpdateFormat == nil {
@@ -4278,7 +4283,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DeviceMaker(childComplexity, args["ID"].(uint64)), true
+		return e.complexity.Query.DeviceMaker(childComplexity, args["ID"].(uint64), args["codename"].(string)), true
 
 	case "Query.deviceModel":
 		if e.complexity.Query.DeviceModel == nil {
@@ -4290,7 +4295,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DeviceModel(childComplexity, args["ID"].(uint64)), true
+		return e.complexity.Query.DeviceModel(childComplexity, args["ID"].(uint64), args["codename"].(string)), true
 
 	case "Query.format":
 		if e.complexity.Query.Format == nil {
@@ -5981,13 +5986,14 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCategoryInput,
 		ec.unmarshalInputCategoryListFilter,
 		ec.unmarshalInputCategoryListOrder,
-		ec.unmarshalInputDeviceMakerInput,
+		ec.unmarshalInputDeviceMakerCreateInput,
 		ec.unmarshalInputDeviceMakerListFilter,
 		ec.unmarshalInputDeviceMakerListOrder,
-		ec.unmarshalInputDeviceModelInput,
+		ec.unmarshalInputDeviceMakerUpdateInput,
+		ec.unmarshalInputDeviceModelCreateInput,
 		ec.unmarshalInputDeviceModelListFilter,
 		ec.unmarshalInputDeviceModelListOrder,
-		ec.unmarshalInputDeviceModelVersionInput,
+		ec.unmarshalInputDeviceModelUpdateInput,
 		ec.unmarshalInputDirectAccessTokenListFilter,
 		ec.unmarshalInputDirectAccessTokenListOrder,
 		ec.unmarshalInputHistoryActionListFilter,
@@ -7696,7 +7702,7 @@ extend type Query {
   """
   Get the option value by name
   """
-  option(name: String!, optionType: OptionType!, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.view"])
+  option(name: String!, optionType: OptionType!, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
 
   """
   List of the option values which can be filtered and ordered by some fields
@@ -7705,14 +7711,14 @@ extend type Query {
     filter: OptionListFilter = null,
     order: OptionListOrder = null,
     page: Page = null
-  ): OptionConnection @hasPermissions(permissions: ["option.list"])
+  ): OptionConnection @hasPermissions(permissions: ["option.list.*"])
 }
 
 extend type Mutation {
   """
   Set the option value
   """
-  setOption(name: String!, input: OptionInput!): OptionPayload! @hasPermissions(permissions: ["option.update"])
+  setOption(name: String!, input: OptionInput!): OptionPayload! @hasPermissions(permissions: ["option.set.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../submodules/blaze-api/protocol/graphql/schemas/pagination.graphql", Input: `
@@ -9143,181 +9149,7 @@ extend type Query {
   countries: [Country!]
 }
 `, BuiltIn: false},
-	{Name: "../../../../protocol/graphql/schemas/devices.graphql", Input: `"""
-Device type schema
-"""
-type DeviceType {
-  """
-  Device type ID
-  """
-  ID: ID64!
-
-  """
-  Name of the device type
-  """
-  name: String!
-
-  """
-  Description of the device type
-  """
-  description: String!
-
-  """
-  List of device models
-  """
-  models: [DeviceModel!]
-
-  """
-  Active status of the device type
-  """
-  active: ActiveStatus!
-}
-
-###############################################################################
-
-"""
-DeviceModelVersion model schema
-"""
-type DeviceModelVersion {
-  """
-  Minimum version
-  """
-  min: String!
-
-  """
-  Maximum version
-  """
-  max: String!
-
-  """
-  Name of the version
-  """
-  name: String!
-}
-
-"""
-Device model schema
-"""
-type DeviceModel {
-  """
-  Device model ID
-  """
-  ID: ID64!
-
-  """
-  Name of the device model
-  """
-  name: String!
-
-  """
-  Description of the device type
-  """
-  description: String!
-
-  """
-  Expression to match the device model
-  """
-  matchExp: String!
-
-  """
-  Device type ID
-  """
-  typeID: ID64!
-
-  """
-  Device type object
-  """
-  type: DeviceType
-
-  """
-  Device maker ID
-  """
-  makerID: ID64!
-
-  """
-  Device maker object
-  """
-  maker: DeviceMaker
-
-  """
-  List of device model versions
-  """
-  versions: [DeviceModelVersion!]
-
-  """
-  Active status of the device model
-  """
-  active: ActiveStatus!
-
-  """
-  Creation time of the device model
-  """
-  createdAt: Time!
-
-  """
-  Last update time of the device model
-  """
-  updatedAt: Time!
-
-  """
-  Deletion time of the device model
-  """
-  deletedAt: Time
-}
-
-type DeviceModelEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The DeviceModel at the end of the edge
-  """
-  node: DeviceModel!
-}
-
-type DeviceModelConnection {
-  """
-  Total count of DeviceModel objects
-  """
-  totalCount: Int!
-
-  """
-  Edges of DeviceModel objects
-  """
-  edges: [DeviceModelEdge!]!
-
-  """
-  List of DeviceModel objects
-  """
-  list: [DeviceModel!]!
-
-  """
-  Information to aid in pagination
-  """
-  pageInfo: PageInfo!
-}
-
-type DeviceModelPayload {
-  """
-  A unique identifier for the client performing the mutation.
-  """
-  clientMutationID: String!
-
-  """
-  The DeviceModel that was created by this mutation.
-  """
-  modelID: ID64!
-
-  """
-  The DeviceModel object accessible by a client.
-  """
-  model: DeviceModel!
-}
-
-###############################################################################
-
+	{Name: "../../../../protocol/graphql/schemas/device.maker.graphql", Input: `
 """
 Device maker schema
 """
@@ -9326,6 +9158,12 @@ type DeviceMaker {
   Device maker ID
   """
   ID: ID64!
+
+  """
+  Codename of the device maker, equivalent to the device maker ID
+  Example: "apple", "samsung", "xiaomi", etc.
+  """
+  codename: String!
 
   """
   Name of the device maker
@@ -9341,11 +9179,6 @@ type DeviceMaker {
   Expression to match the device maker
   """
   matchExp: String!
-
-  """
-  List of device types
-  """
-  types: [DeviceType!]
 
   """
   List of device models
@@ -9430,12 +9263,14 @@ type DeviceMakerPayload {
 
 input DeviceMakerListFilter {
   ID:         [ID64!]
+  codename:   [String!]
   name:       [String!]
   active:     [ActiveStatus!]
 }
 
 input DeviceMakerListOrder {
   ID:         Ordering
+  codename:   Ordering
   name:       Ordering
   active:     Ordering
   createdAt:  Ordering
@@ -9443,103 +9278,63 @@ input DeviceMakerListOrder {
 }
 
 """
-Input for querying device makers
+Input for querying device maker create
 """
-input DeviceMakerInput {
+input DeviceMakerCreateInput {
+  """
+  Codename of the device maker
+  """
+  codename: String! @length(min: 1, max: 64, trim: true)
+
   """
   Name of the device maker
   """
-  name: String
+  name: String! @length(min: 1, max: 128, trim: true)
 
   """
   Description of the device maker
   """
-  description: String
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
 
   """
   Expression to match the device maker
   """
-  matchExp: String
+  matchExp: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Active status of the device maker
+  """
+  active: ActiveStatus!
+}
+
+"""
+Input for querying device maker update
+"""
+input DeviceMakerUpdateInput {
+  """
+  Codename of the device maker
+  """
+  codename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Name of the device maker
+  """
+  name: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Description of the device maker
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Expression to match the device maker
+  """
+  matchExp: String @length(min: 1, max: 1024, trim: true, ornil: true)
 
   """
   Active status of the device maker
   """
   active: ActiveStatus
-}
-
-input DeviceModelListFilter {
-  ID:         [ID64!]
-  name:       [String!]
-  typeID:     [ID64!]
-  makerID:    [ID64!]
-  active:     [ActiveStatus!]
-}
-
-input DeviceModelListOrder {
-  ID:         Ordering
-  name:       Ordering
-  typeID:     Ordering
-  makerID:    Ordering
-  active:     Ordering
-  createdAt:  Ordering
-  updatedAt:  Ordering
-}
-
-input DeviceModelVersionInput {
-  """
-  Minimum version
-  """
-  min: String
-
-  """
-  Maximum version
-  """
-  max: String
-
-  """
-  Name of the version
-  """
-  name: String
-}
-
-"""
-Input for querying device models
-"""
-input DeviceModelInput {
-  """
-  Name of the device model
-  """
-  name: String
-
-  """
-  Description of the device model
-  """
-  description: String
-
-  """
-  Expression to match the device model
-  """
-  matchExp: String
-
-  """
-  Device type ID
-  """
-  typeID: ID64
-
-  """
-  Device maker ID
-  """
-  makerID: ID64
-
-  """
-  Active status of the device model
-  """
-  active: ActiveStatus
-
-  """
-  List of device model versions
-  """
-  versions: [DeviceModelVersionInput!]
 }
 
 ###############################################################################
@@ -9548,14 +9343,9 @@ input DeviceModelInput {
 
 extend type Query {
   """
-  List of device types
-  """
-  listDeviceTypes: [DeviceType!] @acl(permissions: ["device_type.list.*"])
-
-  """
   Get device maker by ID
   """
-  deviceMaker(ID: ID64!): DeviceMakerPayload @acl(permissions: ["device_maker.view.*"])
+  deviceMaker(ID: ID64! = 0, codename: String! = ""): DeviceMakerPayload @acl(permissions: ["device_maker.view.*"])
 
   """
   List of device makers
@@ -9565,32 +9355,18 @@ extend type Query {
     order: DeviceMakerListOrder = null,
     page: Page = null
   ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
-
-  """
-  Get device model by ID
-  """
-  deviceModel(ID: ID64!): DeviceModelPayload @acl(permissions: ["device_model.view.*"])
-
-  """
-  List of device models
-  """
-  listDeviceModels(
-    filter: DeviceModelListFilter = null,
-    order: DeviceModelListOrder = null,
-    page: Page = null
-  ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
 }
 
 extend type Mutation {
   """
   Create new device maker
   """
-  createDeviceMaker(input: DeviceMakerInput!): DeviceMakerPayload @acl(permissions: ["device_maker.create.*"])
+  createDeviceMaker(input: DeviceMakerCreateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.create.*"])
 
   """
   Update device maker
   """
-  updateDeviceMaker(ID: ID64!, input: DeviceMakerInput!): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
+  updateDeviceMaker(ID: ID64!, input: DeviceMakerUpdateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
 
   """
   Delete device maker
@@ -9606,16 +9382,308 @@ extend type Mutation {
     """
     msg: String = null
   ): DeviceMakerPayload @acl(permissions: ["device_maker.delete.*"])
+}
+`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/device.model.graphql", Input: `"""
+Device model schema
+"""
+type DeviceModel {
+  """
+  Device model ID
+  """
+  ID: ID64!
 
+  """
+  Device model codename
+  """
+  codename: String!
+
+  """
+  Name of the device model
+  """
+  name: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Version of the device model
+  """
+  version: String!
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Device parent object if exists
+  """
+  parent: DeviceModel
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String!
+
+  """
+  Device type codename
+  """
+  typeCodename: String!
+
+  """
+  Device type object
+  """
+  type: DeviceType
+
+  """
+  Device maker codename
+  """
+  makerCodename: String!
+
+  """
+  Device maker object
+  """
+  maker: DeviceMaker
+
+  """
+  List of device model versions
+  """
+  versions: [DeviceModel!]
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus!
+
+  """
+  Creation time of the device model
+  """
+  createdAt: Time!
+
+  """
+  Last update time of the device model
+  """
+  updatedAt: Time!
+
+  """
+  Deletion time of the device model
+  """
+  deletedAt: Time
+}
+
+type DeviceModelEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The DeviceModel at the end of the edge
+  """
+  node: DeviceModel!
+}
+
+type DeviceModelConnection {
+  """
+  Total count of DeviceModel objects
+  """
+  totalCount: Int!
+
+  """
+  Edges of DeviceModel objects
+  """
+  edges: [DeviceModelEdge!]!
+
+  """
+  List of DeviceModel objects
+  """
+  list: [DeviceModel!]!
+
+  """
+  Information to aid in pagination
+  """
+  pageInfo: PageInfo!
+}
+
+type DeviceModelPayload {
+  """
+  A unique identifier for the client performing the mutation.
+  """
+  clientMutationID: String!
+
+  """
+  The DeviceModel that was created by this mutation.
+  """
+  modelID: ID64!
+
+  """
+  The DeviceModel object accessible by a client.
+  """
+  model: DeviceModel!
+}
+
+###############################################################################
+# Input
+
+input DeviceModelListOrder {
+  ID:             Ordering
+  codename:       Ordering
+  name:           Ordering
+  typeCodename:   Ordering
+  makerCodename:  Ordering
+  active:         Ordering
+  createdAt:      Ordering
+  updatedAt:      Ordering
+}
+
+"""
+Input model list filter
+"""
+input DeviceModelListFilter {
+  ID:             [ID64!]
+  codename:       [String!]
+  name:           [String!]
+  typeCodename:   [String!]
+  makerCodename:  [String!]
+  active:         [ActiveStatus!]
+}
+
+"""
+Input for querying create device models
+"""
+input DeviceModelCreateInput {
+  """
+  Name of the device model
+  """
+  name: String! @length(min: 1, max: 128, trim: true)
+
+  """
+  Code name of the device model
+  """
+  codename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Description of the device model
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Version of the device model
+  """
+  version: String! @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true)
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Device type codename
+  """
+  typeCodename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Device maker codename
+  """
+  makerCodename: String! @length(min: 1, max: 64, trim: true)
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus!
+}
+
+"""
+Input for querying update device models
+"""
+input DeviceModelUpdateInput {
+  """
+  Name of the device model
+  """
+  name: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Code name of the device model
+  """
+  codename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Description of the device model
+  """
+  description: String @length(min: 1, max: 1024, trim: true, ornil: true)
+
+  """
+  Version of the device model
+  """
+  version: String @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true, ornil: true)
+
+  """
+  Device parent ID
+  """
+  parentID: ID64
+
+  """
+  Expression to match the device model
+  """
+  matchExp: String @length(min: 1, max: 128, trim: true, ornil: true)
+
+  """
+  Device type codename
+  """
+  typeCodename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Device maker codename
+  """
+  makerCodename: String @length(min: 1, max: 64, trim: true, ornil: true)
+
+  """
+  Active status of the device model
+  """
+  active: ActiveStatus
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get device model by ID
+  """
+  deviceModel(ID: ID64! = 0, codename: String! = ""): DeviceModelPayload @acl(permissions: ["device_model.view.*"])
+
+  """
+  List of device models
+  """
+  listDeviceModels(
+    filter: DeviceModelListFilter = null,
+    order: DeviceModelListOrder = null,
+    page: Page = null
+  ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
+}
+
+extend type Mutation {
   """
   Create new device model
   """
-  createDeviceModel(input: DeviceModelInput!): DeviceModelPayload @acl(permissions: ["device_model.create.*"])
+  createDeviceModel(input: DeviceModelCreateInput!): DeviceModelPayload @acl(permissions: ["device_model.create.*"])
 
   """
   Update device model
   """
-  updateDeviceModel(ID: ID64!, input: DeviceModelInput!): DeviceModelPayload @acl(permissions: ["device_model.update.*"])
+  updateDeviceModel(
+    ID: ID64!,
+    input: DeviceModelUpdateInput!
+  ): DeviceModelPayload @acl(permissions: ["device_model.update.*"])
 
   """
   Delete device model
@@ -9632,6 +9700,49 @@ extend type Mutation {
     msg: String = null
   ): DeviceModelPayload @acl(permissions: ["device_model.delete.*"])
 }`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/device.type.graphql", Input: `"""
+Device type schema
+"""
+type DeviceType {
+  """
+  Device type ID
+  """
+  ID: ID64!
+
+  """
+  Name of the device type
+  """
+  name: String!
+
+  """
+  Codename of the device type, equivalent to the device type ID
+  Example: "smartphone", "tablet", "smartwatch", etc.
+  """
+  codename: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Active status of the device type
+  """
+  active: ActiveStatus!
+}
+
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  List of device types
+  """
+  listDeviceTypes: [DeviceType!] @acl(permissions: ["device_type.list.*"])
+}
+`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/directives.graphql", Input: `# Validation directives
 directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
@@ -11365,18 +11476,18 @@ func (ec *executionContext) field_Mutation_createDeviceMaker_args(ctx context.Co
 func (ec *executionContext) field_Mutation_createDeviceMaker_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.DeviceMakerInput, error) {
+) (models.DeviceMakerCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.DeviceMakerInput
+		var zeroVal models.DeviceMakerCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNDeviceMakerInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerInput(ctx, tmp)
+		return ec.unmarshalNDeviceMakerCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.DeviceMakerInput
+	var zeroVal models.DeviceMakerCreateInput
 	return zeroVal, nil
 }
 
@@ -11393,18 +11504,18 @@ func (ec *executionContext) field_Mutation_createDeviceModel_args(ctx context.Co
 func (ec *executionContext) field_Mutation_createDeviceModel_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.DeviceModelInput, error) {
+) (models.DeviceModelCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.DeviceModelInput
+		var zeroVal models.DeviceModelCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNDeviceModelInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelInput(ctx, tmp)
+		return ec.unmarshalNDeviceModelCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.DeviceModelInput
+	var zeroVal models.DeviceModelCreateInput
 	return zeroVal, nil
 }
 
@@ -13412,18 +13523,18 @@ func (ec *executionContext) field_Mutation_updateDeviceMaker_argsID(
 func (ec *executionContext) field_Mutation_updateDeviceMaker_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.DeviceMakerInput, error) {
+) (models.DeviceMakerUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.DeviceMakerInput
+		var zeroVal models.DeviceMakerUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNDeviceMakerInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerInput(ctx, tmp)
+		return ec.unmarshalNDeviceMakerUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.DeviceMakerInput
+	var zeroVal models.DeviceMakerUpdateInput
 	return zeroVal, nil
 }
 
@@ -13463,18 +13574,18 @@ func (ec *executionContext) field_Mutation_updateDeviceModel_argsID(
 func (ec *executionContext) field_Mutation_updateDeviceModel_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.DeviceModelInput, error) {
+) (models.DeviceModelUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.DeviceModelInput
+		var zeroVal models.DeviceModelUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNDeviceModelInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelInput(ctx, tmp)
+		return ec.unmarshalNDeviceModelUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.DeviceModelInput
+	var zeroVal models.DeviceModelUpdateInput
 	return zeroVal, nil
 }
 
@@ -14238,6 +14349,11 @@ func (ec *executionContext) field_Query_deviceMaker_args(ctx context.Context, ra
 		return nil, err
 	}
 	args["ID"] = arg0
+	arg1, err := ec.field_Query_deviceMaker_argsCodename(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["codename"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Query_deviceMaker_argsID(
@@ -14258,6 +14374,24 @@ func (ec *executionContext) field_Query_deviceMaker_argsID(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_deviceMaker_argsCodename(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["codename"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+	if tmp, ok := rawArgs["codename"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_deviceModel_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -14266,6 +14400,11 @@ func (ec *executionContext) field_Query_deviceModel_args(ctx context.Context, ra
 		return nil, err
 	}
 	args["ID"] = arg0
+	arg1, err := ec.field_Query_deviceModel_argsCodename(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["codename"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Query_deviceModel_argsID(
@@ -14283,6 +14422,24 @@ func (ec *executionContext) field_Query_deviceModel_argsID(
 	}
 
 	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_deviceModel_argsCodename(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["codename"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+	if tmp, ok := rawArgs["codename"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -23609,6 +23766,47 @@ func (ec *executionContext) fieldContext_DeviceMaker_ID(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _DeviceMaker_codename(ctx context.Context, field graphql.CollectedField, obj *models.DeviceMaker) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceMaker_codename(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Codename, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceMaker_codename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceMaker",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _DeviceMaker_name(ctx context.Context, field graphql.CollectedField, obj *models.DeviceMaker) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DeviceMaker_name(ctx, field)
 	if err != nil {
@@ -23732,56 +23930,6 @@ func (ec *executionContext) fieldContext_DeviceMaker_matchExp(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceMaker_types(ctx context.Context, field graphql.CollectedField, obj *models.DeviceMaker) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceMaker_types(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Types, nil
-	})
-
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.DeviceType)
-	fc.Result = res
-	return ec.marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_DeviceMaker_types(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "DeviceMaker",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "ID":
-				return ec.fieldContext_DeviceType_ID(ctx, field)
-			case "name":
-				return ec.fieldContext_DeviceType_name(ctx, field)
-			case "description":
-				return ec.fieldContext_DeviceType_description(ctx, field)
-			case "models":
-				return ec.fieldContext_DeviceType_models(ctx, field)
-			case "active":
-				return ec.fieldContext_DeviceType_active(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _DeviceMaker_models(ctx context.Context, field graphql.CollectedField, obj *models.DeviceMaker) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DeviceMaker_models(ctx, field)
 	if err != nil {
@@ -23817,18 +23965,26 @@ func (ec *executionContext) fieldContext_DeviceMaker_models(_ context.Context, f
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceModel_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
-			case "typeID":
-				return ec.fieldContext_DeviceModel_typeID(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
 			case "type":
 				return ec.fieldContext_DeviceModel_type(ctx, field)
-			case "makerID":
-				return ec.fieldContext_DeviceModel_makerID(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
 			case "maker":
 				return ec.fieldContext_DeviceModel_maker(ctx, field)
 			case "versions":
@@ -24135,14 +24291,14 @@ func (ec *executionContext) fieldContext_DeviceMakerConnection_list(_ context.Co
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceMaker_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceMaker_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceMaker_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceMaker_description(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceMaker_matchExp(ctx, field)
-			case "types":
-				return ec.fieldContext_DeviceMaker_types(ctx, field)
 			case "models":
 				return ec.fieldContext_DeviceMaker_models(ctx, field)
 			case "active":
@@ -24296,14 +24452,14 @@ func (ec *executionContext) fieldContext_DeviceMakerEdge_node(_ context.Context,
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceMaker_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceMaker_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceMaker_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceMaker_description(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceMaker_matchExp(ctx, field)
-			case "types":
-				return ec.fieldContext_DeviceMaker_types(ctx, field)
 			case "models":
 				return ec.fieldContext_DeviceMaker_models(ctx, field)
 			case "active":
@@ -24441,14 +24597,14 @@ func (ec *executionContext) fieldContext_DeviceMakerPayload_maker(_ context.Cont
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceMaker_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceMaker_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceMaker_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceMaker_description(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceMaker_matchExp(ctx, field)
-			case "types":
-				return ec.fieldContext_DeviceMaker_types(ctx, field)
 			case "models":
 				return ec.fieldContext_DeviceMaker_models(ctx, field)
 			case "active":
@@ -24502,6 +24658,47 @@ func (ec *executionContext) fieldContext_DeviceModel_ID(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DeviceModel_codename(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_codename(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Codename, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceModel_codename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceModel",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -24589,6 +24786,159 @@ func (ec *executionContext) fieldContext_DeviceModel_description(_ context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _DeviceModel_version(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_version(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Version, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceModel_version(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceModel",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DeviceModel_parentID(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_parentID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ParentID, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚖuint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceModel_parentID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceModel",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DeviceModel_parent(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_parent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Parent, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.DeviceModel)
+	fc.Result = res
+	return ec.marshalODeviceModel2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModel(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceModel_parent(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceModel",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceModel_name(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
+			case "matchExp":
+				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
+			case "type":
+				return ec.fieldContext_DeviceModel_type(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
+			case "maker":
+				return ec.fieldContext_DeviceModel_maker(ctx, field)
+			case "versions":
+				return ec.fieldContext_DeviceModel_versions(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceModel_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_DeviceModel_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_DeviceModel_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _DeviceModel_matchExp(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DeviceModel_matchExp(ctx, field)
 	if err != nil {
@@ -24630,8 +24980,8 @@ func (ec *executionContext) fieldContext_DeviceModel_matchExp(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceModel_typeID(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceModel_typeID(ctx, field)
+func (ec *executionContext) _DeviceModel_typeCodename(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_typeCodename(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -24644,7 +24994,7 @@ func (ec *executionContext) _DeviceModel_typeID(ctx context.Context, field graph
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeID, nil
+		return obj.TypeCodename, nil
 	})
 
 	if resTmp == nil {
@@ -24653,19 +25003,19 @@ func (ec *executionContext) _DeviceModel_typeID(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(uint64)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNID642uint64(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_DeviceModel_typeID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_DeviceModel_typeCodename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "DeviceModel",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID64 does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -24708,10 +25058,10 @@ func (ec *executionContext) fieldContext_DeviceModel_type(_ context.Context, fie
 				return ec.fieldContext_DeviceType_ID(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceType_name(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceType_codename(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceType_description(ctx, field)
-			case "models":
-				return ec.fieldContext_DeviceType_models(ctx, field)
 			case "active":
 				return ec.fieldContext_DeviceType_active(ctx, field)
 			}
@@ -24721,8 +25071,8 @@ func (ec *executionContext) fieldContext_DeviceModel_type(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceModel_makerID(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceModel_makerID(ctx, field)
+func (ec *executionContext) _DeviceModel_makerCodename(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_makerCodename(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -24735,7 +25085,7 @@ func (ec *executionContext) _DeviceModel_makerID(ctx context.Context, field grap
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MakerID, nil
+		return obj.MakerCodename, nil
 	})
 
 	if resTmp == nil {
@@ -24744,19 +25094,19 @@ func (ec *executionContext) _DeviceModel_makerID(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(uint64)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNID642uint64(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_DeviceModel_makerID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_DeviceModel_makerCodename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "DeviceModel",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID64 does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -24797,14 +25147,14 @@ func (ec *executionContext) fieldContext_DeviceModel_maker(_ context.Context, fi
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceMaker_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceMaker_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceMaker_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceMaker_description(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceMaker_matchExp(ctx, field)
-			case "types":
-				return ec.fieldContext_DeviceMaker_types(ctx, field)
 			case "models":
 				return ec.fieldContext_DeviceMaker_models(ctx, field)
 			case "active":
@@ -24842,9 +25192,9 @@ func (ec *executionContext) _DeviceModel_versions(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.DeviceModelVersion)
+	res := resTmp.([]*models.DeviceModel)
 	fc.Result = res
-	return ec.marshalODeviceModelVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionᚄ(ctx, field.Selections, res)
+	return ec.marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_DeviceModel_versions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24855,14 +25205,42 @@ func (ec *executionContext) fieldContext_DeviceModel_versions(_ context.Context,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "min":
-				return ec.fieldContext_DeviceModelVersion_min(ctx, field)
-			case "max":
-				return ec.fieldContext_DeviceModelVersion_max(ctx, field)
+			case "ID":
+				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
 			case "name":
-				return ec.fieldContext_DeviceModelVersion_name(ctx, field)
+				return ec.fieldContext_DeviceModel_name(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
+			case "matchExp":
+				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
+			case "type":
+				return ec.fieldContext_DeviceModel_type(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
+			case "maker":
+				return ec.fieldContext_DeviceModel_maker(ctx, field)
+			case "versions":
+				return ec.fieldContext_DeviceModel_versions(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceModel_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_DeviceModel_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_DeviceModel_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type DeviceModelVersion", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
 		},
 	}
 	return fc, nil
@@ -25155,18 +25533,26 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_list(_ context.Co
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceModel_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
-			case "typeID":
-				return ec.fieldContext_DeviceModel_typeID(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
 			case "type":
 				return ec.fieldContext_DeviceModel_type(ctx, field)
-			case "makerID":
-				return ec.fieldContext_DeviceModel_makerID(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
 			case "maker":
 				return ec.fieldContext_DeviceModel_maker(ctx, field)
 			case "versions":
@@ -25322,18 +25708,26 @@ func (ec *executionContext) fieldContext_DeviceModelEdge_node(_ context.Context,
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceModel_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
-			case "typeID":
-				return ec.fieldContext_DeviceModel_typeID(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
 			case "type":
 				return ec.fieldContext_DeviceModel_type(ctx, field)
-			case "makerID":
-				return ec.fieldContext_DeviceModel_makerID(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
 			case "maker":
 				return ec.fieldContext_DeviceModel_maker(ctx, field)
 			case "versions":
@@ -25473,18 +25867,26 @@ func (ec *executionContext) fieldContext_DeviceModelPayload_model(_ context.Cont
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
 			case "name":
 				return ec.fieldContext_DeviceModel_name(ctx, field)
 			case "description":
 				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
 			case "matchExp":
 				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
-			case "typeID":
-				return ec.fieldContext_DeviceModel_typeID(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
 			case "type":
 				return ec.fieldContext_DeviceModel_type(ctx, field)
-			case "makerID":
-				return ec.fieldContext_DeviceModel_makerID(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
 			case "maker":
 				return ec.fieldContext_DeviceModel_maker(ctx, field)
 			case "versions":
@@ -25499,129 +25901,6 @@ func (ec *executionContext) fieldContext_DeviceModelPayload_model(_ context.Cont
 				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _DeviceModelVersion_min(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModelVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceModelVersion_min(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Min, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_DeviceModelVersion_min(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "DeviceModelVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _DeviceModelVersion_max(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModelVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceModelVersion_max(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Max, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_DeviceModelVersion_max(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "DeviceModelVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _DeviceModelVersion_name(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModelVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceModelVersion_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_DeviceModelVersion_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "DeviceModelVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -25709,6 +25988,47 @@ func (ec *executionContext) fieldContext_DeviceType_name(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _DeviceType_codename(ctx context.Context, field graphql.CollectedField, obj *models.DeviceType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceType_codename(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Codename, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceType_codename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _DeviceType_description(ctx context.Context, field graphql.CollectedField, obj *models.DeviceType) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DeviceType_description(ctx, field)
 	if err != nil {
@@ -25745,72 +26065,6 @@ func (ec *executionContext) fieldContext_DeviceType_description(_ context.Contex
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _DeviceType_models(ctx context.Context, field graphql.CollectedField, obj *models.DeviceType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_DeviceType_models(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Models, nil
-	})
-
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.DeviceModel)
-	fc.Result = res
-	return ec.marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_DeviceType_models(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "DeviceType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "ID":
-				return ec.fieldContext_DeviceModel_ID(ctx, field)
-			case "name":
-				return ec.fieldContext_DeviceModel_name(ctx, field)
-			case "description":
-				return ec.fieldContext_DeviceModel_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
-			case "typeID":
-				return ec.fieldContext_DeviceModel_typeID(ctx, field)
-			case "type":
-				return ec.fieldContext_DeviceModel_type(ctx, field)
-			case "makerID":
-				return ec.fieldContext_DeviceModel_makerID(ctx, field)
-			case "maker":
-				return ec.fieldContext_DeviceModel_maker(ctx, field)
-			case "versions":
-				return ec.fieldContext_DeviceModel_versions(ctx, field)
-			case "active":
-				return ec.fieldContext_DeviceModel_active(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_DeviceModel_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_DeviceModel_updatedAt(ctx, field)
-			case "deletedAt":
-				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
 		},
 	}
 	return fc, nil
@@ -30342,7 +30596,7 @@ func (ec *executionContext) _Mutation_setOption(ctx context.Context, field graph
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
-			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.update"})
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.set.*"})
 			if err != nil {
 				var zeroVal *models1.OptionPayload
 				return zeroVal, err
@@ -32048,7 +32302,7 @@ func (ec *executionContext) _Mutation_createDeviceMaker(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateDeviceMaker(rctx, fc.Args["input"].(models.DeviceMakerInput))
+			return ec.resolvers.Mutation().CreateDeviceMaker(rctx, fc.Args["input"].(models.DeviceMakerCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -32132,7 +32386,7 @@ func (ec *executionContext) _Mutation_updateDeviceMaker(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateDeviceMaker(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.DeviceMakerInput))
+			return ec.resolvers.Mutation().UpdateDeviceMaker(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.DeviceMakerUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -32300,7 +32554,7 @@ func (ec *executionContext) _Mutation_createDeviceModel(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateDeviceModel(rctx, fc.Args["input"].(models.DeviceModelInput))
+			return ec.resolvers.Mutation().CreateDeviceModel(rctx, fc.Args["input"].(models.DeviceModelCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -32384,7 +32638,7 @@ func (ec *executionContext) _Mutation_updateDeviceModel(ctx context.Context, fie
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateDeviceModel(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.DeviceModelInput))
+			return ec.resolvers.Mutation().UpdateDeviceModel(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.DeviceModelUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -38129,7 +38383,7 @@ func (ec *executionContext) _Query_option(ctx context.Context, field graphql.Col
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
-			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.view"})
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.get.*"})
 			if err != nil {
 				var zeroVal *models1.OptionPayload
 				return zeroVal, err
@@ -38216,7 +38470,7 @@ func (ec *executionContext) _Query_listOptions(ctx context.Context, field graphq
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
-			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.list"})
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.list.*"})
 			if err != nil {
 				var zeroVal *connectors.CollectionConnection[models1.Option, models1.OptionEdge]
 				return zeroVal, err
@@ -39505,83 +39759,6 @@ func (ec *executionContext) fieldContext_Query_countries(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_listDeviceTypes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_listDeviceTypes(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
-		directive0 := func(rctx context.Context) (any, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListDeviceTypes(rctx)
-		}
-
-		directive1 := func(ctx context.Context) (any, error) {
-			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"device_type.list.*"})
-			if err != nil {
-				var zeroVal []*models.DeviceType
-				return zeroVal, err
-			}
-			if ec.directives.Acl == nil {
-				var zeroVal []*models.DeviceType
-				return zeroVal, errors.New("directive acl is not implemented")
-			}
-			return ec.directives.Acl(ctx, nil, directive0, permissions)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.([]*models.DeviceType); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be []*github.com/sspserver/api/internal/server/graphql/models.DeviceType`, tmp)
-	})
-
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.DeviceType)
-	fc.Result = res
-	return ec.marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_listDeviceTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "ID":
-				return ec.fieldContext_DeviceType_ID(ctx, field)
-			case "name":
-				return ec.fieldContext_DeviceType_name(ctx, field)
-			case "description":
-				return ec.fieldContext_DeviceType_description(ctx, field)
-			case "models":
-				return ec.fieldContext_DeviceType_models(ctx, field)
-			case "active":
-				return ec.fieldContext_DeviceType_active(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Query_deviceMaker(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_deviceMaker(ctx, field)
 	if err != nil {
@@ -39597,7 +39774,7 @@ func (ec *executionContext) _Query_deviceMaker(ctx context.Context, field graphq
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().DeviceMaker(rctx, fc.Args["ID"].(uint64))
+			return ec.resolvers.Query().DeviceMaker(rctx, fc.Args["ID"].(uint64), fc.Args["codename"].(string))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -39767,7 +39944,7 @@ func (ec *executionContext) _Query_deviceModel(ctx context.Context, field graphq
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().DeviceModel(rctx, fc.Args["ID"].(uint64))
+			return ec.resolvers.Query().DeviceModel(rctx, fc.Args["ID"].(uint64), fc.Args["codename"].(string))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -39918,6 +40095,83 @@ func (ec *executionContext) fieldContext_Query_listDeviceModels(ctx context.Cont
 	if fc.Args, err = ec.field_Query_listDeviceModels_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_listDeviceTypes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_listDeviceTypes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().ListDeviceTypes(rctx)
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"device_type.list.*"})
+			if err != nil {
+				var zeroVal []*models.DeviceType
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal []*models.DeviceType
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]*models.DeviceType); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []*github.com/sspserver/api/internal/server/graphql/models.DeviceType`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.DeviceType)
+	fc.Result = res
+	return ec.marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_listDeviceTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceType_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceType_name(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceType_codename(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceType_description(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceType_active(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -52156,44 +52410,195 @@ func (ec *executionContext) unmarshalInputCategoryListOrder(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDeviceMakerInput(ctx context.Context, obj any) (models.DeviceMakerInput, error) {
-	var it models.DeviceMakerInput
+func (ec *executionContext) unmarshalInputDeviceMakerCreateInput(ctx context.Context, obj any) (models.DeviceMakerCreateInput, error) {
+	var it models.DeviceMakerCreateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "matchExp", "active"}
+	fieldsInOrder := [...]string{"codename", "name", "description", "matchExp", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Codename = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Name = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Name = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "matchExp":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.MatchExp = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchExp = data
+			} else if tmp == nil {
+				it.MatchExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			data, err := ec.unmarshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -52211,7 +52616,7 @@ func (ec *executionContext) unmarshalInputDeviceMakerListFilter(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active"}
+	fieldsInOrder := [...]string{"ID", "codename", "name", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52225,6 +52630,13 @@ func (ec *executionContext) unmarshalInputDeviceMakerListFilter(ctx context.Cont
 				return it, err
 			}
 			it.ID = data
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Codename = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -52252,7 +52664,7 @@ func (ec *executionContext) unmarshalInputDeviceMakerListOrder(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "codename", "name", "active", "createdAt", "updatedAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52266,6 +52678,13 @@ func (ec *executionContext) unmarshalInputDeviceMakerListOrder(ctx context.Conte
 				return it, err
 			}
 			it.ID = data
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Codename = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -52300,14 +52719,217 @@ func (ec *executionContext) unmarshalInputDeviceMakerListOrder(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDeviceModelInput(ctx context.Context, obj any) (models.DeviceModelInput, error) {
-	var it models.DeviceModelInput
+func (ec *executionContext) unmarshalInputDeviceMakerUpdateInput(ctx context.Context, obj any) (models.DeviceMakerUpdateInput, error) {
+	var it models.DeviceMakerUpdateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "matchExp", "typeID", "makerID", "active", "versions"}
+	fieldsInOrder := [...]string{"codename", "name", "description", "matchExp", "active"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Codename = data
+			} else if tmp == nil {
+				it.Codename = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Name = data
+			} else if tmp == nil {
+				it.Name = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchExp = data
+			} else if tmp == nil {
+				it.MatchExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputDeviceModelCreateInput(ctx context.Context, obj any) (models.DeviceModelCreateInput, error) {
+	var it models.DeviceModelCreateInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"name", "codename", "description", "version", "parentID", "matchExp", "typeCodename", "makerCodename", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52316,53 +52938,311 @@ func (ec *executionContext) unmarshalInputDeviceModelInput(ctx context.Context, 
 		switch k {
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Name = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Name = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Codename = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^(\\d+(\\.\\d+){1,2})?$")
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Version = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Description = data
+			it.ParentID = data
 		case "matchExp":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.MatchExp = data
-		case "typeID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeID"))
-			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+
+			tmp, err := directive1(ctx)
 			if err != nil {
-				return it, err
+				return it, graphql.ErrorOnPath(ctx, err)
 			}
-			it.TypeID = data
-		case "makerID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerID"))
-			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if data, ok := tmp.(*string); ok {
+				it.MatchExp = data
+			} else if tmp == nil {
+				it.MatchExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "typeCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeCodename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
 			if err != nil {
-				return it, err
+				return it, graphql.ErrorOnPath(ctx, err)
 			}
-			it.MakerID = data
+			if data, ok := tmp.(string); ok {
+				it.TypeCodename = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "makerCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerCodename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.MakerCodename = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			data, err := ec.unmarshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Active = data
-		case "versions":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("versions"))
-			data, err := ec.unmarshalODeviceModelVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Versions = data
 		}
 	}
 
@@ -52376,7 +53256,7 @@ func (ec *executionContext) unmarshalInputDeviceModelListFilter(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "typeID", "makerID", "active"}
+	fieldsInOrder := [...]string{"ID", "codename", "name", "typeCodename", "makerCodename", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52390,6 +53270,13 @@ func (ec *executionContext) unmarshalInputDeviceModelListFilter(ctx context.Cont
 				return it, err
 			}
 			it.ID = data
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Codename = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -52397,20 +53284,20 @@ func (ec *executionContext) unmarshalInputDeviceModelListFilter(ctx context.Cont
 				return it, err
 			}
 			it.Name = data
-		case "typeID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeID"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+		case "typeCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeCodename"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.TypeID = data
-		case "makerID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerID"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			it.TypeCodename = data
+		case "makerCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerCodename"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.MakerID = data
+			it.MakerCodename = data
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOActiveStatus2ᚕgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatusᚄ(ctx, v)
@@ -52431,7 +53318,7 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "typeID", "makerID", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "codename", "name", "typeCodename", "makerCodename", "active", "createdAt", "updatedAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52445,6 +53332,13 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 				return it, err
 			}
 			it.ID = data
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Codename = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -52452,20 +53346,20 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 				return it, err
 			}
 			it.Name = data
-		case "typeID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeID"))
+		case "typeCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeCodename"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.TypeID = data
-		case "makerID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerID"))
+			it.TypeCodename = data
+		case "makerCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerCodename"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.MakerID = data
+			it.MakerCodename = data
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -52493,41 +53387,337 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDeviceModelVersionInput(ctx context.Context, obj any) (models.DeviceModelVersionInput, error) {
-	var it models.DeviceModelVersionInput
+func (ec *executionContext) unmarshalInputDeviceModelUpdateInput(ctx context.Context, obj any) (models.DeviceModelUpdateInput, error) {
+	var it models.DeviceModelUpdateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"min", "max", "name"}
+	fieldsInOrder := [...]string{"name", "codename", "description", "version", "parentID", "matchExp", "typeCodename", "makerCodename", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "min":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("min"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Min = data
-		case "max":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("max"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Max = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Name = data
+			} else if tmp == nil {
+				it.Name = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "codename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Codename = data
+			} else if tmp == nil {
+				it.Codename = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^(\\d+(\\.\\d+){1,2})?$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Version = data
+			} else if tmp == nil {
+				it.Version = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Name = data
+			it.ParentID = data
+		case "matchExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 128)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchExp = data
+			} else if tmp == nil {
+				it.MatchExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "typeCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeCodename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.TypeCodename = data
+			} else if tmp == nil {
+				it.TypeCodename = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "makerCodename":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("makerCodename"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 64)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MakerCodename = data
+			} else if tmp == nil {
+				it.MakerCodename = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
 		}
 	}
 
@@ -56822,6 +58012,11 @@ func (ec *executionContext) _DeviceMaker(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "codename":
+			out.Values[i] = ec._DeviceMaker_codename(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "name":
 			out.Values[i] = ec._DeviceMaker_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -56837,8 +58032,6 @@ func (ec *executionContext) _DeviceMaker(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "types":
-			out.Values[i] = ec._DeviceMaker_types(ctx, field, obj)
 		case "models":
 			out.Values[i] = ec._DeviceMaker_models(ctx, field, obj)
 		case "active":
@@ -57044,6 +58237,11 @@ func (ec *executionContext) _DeviceModel(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "codename":
+			out.Values[i] = ec._DeviceModel_codename(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "name":
 			out.Values[i] = ec._DeviceModel_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -57054,20 +58252,29 @@ func (ec *executionContext) _DeviceModel(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "version":
+			out.Values[i] = ec._DeviceModel_version(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "parentID":
+			out.Values[i] = ec._DeviceModel_parentID(ctx, field, obj)
+		case "parent":
+			out.Values[i] = ec._DeviceModel_parent(ctx, field, obj)
 		case "matchExp":
 			out.Values[i] = ec._DeviceModel_matchExp(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeID":
-			out.Values[i] = ec._DeviceModel_typeID(ctx, field, obj)
+		case "typeCodename":
+			out.Values[i] = ec._DeviceModel_typeCodename(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "type":
 			out.Values[i] = ec._DeviceModel_type(ctx, field, obj)
-		case "makerID":
-			out.Values[i] = ec._DeviceModel_makerID(ctx, field, obj)
+		case "makerCodename":
+			out.Values[i] = ec._DeviceModel_makerCodename(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -57262,55 +58469,6 @@ func (ec *executionContext) _DeviceModelPayload(ctx context.Context, sel ast.Sel
 	return out
 }
 
-var deviceModelVersionImplementors = []string{"DeviceModelVersion"}
-
-func (ec *executionContext) _DeviceModelVersion(ctx context.Context, sel ast.SelectionSet, obj *models.DeviceModelVersion) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, deviceModelVersionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("DeviceModelVersion")
-		case "min":
-			out.Values[i] = ec._DeviceModelVersion_min(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "max":
-			out.Values[i] = ec._DeviceModelVersion_max(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "name":
-			out.Values[i] = ec._DeviceModelVersion_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
 var deviceTypeImplementors = []string{"DeviceType"}
 
 func (ec *executionContext) _DeviceType(ctx context.Context, sel ast.SelectionSet, obj *models.DeviceType) graphql.Marshaler {
@@ -57332,13 +58490,16 @@ func (ec *executionContext) _DeviceType(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "codename":
+			out.Values[i] = ec._DeviceType_codename(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "description":
 			out.Values[i] = ec._DeviceType_description(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "models":
-			out.Values[i] = ec._DeviceType_models(ctx, field, obj)
 		case "active":
 			out.Values[i] = ec._DeviceType_active(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -59841,25 +61002,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "listDeviceTypes":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_listDeviceTypes(ctx, field)
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "deviceMaker":
 			field := field
 
@@ -59927,6 +61069,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_listDeviceModels(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "listDeviceTypes":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_listDeviceTypes(ctx, field)
 				return res
 			}
 
@@ -62987,6 +64148,11 @@ func (ec *executionContext) marshalNDeviceMaker2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._DeviceMaker(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNDeviceMakerCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerCreateInput(ctx context.Context, v any) (models.DeviceMakerCreateInput, error) {
+	res, err := ec.unmarshalInputDeviceMakerCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNDeviceMakerEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DeviceMakerEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -63041,8 +64207,8 @@ func (ec *executionContext) marshalNDeviceMakerEdge2ᚖgithubᚗcomᚋsspserver�
 	return ec._DeviceMakerEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNDeviceMakerInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerInput(ctx context.Context, v any) (models.DeviceMakerInput, error) {
-	res, err := ec.unmarshalInputDeviceMakerInput(ctx, v)
+func (ec *executionContext) unmarshalNDeviceMakerUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerUpdateInput(ctx context.Context, v any) (models.DeviceMakerUpdateInput, error) {
+	res, err := ec.unmarshalInputDeviceMakerUpdateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -63100,6 +64266,11 @@ func (ec *executionContext) marshalNDeviceModel2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._DeviceModel(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNDeviceModelCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelCreateInput(ctx context.Context, v any) (models.DeviceModelCreateInput, error) {
+	res, err := ec.unmarshalInputDeviceModelCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNDeviceModelEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DeviceModelEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -63154,24 +64325,9 @@ func (ec *executionContext) marshalNDeviceModelEdge2ᚖgithubᚗcomᚋsspserver�
 	return ec._DeviceModelEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNDeviceModelInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelInput(ctx context.Context, v any) (models.DeviceModelInput, error) {
-	res, err := ec.unmarshalInputDeviceModelInput(ctx, v)
+func (ec *executionContext) unmarshalNDeviceModelUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelUpdateInput(ctx context.Context, v any) (models.DeviceModelUpdateInput, error) {
+	res, err := ec.unmarshalInputDeviceModelUpdateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNDeviceModelVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersion(ctx context.Context, sel ast.SelectionSet, v *models.DeviceModelVersion) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._DeviceModelVersion(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNDeviceModelVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionInput(ctx context.Context, v any) (*models.DeviceModelVersionInput, error) {
-	res, err := ec.unmarshalInputDeviceModelVersionInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNDeviceType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceType(ctx context.Context, sel ast.SelectionSet, v *models.DeviceType) graphql.Marshaler {
@@ -65355,6 +66511,13 @@ func (ec *executionContext) marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserver�
 	return ret
 }
 
+func (ec *executionContext) marshalODeviceModel2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModel(ctx context.Context, sel ast.SelectionSet, v *models.DeviceModel) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._DeviceModel(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalODeviceModelConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -65383,73 +66546,6 @@ func (ec *executionContext) marshalODeviceModelPayload2ᚖgithubᚗcomᚋsspserv
 		return graphql.Null
 	}
 	return ec._DeviceModelPayload(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalODeviceModelVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DeviceModelVersion) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNDeviceModelVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersion(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) unmarshalODeviceModelVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionInputᚄ(ctx context.Context, v any) ([]*models.DeviceModelVersionInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*models.DeviceModelVersionInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNDeviceModelVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelVersionInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
 }
 
 func (ec *executionContext) marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DeviceType) graphql.Marshaler {

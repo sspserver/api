@@ -41,7 +41,7 @@ func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceMakerLis
 }
 
 // Create DeviceMaker is the resolver for the createDeviceMaker field.
-func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceMakerInput) (*qmodels.DeviceMakerPayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceMakerCreateInput) (*qmodels.DeviceMakerPayload, error) {
 	var object models.DeviceMaker
 	input.FillModel(&object)
 
@@ -57,7 +57,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceMakerInp
 }
 
 // Update DeviceMaker is the resolver for the updateDeviceMaker field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.DeviceMakerInput) (*qmodels.DeviceMakerPayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.DeviceMakerUpdateInput) (*qmodels.DeviceMakerPayload, error) {
 	object, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err
