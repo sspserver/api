@@ -530,7 +530,7 @@ type ComplexityRoot struct {
 		RevokeDirectAccessToken   func(childComplexity int, filter models1.DirectAccessTokenListFilter) int
 		RunApplication            func(childComplexity int, id uint64, msg *string) int
 		RunRTBSource              func(childComplexity int, id uint64) int
-		SetOption                 func(childComplexity int, name string, input models1.OptionInput) int
+		SetOption                 func(childComplexity int, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) int
 		SwitchAccount             func(childComplexity int, id uint64) int
 		UpdateAccount             func(childComplexity int, id uint64, input models1.AccountInput) int
 		UpdateAccountMember       func(childComplexity int, memberID uint64, member models1.MemberInput) int
@@ -989,7 +989,7 @@ type MutationResolver interface {
 	DeleteAuthClient(ctx context.Context, id string, msg *string) (*models1.AuthClientPayload, error)
 	GenerateDirectAccessToken(ctx context.Context, userID *uint64, description string, expiresAt *time.Time) (*models1.DirectAccessTokenPayload, error)
 	RevokeDirectAccessToken(ctx context.Context, filter models1.DirectAccessTokenListFilter) (*models1.StatusResponse, error)
-	SetOption(ctx context.Context, name string, input models1.OptionInput) (*models1.OptionPayload, error)
+	SetOption(ctx context.Context, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) (*models1.OptionPayload, error)
 	CreateRole(ctx context.Context, input models1.RBACRoleInput) (*models1.RBACRolePayload, error)
 	UpdateRole(ctx context.Context, id uint64, input models1.RBACRoleInput) (*models1.RBACRolePayload, error)
 	DeleteRole(ctx context.Context, id uint64, msg *string) (*models1.RBACRolePayload, error)
@@ -3608,7 +3608,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.SetOption(childComplexity, args["name"].(string), args["input"].(models1.OptionInput)), true
+		return e.complexity.Mutation.SetOption(childComplexity, args["name"].(string), args["value"].(*types.NullableJSON), args["type"].(models1.OptionType), args["targetID"].(uint64)), true
 
 	case "Mutation.switchAccount":
 		if e.complexity.Mutation.SwitchAccount == nil {
@@ -6060,7 +6060,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputOSListFilter,
 		ec.unmarshalInputOSListOrder,
 		ec.unmarshalInputOSUpdateInput,
-		ec.unmarshalInputOptionInput,
 		ec.unmarshalInputOptionListFilter,
 		ec.unmarshalInputOptionListOrder,
 		ec.unmarshalInputPage,
@@ -7728,27 +7727,6 @@ input OptionListOrder {
 }
 
 ###############################################################################
-# Mutations
-###############################################################################
-
-input OptionInput {
-  """
-  The type of the option.
-  """
-  optionType: OptionType!
-
-  """
-  The target ID of the option.
-  """
-  targetID: ID64!
-
-  """
-  Value of the option.
-  """
-  value: NullableJSON
-}
-
-###############################################################################
 # Query declarations
 ###############################################################################
 
@@ -7756,7 +7734,7 @@ extend type Query {
   """
   Get the option value by name
   """
-  option(name: String!, optionType: OptionType!, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
+  option(name: String!, optionType: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
 
   """
   List of the option values which can be filtered and ordered by some fields
@@ -7772,7 +7750,7 @@ extend type Mutation {
   """
   Set the option value
   """
-  setOption(name: String!, input: OptionInput!): OptionPayload! @hasPermissions(permissions: ["option.set.*"])
+  setOption(name: String!, value: NullableJSON, type: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.set.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../submodules/blaze-api/protocol/graphql/schemas/pagination.graphql", Input: `
@@ -13269,11 +13247,21 @@ func (ec *executionContext) field_Mutation_setOption_args(ctx context.Context, r
 		return nil, err
 	}
 	args["name"] = arg0
-	arg1, err := ec.field_Mutation_setOption_argsInput(ctx, rawArgs)
+	arg1, err := ec.field_Mutation_setOption_argsValue(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["input"] = arg1
+	args["value"] = arg1
+	arg2, err := ec.field_Mutation_setOption_argsType(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["type"] = arg2
+	arg3, err := ec.field_Mutation_setOption_argsTargetID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["targetID"] = arg3
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_setOption_argsName(
@@ -13294,21 +13282,57 @@ func (ec *executionContext) field_Mutation_setOption_argsName(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_setOption_argsInput(
+func (ec *executionContext) field_Mutation_setOption_argsValue(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models1.OptionInput, error) {
-	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models1.OptionInput
+) (*types.NullableJSON, error) {
+	if _, ok := rawArgs["value"]; !ok {
+		var zeroVal *types.NullableJSON
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNOptionInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionInput(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("value"))
+	if tmp, ok := rawArgs["value"]; ok {
+		return ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, tmp)
 	}
 
-	var zeroVal models1.OptionInput
+	var zeroVal *types.NullableJSON
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_setOption_argsType(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (models1.OptionType, error) {
+	if _, ok := rawArgs["type"]; !ok {
+		var zeroVal models1.OptionType
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+	if tmp, ok := rawArgs["type"]; ok {
+		return ec.unmarshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, tmp)
+	}
+
+	var zeroVal models1.OptionType
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_setOption_argsTargetID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["targetID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
+	if tmp, ok := rawArgs["targetID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
 	return zeroVal, nil
 }
 
@@ -31129,7 +31153,7 @@ func (ec *executionContext) _Mutation_setOption(ctx context.Context, field graph
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().SetOption(rctx, fc.Args["name"].(string), fc.Args["input"].(models1.OptionInput))
+			return ec.resolvers.Mutation().SetOption(rctx, fc.Args["name"].(string), fc.Args["value"].(*types.NullableJSON), fc.Args["type"].(models1.OptionType), fc.Args["targetID"].(uint64))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -55979,47 +56003,6 @@ func (ec *executionContext) unmarshalInputOSUpdateInput(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputOptionInput(ctx context.Context, obj any) (models1.OptionInput, error) {
-	var it models1.OptionInput
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"optionType", "targetID", "value"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "optionType":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionType"))
-			data, err := ec.unmarshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.OptionType = data
-		case "targetID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
-			data, err := ec.unmarshalNID642uint64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TargetID = data
-		case "value":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("value"))
-			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Value = data
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputOptionListFilter(ctx context.Context, obj any) (models1.OptionListFilter, error) {
 	var it models1.OptionListFilter
 	asMap := map[string]any{}
@@ -65773,11 +65756,6 @@ func (ec *executionContext) marshalNOptionEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋ
 		return graphql.Null
 	}
 	return ec._OptionEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNOptionInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionInput(ctx context.Context, v any) (models1.OptionInput, error) {
-	res, err := ec.unmarshalInputOptionInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNOptionPayload2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionPayload(ctx context.Context, sel ast.SelectionSet, v models1.OptionPayload) graphql.Marshaler {
