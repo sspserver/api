@@ -23,8 +23,16 @@ func NewQueryResolver() *QueryResolver {
 }
 
 // Get DeviceModel is the resolver for the DeviceModel field.
-func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.DeviceModelPayload, error) {
-	object, err := r.uc.Get(ctx, id)
+func (r *QueryResolver) Get(ctx context.Context, id uint64, codename string) (*qmodels.DeviceModelPayload, error) {
+	var (
+		object *models.DeviceModel
+		err    error
+	)
+	if codename != "" {
+		object, err = r.uc.GetByCodename(ctx, codename)
+	} else {
+		object, err = r.uc.Get(ctx, id)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -41,9 +49,11 @@ func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceModelLis
 }
 
 // Create DeviceModel is the resolver for the createDeviceModel field.
-func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelInput) (*qmodels.DeviceModelPayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelCreateInput) (*qmodels.DeviceModelPayload, error) {
 	var object models.DeviceModel
-	input.FillModel(&object)
+	if err := input.FillModel(&object); err != nil {
+		return nil, err
+	}
 
 	id, err := r.uc.Create(ctx, &object)
 	if err != nil {
@@ -52,7 +62,6 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelInp
 
 	// Get object to return
 	nObject, err := r.uc.Get(ctx, id)
-	fmt.Println(">>> CREATE", nObject, err)
 	if err != nil {
 		nObject = &object
 	}
@@ -65,7 +74,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelInp
 }
 
 // Update DeviceModel is the resolver for the updateDeviceModel field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.DeviceModelInput) (*qmodels.DeviceModelPayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.DeviceModelUpdateInput) (*qmodels.DeviceModelPayload, error) {
 	object, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err

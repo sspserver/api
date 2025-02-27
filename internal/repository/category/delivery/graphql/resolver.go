@@ -6,6 +6,7 @@ import (
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
+	"github.com/geniusrabbit/blaze-api/repository"
 
 	"github.com/sspserver/api/internal/repository/category"
 	"github.com/sspserver/api/internal/repository/category/usecase"
@@ -38,6 +39,30 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.CategoryPa
 // List Categorys is the resolver for the listCategorys field.
 func (r *QueryResolver) List(ctx context.Context, filter *qmodels.CategoryListFilter, order *qmodels.CategoryListOrder, page *qmodels.Page) (*connectors.CategoryConnection, error) {
 	return connectors.NewCategoryConnection(ctx, r.uc, filter, order, page), nil
+}
+
+// Childrens is the resolver for the childrens field.
+func (r *QueryResolver) Childrens(ctx context.Context, obj *qmodels.Category) ([]*qmodels.Category, error) {
+	if obj == nil {
+		return nil, nil
+	}
+	if len(obj.Childrens) > 0 {
+		return obj.Childrens, nil
+	}
+	list, err := r.uc.FetchList(ctx,
+		&repository.PreloadOption{
+			Fields: []string{`Childrens`},
+		},
+		&category.Filter{
+			ParentID: []uint64{obj.ID},
+			Active:   &[]models.ActiveStatus{models.StatusActive}[0],
+		},
+		&category.ListOrder{Position: models.OrderAsc},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return qmodels.FromCategoryModelList(list), nil
 }
 
 // Create Category is the resolver for the createCategory field.

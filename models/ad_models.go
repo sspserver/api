@@ -8,19 +8,17 @@ import (
 
 // Models set of types
 type (
-	Format             = models.Format
-	Application        = models.Application
-	Zone               = models.Zone
-	RTBSource          = models.RTBSource
-	Category           = models.Category
-	OS                 = models.OS
-	OSVersion          = models.OSVersion
-	Browser            = models.Browser
-	BrowserVersion     = models.BrowserVersion
-	DeviceType         = models.DeviceType
-	DeviceMaker        = models.DeviceMaker
-	DeviceModel        = models.DeviceModel
-	DeviceModelVersion = models.DeviceModelVersion
+	Format         = models.Format
+	Application    = models.Application
+	Zone           = models.Zone
+	RTBSource      = models.RTBSource
+	Category       = models.Category
+	OS             = models.OS
+	Browser        = models.Browser
+	BrowserVersion = models.BrowserVersion
+	DeviceType     = models.DeviceType
+	DeviceMaker    = models.DeviceMaker
+	DeviceModel    = models.DeviceModel
 )
 
 var DeviceTypeList = models.DeviceTypeList

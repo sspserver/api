@@ -1,0 +1,42 @@
+"""
+Device type schema
+"""
+type DeviceType {
+  """
+  Device type ID
+  """
+  ID: ID64!
+
+  """
+  Name of the device type
+  """
+  name: String!
+
+  """
+  Codename of the device type, equivalent to the device type ID
+  Example: "smartphone", "tablet", "smartwatch", etc.
+  """
+  codename: String!
+
+  """
+  Description of the device type
+  """
+  description: String!
+
+  """
+  Active status of the device type
+  """
+  active: ActiveStatus!
+}
+
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  List of device types
+  """
+  listDeviceTypes: [DeviceType!] @acl(permissions: ["device_type.list.*"])
+}

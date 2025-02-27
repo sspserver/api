@@ -171,18 +171,19 @@ input ApplicationCreateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID: ID64
+  accountID:    ID64
 
-  title: String! @length(min: 3, max: 255, trim: true)
-  description: String
+  title:        String! @length(min: 3, max: 255, trim: true)
+  description:  String  @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String! @length(min: 1, max: 255, trim: true)
-  type: ApplicationType!
-  platform: PlatformType!
-  categories: [Int!]
+  URI:          String! @length(min: 1, max: 255, trim: true)
+
+  type:         ApplicationType
+  platform:     PlatformType
+  categories:   [Int!]
   revenueShare: Float
 }
 
@@ -191,18 +192,19 @@ input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID: ID64
+  accountID:    ID64
 
-  title: String
-  description: String
+  title:        String @notempty(trim: true, ornil: true)
+  description:  String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", strict: false)
-  type: ApplicationType
-  platform: PlatformType
-  categories: [Int!]
+  URI:          String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
+
+  type:         ApplicationType
+  platform:     PlatformType
+  categories:   [Int!]
   revenueShare: Float
 }
 

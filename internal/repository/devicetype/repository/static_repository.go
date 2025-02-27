@@ -25,6 +25,16 @@ func (r *StaticRepository) Get(ctx context.Context, id uint64) (*models.DeviceTy
 	return nil, nil
 }
 
+// GetByCodename return object by codename
+func (r *StaticRepository) GetByCodename(ctx context.Context, codename string) (*models.DeviceType, error) {
+	for _, v := range models.DeviceTypeList {
+		if v.Codename == codename {
+			return v, nil
+		}
+	}
+	return nil, nil
+}
+
 // List return list of objects
 func (r *StaticRepository) FetchList(ctx context.Context) ([]*models.DeviceType, error) {
 	return models.DeviceTypeList, nil

@@ -10,12 +10,7 @@ import (
 	"github.com/sspserver/api/internal/server/graphql/models"
 )
 
-// Continents is the resolver for the continents field.
-func (r *queryResolver) Continents(ctx context.Context) ([]*models.Continent, error) {
-	return r.geo.Continents(ctx)
-}
-
-// Countries is the resolver for the countries field.
-func (r *queryResolver) Countries(ctx context.Context) ([]*models.Country, error) {
-	return r.geo.Countries(ctx)
+// ListDeviceTypes is the resolver for the listDeviceTypes field.
+func (r *queryResolver) ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error) {
+	return r.device_types.List(ctx)
 }

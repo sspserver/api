@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
+	"github.com/geniusrabbit/blaze-api/repository"
 
 	"github.com/sspserver/api/internal/repository/os"
 	"github.com/sspserver/api/internal/repository/os/usecase"
@@ -35,12 +36,27 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.OSPayload,
 }
 
 // List OS is the resolver for the listOS field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.OSListFilter, order *qmodels.OSListOrder, page *qmodels.Page) (*connectors.OSConnection, error) {
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.OSListFilter, order []*qmodels.OSListOrder, page *qmodels.Page) (*connectors.OSConnection, error) {
 	return connectors.NewOSConnection(ctx, r.uc, filter, order, page), nil
 }
 
+// Versions is the resolver for the versions field.
+func (r *QueryResolver) Versions(ctx context.Context, obj *qmodels.Os) ([]*qmodels.Os, error) {
+	if len(obj.Versions) > 0 {
+		return obj.Versions, nil
+	}
+	osList, err := r.uc.FetchList(ctx,
+		&os.Filter{ParentID: []uint64{obj.ID}},
+		&repository.PreloadOption{Fields: []string{`Versions`}},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return qmodels.FromOSModelList(osList), nil
+}
+
 // Create OS is the resolver for the createOS field.
-func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSInput) (*qmodels.OSPayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSCreateInput) (*qmodels.OSPayload, error) {
 	var obj models.OS
 	input.FillModel(&obj)
 
@@ -57,7 +73,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSInput) (*qmo
 }
 
 // Update OS is the resolver for the updateOS field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.OSInput) (*qmodels.OSPayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.OSUpdateInput) (*qmodels.OSPayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err

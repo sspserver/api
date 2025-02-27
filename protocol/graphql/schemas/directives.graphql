@@ -1,0 +1,4 @@
+# Validation directives
+directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR

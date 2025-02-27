@@ -32,6 +32,17 @@ func (u *StaticUsecase) Get(ctx context.Context, id uint64) (*models.DeviceType,
 	return obj, nil
 }
 
+func (u *StaticUsecase) GetByCodename(ctx context.Context, codename string) (*models.DeviceType, error) {
+	obj, err := u.repo.GetByCodename(ctx, codename)
+	if err != nil {
+		return nil, err
+	}
+	if !acl.HaveAccessView(ctx, obj) {
+		return nil, errors.Wrap(acl.ErrNoPermissions, "view")
+	}
+	return obj, nil
+}
+
 func (u *StaticUsecase) FetchList(ctx context.Context) ([]*models.DeviceType, error) {
 	if !acl.HaveAccessList(ctx, &models.DeviceType{}) {
 		return nil, errors.Wrap(acl.ErrNoPermissions, "fetch list")

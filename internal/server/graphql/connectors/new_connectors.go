@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/demdxx/gocast/v2"
+	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/repository"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 
@@ -73,9 +74,13 @@ type CategoryConnection = connectors.CollectionConnection[gqlmodels.Category, gq
 func NewCategoryConnection(ctx context.Context, categoryAccessor category.Usecase, filter *gqlmodels.CategoryListFilter, order *gqlmodels.CategoryListOrder, page *gqlmodels.Page) *CategoryConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Category, gqlmodels.CategoryEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Category, error) {
+			newFilter := filter.Filter()
 			list, err := categoryAccessor.FetchList(ctx,
-				&repository.PreloadOption{Fields: []string{`Parent`}},
-				filter.Filter(), order.Order(), page.Pagination())
+				&repository.PreloadOption{
+					Fields: gocast.IfThen(newFilter.IsChildrensPreload(),
+						[]string{`Parent`, `Childrens`}, []string{`Parent`}),
+				},
+				newFilter, order.Order(), page.Pagination())
 			return gqlmodels.FromCategoryModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
@@ -94,11 +99,17 @@ func NewCategoryConnection(ctx context.Context, categoryAccessor category.Usecas
 type OSConnection = connectors.CollectionConnection[gqlmodels.Os, gqlmodels.OSEdge]
 
 // NewOSConnection based on query object
-func NewOSConnection(ctx context.Context, osAccessor os.Usecase, filter *gqlmodels.OSListFilter, order *gqlmodels.OSListOrder, page *gqlmodels.Page) *OSConnection {
+func NewOSConnection(ctx context.Context, osAccessor os.Usecase, filter *gqlmodels.OSListFilter, order []*gqlmodels.OSListOrder, page *gqlmodels.Page) *OSConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Os, gqlmodels.OSEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Os, error) {
+			order := xtypes.SliceReduce(order, func(val *gqlmodels.OSListOrder, res *os.ListOrder) { val.Fill(res) })
+			newFilter := filter.Filter()
+			preloadOptions := (*repository.PreloadOption)(nil)
+			if newFilter.IsChildrensPreload() {
+				preloadOptions = &repository.PreloadOption{Fields: []string{`Versions`}}
+			}
 			list, err := osAccessor.FetchList(ctx,
-				filter.Filter(), order.Order(), page.Pagination())
+				preloadOptions, newFilter, &order, page.Pagination())
 			return gqlmodels.FromOSModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {

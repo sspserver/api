@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/adcorelib/admodels/types"
@@ -13,24 +15,17 @@ func FromDeviceMakerModel(m *models.DeviceMaker) *DeviceMaker {
 	if m == nil {
 		return nil
 	}
-	processed := map[uint64]bool{}
 	return &DeviceMaker{
 		ID:          m.ID,
+		Codename:    m.Codename,
 		Name:        m.Name,
 		Description: m.Description,
 		MatchExp:    m.MatchExp,
-		Types: xtypes.SliceApply(m.Models, func(m *models.DeviceModel) *DeviceType {
-			if m != nil && m.Type != nil && !processed[m.Type.ID] {
-				processed[m.Type.ID] = true
-				return FromDeviceTypeModel(m.Type)
-			}
-			return nil
-		}).Filter(func(m *DeviceType) bool { return m != nil }),
-		Models:    FromDeviceModelModelList(m.Models),
-		Active:    FromActiveStatus(m.Active),
-		CreatedAt: m.CreatedAt,
-		UpdatedAt: m.UpdatedAt,
-		DeletedAt: DeletedAt(m.DeletedAt),
+		Models:      FromDeviceModelModelList(m.Models),
+		Active:      FromActiveStatus(m.Active),
+		CreatedAt:   m.CreatedAt,
+		UpdatedAt:   m.UpdatedAt,
+		DeletedAt:   DeletedAt(m.DeletedAt),
 	}
 }
 
@@ -65,11 +60,30 @@ func (ol *DeviceMakerListOrder) Order() *devicemaker.ListOrder {
 	}
 }
 
-func (inp *DeviceMakerInput) FillModel(m *models.DeviceMaker) {
+func (inp *DeviceMakerCreateInput) FillModel(m *models.DeviceMaker) error {
+	if inp == nil || m == nil {
+		return nil
+	}
+	if inp.Name == "" {
+		return fmt.Errorf("name is required")
+	}
+	if inp.Codename == "" {
+		return fmt.Errorf("codename is required")
+	}
+	m.Name = inp.Name
+	m.Codename = inp.Codename
+	m.Description = gocast.PtrAsValue(inp.Description, "")
+	m.MatchExp = gocast.PtrAsValue(inp.MatchExp, "")
+	m.Active = ActiveStatusFrom(inp.Active)
+	return nil
+}
+
+func (inp *DeviceMakerUpdateInput) FillModel(m *models.DeviceMaker) {
 	if inp == nil || m == nil {
 		return
 	}
 	m.Name = gocast.PtrAsValue(inp.Name, m.Name)
+	m.Codename = gocast.PtrAsValue(inp.Codename, m.Codename)
 	m.Description = gocast.PtrAsValue(inp.Description, m.Description)
 	m.MatchExp = gocast.PtrAsValue(inp.MatchExp, m.MatchExp)
 	m.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), m.Active)

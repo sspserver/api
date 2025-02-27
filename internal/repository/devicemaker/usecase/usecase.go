@@ -34,6 +34,17 @@ func (u *Usecase) Get(ctx context.Context, id uint64) (*models.DeviceMaker, erro
 	return obj, nil
 }
 
+func (u *Usecase) GetByCodename(ctx context.Context, codename string) (*models.DeviceMaker, error) {
+	obj, err := u.repo.GetByCodename(ctx, codename)
+	if err != nil {
+		return nil, err
+	}
+	if !acl.HaveAccessView(ctx, obj) {
+		return nil, errors.Wrap(acl.ErrNoPermissions, "view")
+	}
+	return obj, nil
+}
+
 func (u *Usecase) FetchList(ctx context.Context, qops ...devicemaker.Option) ([]*models.DeviceMaker, error) {
 	if !acl.HaveAccessList(ctx, &models.DeviceMaker{}) {
 		return nil, errors.Wrap(acl.ErrNoPermissions, "fetch list")

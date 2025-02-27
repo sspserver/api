@@ -27,12 +27,29 @@ func New() *Repository {
 }
 
 func (r *Repository) Get(ctx context.Context, id uint64) (*models.DeviceModel, error) {
-	object := new(models.DeviceModel)
-	if err := r.Slave(ctx).Preload(`Maker`).Find(object, id).Error; err != nil {
+	return r._get(ctx, id, "")
+}
+
+func (r *Repository) GetByCodename(ctx context.Context, codename string) (*models.DeviceModel, error) {
+	return r._get(ctx, 0, codename)
+}
+
+func (r *Repository) _get(ctx context.Context, id uint64, codename string) (*models.DeviceModel, error) {
+	var (
+		object = new(models.DeviceModel)
+		query  = r.Slave(ctx).Preload(`Maker`)
+		err    error
+	)
+	if id > 0 {
+		err = query.Find(object, id).Error
+	} else {
+		err = query.Where(`codename=?`, codename).Find(object).Error
+	}
+	if err != nil {
 		return nil, err
 	}
-	if object.TypeID > 0 {
-		tobj, err := r.typesRepo.Get(ctx, object.TypeID)
+	if object.TypeCodename != "" {
+		tobj, err := r.typesRepo.GetByCodename(ctx, object.TypeCodename)
 		if err != nil {
 			return nil, err
 		}
@@ -49,10 +66,10 @@ func (r *Repository) FetchList(ctx context.Context, qops ...devicemodel.Option) 
 		err = nil
 	}
 	for _, obj := range list {
-		if obj.TypeID == 0 {
+		if obj.TypeCodename == "" {
 			continue
 		}
-		tobj, err := r.typesRepo.Get(ctx, obj.TypeID)
+		tobj, err := r.typesRepo.GetByCodename(ctx, obj.TypeCodename)
 		if err != nil {
 			return list, err
 		}

@@ -23,6 +23,7 @@ func FromCategoryModel(category *models.Category) *Category {
 			func() *uint64 { return &[]uint64{category.ParentID.V}[0] },
 			func() *uint64 { return nil }),
 		Parent:    FromCategoryModel(category.Parent),
+		Childrens: xtypes.SliceApply(category.Childrens, FromCategoryModel),
 		IABCode:   category.IABCode,
 		Active:    FromActiveStatus(category.Active),
 		Position:  int(category.Position),
