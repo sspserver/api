@@ -27,6 +27,11 @@ type (
 )
 
 const (
+	ActiveStatusActive = bzgqlmodel.ActiveStatusActive
+	ActiveStatusPaused = bzgqlmodel.ActiveStatusPaused
+)
+
+const (
 	ResponseStatusSuccess = bzgqlmodel.ResponseStatusSuccess
 	ResponseStatusError   = bzgqlmodel.ResponseStatusError
 )

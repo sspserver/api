@@ -28,6 +28,11 @@ type DeviceModel {
   version: String!
 
   """
+  Year of release of the device model
+  """
+  yearRelease: Int!
+
+  """
   Device parent ID
   """
   parentID: ID64
@@ -65,7 +70,10 @@ type DeviceModel {
   """
   List of device model versions
   """
-  versions: [DeviceModel!]
+  versions(
+    filter: DeviceModelListFilter = null,
+    order: [DeviceModelListOrder!] = null
+  ): [DeviceModel!]
 
   """
   Active status of the device model
@@ -151,6 +159,7 @@ input DeviceModelListOrder {
   active:         Ordering
   createdAt:      Ordering
   updatedAt:      Ordering
+  yearRelease:    Ordering
 }
 
 """
@@ -158,6 +167,7 @@ Input model list filter
 """
 input DeviceModelListFilter {
   ID:             [ID64!]
+  parentID:       [ID64!]
   codename:       [String!]
   name:           [String!]
   typeCodename:   [String!]
@@ -280,7 +290,7 @@ extend type Query {
   """
   listDeviceModels(
     filter: DeviceModelListFilter = null,
-    order: DeviceModelListOrder = null,
+    order: [DeviceModelListOrder!] = null,
     page: Page = null
   ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
 }

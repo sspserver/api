@@ -201,7 +201,7 @@ extend type Query {
   """
   listDeviceMakers(
     filter: DeviceMakerListFilter = null,
-    order: DeviceMakerListOrder = null,
+    order: [DeviceMakerListOrder!] = null,
     page: Page = null
   ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
 }

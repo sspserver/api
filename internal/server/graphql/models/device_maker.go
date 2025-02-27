@@ -53,11 +53,24 @@ func (ol *DeviceMakerListOrder) Order() *devicemaker.ListOrder {
 	}
 	return &devicemaker.ListOrder{
 		ID:        ol.ID.AsOrder(),
+		Codename:  ol.Codename.AsOrder(),
 		Name:      ol.Name.AsOrder(),
 		Active:    ol.Active.AsOrder(),
 		CreatedAt: ol.CreatedAt.AsOrder(),
 		UpdatedAt: ol.UpdatedAt.AsOrder(),
 	}
+}
+
+func (ol *DeviceMakerListOrder) Fill(vl *devicemaker.ListOrder) {
+	if ol == nil || vl == nil {
+		return
+	}
+	vl.ID = ol.ID.AsOrder()
+	vl.Codename = ol.Codename.AsOrder()
+	vl.Name = ol.Name.AsOrder()
+	vl.Active = ol.Active.AsOrder()
+	vl.CreatedAt = ol.CreatedAt.AsOrder()
+	vl.UpdatedAt = ol.UpdatedAt.AsOrder()
 }
 
 func (inp *DeviceMakerCreateInput) FillModel(m *models.DeviceMaker) error {

@@ -1,24 +1,4 @@
 """
-BrowserVersion model schema
-"""
-type BrowserVersion {
-  """
-  Minimum version
-  """
-  min: String!
-
-  """
-  Maximum version
-  """
-  max: String!
-
-  """
-  Name of the version
-  """
-  name: String!
-}
-
-"""
 Browser model schema
 """
 type Browser {
@@ -38,19 +18,45 @@ type Browser {
   description: String!
 
   """
-  Match expression for the browser
+  Version of the browser
   """
-  matchExp: String!
+  version: String!
+
+  """
+  Year of release of the browser
+  """
+  yearRelease: Int!
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int!
 
   """
   Active status of the browser
   """
   active: ActiveStatus!
 
+  # Match expressions
+  matchNameExp: String!
+  matchUserAgentExp: String!
+  matchVersionMinExp: String!
+  matchVersionMaxExp: String!
+
   """
-  List of browser versions
+  Parent ID of the browser group
   """
-  versions: [BrowserVersion!]
+  parentID: ID64!
+
+  """
+  Parent object of the browser
+  """
+  parent: Browser
+
+  """
+  List of child browser
+  """
+  versions: [Browser!]
 
   """
   Creation time of the browser
@@ -124,58 +130,44 @@ type BrowserPayload {
 ###############################################################################
 
 input BrowserListFilter {
-  ID:        [ID64!]
-  name:      [String!]
-  active:    [ActiveStatus!]
+  ID:           [ID64!]
+  parentID:     [ID64!]
+  name:         [String!]
+  active:       [ActiveStatus!]
 }
 
 input BrowserListOrder {
-  ID:        Ordering
-  name:      Ordering
-  active:    Ordering
-  createdAt: Ordering
-  updatedAt: Ordering
-}
-
-
-"""
-Input for browser versions
-"""
-input BrowserVersionInput {
-  """
-  Minimum version
-  """
-  min: String
-
-  """
-  Maximum version
-  """
-  max: String
-
-  """
-  Name of the version
-  """
-  name: String
+  ID:           Ordering
+  name:         Ordering
+  active:       Ordering
+  createdAt:    Ordering
+  updatedAt:    Ordering
+  yearRelease:  Ordering
 }
 
 """
-Input for querying browsers
+Input for querying create browsers
 """
-input BrowserInput {
+input BrowserCreateInput {
+  """
+  Parent ID of the OS group
+  """
+  parentID: ID64
+
   """
   Name of the browser
   """
-  name: String
+  name: String! @length(min: 1, max: 255, trim: true)
+
+  """
+  Version of the browser
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the browser
   """
-  description: String
-
-  """
-  Match expression for the browser
-  """
-  matchExp: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the browser
@@ -183,9 +175,61 @@ input BrowserInput {
   active: ActiveStatus
 
   """
-  List of browser versions
+  Year of release of the browser
   """
-  versions: [BrowserVersionInput!]
+  yearRelease: Int
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
+}
+
+"""
+Input for querying update browsers
+"""
+input BrowserUpdateInput {
+  """
+  Name of the browser
+  """
+  name: String @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Version of the browser
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+
+  """
+  Description of the browser
+  """
+  description: String @notempty(trim: true, ornil: true)
+
+  """
+  Active status of the browser
+  """
+  active: ActiveStatus
+
+  """
+  Year of release of the browser
+  """
+  yearRelease: Int
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
 
 ###############################################################################
@@ -193,14 +237,14 @@ input BrowserInput {
 ###############################################################################
 
 extend type Query {
-  browser(ID: ID64! = 0): BrowserPayload @acl(permissions: ["type_browser.view.*"])
+  browser(ID: ID64!): BrowserPayload @acl(permissions: ["type_browser.view.*"])
 
   """
   List of browsers
   """
   listBrowsers(
     filter: BrowserListFilter = null,
-    order: BrowserListOrder = null,
+    order: [BrowserListOrder!] = null,
     page: Page = null
   ): BrowserConnection @acl(permissions: ["type_browser.list.*"])
 }
@@ -209,12 +253,12 @@ extend type Mutation {
   """
   Create new browser
   """
-  createBrowser(input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
+  createBrowser(input: BrowserCreateInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
 
   """
   Update browser
   """
-  updateBrowser(ID: ID64!, input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
+  updateBrowser(ID: ID64!, input: BrowserUpdateInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
 
   """
   Delete browser

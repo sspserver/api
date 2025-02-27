@@ -38,6 +38,7 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 // ListOrder of the objects list
 type ListOrder struct {
 	ID        models.Order
+	Codename  models.Order
 	Name      models.Order
 	Active    models.Order
 	CreatedAt models.Order
@@ -49,6 +50,7 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 		return query
 	}
 	query = ol.ID.PrepareQuery(query, `id`)
+	query = ol.Codename.PrepareQuery(query, `codename`)
 	query = ol.Name.PrepareQuery(query, `name`)
 	query = ol.Active.PrepareQuery(query, `active`)
 	query = ol.CreatedAt.PrepareQuery(query, `created_at`)

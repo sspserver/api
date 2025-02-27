@@ -36,7 +36,7 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.DeviceMake
 }
 
 // List DeviceMakers is the resolver for the listDeviceMakers field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceMakerListFilter, order *qmodels.DeviceMakerListOrder, page *qmodels.Page) (*connectors.DeviceMakerConnection, error) {
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceMakerListFilter, order []*qmodels.DeviceMakerListOrder, page *qmodels.Page) (*connectors.DeviceMakerConnection, error) {
 	return connectors.NewDeviceMakerConnection(ctx, r.uc, filter, order, page), nil
 }
 

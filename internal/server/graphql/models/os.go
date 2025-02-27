@@ -94,9 +94,9 @@ func (ol *OSListOrder) Fill(order *os.ListOrder) {
 	}
 }
 
-func (inp *OSCreateInput) FillModel(trg *models.OS) {
+func (inp *OSCreateInput) FillModel(trg *models.OS) error {
 	if trg == nil {
-		return
+		return nil
 	}
 	trg.Name = strings.TrimSpace(inp.Name)
 	trg.Version = types.IgnoreParseVersion(gocast.PtrAsValue(inp.Version, trg.Version.String()))
@@ -108,11 +108,16 @@ func (inp *OSCreateInput) FillModel(trg *models.OS) {
 	trg.MatchVersionMaxExp = gocast.PtrAsValue(inp.MatchVersionMaxExp, trg.MatchVersionMaxExp)
 	trg.YearRelease = gocast.PtrAsValue(inp.YearRelease, trg.YearRelease)
 	trg.YearEndSupport = gocast.PtrAsValue(inp.YearEndSupport, trg.YearEndSupport)
+
+	if trg.Name == "" {
+		return ErrorRequiredField("name")
+	}
+	return nil
 }
 
-func (inp *OSUpdateInput) FillModel(trg *models.OS) {
+func (inp *OSUpdateInput) FillModel(trg *models.OS) error {
 	if trg == nil {
-		return
+		return nil
 	}
 	trg.Name = gocast.Or(strings.TrimSpace(gocast.PtrAsValue(inp.Name, trg.Name)), trg.Name)
 	trg.Version = types.IgnoreParseVersion(gocast.PtrAsValue(inp.Version, trg.Version.String()))
@@ -124,4 +129,9 @@ func (inp *OSUpdateInput) FillModel(trg *models.OS) {
 	trg.MatchVersionMaxExp = gocast.PtrAsValue(inp.MatchVersionMaxExp, trg.MatchVersionMaxExp)
 	trg.YearRelease = gocast.PtrAsValue(inp.YearRelease, trg.YearRelease)
 	trg.YearEndSupport = gocast.PtrAsValue(inp.YearEndSupport, trg.YearEndSupport)
+
+	if trg.Name == "" {
+		return ErrorInvalidField("name", "can`t be empty")
+	}
+	return nil
 }
