@@ -130,10 +130,10 @@ type OSPayload {
 ###############################################################################
 
 input OSListFilter {
-  ID:         [ID64!]
-  parentID:   [ID64!]
-  name:       [String!]
-  active:     ActiveStatus
+  ID:           [ID64!]
+  parentID:     [ID64!]
+  name:         [String!]
+  active:       ActiveStatus
 }
 
 input OSListOrder {
@@ -234,7 +234,7 @@ input OSUpdateInput {
 ###############################################################################
 
 extend type Query {
-  OS(ID: ID64! = 0): OSPayload @acl(permissions: ["type_os.view.*"])
+  OS(ID: ID64!): OSPayload @acl(permissions: ["type_os.view.*"])
 
   """
   List of OS

@@ -1,8 +1,6 @@
 module github.com/sspserver/api
 
-go 1.23.0
-
-toolchain go1.24.0
+go 1.24
 
 require (
 	github.com/99designs/gqlgen v0.17.66
@@ -12,8 +10,8 @@ require (
 	github.com/demdxx/rbac v0.1.8
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.2.0
-	github.com/geniusrabbit/adcorelib v0.0.0-20250221154606-4829e75784e7
-	github.com/geniusrabbit/blaze-api v0.1.14
+	github.com/geniusrabbit/adcorelib v0.0.0-20250227190303-76b52502bd73
+	github.com/geniusrabbit/blaze-api v0.2.0
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
 	github.com/geniusrabbit/gosql/v2 v2.3.1
 	github.com/go-chi/chi/v5 v5.2.1
@@ -69,7 +67,7 @@ require (
 	github.com/geniusrabbit/hourstable v0.0.0-20190430155716-2ecc19b9622f // indirect
 	github.com/geniusrabbit/udetect v0.0.0-20241212120023-b56946c9a075 // indirect
 	github.com/go-faster/city v1.0.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect

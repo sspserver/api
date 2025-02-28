@@ -1,0 +1,1783 @@
+[
+  {
+    "codename": "iphone",
+    "name": "iPhone",
+    "description": "Apple's flagship smartphone series.",
+    "match_exp": "$re$(?i)iPhone",
+    "active": "active",
+    "maker_codename": "apple",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "iphone_3g",
+        "name": "iPhone 3G",
+        "description": "Second generation iPhone with 3G connectivity.",
+        "match_exp": "$re$(?i)iPhone 3G",
+        "active": "active",
+        "year_release": 2008
+      },
+      {
+        "codename": "iphone_4",
+        "name": "iPhone 4",
+        "description": "Fourth generation iPhone with a new design and Retina display.",
+        "match_exp": "$re$(?i)iPhone 4",
+        "active": "active",
+        "year_release": 2010
+      },
+      {
+        "codename": "iphone_5",
+        "name": "iPhone 5",
+        "description": "Fifth generation iPhone with a taller screen and Lightning connector.",
+        "match_exp": "$re$(?i)iPhone 5",
+        "active": "active",
+        "year_release": 2012
+      },
+      {
+        "codename": "iphone_6",
+        "name": "iPhone 6",
+        "description": "Sixth generation iPhone with a larger display.",
+        "match_exp": "$re$(?i)iPhone 6",
+        "active": "active",
+        "year_release": 2014
+      },
+      {
+        "codename": "iphone_7",
+        "name": "iPhone 7",
+        "description": "Seventh generation iPhone with improved cameras and no headphone jack.",
+        "match_exp": "$re$(?i)iPhone 7",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "iphone_8",
+        "name": "iPhone 8",
+        "description": "Eighth generation iPhone with wireless charging.",
+        "match_exp": "$re$(?i)iPhone 8",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "iphone_x",
+        "name": "iPhone X",
+        "description": "Tenth anniversary iPhone with an edge-to-edge OLED display.",
+        "match_exp": "$re$(?i)iPhone X",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "iphone_11",
+        "name": "iPhone 11",
+        "description": "iPhone with improved cameras and A13 Bionic chip.",
+        "match_exp": "$re$(?i)iPhone 11",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "iphone_12",
+        "name": "iPhone 12",
+        "description": "iPhone with 5G and Ceramic Shield front cover.",
+        "match_exp": "$re$(?i)iPhone 12",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "iphone_13",
+        "name": "iPhone 13",
+        "description": "iPhone with improved battery life and A15 Bionic chip.",
+        "match_exp": "$re$(?i)iPhone 13",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "iphone_14",
+        "name": "iPhone 14",
+        "description": "Latest generation iPhone with enhanced camera and safety features.",
+        "match_exp": "$re$(?i)iPhone 14",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "iphone_15",
+        "name": "iPhone 15",
+        "description": "Newest iPhone with USB-C and upgraded processor.",
+        "match_exp": "$re$(?i)iPhone 15",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "ipad",
+    "name": "iPad",
+    "description": "Apple's tablet series.",
+    "match_exp": "$re$(?i)iPad",
+    "active": "active",
+    "maker_codename": "apple",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "ipad_1",
+        "name": "iPad (1st generation)",
+        "description": "The first-generation iPad released by Apple.",
+        "match_exp": "$re$(?i)iPad 1",
+        "active": "active",
+        "year_release": 2010
+      },
+      {
+        "codename": "ipad_2",
+        "name": "iPad 2",
+        "description": "Second generation iPad with a thinner design and front camera.",
+        "match_exp": "$re$(?i)iPad 2",
+        "active": "active",
+        "year_release": 2011
+      },
+      {
+        "codename": "ipad_3",
+        "name": "iPad (3rd generation)",
+        "description": "Third generation iPad with Retina display.",
+        "match_exp": "$re$(?i)iPad 3",
+        "active": "active",
+        "year_release": 2012
+      },
+      {
+        "codename": "ipad_4",
+        "name": "iPad (4th generation)",
+        "description": "Fourth generation iPad with Lightning connector.",
+        "match_exp": "$re$(?i)iPad 4",
+        "active": "active",
+        "year_release": 2012
+      },
+      {
+        "codename": "ipad_air",
+        "name": "iPad Air",
+        "description": "Thinner and lighter iPad with a new design.",
+        "match_exp": "$re$(?i)iPad Air",
+        "active": "active",
+        "year_release": 2013
+      },
+      {
+        "codename": "ipad_air_2",
+        "name": "iPad Air 2",
+        "description": "Second generation iPad Air with improved performance.",
+        "match_exp": "$re$(?i)iPad Air 2",
+        "active": "active",
+        "year_release": 2014
+      },
+      {
+        "codename": "ipad_pro",
+        "name": "iPad Pro",
+        "description": "High-performance iPad with Apple Pencil support.",
+        "match_exp": "$re$(?i)iPad Pro",
+        "active": "active",
+        "year_release": 2015
+      },
+      {
+        "codename": "ipad_5",
+        "name": "iPad (5th generation)",
+        "description": "Fifth generation iPad with A9 chip.",
+        "match_exp": "$re$(?i)iPad 5",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "ipad_6",
+        "name": "iPad (6th generation)",
+        "description": "Sixth generation iPad with Apple Pencil support.",
+        "match_exp": "$re$(?i)iPad 6",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "ipad_7",
+        "name": "iPad (7th generation)",
+        "description": "Seventh generation iPad with a larger 10.2-inch display.",
+        "match_exp": "$re$(?i)iPad 7",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "ipad_8",
+        "name": "iPad (8th generation)",
+        "description": "Eighth generation iPad with A12 Bionic chip.",
+        "match_exp": "$re$(?i)iPad 8",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "ipad_9",
+        "name": "iPad (9th generation)",
+        "description": "Ninth generation iPad with improved front camera.",
+        "match_exp": "$re$(?i)iPad 9",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "ipad_10",
+        "name": "iPad (10th generation)",
+        "description": "Tenth generation iPad with USB-C.",
+        "match_exp": "$re$(?i)iPad 10",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "pixel",
+    "name": "Google Pixel",
+    "description": "Google's flagship smartphone series.",
+    "match_exp": "$re$(?i)Pixel",
+    "active": "active",
+    "maker_codename": "google",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "pixel_1",
+        "name": "Pixel 1",
+        "description": "First generation Pixel phone by Google.",
+        "match_exp": "$re$(?i)Pixel 1",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "pixel_2",
+        "name": "Pixel 2",
+        "description": "Second generation Pixel phone with improved camera.",
+        "match_exp": "$re$(?i)Pixel 2",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "pixel_3",
+        "name": "Pixel 3",
+        "description": "Third generation Pixel phone with Night Sight mode.",
+        "match_exp": "$re$(?i)Pixel 3",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "pixel_4",
+        "name": "Pixel 4",
+        "description": "Fourth generation Pixel with Motion Sense.",
+        "match_exp": "$re$(?i)Pixel 4",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "pixel_5",
+        "name": "Pixel 5",
+        "description": "Fifth generation Pixel with 5G connectivity.",
+        "match_exp": "$re$(?i)Pixel 5",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "pixel_6",
+        "name": "Pixel 6",
+        "description": "Sixth generation Pixel with Google's custom Tensor chip.",
+        "match_exp": "$re$(?i)Pixel 6",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "pixel_7",
+        "name": "Pixel 7",
+        "description": "Seventh generation Pixel with advanced AI features.",
+        "match_exp": "$re$(?i)Pixel 7",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "pixel_8",
+        "name": "Pixel 8",
+        "description": "Eighth generation Pixel with improved camera and battery life.",
+        "match_exp": "$re$(?i)Pixel 8",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "galaxy",
+    "name": "Samsung Galaxy",
+    "description": "Samsung's flagship smartphone series.",
+    "match_exp": "$re$(?i)Galaxy",
+    "active": "active",
+    "maker_codename": "samsung",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "galaxy_s",
+        "name": "Samsung Galaxy S",
+        "description": "First Galaxy S smartphone released by Samsung.",
+        "match_exp": "$re$(?i)Galaxy S$",
+        "active": "active",
+        "year_release": 2010
+      },
+      {
+        "codename": "galaxy_s2",
+        "name": "Samsung Galaxy S II",
+        "description": "Second generation Galaxy S smartphone.",
+        "match_exp": "$re$(?i)Galaxy S II",
+        "active": "active",
+        "year_release": 2011
+      },
+      {
+        "codename": "galaxy_s3",
+        "name": "Samsung Galaxy S III",
+        "description": "Third generation Galaxy S smartphone.",
+        "match_exp": "$re$(?i)Galaxy S III",
+        "active": "active",
+        "year_release": 2012
+      },
+      {
+        "codename": "galaxy_s4",
+        "name": "Samsung Galaxy S4",
+        "description": "Fourth generation Galaxy S smartphone.",
+        "match_exp": "$re$(?i)Galaxy S4",
+        "active": "active",
+        "year_release": 2013
+      },
+      {
+        "codename": "galaxy_s5",
+        "name": "Samsung Galaxy S5",
+        "description": "Fifth generation Galaxy S smartphone.",
+        "match_exp": "$re$(?i)Galaxy S5",
+        "active": "active",
+        "year_release": 2014
+      },
+      {
+        "codename": "galaxy_s6",
+        "name": "Samsung Galaxy S6",
+        "description": "Sixth generation Galaxy S smartphone with a metal design.",
+        "match_exp": "$re$(?i)Galaxy S6",
+        "active": "active",
+        "year_release": 2015
+      },
+      {
+        "codename": "galaxy_s7",
+        "name": "Samsung Galaxy S7",
+        "description": "Seventh generation Galaxy S smartphone with water resistance.",
+        "match_exp": "$re$(?i)Galaxy S7",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "galaxy_s8",
+        "name": "Samsung Galaxy S8",
+        "description": "Eighth generation Galaxy S smartphone with an edge-to-edge display.",
+        "match_exp": "$re$(?i)Galaxy S8",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "galaxy_s9",
+        "name": "Samsung Galaxy S9",
+        "description": "Ninth generation Galaxy S smartphone with improved camera.",
+        "match_exp": "$re$(?i)Galaxy S9",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "galaxy_s10",
+        "name": "Samsung Galaxy S10",
+        "description": "Tenth generation Galaxy S smartphone with Infinity-O display.",
+        "match_exp": "$re$(?i)Galaxy S10",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "galaxy_s20",
+        "name": "Samsung Galaxy S20",
+        "description": "Eleventh generation Galaxy S smartphone with 5G connectivity.",
+        "match_exp": "$re$(?i)Galaxy S20",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "galaxy_s21",
+        "name": "Samsung Galaxy S21",
+        "description": "Twelfth generation Galaxy S smartphone with improved performance.",
+        "match_exp": "$re$(?i)Galaxy S21",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "galaxy_s22",
+        "name": "Samsung Galaxy S22",
+        "description": "Thirteenth generation Galaxy S smartphone with enhanced camera features.",
+        "match_exp": "$re$(?i)Galaxy S22",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "galaxy_s23",
+        "name": "Samsung Galaxy S23",
+        "description": "Latest Galaxy S smartphone with upgraded technology.",
+        "match_exp": "$re$(?i)Galaxy S23",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "galaxy_tab",
+    "name": "Samsung Galaxy Tab",
+    "description": "Samsung's flagship tablet series.",
+    "match_exp": "$re$(?i)Galaxy Tab",
+    "active": "active",
+    "maker_codename": "samsung",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "galaxy_tab_a",
+        "name": "Samsung Galaxy Tab A",
+        "description": "Affordable Galaxy Tab model for general use.",
+        "match_exp": "$re$(?i)Galaxy Tab A",
+        "active": "active",
+        "year_release": 2015
+      },
+      {
+        "codename": "galaxy_tab_s6",
+        "name": "Samsung Galaxy Tab S6",
+        "description": "High-performance tablet with S Pen support.",
+        "match_exp": "$re$(?i)Galaxy Tab S6",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "galaxy_tab_s7",
+        "name": "Samsung Galaxy Tab S7",
+        "description": "Premium Samsung tablet with 120Hz display and S Pen.",
+        "match_exp": "$re$(?i)Galaxy Tab S7",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "galaxy_tab_s8",
+        "name": "Samsung Galaxy Tab S8",
+        "description": "Latest Samsung premium tablet with improved multitasking capabilities.",
+        "match_exp": "$re$(?i)Galaxy Tab S8",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "galaxy_tab_s9",
+        "name": "Samsung Galaxy Tab S9",
+        "description": "Newest high-end Samsung tablet with upgraded features and S Pen support.",
+        "match_exp": "$re$(?i)Galaxy Tab S9",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "huawei_p",
+    "name": "Huawei P Series",
+    "description": "Huawei's flagship smartphone series focused on photography and performance.",
+    "match_exp": "$re$(?i)Huawei P",
+    "active": "active",
+    "maker_codename": "huawei",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "huawei_p10",
+        "name": "Huawei P10",
+        "description": "Huawei P10 with dual-camera system and Leica optics.",
+        "match_exp": "$re$(?i)Huawei P10",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "huawei_p20",
+        "name": "Huawei P20",
+        "description": "Huawei P20 with AI-powered camera features.",
+        "match_exp": "$re$(?i)Huawei P20",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "huawei_p30",
+        "name": "Huawei P30",
+        "description": "Huawei P30 with improved zoom and night photography capabilities.",
+        "match_exp": "$re$(?i)Huawei P30",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "huawei_p40",
+        "name": "Huawei P40",
+        "description": "Huawei P40 featuring advanced AI photography.",
+        "match_exp": "$re$(?i)Huawei P40",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "huawei_p50",
+        "name": "Huawei P50",
+        "description": "Huawei P50 with HarmonyOS and top-tier camera technology.",
+        "match_exp": "$re$(?i)Huawei P50",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "huawei_p60",
+        "name": "Huawei P60",
+        "description": "Latest Huawei P60 with cutting-edge mobile photography features.",
+        "match_exp": "$re$(?i)Huawei P60",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "huawei_mate",
+    "name": "Huawei Mate Series",
+    "description": "Huawei's high-end smartphone series focused on performance and business users.",
+    "match_exp": "$re$(?i)Huawei Mate",
+    "active": "active",
+    "maker_codename": "huawei",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "huawei_mate10",
+        "name": "Huawei Mate 10",
+        "description": "Huawei Mate 10 with AI-driven processor and dual-camera system.",
+        "match_exp": "$re$(?i)Huawei Mate 10",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "huawei_mate20",
+        "name": "Huawei Mate 20",
+        "description": "Huawei Mate 20 with triple-camera system and high-performance chipset.",
+        "match_exp": "$re$(?i)Huawei Mate 20",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "huawei_mate30",
+        "name": "Huawei Mate 30",
+        "description": "Huawei Mate 30 featuring 5G connectivity and enhanced AI photography.",
+        "match_exp": "$re$(?i)Huawei Mate 30",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "huawei_mate40",
+        "name": "Huawei Mate 40",
+        "description": "Huawei Mate 40 with improved camera technology and fast charging.",
+        "match_exp": "$re$(?i)Huawei Mate 40",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "huawei_mate50",
+        "name": "Huawei Mate 50",
+        "description": "Huawei Mate 50 with HarmonyOS and top-tier hardware.",
+        "match_exp": "$re$(?i)Huawei Mate 50",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "xiaomi_mi",
+    "name": "Xiaomi Mi Series",
+    "description": "Xiaomi's premium smartphone series focused on innovation and performance.",
+    "match_exp": "$re$(?i)Xiaomi Mi",
+    "active": "active",
+    "maker_codename": "xiaomi",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "xiaomi_mi8",
+        "name": "Xiaomi Mi 8",
+        "description": "Xiaomi Mi 8 with AI-powered dual cameras and infrared face unlock.",
+        "match_exp": "$re$(?i)Xiaomi Mi 8",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "xiaomi_mi9",
+        "name": "Xiaomi Mi 9",
+        "description": "Xiaomi Mi 9 with Snapdragon 855 and triple-camera setup.",
+        "match_exp": "$re$(?i)Xiaomi Mi 9",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "xiaomi_mi10",
+        "name": "Xiaomi Mi 10",
+        "description": "Xiaomi Mi 10 with 5G support and a 108MP main camera.",
+        "match_exp": "$re$(?i)Xiaomi Mi 10",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "xiaomi_mi11",
+        "name": "Xiaomi Mi 11",
+        "description": "Xiaomi Mi 11 with Snapdragon 888 and 120Hz AMOLED display.",
+        "match_exp": "$re$(?i)Xiaomi Mi 11",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "xiaomi_mi12",
+        "name": "Xiaomi Mi 12",
+        "description": "Xiaomi Mi 12 with advanced camera system and faster charging.",
+        "match_exp": "$re$(?i)Xiaomi Mi 12",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "xiaomi_mi13",
+        "name": "Xiaomi Mi 13",
+        "description": "Latest Xiaomi Mi 13 with improved AI processing and sleek design.",
+        "match_exp": "$re$(?i)Xiaomi Mi 13",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "xiaomi_redmi",
+    "name": "Xiaomi Redmi Series",
+    "description": "Xiaomi's budget-friendly smartphone series with strong performance.",
+    "match_exp": "$re$(?i)Redmi Note",
+    "active": "active",
+    "maker_codename": "xiaomi",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "redmi_note_7",
+        "name": "Redmi Note 7",
+        "description": "Redmi Note 7 with a 48MP camera and Snapdragon 660.",
+        "match_exp": "$re$(?i)Redmi Note 7",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "redmi_note_8",
+        "name": "Redmi Note 8",
+        "description": "Redmi Note 8 with quad-camera setup and Snapdragon 665.",
+        "match_exp": "$re$(?i)Redmi Note 8",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "redmi_note_9",
+        "name": "Redmi Note 9",
+        "description": "Redmi Note 9 with MediaTek Helio G85 and large battery.",
+        "match_exp": "$re$(?i)Redmi Note 9",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "redmi_note_10",
+        "name": "Redmi Note 10",
+        "description": "Redmi Note 10 with AMOLED display and Snapdragon 678.",
+        "match_exp": "$re$(?i)Redmi Note 10",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "redmi_note_11",
+        "name": "Redmi Note 11",
+        "description": "Redmi Note 11 with 90Hz display and Snapdragon 680.",
+        "match_exp": "$re$(?i)Redmi Note 11",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "redmi_note_12",
+        "name": "Redmi Note 12",
+        "description": "Latest Redmi Note 12 with 120Hz AMOLED display and improved camera.",
+        "match_exp": "$re$(?i)Redmi Note 12",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },{
+    "codename": "xiaomi_poco",
+    "name": "Xiaomi Poco Series",
+    "description": "Xiaomi's Poco series focuses on high performance at an affordable price.",
+    "match_exp": "$re$(?i)Poco",
+    "active": "active",
+    "maker_codename": "xiaomi",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "poco_f1",
+        "name": "Poco F1",
+        "description": "Poco F1 with Snapdragon 845, offering flagship performance on a budget.",
+        "match_exp": "$re$(?i)Poco F1",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "poco_f2",
+        "name": "Poco F2 Pro",
+        "description": "Poco F2 Pro with Snapdragon 865 and a full-screen design.",
+        "match_exp": "$re$(?i)Poco F2",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "poco_x3",
+        "name": "Poco X3",
+        "description": "Poco X3 with 120Hz display and Snapdragon 732G.",
+        "match_exp": "$re$(?i)Poco X3",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "poco_x4",
+        "name": "Poco X4 Pro",
+        "description": "Poco X4 Pro with 120Hz AMOLED and 108MP camera.",
+        "match_exp": "$re$(?i)Poco X4",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "oneplus",
+    "name": "OnePlus Series",
+    "description": "OnePlus flagship smartphone series known for speed and performance.",
+    "match_exp": "$re$(?i)OnePlus",
+    "active": "active",
+    "maker_codename": "oneplus",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "oneplus_5",
+        "name": "OnePlus 5",
+        "description": "OnePlus 5 with dual cameras and Snapdragon 835.",
+        "match_exp": "$re$(?i)OnePlus 5",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "oneplus_6",
+        "name": "OnePlus 6",
+        "description": "OnePlus 6 with a notched display and Snapdragon 845.",
+        "match_exp": "$re$(?i)OnePlus 6",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "oneplus_7",
+        "name": "OnePlus 7",
+        "description": "OnePlus 7 with pop-up camera and AMOLED display.",
+        "match_exp": "$re$(?i)OnePlus 7",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "oneplus_8",
+        "name": "OnePlus 8",
+        "description": "OnePlus 8 with 5G support and 120Hz Fluid AMOLED display.",
+        "match_exp": "$re$(?i)OnePlus 8",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "oneplus_9",
+        "name": "OnePlus 9",
+        "description": "OnePlus 9 with Hasselblad camera and Snapdragon 888.",
+        "match_exp": "$re$(?i)OnePlus 9",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "oneplus_10",
+        "name": "OnePlus 10",
+        "description": "OnePlus 10 with improved camera and high refresh rate display.",
+        "match_exp": "$re$(?i)OnePlus 10",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "oneplus_11",
+        "name": "OnePlus 11",
+        "description": "Latest OnePlus 11 with next-gen performance and design.",
+        "match_exp": "$re$(?i)OnePlus 11",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },{
+    "codename": "oppo",
+    "name": "Oppo Smartphones",
+    "description": "Oppo's flagship and mid-range smartphone series focused on innovation and design.",
+    "match_exp": "$re$(?i)Oppo",
+    "active": "active",
+    "maker_codename": "oppo",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "oppo_find_x",
+        "name": "Oppo Find X",
+        "description": "Oppo Find X with a motorized pop-up camera and bezel-less design.",
+        "match_exp": "$re$(?i)Oppo Find X",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "oppo_find_x2",
+        "name": "Oppo Find X2",
+        "description": "Oppo Find X2 with 120Hz display and Snapdragon 865.",
+        "match_exp": "$re$(?i)Oppo Find X2",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "oppo_find_x3",
+        "name": "Oppo Find X3",
+        "description": "Oppo Find X3 with Microlens camera and 1 billion colors display.",
+        "match_exp": "$re$(?i)Oppo Find X3",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "oppo_find_x5",
+        "name": "Oppo Find X5",
+        "description": "Oppo Find X5 with advanced camera stabilization and AI photography.",
+        "match_exp": "$re$(?i)Oppo Find X5",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "oppo_reno3",
+        "name": "Oppo Reno 3",
+        "description": "Oppo Reno 3 with quad-camera setup and AMOLED display.",
+        "match_exp": "$re$(?i)Oppo Reno 3",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "oppo_reno4",
+        "name": "Oppo Reno 4",
+        "description": "Oppo Reno 4 with AI-enhanced photography and fast charging.",
+        "match_exp": "$re$(?i)Oppo Reno 4",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "oppo_reno5",
+        "name": "Oppo Reno 5",
+        "description": "Oppo Reno 5 with 5G connectivity and AI-powered portrait video.",
+        "match_exp": "$re$(?i)Oppo Reno 5",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "oppo_reno6",
+        "name": "Oppo Reno 6",
+        "description": "Oppo Reno 6 with Bokeh Flare Portrait and 65W fast charging.",
+        "match_exp": "$re$(?i)Oppo Reno 6",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "oppo_reno7",
+        "name": "Oppo Reno 7",
+        "description": "Oppo Reno 7 with Sony IMX709 sensor and AI facial recognition.",
+        "match_exp": "$re$(?i)Oppo Reno 7",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "vivo",
+    "name": "Vivo Smartphones",
+    "description": "Vivo's flagship and mid-range smartphone series focused on photography and innovation.",
+    "match_exp": "$re$(?i)Vivo",
+    "active": "active",
+    "maker_codename": "vivo",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "vivo_x50",
+        "name": "Vivo X50",
+        "description": "Vivo X50 with gimbal stabilization and AI-enhanced camera.",
+        "match_exp": "$re$(?i)Vivo X50",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "vivo_x60",
+        "name": "Vivo X60",
+        "description": "Vivo X60 with ZEISS optics and advanced night photography.",
+        "match_exp": "$re$(?i)Vivo X60",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "vivo_x70",
+        "name": "Vivo X70",
+        "description": "Vivo X70 with improved gimbal stabilization and AI enhancements.",
+        "match_exp": "$re$(?i)Vivo X70",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "vivo_x80",
+        "name": "Vivo X80",
+        "description": "Vivo X80 with Dimensity 9000 and cinematic video features.",
+        "match_exp": "$re$(?i)Vivo X80",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "vivo_x90",
+        "name": "Vivo X90",
+        "description": "Vivo X90 with ZEISS camera enhancements and next-gen performance.",
+        "match_exp": "$re$(?i)Vivo X90",
+        "active": "active",
+        "year_release": 2023
+      },
+      {
+        "codename": "vivo_y50",
+        "name": "Vivo Y50",
+        "description": "Vivo Y50 with large battery and AI-powered quad camera.",
+        "match_exp": "$re$(?i)Vivo Y50",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "vivo_y70",
+        "name": "Vivo Y70",
+        "description": "Vivo Y70 with AMOLED display and fast charging.",
+        "match_exp": "$re$(?i)Vivo Y70",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "vivo_y91",
+        "name": "Vivo Y91",
+        "description": "Vivo Y91 with dual-camera setup and AI face unlock.",
+        "match_exp": "$re$(?i)Vivo Y91",
+        "active": "active",
+        "year_release": 2019
+      }
+    ]
+  },
+  {
+    "codename": "motorola",
+    "name": "Motorola Smartphones",
+    "description": "Motorola's smartphone series, known for durability and near-stock Android experience.",
+    "match_exp": "$re$(?i)Motorola",
+    "active": "active",
+    "maker_codename": "motorola",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "motorola_edge_20",
+        "name": "Motorola Edge 20",
+        "description": "Motorola Edge 20 with 144Hz OLED display and Snapdragon 778G.",
+        "match_exp": "$re$(?i)Motorola Edge 20",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "motorola_edge_30",
+        "name": "Motorola Edge 30",
+        "description": "Motorola Edge 30 with ultra-slim design and 50MP camera.",
+        "match_exp": "$re$(?i)Motorola Edge 30",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "motorola_edge_40",
+        "name": "Motorola Edge 40",
+        "description": "Motorola Edge 40 with IP68 water resistance and curved OLED display.",
+        "match_exp": "$re$(?i)Motorola Edge 40",
+        "active": "active",
+        "year_release": 2023
+      },
+      {
+        "codename": "motorola_g50",
+        "name": "Motorola G50",
+        "description": "Motorola G50 with 5G connectivity and 5000mAh battery.",
+        "match_exp": "$re$(?i)Motorola G50",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "motorola_g100",
+        "name": "Motorola G100",
+        "description": "Motorola G100 with Snapdragon 870 and Ready For desktop mode.",
+        "match_exp": "$re$(?i)Motorola G100",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "motorola_razr_2019",
+        "name": "Motorola Razr (2019)",
+        "description": "First foldable Motorola Razr with nostalgic design and modern tech.",
+        "match_exp": "$re$(?i)Motorola Razr 2019",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "motorola_razr_2022",
+        "name": "Motorola Razr (2022)",
+        "description": "Latest foldable Motorola Razr with improved hinge and performance.",
+        "match_exp": "$re$(?i)Motorola Razr 2022",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "sony_xperia",
+    "name": "Sony Xperia Smartphones",
+    "description": "Sony's Xperia series, known for high-quality displays and camera technology.",
+    "match_exp": "$re$(?i)Xperia",
+    "active": "active",
+    "maker_codename": "sony",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "xperia_xz",
+        "name": "Sony Xperia XZ",
+        "description": "Sony Xperia XZ with Motion Eye camera and water resistance.",
+        "match_exp": "$re$(?i)Xperia XZ",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "xperia_1",
+        "name": "Sony Xperia 1",
+        "description": "Sony Xperia 1 with 4K HDR OLED display and triple-camera system.",
+        "match_exp": "$re$(?i)Xperia 1",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "xperia_5",
+        "name": "Sony Xperia 5",
+        "description": "Sony Xperia 5 with compact design and cinematic display.",
+        "match_exp": "$re$(?i)Xperia 5",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "xperia_10",
+        "name": "Sony Xperia 10",
+        "description": "Sony Xperia 10 with ultra-wide 21:9 display for immersive viewing.",
+        "match_exp": "$re$(?i)Xperia 10",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "xperia_1_ii",
+        "name": "Sony Xperia 1 II",
+        "description": "Sony Xperia 1 II with Alpha camera technology and 5G support.",
+        "match_exp": "$re$(?i)Xperia 1 II",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "xperia_5_ii",
+        "name": "Sony Xperia 5 II",
+        "description": "Sony Xperia 5 II with 120Hz display and gaming features.",
+        "match_exp": "$re$(?i)Xperia 5 II",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "xperia_1_iii",
+        "name": "Sony Xperia 1 III",
+        "description": "Sony Xperia 1 III with real-time tracking autofocus and 120Hz 4K OLED display.",
+        "match_exp": "$re$(?i)Xperia 1 III",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "xperia_5_iii",
+        "name": "Sony Xperia 5 III",
+        "description": "Sony Xperia 5 III with triple-camera and 120Hz HDR OLED display.",
+        "match_exp": "$re$(?i)Xperia 5 III",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "xperia_1_iv",
+        "name": "Sony Xperia 1 IV",
+        "description": "Sony Xperia 1 IV with true optical zoom and 4K HDR 120Hz display.",
+        "match_exp": "$re$(?i)Xperia 1 IV",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "xperia_5_iv",
+        "name": "Sony Xperia 5 IV",
+        "description": "Sony Xperia 5 IV with compact flagship performance and 4K HDR OLED.",
+        "match_exp": "$re$(?i)Xperia 5 IV",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "nokia",
+    "name": "Nokia Smartphones",
+    "description": "Nokia's modern smartphones known for durability and stock Android experience.",
+    "match_exp": "$re$(?i)Nokia",
+    "active": "active",
+    "maker_codename": "nokia",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "nokia_6",
+        "name": "Nokia 6",
+        "description": "Nokia 6 with aluminum body and pure Android experience.",
+        "match_exp": "$re$(?i)Nokia 6",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "nokia_7",
+        "name": "Nokia 7 Plus",
+        "description": "Nokia 7 Plus with Zeiss optics and Android One.",
+        "match_exp": "$re$(?i)Nokia 7 Plus",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "nokia_8",
+        "name": "Nokia 8",
+        "description": "Nokia 8 with Dual-Sight mode and OZO Audio.",
+        "match_exp": "$re$(?i)Nokia 8",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "nokia_9_pureview",
+        "name": "Nokia 9 PureView",
+        "description": "Nokia 9 PureView with penta-camera system and HDR10 support.",
+        "match_exp": "$re$(?i)Nokia 9 PureView",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "nokia_xr20",
+        "name": "Nokia XR20",
+        "description": "Nokia XR20 with rugged design and long-term software updates.",
+        "match_exp": "$re$(?i)Nokia XR20",
+        "active": "active",
+        "year_release": 2021
+      }
+    ]
+  },
+  {
+    "codename": "asus",
+    "name": "Asus Smartphones",
+    "description": "Asus smartphone series including ROG gaming phones and Zenfone flagship devices.",
+    "match_exp": "$re$(?i)Asus",
+    "active": "active",
+    "maker_codename": "asus",
+    "type_codename": "phone",
+    "versions": [
+      {
+        "codename": "rog_phone_3",
+        "name": "Asus ROG Phone 3",
+        "description": "Asus ROG Phone 3 with 144Hz display and gaming triggers.",
+        "match_exp": "$re$(?i)ROG Phone 3",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "rog_phone_5",
+        "name": "Asus ROG Phone 5",
+        "description": "Asus ROG Phone 5 with enhanced cooling and 6000mAh battery.",
+        "match_exp": "$re$(?i)ROG Phone 5",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "rog_phone_6",
+        "name": "Asus ROG Phone 6",
+        "description": "Asus ROG Phone 6 with Snapdragon 8+ Gen 1 and AirTrigger controls.",
+        "match_exp": "$re$(?i)ROG Phone 6",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "rog_phone_7",
+        "name": "Asus ROG Phone 7",
+        "description": "Asus ROG Phone 7 with improved cooling and advanced gaming features.",
+        "match_exp": "$re$(?i)ROG Phone 7",
+        "active": "active",
+        "year_release": 2023
+      },
+      {
+        "codename": "zenfone_7",
+        "name": "Asus Zenfone 7",
+        "description": "Asus Zenfone 7 with motorized flip camera and AMOLED display.",
+        "match_exp": "$re$(?i)Zenfone 7",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "zenfone_8",
+        "name": "Asus Zenfone 8",
+        "description": "Asus Zenfone 8 with compact design and Snapdragon 888.",
+        "match_exp": "$re$(?i)Zenfone 8",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "zenfone_9",
+        "name": "Asus Zenfone 9",
+        "description": "Asus Zenfone 9 with gimbal-stabilized camera and flagship performance.",
+        "match_exp": "$re$(?i)Zenfone 9",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "galaxy_tab",
+    "name": "Samsung Galaxy Tab Series",
+    "description": "Samsung's flagship tablet series, offering premium displays and performance.",
+    "match_exp": "$re$(?i)Galaxy Tab",
+    "active": "active",
+    "maker_codename": "samsung",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "galaxy_tab_a",
+        "name": "Samsung Galaxy Tab A",
+        "description": "Affordable Samsung tablet for general use.",
+        "match_exp": "$re$(?i)Galaxy Tab A",
+        "active": "active",
+        "year_release": 2015
+      },
+      {
+        "codename": "galaxy_tab_s6",
+        "name": "Samsung Galaxy Tab S6",
+        "description": "Samsung Galaxy Tab S6 with S Pen support and AMOLED display.",
+        "match_exp": "$re$(?i)Galaxy Tab S6",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "galaxy_tab_s7",
+        "name": "Samsung Galaxy Tab S7",
+        "description": "Samsung Galaxy Tab S7 with 120Hz display and high-performance chipset.",
+        "match_exp": "$re$(?i)Galaxy Tab S7",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "galaxy_tab_s8",
+        "name": "Samsung Galaxy Tab S8",
+        "description": "Samsung Galaxy Tab S8 with enhanced multitasking features.",
+        "match_exp": "$re$(?i)Galaxy Tab S8",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "galaxy_tab_s9",
+        "name": "Samsung Galaxy Tab S9",
+        "description": "Samsung Galaxy Tab S9 with upgraded features and S Pen support.",
+        "match_exp": "$re$(?i)Galaxy Tab S9",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "matepad",
+    "name": "Huawei MatePad Series",
+    "description": "Huawei's premium tablet lineup featuring HarmonyOS and high-end hardware.",
+    "match_exp": "$re$(?i)MatePad",
+    "active": "active",
+    "maker_codename": "huawei",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "matepad_pro",
+        "name": "Huawei MatePad Pro",
+        "description": "Huawei MatePad Pro with stylus support and high-resolution display.",
+        "match_exp": "$re$(?i)MatePad Pro",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "matepad_10_4",
+        "name": "Huawei MatePad 10.4",
+        "description": "Huawei MatePad 10.4 with mid-range performance and stylus support.",
+        "match_exp": "$re$(?i)MatePad 10.4",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "matepad_11",
+        "name": "Huawei MatePad 11",
+        "description": "Huawei MatePad 11 with HarmonyOS and 120Hz display.",
+        "match_exp": "$re$(?i)MatePad 11",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "matepad_12_6",
+        "name": "Huawei MatePad 12.6",
+        "description": "Huawei MatePad 12.6 with OLED display and PC-like experience.",
+        "match_exp": "$re$(?i)MatePad 12.6",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "xiaomi_pad",
+    "name": "Xiaomi Pad Series",
+    "description": "Xiaomi's premium tablet lineup focused on performance and multimedia.",
+    "match_exp": "$re$(?i)Xiaomi Pad",
+    "active": "active",
+    "maker_codename": "xiaomi",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "mi_pad_4",
+        "name": "Xiaomi Mi Pad 4",
+        "description": "Xiaomi Mi Pad 4 with Snapdragon 660 and 8-inch display.",
+        "match_exp": "$re$(?i)Mi Pad 4",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "mi_pad_5",
+        "name": "Xiaomi Mi Pad 5",
+        "description": "Xiaomi Mi Pad 5 with 120Hz display and Snapdragon 860.",
+        "match_exp": "$re$(?i)Mi Pad 5",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "xiaomi_pad_6",
+        "name": "Xiaomi Pad 6",
+        "description": "Xiaomi Pad 6 with improved performance and 144Hz display.",
+        "match_exp": "$re$(?i)Xiaomi Pad 6",
+        "active": "active",
+        "year_release": 2023
+      }
+    ]
+  },
+  {
+    "codename": "lenovo_tablets",
+    "name": "Lenovo Tab Series",
+    "description": "Lenovo's lineup of Android tablets for entertainment and productivity.",
+    "match_exp": "$re$(?i)Lenovo Tab",
+    "active": "active",
+    "maker_codename": "lenovo",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "lenovo_tab_p11",
+        "name": "Lenovo Tab P11",
+        "description": "Lenovo Tab P11 with 2K display and stylus support.",
+        "match_exp": "$re$(?i)Lenovo Tab P11",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "lenovo_tab_p12",
+        "name": "Lenovo Tab P12 Pro",
+        "description": "Lenovo Tab P12 Pro with AMOLED display and premium build.",
+        "match_exp": "$re$(?i)Lenovo Tab P12",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "lenovo_tab_m10",
+        "name": "Lenovo Tab M10",
+        "description": "Lenovo Tab M10 with mid-range performance and kids mode.",
+        "match_exp": "$re$(?i)Lenovo Tab M10",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "lenovo_tab_m8",
+        "name": "Lenovo Tab M8",
+        "description": "Lenovo Tab M8 with compact design and multimedia focus.",
+        "match_exp": "$re$(?i)Lenovo Tab M8",
+        "active": "active",
+        "year_release": 2019
+      }
+    ]
+  },
+  {
+    "codename": "microsoft_surface",
+    "name": "Microsoft Surface Series",
+    "description": "Microsoft's premium Windows tablets with detachable keyboards and stylus support.",
+    "match_exp": "$re$(?i)Surface",
+    "active": "active",
+    "maker_codename": "microsoft",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "surface_go",
+        "name": "Microsoft Surface Go",
+        "description": "Compact and affordable Surface tablet for everyday use.",
+        "match_exp": "$re$(?i)Surface Go",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "surface_pro_7",
+        "name": "Microsoft Surface Pro 7",
+        "description": "Microsoft Surface Pro 7 with 10th Gen Intel processors and USB-C.",
+        "match_exp": "$re$(?i)Surface Pro 7",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "surface_pro_8",
+        "name": "Microsoft Surface Pro 8",
+        "description": "Microsoft Surface Pro 8 with larger display and improved performance.",
+        "match_exp": "$re$(?i)Surface Pro 8",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "surface_pro_9",
+        "name": "Microsoft Surface Pro 9",
+        "description": "Latest Surface Pro 9 with ARM and Intel processor options.",
+        "match_exp": "$re$(?i)Surface Pro 9",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "amazon_fire",
+    "name": "Amazon Fire Tablets",
+    "description": "Amazon's budget-friendly tablets optimized for media consumption and Alexa integration.",
+    "match_exp": "$re$(?i)Fire",
+    "active": "active",
+    "maker_codename": "amazon",
+    "type_codename": "tablet",
+    "versions": [
+      {
+        "codename": "fire_7",
+        "name": "Amazon Fire 7",
+        "description": "Compact 7-inch Fire tablet with Alexa integration.",
+        "match_exp": "$re$(?i)Fire 7",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "fire_hd_8",
+        "name": "Amazon Fire HD 8",
+        "description": "8-inch HD Fire tablet with Dolby Audio and long battery life.",
+        "match_exp": "$re$(?i)Fire HD 8",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "fire_hd_10",
+        "name": "Amazon Fire HD 10",
+        "description": "10-inch Full HD Fire tablet with powerful performance and Alexa hands-free.",
+        "match_exp": "$re$(?i)Fire HD 10",
+        "active": "active",
+        "year_release": 2021
+      }
+    ]
+  },
+  {
+    "codename": "xbox",
+    "name": "Xbox Series",
+    "description": "Microsoft's gaming console lineup with high-performance gaming capabilities.",
+    "match_exp": "$re$(?i)Xbox",
+    "active": "active",
+    "maker_codename": "microsoft",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "xbox_one",
+        "name": "Xbox One",
+        "description": "Xbox One with multimedia integration and cloud gaming features.",
+        "match_exp": "$re$(?i)Xbox One",
+        "active": "active",
+        "year_release": 2013
+      },
+      {
+        "codename": "xbox_one_s",
+        "name": "Xbox One S",
+        "description": "Xbox One S with HDR support and compact design.",
+        "match_exp": "$re$(?i)Xbox One S",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "xbox_one_x",
+        "name": "Xbox One X",
+        "description": "Xbox One X with 4K gaming and enhanced graphics capabilities.",
+        "match_exp": "$re$(?i)Xbox One X",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "xbox_series_s",
+        "name": "Xbox Series S",
+        "description": "Xbox Series S with next-gen performance in a compact form factor.",
+        "match_exp": "$re$(?i)Xbox Series S",
+        "active": "active",
+        "year_release": 2020
+      },
+      {
+        "codename": "xbox_series_x",
+        "name": "Xbox Series X",
+        "description": "Xbox Series X with powerful GPU and ray-tracing support.",
+        "match_exp": "$re$(?i)Xbox Series X",
+        "active": "active",
+        "year_release": 2020
+      }
+    ]
+  },
+  {
+    "codename": "playstation",
+    "name": "PlayStation Series",
+    "description": "Sony's gaming console lineup offering immersive gaming experiences.",
+    "match_exp": "$re$(?i)PlayStation",
+    "active": "active",
+    "maker_codename": "sony",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "ps3",
+        "name": "PlayStation 3",
+        "description": "PlayStation 3 with Blu-ray support and online gaming capabilities.",
+        "match_exp": "$re$(?i)PlayStation 3",
+        "active": "active",
+        "year_release": 2006
+      },
+      {
+        "codename": "ps4",
+        "name": "PlayStation 4",
+        "description": "PlayStation 4 with enhanced graphics and VR support.",
+        "match_exp": "$re$(?i)PlayStation 4",
+        "active": "active",
+        "year_release": 2013
+      },
+      {
+        "codename": "ps4_pro",
+        "name": "PlayStation 4 Pro",
+        "description": "PlayStation 4 Pro with 4K gaming and improved hardware.",
+        "match_exp": "$re$(?i)PlayStation 4 Pro",
+        "active": "active",
+        "year_release": 2016
+      },
+      {
+        "codename": "ps5",
+        "name": "PlayStation 5",
+        "description": "PlayStation 5 with ultra-fast SSD and ray-tracing technology.",
+        "match_exp": "$re$(?i)PlayStation 5",
+        "active": "active",
+        "year_release": 2020
+      }
+    ]
+  },
+  {
+    "codename": "nintendo",
+    "name": "Nintendo Consoles",
+    "description": "Nintendo's gaming console lineup, known for innovation and family-friendly games.",
+    "match_exp": "$re$(?i)Nintendo",
+    "active": "active",
+    "maker_codename": "nintendo",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "wii",
+        "name": "Nintendo Wii",
+        "description": "Nintendo Wii with motion controls and a family-friendly game library.",
+        "match_exp": "$re$(?i)Wii",
+        "active": "active",
+        "year_release": 2006
+      },
+      {
+        "codename": "wii_u",
+        "name": "Nintendo Wii U",
+        "description": "Nintendo Wii U with a gamepad controller and HD gaming.",
+        "match_exp": "$re$(?i)Wii U",
+        "active": "active",
+        "year_release": 2012
+      },
+      {
+        "codename": "switch",
+        "name": "Nintendo Switch",
+        "description": "Nintendo Switch with hybrid handheld and console gaming.",
+        "match_exp": "$re$(?i)Switch",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "switch_lite",
+        "name": "Nintendo Switch Lite",
+        "description": "Nintendo Switch Lite, a handheld-only version of the Switch.",
+        "match_exp": "$re$(?i)Switch Lite",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "switch_oled",
+        "name": "Nintendo Switch OLED Model",
+        "description": "Nintendo Switch OLED Model with a larger, more vibrant display.",
+        "match_exp": "$re$(?i)Switch OLED",
+        "active": "active",
+        "year_release": 2021
+      }
+    ]
+  },
+  {
+    "codename": "apple_tv",
+    "name": "Apple TV",
+    "description": "Apple's streaming media player with access to apps, games, and Apple services.",
+    "match_exp": "$re$(?i)Apple TV",
+    "active": "active",
+    "maker_codename": "apple",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "apple_tv_hd",
+        "name": "Apple TV HD",
+        "description": "Apple TV HD with 1080p resolution and access to Apple services.",
+        "match_exp": "$re$(?i)Apple TV HD",
+        "active": "active",
+        "year_release": 2015
+      },
+      {
+        "codename": "apple_tv_4k_1st_gen",
+        "name": "Apple TV 4K (1st generation)",
+        "description": "First-generation Apple TV 4K with HDR and Dolby Vision support.",
+        "match_exp": "$re$(?i)Apple TV 4K 1st Gen",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "apple_tv_4k_2nd_gen",
+        "name": "Apple TV 4K (2nd generation)",
+        "description": "Second-generation Apple TV 4K with improved processor and HDMI 2.1.",
+        "match_exp": "$re$(?i)Apple TV 4K 2nd Gen",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "apple_tv_4k_3rd_gen",
+        "name": "Apple TV 4K (3rd generation)",
+        "description": "Latest Apple TV 4K with A15 Bionic chip and USB-C remote charging.",
+        "match_exp": "$re$(?i)Apple TV 4K 3rd Gen",
+        "active": "active",
+        "year_release": 2022
+      }
+    ]
+  },
+  {
+    "codename": "samsung_smart_tv",
+    "name": "Samsung Smart TV",
+    "description": "Samsung's lineup of Smart TVs with Tizen OS and advanced display technology.",
+    "match_exp": "$re$(?i)Samsung Smart TV",
+    "active": "active",
+    "maker_codename": "samsung",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "samsung_qled_4k",
+        "name": "Samsung QLED 4K",
+        "description": "Samsung QLED 4K TV with Quantum Dot technology and HDR support.",
+        "match_exp": "$re$(?i)Samsung QLED 4K",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "samsung_qled_8k",
+        "name": "Samsung QLED 8K",
+        "description": "Samsung QLED 8K TV with AI upscaling and superior picture quality.",
+        "match_exp": "$re$(?i)Samsung QLED 8K",
+        "active": "active",
+        "year_release": 2018
+      },
+      {
+        "codename": "samsung_neo_qled",
+        "name": "Samsung Neo QLED",
+        "description": "Samsung Neo QLED with Mini LED technology for improved contrast and brightness.",
+        "match_exp": "$re$(?i)Samsung Neo QLED",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "samsung_the_frame",
+        "name": "Samsung The Frame",
+        "description": "Samsung The Frame, a lifestyle TV that doubles as a digital art display.",
+        "match_exp": "$re$(?i)Samsung The Frame",
+        "active": "active",
+        "year_release": 2017
+      },
+      {
+        "codename": "samsung_uhd_4k",
+        "name": "Samsung UHD 4K",
+        "description": "Samsung UHD 4K Smart TV with Tizen OS and HDR support.",
+        "match_exp": "$re$(?i)Samsung UHD 4K",
+        "active": "active",
+        "year_release": 2019
+      }
+    ]
+  },
+  {
+    "codename": "lg_smart_tv",
+    "name": "LG Smart TV",
+    "description": "LG's lineup of Smart TVs with webOS and OLED technology.",
+    "match_exp": "$re$(?i)LG Smart TV",
+    "active": "active",
+    "maker_codename": "lg",
+    "type_codename": "connected",
+    "versions": [
+      {
+        "codename": "lg_oled_c1",
+        "name": "LG OLED C1",
+        "description": "LG OLED C1 with self-lit pixels and NVIDIA G-Sync support.",
+        "match_exp": "$re$(?i)LG OLED C1",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "lg_oled_c2",
+        "name": "LG OLED C2",
+        "description": "LG OLED C2 with next-gen Evo panel for improved brightness.",
+        "match_exp": "$re$(?i)LG OLED C2",
+        "active": "active",
+        "year_release": 2022
+      },
+      {
+        "codename": "lg_qned",
+        "name": "LG QNED Mini LED",
+        "description": "LG QNED Mini LED TV with Quantum Dot and NanoCell technology.",
+        "match_exp": "$re$(?i)LG QNED",
+        "active": "active",
+        "year_release": 2021
+      },
+      {
+        "codename": "lg_nano",
+        "name": "LG NanoCell",
+        "description": "LG NanoCell Smart TV with IPS panel and AI ThinQ.",
+        "match_exp": "$re$(?i)LG NanoCell",
+        "active": "active",
+        "year_release": 2019
+      },
+      {
+        "codename": "lg_uhd_4k",
+        "name": "LG UHD 4K",
+        "description": "LG UHD 4K Smart TV with webOS and AI upscaling.",
+        "match_exp": "$re$(?i)LG UHD 4K",
+        "active": "active",
+        "year_release": 2020
+      }
+    ]
+  }  
+]

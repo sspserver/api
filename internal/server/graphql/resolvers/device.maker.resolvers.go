@@ -33,6 +33,6 @@ func (r *queryResolver) DeviceMaker(ctx context.Context, id uint64, codename str
 }
 
 // ListDeviceMakers is the resolver for the listDeviceMakers field.
-func (r *queryResolver) ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order *models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error) {
+func (r *queryResolver) ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error) {
 	return r.device_makers.List(ctx, filter, order, page)
 }

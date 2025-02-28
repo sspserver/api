@@ -9,8 +9,24 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/internal/server/graphql/generated"
 	"github.com/sspserver/api/internal/server/graphql/models"
 )
+
+// Versions is the resolver for the versions field.
+func (r *deviceModelResolver) Versions(ctx context.Context, obj *models.DeviceModel, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder) ([]*models.DeviceModel, error) {
+	if filter == nil {
+		filter = &models.DeviceModelListFilter{
+			Active: []models.ActiveStatus{models.ActiveStatusActive},
+		}
+	}
+	filter.ParentID = []uint64{obj.ID}
+	coll, err := r.device_models.List(ctx, filter, order, nil)
+	if err != nil {
+		return nil, err
+	}
+	return coll.List(), nil
+}
 
 // CreateDeviceModel is the resolver for the createDeviceModel field.
 func (r *mutationResolver) CreateDeviceModel(ctx context.Context, input models.DeviceModelCreateInput) (*models.DeviceModelPayload, error) {
@@ -33,6 +49,11 @@ func (r *queryResolver) DeviceModel(ctx context.Context, id uint64, codename str
 }
 
 // ListDeviceModels is the resolver for the listDeviceModels field.
-func (r *queryResolver) ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order *models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error) {
+func (r *queryResolver) ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error) {
 	return r.device_models.List(ctx, filter, order, page)
 }
+
+// DeviceModel returns generated.DeviceModelResolver implementation.
+func (r *Resolver) DeviceModel() generated.DeviceModelResolver { return &deviceModelResolver{r} }
+
+type deviceModelResolver struct{ *Resolver }

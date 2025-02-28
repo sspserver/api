@@ -6,7 +6,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/pkg/context/version"
 	generated1 "github.com/sspserver/api/internal/server/graphql/generated"
@@ -19,7 +18,6 @@ func (r *mutationResolver) Poke(ctx context.Context) (string, error) {
 
 // ServiceVersion is the resolver for the serviceVersion field.
 func (r *queryResolver) ServiceVersion(ctx context.Context) (string, error) {
-	fmt.Println("ServiceVersion", version.Get(ctx))
 	return version.Get(ctx).Public(), nil
 }
 

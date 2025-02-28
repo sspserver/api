@@ -21,6 +21,7 @@ func FromDeviceModelModel(m *models.DeviceModel) *DeviceModel {
 		Codename:      m.Codename,
 		Description:   m.Description,
 		Active:        FromActiveStatus(m.Active),
+		YearRelease:   m.YearRelease,
 		MatchExp:      m.MatchExp,
 		ParentID:      gocast.IfThen(m.ParentID > 0, &m.ParentID, nil),
 		MakerCodename: m.MakerCodename,
@@ -43,12 +44,16 @@ func (fl *DeviceModelListFilter) Filter() *devicemodel.Filter {
 		return nil
 	}
 	return &devicemodel.Filter{
-		ID:   fl.ID,
-		Name: fl.Name,
+		ID:       fl.ID,
+		Codename: fl.Codename,
+		Name:     fl.Name,
+		ParentID: fl.ParentID,
 		Active: gocast.IfThenExec(len(fl.Active) > 0, func() *types.ActiveStatus {
 			st := ActiveStatusFrom(fl.Active[0])
 			return &st
 		}, func() *types.ActiveStatus { return nil }),
+		MakerCodename: fl.MakerCodename,
+		TypeCodename:  fl.TypeCodename,
 	}
 }
 
@@ -57,12 +62,31 @@ func (ol *DeviceModelListOrder) Order() *devicemodel.ListOrder {
 		return nil
 	}
 	return &devicemodel.ListOrder{
-		ID:        ol.ID.AsOrder(),
-		Name:      ol.Name.AsOrder(),
-		Active:    ol.Active.AsOrder(),
-		CreatedAt: ol.CreatedAt.AsOrder(),
-		UpdatedAt: ol.UpdatedAt.AsOrder(),
+		ID:            ol.ID.AsOrder(),
+		Codename:      ol.Codename.AsOrder(),
+		Name:          ol.Name.AsOrder(),
+		Active:        ol.Active.AsOrder(),
+		TypeCodename:  ol.TypeCodename.AsOrder(),
+		MakerCodename: ol.MakerCodename.AsOrder(),
+		CreatedAt:     ol.CreatedAt.AsOrder(),
+		UpdatedAt:     ol.UpdatedAt.AsOrder(),
+		YearRelease:   ol.YearRelease.AsOrder(),
 	}
+}
+
+func (ol *DeviceModelListOrder) Fill(vl *devicemodel.ListOrder) {
+	if ol == nil || vl == nil {
+		return
+	}
+	vl.ID = ol.ID.AsOrder()
+	vl.Codename = ol.Codename.AsOrder()
+	vl.Name = ol.Name.AsOrder()
+	vl.Active = ol.Active.AsOrder()
+	vl.TypeCodename = ol.TypeCodename.AsOrder()
+	vl.MakerCodename = ol.MakerCodename.AsOrder()
+	vl.CreatedAt = ol.CreatedAt.AsOrder()
+	vl.UpdatedAt = ol.UpdatedAt.AsOrder()
+	vl.YearRelease = ol.YearRelease.AsOrder()
 }
 
 func (inp *DeviceModelCreateInput) FillModel(m *models.DeviceModel) error {

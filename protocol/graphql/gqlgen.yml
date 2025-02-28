@@ -131,3 +131,7 @@ models:
     fields:
       versions:
         resolver: true
+  DeviceModel:
+    fields:
+      versions:
+        resolver: true

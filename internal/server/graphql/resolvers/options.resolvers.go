@@ -9,11 +9,12 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/geniusrabbit/blaze-api/server/graphql/types"
 )
 
 // SetOption is the resolver for the setOption field.
-func (r *mutationResolver) SetOption(ctx context.Context, name string, input models.OptionInput) (*models.OptionPayload, error) {
-	return r.options.Set(ctx, name, &input)
+func (r *mutationResolver) SetOption(ctx context.Context, name string, value *types.NullableJSON, typeArg models.OptionType, targetID uint64) (*models.OptionPayload, error) {
+	return r.options.Set(ctx, name, value, typeArg, targetID)
 }
 
 // Option is the resolver for the option field.

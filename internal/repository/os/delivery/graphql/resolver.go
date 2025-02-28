@@ -58,7 +58,9 @@ func (r *QueryResolver) Versions(ctx context.Context, obj *qmodels.Os) ([]*qmode
 // Create OS is the resolver for the createOS field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSCreateInput) (*qmodels.OSPayload, error) {
 	var obj models.OS
-	input.FillModel(&obj)
+	if err := input.FillModel(&obj); err != nil {
+		return nil, err
+	}
 
 	id, err := r.uc.Create(ctx, &obj)
 	if err != nil {
@@ -81,7 +83,9 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.OSU
 	if obj == nil {
 		return nil, fmt.Errorf("OS not found")
 	}
-	input.FillModel(obj)
+	if err = input.FillModel(obj); err != nil {
+		return nil, err
+	}
 	if err := r.uc.Update(ctx, id, obj); err != nil {
 		return nil, err
 	}

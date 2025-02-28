@@ -13,12 +13,12 @@ import (
 )
 
 // CreateBrowser is the resolver for the createBrowser field.
-func (r *mutationResolver) CreateBrowser(ctx context.Context, input models.BrowserInput) (*models.BrowserPayload, error) {
+func (r *mutationResolver) CreateBrowser(ctx context.Context, input models.BrowserCreateInput) (*models.BrowserPayload, error) {
 	return r.browsers.Create(ctx, input)
 }
 
 // UpdateBrowser is the resolver for the updateBrowser field.
-func (r *mutationResolver) UpdateBrowser(ctx context.Context, id uint64, input models.BrowserInput) (*models.BrowserPayload, error) {
+func (r *mutationResolver) UpdateBrowser(ctx context.Context, id uint64, input models.BrowserUpdateInput) (*models.BrowserPayload, error) {
 	return r.browsers.Update(ctx, id, input)
 }
 
@@ -33,6 +33,6 @@ func (r *queryResolver) Browser(ctx context.Context, id uint64) (*models.Browser
 }
 
 // ListBrowsers is the resolver for the listBrowsers field.
-func (r *queryResolver) ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order *models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Browser, models.BrowserEdge], error) {
+func (r *queryResolver) ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Browser, models.BrowserEdge], error) {
 	return r.browsers.List(ctx, filter, order, page)
 }

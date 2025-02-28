@@ -35,14 +35,16 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.BrowserPay
 }
 
 // List Browser is the resolver for the listBrowser field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.BrowserListFilter, order *qmodels.BrowserListOrder, page *qmodels.Page) (*connectors.BrowserConnection, error) {
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.BrowserListFilter, order []*qmodels.BrowserListOrder, page *qmodels.Page) (*connectors.BrowserConnection, error) {
 	return connectors.NewBrowserConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // Create Browser is the resolver for the createBrowser field.
-func (r *QueryResolver) Create(ctx context.Context, input qmodels.BrowserInput) (*qmodels.BrowserPayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qmodels.BrowserCreateInput) (*qmodels.BrowserPayload, error) {
 	var obj models.Browser
-	input.FillModel(&obj)
+	if err := input.FillModel(&obj); err != nil {
+		return nil, err
+	}
 
 	id, err := r.uc.Create(ctx, &obj)
 	if err != nil {
@@ -57,7 +59,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.BrowserInput) 
 }
 
 // Update Browser is the resolver for the updateBrowser field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.BrowserInput) (*qmodels.BrowserPayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.BrowserUpdateInput) (*qmodels.BrowserPayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err
@@ -65,7 +67,9 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Bro
 	if obj == nil {
 		return nil, fmt.Errorf("browser not found")
 	}
-	input.FillModel(obj)
+	if err = input.FillModel(obj); err != nil {
+		return nil, err
+	}
 	if err := r.uc.Update(ctx, id, obj); err != nil {
 		return nil, err
 	}

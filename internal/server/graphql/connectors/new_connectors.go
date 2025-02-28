@@ -102,14 +102,15 @@ type OSConnection = connectors.CollectionConnection[gqlmodels.Os, gqlmodels.OSEd
 func NewOSConnection(ctx context.Context, osAccessor os.Usecase, filter *gqlmodels.OSListFilter, order []*gqlmodels.OSListOrder, page *gqlmodels.Page) *OSConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Os, gqlmodels.OSEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Os, error) {
-			order := xtypes.SliceReduce(order, func(val *gqlmodels.OSListOrder, res *os.ListOrder) { val.Fill(res) })
+			newOrder := xtypes.SliceReduce(order,
+				func(val *gqlmodels.OSListOrder, res *os.ListOrder) { val.Fill(res) })
 			newFilter := filter.Filter()
 			preloadOptions := (*repository.PreloadOption)(nil)
 			if newFilter.IsChildrensPreload() {
 				preloadOptions = &repository.PreloadOption{Fields: []string{`Versions`}}
 			}
 			list, err := osAccessor.FetchList(ctx,
-				preloadOptions, newFilter, &order, page.Pagination())
+				preloadOptions, newFilter, &newOrder, page.Pagination())
 			return gqlmodels.FromOSModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
@@ -128,11 +129,18 @@ func NewOSConnection(ctx context.Context, osAccessor os.Usecase, filter *gqlmode
 type BrowserConnection = connectors.CollectionConnection[gqlmodels.Browser, gqlmodels.BrowserEdge]
 
 // NewBrowserConnection based on query object
-func NewBrowserConnection(ctx context.Context, browserAccessor browser.Usecase, filter *gqlmodels.BrowserListFilter, order *gqlmodels.BrowserListOrder, page *gqlmodels.Page) *BrowserConnection {
+func NewBrowserConnection(ctx context.Context, browserAccessor browser.Usecase, filter *gqlmodels.BrowserListFilter, order []*gqlmodels.BrowserListOrder, page *gqlmodels.Page) *BrowserConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Browser, gqlmodels.BrowserEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Browser, error) {
+			newOrder := xtypes.SliceReduce(order,
+				func(val *gqlmodels.BrowserListOrder, res *browser.ListOrder) { val.Fill(res) })
+			newFilter := filter.Filter()
+			preloadOptions := (*repository.PreloadOption)(nil)
+			if newFilter.IsChildrensPreload() {
+				preloadOptions = &repository.PreloadOption{Fields: []string{`Versions`}}
+			}
 			list, err := browserAccessor.FetchList(ctx,
-				filter.Filter(), order.Order(), page.Pagination())
+				preloadOptions, filter.Filter(), &newOrder, page.Pagination())
 			return gqlmodels.FromBrowserModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
@@ -151,12 +159,14 @@ func NewBrowserConnection(ctx context.Context, browserAccessor browser.Usecase, 
 type DeviceMakerConnection = connectors.CollectionConnection[gqlmodels.DeviceMaker, gqlmodels.DeviceMakerEdge]
 
 // NewDeviceMakerConnection based on query object
-func NewDeviceMakerConnection(ctx context.Context, deviceMakerAccessor devicemaker.Usecase, filter *gqlmodels.DeviceMakerListFilter, order *gqlmodels.DeviceMakerListOrder, page *gqlmodels.Page) *DeviceMakerConnection {
+func NewDeviceMakerConnection(ctx context.Context, deviceMakerAccessor devicemaker.Usecase, filter *gqlmodels.DeviceMakerListFilter, order []*gqlmodels.DeviceMakerListOrder, page *gqlmodels.Page) *DeviceMakerConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.DeviceMaker, gqlmodels.DeviceMakerEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.DeviceMaker, error) {
+			newOrder := xtypes.SliceReduce(order,
+				func(val *gqlmodels.DeviceMakerListOrder, res *devicemaker.ListOrder) { val.Fill(res) })
 			list, err := deviceMakerAccessor.FetchList(ctx,
 				&repository.PreloadOption{Fields: []string{`Models`}},
-				filter.Filter(), order.Order(), page.Pagination())
+				filter.Filter(), &newOrder, page.Pagination())
 			return gqlmodels.FromDeviceMakerModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
@@ -175,11 +185,13 @@ func NewDeviceMakerConnection(ctx context.Context, deviceMakerAccessor devicemak
 type DeviceModelConnection = connectors.CollectionConnection[gqlmodels.DeviceModel, gqlmodels.DeviceModelEdge]
 
 // NewDeviceModelConnection based on query object
-func NewDeviceModelConnection(ctx context.Context, deviceModelAccessor devicemodel.Usecase, filter *gqlmodels.DeviceModelListFilter, order *gqlmodels.DeviceModelListOrder, page *gqlmodels.Page) *DeviceModelConnection {
+func NewDeviceModelConnection(ctx context.Context, deviceModelAccessor devicemodel.Usecase, filter *gqlmodels.DeviceModelListFilter, order []*gqlmodels.DeviceModelListOrder, page *gqlmodels.Page) *DeviceModelConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.DeviceModel, gqlmodels.DeviceModelEdge]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.DeviceModel, error) {
+			newOrder := xtypes.SliceReduce(order,
+				func(val *gqlmodels.DeviceModelListOrder, res *devicemodel.ListOrder) { val.Fill(res) })
 			list, err := deviceModelAccessor.FetchList(ctx,
-				filter.Filter(), order.Order(), page.Pagination())
+				filter.Filter(), &newOrder, page.Pagination())
 			return gqlmodels.FromDeviceModelModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {

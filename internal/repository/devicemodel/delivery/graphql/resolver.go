@@ -44,7 +44,7 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64, codename string) (*q
 }
 
 // List DeviceModel is the resolver for the listDeviceModels field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceModelListFilter, order *qmodels.DeviceModelListOrder, page *qmodels.Page) (*connectors.DeviceModelConnection, error) {
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceModelListFilter, order []*qmodels.DeviceModelListOrder, page *qmodels.Page) (*connectors.DeviceModelConnection, error) {
 	return connectors.NewDeviceModelConnection(ctx, r.uc, filter, order, page), nil
 }
 

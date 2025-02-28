@@ -13,6 +13,7 @@ func FromDeviceTypeModel(m *models.DeviceType) *DeviceType {
 	return &DeviceType{
 		ID:          m.ID,
 		Name:        m.Name,
+		Codename:    m.Codename,
 		Description: m.Description,
 		Active:      FromActiveStatus(m.Active),
 	}

@@ -50,18 +50,8 @@ func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationLi
 // Create Application is the resolver for the createApplication field.
 func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationCreateInput) (*qlmodels.ApplicationPayload, error) {
 	var obj models.Application
-	input.FillModel(&obj)
-
-	// Validation rules
-	if obj.Title == "" {
-		return nil, &gqlerror.Error{
-			Message: "Title is required",
-			Extensions: map[string]any{
-				"code":     "validation",
-				"required": true,
-				"field":    "title",
-			},
-		}
+	if err := input.FillModel(&obj); err != nil {
+		return nil, err
 	}
 
 	if obj.URI == "" {
@@ -98,7 +88,10 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.Ap
 		return nil, fmt.Errorf("application not found")
 	}
 
-	input.FillModel(obj)
+	if err = input.FillModel(obj); err != nil {
+		return nil, err
+	}
+
 	if err = r.uc.Update(ctx, id, obj); err != nil {
 		return nil, err
 	}

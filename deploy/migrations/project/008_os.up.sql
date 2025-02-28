@@ -25,20 +25,20 @@ CREATE TABLE IF NOT EXISTS type_os
 , version                VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
-, year_release           INTEGER                    NOT NULL      DEFAULT 0
-, year_end_support       INTEGER                    NOT NULL      DEFAULT 0
+, year_release           INTEGER                    NOT NULL        DEFAULT 0
+, year_end_support       INTEGER                    NOT NULL        DEFAULT 0
 
 -- Match Name Expression
-, match_name_exp         VARCHAR(255)               NOT NULL
+, match_name_exp         TEXT                       NOT NULL        DEFAULT ''
 -- Match User Agent Expression
-, match_ua_exp           VARCHAR(255)               NOT NULL
+, match_ua_exp           TEXT                       NOT NULL        DEFAULT ''
 -- Version of lower border in standard format (major.minor.patch[-pre-release][+build-metadata])
-, match_ver_min_exp      VARCHAR(255)               NOT NULL
+, match_ver_min_exp      TEXT                       NOT NULL        DEFAULT ''
 -- Version of upper border in standard format (major.minor.patch[-pre-release][+build-metadata])
-, match_ver_max_exp      VARCHAR(255)               NOT NULL
+, match_ver_max_exp      TEXT                       NOT NULL        DEFAULT ''
 
 -- Is Active OS
-, active                 ActiveStatus               NOT NULL      DEFAULT 'pause' -- ActiveStatus 'active' or 'pause'
+, active                 ActiveStatus               NOT NULL        DEFAULT 'pause' -- ActiveStatus 'active' or 'pause'
 
 , parent_id              BIGINT                     REFERENCES type_os(id) MATCH SIMPLE
                                                         ON UPDATE NO ACTION

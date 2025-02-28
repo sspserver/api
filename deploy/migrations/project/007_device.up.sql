@@ -8,6 +8,11 @@ CREATE TABLE IF NOT EXISTS type_device_maker
 , name                   VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
+-- Match expression
+-- This expression is used to match the device maker name with the user agent string.
+-- By default, it is a simple case-insensitive match.
+-- With prefix '$regex$' | '$re$', it is a regular expression.
+-- With prefix '$wc$', it is a wildcard expression.
 , match_exp              TEXT                       NOT NULL
 
 -- Is Active device maker
@@ -36,6 +41,13 @@ CREATE TABLE IF NOT EXISTS type_device_model
 , name                   VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
+, year_release           INTEGER                    NOT NULL        DEFAULT 0
+
+-- Match expression
+-- This expression is used to match the device model name with the user agent string.
+-- By default, it is a simple case-insensitive match.
+-- With prefix '$regex$' | '$re$', it is a regular expression.
+-- With prefix '$wc$', it is a wildcard expression.
 , match_exp              TEXT                       NOT NULL
 
 -- Is Active device model
@@ -49,8 +61,10 @@ CREATE TABLE IF NOT EXISTS type_device_model
 -- Device Type
 , type_codename          VARCHAR(255)               NOT NULL       CHECK (type_codename <> '')
 
--- Versions
-, versions               JSONB
+, parent_id              BIGINT                     REFERENCES type_device_model(id) MATCH SIMPLE
+                                                        ON UPDATE NO ACTION
+                                                        ON DELETE SET NULL
+                                                    CHECK (parent_id <> id)
 
 -- Time marks
 , created_at             TIMESTAMP                  NOT NULL      DEFAULT NOW()

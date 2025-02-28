@@ -44,6 +44,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Category() CategoryResolver
+	DeviceModel() DeviceModelResolver
 	Mutation() MutationResolver
 	OS() OSResolver
 	Query() QueryResolver
@@ -212,15 +213,23 @@ type ComplexityRoot struct {
 	}
 
 	Browser struct {
-		Active      func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		DeletedAt   func(childComplexity int) int
-		Description func(childComplexity int) int
-		ID          func(childComplexity int) int
-		MatchExp    func(childComplexity int) int
-		Name        func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-		Versions    func(childComplexity int) int
+		Active             func(childComplexity int) int
+		CreatedAt          func(childComplexity int) int
+		DeletedAt          func(childComplexity int) int
+		Description        func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		MatchNameExp       func(childComplexity int) int
+		MatchUserAgentExp  func(childComplexity int) int
+		MatchVersionMaxExp func(childComplexity int) int
+		MatchVersionMinExp func(childComplexity int) int
+		Name               func(childComplexity int) int
+		Parent             func(childComplexity int) int
+		ParentID           func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		Version            func(childComplexity int) int
+		Versions           func(childComplexity int) int
+		YearEndSupport     func(childComplexity int) int
+		YearRelease        func(childComplexity int) int
 	}
 
 	BrowserConnection struct {
@@ -239,12 +248,6 @@ type ComplexityRoot struct {
 		Browser          func(childComplexity int) int
 		BrowserID        func(childComplexity int) int
 		ClientMutationID func(childComplexity int) int
-	}
-
-	BrowserVersion struct {
-		Max  func(childComplexity int) int
-		Min  func(childComplexity int) int
-		Name func(childComplexity int) int
 	}
 
 	Category struct {
@@ -356,7 +359,8 @@ type ComplexityRoot struct {
 		TypeCodename  func(childComplexity int) int
 		UpdatedAt     func(childComplexity int) int
 		Version       func(childComplexity int) int
-		Versions      func(childComplexity int) int
+		Versions      func(childComplexity int, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder) int
+		YearRelease   func(childComplexity int) int
 	}
 
 	DeviceModelConnection struct {
@@ -484,7 +488,7 @@ type ComplexityRoot struct {
 		ApproveZone               func(childComplexity int, id uint64, msg *string) int
 		CreateApplication         func(childComplexity int, input models.ApplicationCreateInput) int
 		CreateAuthClient          func(childComplexity int, input models1.AuthClientInput) int
-		CreateBrowser             func(childComplexity int, input models.BrowserInput) int
+		CreateBrowser             func(childComplexity int, input models.BrowserCreateInput) int
 		CreateCategory            func(childComplexity int, input models.CategoryInput) int
 		CreateDeviceMaker         func(childComplexity int, input models.DeviceMakerCreateInput) int
 		CreateDeviceModel         func(childComplexity int, input models.DeviceModelCreateInput) int
@@ -526,13 +530,13 @@ type ComplexityRoot struct {
 		RevokeDirectAccessToken   func(childComplexity int, filter models1.DirectAccessTokenListFilter) int
 		RunApplication            func(childComplexity int, id uint64, msg *string) int
 		RunRTBSource              func(childComplexity int, id uint64) int
-		SetOption                 func(childComplexity int, name string, input models1.OptionInput) int
+		SetOption                 func(childComplexity int, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) int
 		SwitchAccount             func(childComplexity int, id uint64) int
 		UpdateAccount             func(childComplexity int, id uint64, input models1.AccountInput) int
 		UpdateAccountMember       func(childComplexity int, memberID uint64, member models1.MemberInput) int
 		UpdateApplication         func(childComplexity int, id uint64, input models.ApplicationUpdateInput) int
 		UpdateAuthClient          func(childComplexity int, id string, input models1.AuthClientInput) int
-		UpdateBrowser             func(childComplexity int, id uint64, input models.BrowserInput) int
+		UpdateBrowser             func(childComplexity int, id uint64, input models.BrowserUpdateInput) int
 		UpdateCategory            func(childComplexity int, id uint64, input models.CategoryInput) int
 		UpdateDeviceMaker         func(childComplexity int, id uint64, input models.DeviceMakerUpdateInput) int
 		UpdateDeviceModel         func(childComplexity int, id uint64, input models.DeviceModelUpdateInput) int
@@ -657,10 +661,10 @@ type ComplexityRoot struct {
 		ListAccounts                   func(childComplexity int, filter *models1.AccountListFilter, order *models1.AccountListOrder, page *models1.Page) int
 		ListApplications               func(childComplexity int, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) int
 		ListAuthClients                func(childComplexity int, filter *models1.AuthClientListFilter, order *models1.AuthClientListOrder, page *models1.Page) int
-		ListBrowsers                   func(childComplexity int, filter *models.BrowserListFilter, order *models.BrowserListOrder, page *models1.Page) int
+		ListBrowsers                   func(childComplexity int, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) int
 		ListCategories                 func(childComplexity int, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) int
-		ListDeviceMakers               func(childComplexity int, filter *models.DeviceMakerListFilter, order *models.DeviceMakerListOrder, page *models1.Page) int
-		ListDeviceModels               func(childComplexity int, filter *models.DeviceModelListFilter, order *models.DeviceModelListOrder, page *models1.Page) int
+		ListDeviceMakers               func(childComplexity int, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) int
+		ListDeviceModels               func(childComplexity int, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) int
 		ListDeviceTypes                func(childComplexity int) int
 		ListDirectAccessTokens         func(childComplexity int, filter *models1.DirectAccessTokenListFilter, order *models1.DirectAccessTokenListOrder, page *models1.Page) int
 		ListFormats                    func(childComplexity int, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) int
@@ -956,6 +960,9 @@ type ComplexityRoot struct {
 type CategoryResolver interface {
 	Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error)
 }
+type DeviceModelResolver interface {
+	Versions(ctx context.Context, obj *models.DeviceModel, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder) ([]*models.DeviceModel, error)
+}
 type MutationResolver interface {
 	Poke(ctx context.Context) (string, error)
 	Login(ctx context.Context, login string, password string) (*models1.SessionToken, error)
@@ -982,7 +989,7 @@ type MutationResolver interface {
 	DeleteAuthClient(ctx context.Context, id string, msg *string) (*models1.AuthClientPayload, error)
 	GenerateDirectAccessToken(ctx context.Context, userID *uint64, description string, expiresAt *time.Time) (*models1.DirectAccessTokenPayload, error)
 	RevokeDirectAccessToken(ctx context.Context, filter models1.DirectAccessTokenListFilter) (*models1.StatusResponse, error)
-	SetOption(ctx context.Context, name string, input models1.OptionInput) (*models1.OptionPayload, error)
+	SetOption(ctx context.Context, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) (*models1.OptionPayload, error)
 	CreateRole(ctx context.Context, input models1.RBACRoleInput) (*models1.RBACRolePayload, error)
 	UpdateRole(ctx context.Context, id uint64, input models1.RBACRoleInput) (*models1.RBACRolePayload, error)
 	DeleteRole(ctx context.Context, id uint64, msg *string) (*models1.RBACRolePayload, error)
@@ -996,8 +1003,8 @@ type MutationResolver interface {
 	PauseApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	ApproveApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	RejectApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	CreateBrowser(ctx context.Context, input models.BrowserInput) (*models.BrowserPayload, error)
-	UpdateBrowser(ctx context.Context, id uint64, input models.BrowserInput) (*models.BrowserPayload, error)
+	CreateBrowser(ctx context.Context, input models.BrowserCreateInput) (*models.BrowserPayload, error)
+	UpdateBrowser(ctx context.Context, id uint64, input models.BrowserUpdateInput) (*models.BrowserPayload, error)
 	DeleteBrowser(ctx context.Context, id uint64, msg *string) (*models.BrowserPayload, error)
 	CreateCategory(ctx context.Context, input models.CategoryInput) (*models.CategoryPayload, error)
 	UpdateCategory(ctx context.Context, id uint64, input models.CategoryInput) (*models.CategoryPayload, error)
@@ -1060,15 +1067,15 @@ type QueryResolver interface {
 	Application(ctx context.Context, id uint64) (*models.ApplicationPayload, error)
 	ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Application, models.ApplicationEdge], error)
 	Browser(ctx context.Context, id uint64) (*models.BrowserPayload, error)
-	ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order *models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Browser, models.BrowserEdge], error)
+	ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Browser, models.BrowserEdge], error)
 	Category(ctx context.Context, id uint64) (*models.CategoryPayload, error)
 	ListCategories(ctx context.Context, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Category, models.CategoryEdge], error)
 	Continents(ctx context.Context) ([]*models.Continent, error)
 	Countries(ctx context.Context) ([]*models.Country, error)
 	DeviceMaker(ctx context.Context, id uint64, codename string) (*models.DeviceMakerPayload, error)
-	ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order *models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error)
+	ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error)
 	DeviceModel(ctx context.Context, id uint64, codename string) (*models.DeviceModelPayload, error)
-	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order *models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
+	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
 	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
 	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
@@ -1829,12 +1836,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Browser.ID(childComplexity), true
 
-	case "Browser.matchExp":
-		if e.complexity.Browser.MatchExp == nil {
+	case "Browser.matchNameExp":
+		if e.complexity.Browser.MatchNameExp == nil {
 			break
 		}
 
-		return e.complexity.Browser.MatchExp(childComplexity), true
+		return e.complexity.Browser.MatchNameExp(childComplexity), true
+
+	case "Browser.matchUserAgentExp":
+		if e.complexity.Browser.MatchUserAgentExp == nil {
+			break
+		}
+
+		return e.complexity.Browser.MatchUserAgentExp(childComplexity), true
+
+	case "Browser.matchVersionMaxExp":
+		if e.complexity.Browser.MatchVersionMaxExp == nil {
+			break
+		}
+
+		return e.complexity.Browser.MatchVersionMaxExp(childComplexity), true
+
+	case "Browser.matchVersionMinExp":
+		if e.complexity.Browser.MatchVersionMinExp == nil {
+			break
+		}
+
+		return e.complexity.Browser.MatchVersionMinExp(childComplexity), true
 
 	case "Browser.name":
 		if e.complexity.Browser.Name == nil {
@@ -1843,6 +1871,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Browser.Name(childComplexity), true
 
+	case "Browser.parent":
+		if e.complexity.Browser.Parent == nil {
+			break
+		}
+
+		return e.complexity.Browser.Parent(childComplexity), true
+
+	case "Browser.parentID":
+		if e.complexity.Browser.ParentID == nil {
+			break
+		}
+
+		return e.complexity.Browser.ParentID(childComplexity), true
+
 	case "Browser.updatedAt":
 		if e.complexity.Browser.UpdatedAt == nil {
 			break
@@ -1850,12 +1892,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Browser.UpdatedAt(childComplexity), true
 
+	case "Browser.version":
+		if e.complexity.Browser.Version == nil {
+			break
+		}
+
+		return e.complexity.Browser.Version(childComplexity), true
+
 	case "Browser.versions":
 		if e.complexity.Browser.Versions == nil {
 			break
 		}
 
 		return e.complexity.Browser.Versions(childComplexity), true
+
+	case "Browser.yearEndSupport":
+		if e.complexity.Browser.YearEndSupport == nil {
+			break
+		}
+
+		return e.complexity.Browser.YearEndSupport(childComplexity), true
+
+	case "Browser.yearRelease":
+		if e.complexity.Browser.YearRelease == nil {
+			break
+		}
+
+		return e.complexity.Browser.YearRelease(childComplexity), true
 
 	case "BrowserConnection.edges":
 		if e.complexity.BrowserConnection.Edges == nil {
@@ -1919,27 +1982,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.BrowserPayload.ClientMutationID(childComplexity), true
-
-	case "BrowserVersion.max":
-		if e.complexity.BrowserVersion.Max == nil {
-			break
-		}
-
-		return e.complexity.BrowserVersion.Max(childComplexity), true
-
-	case "BrowserVersion.min":
-		if e.complexity.BrowserVersion.Min == nil {
-			break
-		}
-
-		return e.complexity.BrowserVersion.Min(childComplexity), true
-
-	case "BrowserVersion.name":
-		if e.complexity.BrowserVersion.Name == nil {
-			break
-		}
-
-		return e.complexity.BrowserVersion.Name(childComplexity), true
 
 	case "Category.active":
 		if e.complexity.Category.Active == nil {
@@ -2471,7 +2513,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.DeviceModel.Versions(childComplexity), true
+		args, err := ec.field_DeviceModel_versions_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.DeviceModel.Versions(childComplexity, args["filter"].(*models.DeviceModelListFilter), args["order"].([]*models.DeviceModelListOrder)), true
+
+	case "DeviceModel.yearRelease":
+		if e.complexity.DeviceModel.YearRelease == nil {
+			break
+		}
+
+		return e.complexity.DeviceModel.YearRelease(childComplexity), true
 
 	case "DeviceModelConnection.edges":
 		if e.complexity.DeviceModelConnection.Edges == nil {
@@ -3060,7 +3114,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateBrowser(childComplexity, args["input"].(models.BrowserInput)), true
+		return e.complexity.Mutation.CreateBrowser(childComplexity, args["input"].(models.BrowserCreateInput)), true
 
 	case "Mutation.createCategory":
 		if e.complexity.Mutation.CreateCategory == nil {
@@ -3554,7 +3608,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.SetOption(childComplexity, args["name"].(string), args["input"].(models1.OptionInput)), true
+		return e.complexity.Mutation.SetOption(childComplexity, args["name"].(string), args["value"].(*types.NullableJSON), args["type"].(models1.OptionType), args["targetID"].(uint64)), true
 
 	case "Mutation.switchAccount":
 		if e.complexity.Mutation.SwitchAccount == nil {
@@ -3626,7 +3680,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateBrowser(childComplexity, args["ID"].(uint64), args["input"].(models.BrowserInput)), true
+		return e.complexity.Mutation.UpdateBrowser(childComplexity, args["ID"].(uint64), args["input"].(models.BrowserUpdateInput)), true
 
 	case "Mutation.updateCategory":
 		if e.complexity.Mutation.UpdateCategory == nil {
@@ -4379,7 +4433,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ListBrowsers(childComplexity, args["filter"].(*models.BrowserListFilter), args["order"].(*models.BrowserListOrder), args["page"].(*models1.Page)), true
+		return e.complexity.Query.ListBrowsers(childComplexity, args["filter"].(*models.BrowserListFilter), args["order"].([]*models.BrowserListOrder), args["page"].(*models1.Page)), true
 
 	case "Query.listCategories":
 		if e.complexity.Query.ListCategories == nil {
@@ -4403,7 +4457,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ListDeviceMakers(childComplexity, args["filter"].(*models.DeviceMakerListFilter), args["order"].(*models.DeviceMakerListOrder), args["page"].(*models1.Page)), true
+		return e.complexity.Query.ListDeviceMakers(childComplexity, args["filter"].(*models.DeviceMakerListFilter), args["order"].([]*models.DeviceMakerListOrder), args["page"].(*models1.Page)), true
 
 	case "Query.listDeviceModels":
 		if e.complexity.Query.ListDeviceModels == nil {
@@ -4415,7 +4469,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ListDeviceModels(childComplexity, args["filter"].(*models.DeviceModelListFilter), args["order"].(*models.DeviceModelListOrder), args["page"].(*models1.Page)), true
+		return e.complexity.Query.ListDeviceModels(childComplexity, args["filter"].(*models.DeviceModelListFilter), args["order"].([]*models.DeviceModelListOrder), args["page"].(*models1.Page)), true
 
 	case "Query.listDeviceTypes":
 		if e.complexity.Query.ListDeviceTypes == nil {
@@ -5979,10 +6033,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputAuthClientInput,
 		ec.unmarshalInputAuthClientListFilter,
 		ec.unmarshalInputAuthClientListOrder,
-		ec.unmarshalInputBrowserInput,
+		ec.unmarshalInputBrowserCreateInput,
 		ec.unmarshalInputBrowserListFilter,
 		ec.unmarshalInputBrowserListOrder,
-		ec.unmarshalInputBrowserVersionInput,
+		ec.unmarshalInputBrowserUpdateInput,
 		ec.unmarshalInputCategoryInput,
 		ec.unmarshalInputCategoryListFilter,
 		ec.unmarshalInputCategoryListOrder,
@@ -6006,7 +6060,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputOSListFilter,
 		ec.unmarshalInputOSListOrder,
 		ec.unmarshalInputOSUpdateInput,
-		ec.unmarshalInputOptionInput,
 		ec.unmarshalInputOptionListFilter,
 		ec.unmarshalInputOptionListOrder,
 		ec.unmarshalInputPage,
@@ -7674,27 +7727,6 @@ input OptionListOrder {
 }
 
 ###############################################################################
-# Mutations
-###############################################################################
-
-input OptionInput {
-  """
-  The type of the option.
-  """
-  optionType: OptionType!
-
-  """
-  The target ID of the option.
-  """
-  targetID: ID64!
-
-  """
-  Value of the option.
-  """
-  value: NullableJSON
-}
-
-###############################################################################
 # Query declarations
 ###############################################################################
 
@@ -7702,7 +7734,7 @@ extend type Query {
   """
   Get the option value by name
   """
-  option(name: String!, optionType: OptionType!, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
+  option(name: String!, optionType: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
 
   """
   List of the option values which can be filtered and ordered by some fields
@@ -7718,7 +7750,7 @@ extend type Mutation {
   """
   Set the option value
   """
-  setOption(name: String!, input: OptionInput!): OptionPayload! @hasPermissions(permissions: ["option.set.*"])
+  setOption(name: String!, value: NullableJSON, type: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.set.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../submodules/blaze-api/protocol/graphql/schemas/pagination.graphql", Input: `
@@ -8530,26 +8562,6 @@ extend type Mutation {
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/browser.graphql", Input: `"""
-BrowserVersion model schema
-"""
-type BrowserVersion {
-  """
-  Minimum version
-  """
-  min: String!
-
-  """
-  Maximum version
-  """
-  max: String!
-
-  """
-  Name of the version
-  """
-  name: String!
-}
-
-"""
 Browser model schema
 """
 type Browser {
@@ -8569,19 +8581,45 @@ type Browser {
   description: String!
 
   """
-  Match expression for the browser
+  Version of the browser
   """
-  matchExp: String!
+  version: String!
+
+  """
+  Year of release of the browser
+  """
+  yearRelease: Int!
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int!
 
   """
   Active status of the browser
   """
   active: ActiveStatus!
 
+  # Match expressions
+  matchNameExp: String!
+  matchUserAgentExp: String!
+  matchVersionMinExp: String!
+  matchVersionMaxExp: String!
+
   """
-  List of browser versions
+  Parent ID of the browser group
   """
-  versions: [BrowserVersion!]
+  parentID: ID64!
+
+  """
+  Parent object of the browser
+  """
+  parent: Browser
+
+  """
+  List of child browser
+  """
+  versions: [Browser!]
 
   """
   Creation time of the browser
@@ -8655,58 +8693,44 @@ type BrowserPayload {
 ###############################################################################
 
 input BrowserListFilter {
-  ID:        [ID64!]
-  name:      [String!]
-  active:    [ActiveStatus!]
+  ID:           [ID64!]
+  parentID:     [ID64!]
+  name:         [String!]
+  active:       [ActiveStatus!]
 }
 
 input BrowserListOrder {
-  ID:        Ordering
-  name:      Ordering
-  active:    Ordering
-  createdAt: Ordering
-  updatedAt: Ordering
-}
-
-
-"""
-Input for browser versions
-"""
-input BrowserVersionInput {
-  """
-  Minimum version
-  """
-  min: String
-
-  """
-  Maximum version
-  """
-  max: String
-
-  """
-  Name of the version
-  """
-  name: String
+  ID:           Ordering
+  name:         Ordering
+  active:       Ordering
+  createdAt:    Ordering
+  updatedAt:    Ordering
+  yearRelease:  Ordering
 }
 
 """
-Input for querying browsers
+Input for querying create browsers
 """
-input BrowserInput {
+input BrowserCreateInput {
+  """
+  Parent ID of the OS group
+  """
+  parentID: ID64
+
   """
   Name of the browser
   """
-  name: String
+  name: String! @length(min: 1, max: 255, trim: true)
+
+  """
+  Version of the browser
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the browser
   """
-  description: String
-
-  """
-  Match expression for the browser
-  """
-  matchExp: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the browser
@@ -8714,9 +8738,61 @@ input BrowserInput {
   active: ActiveStatus
 
   """
-  List of browser versions
+  Year of release of the browser
   """
-  versions: [BrowserVersionInput!]
+  yearRelease: Int
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
+}
+
+"""
+Input for querying update browsers
+"""
+input BrowserUpdateInput {
+  """
+  Name of the browser
+  """
+  name: String @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Version of the browser
+  """
+  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+
+  """
+  Description of the browser
+  """
+  description: String @notempty(trim: true, ornil: true)
+
+  """
+  Active status of the browser
+  """
+  active: ActiveStatus
+
+  """
+  Year of release of the browser
+  """
+  yearRelease: Int
+
+  """
+  Year of end of support of the browser
+  """
+  yearEndSupport: Int
+
+  # Match expressions
+  matchNameExp:       String @notempty(trim: true, ornil: true)
+  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchVersionMinExp: String @notempty(trim: true, ornil: true)
+  matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
 
 ###############################################################################
@@ -8724,14 +8800,14 @@ input BrowserInput {
 ###############################################################################
 
 extend type Query {
-  browser(ID: ID64! = 0): BrowserPayload @acl(permissions: ["type_browser.view.*"])
+  browser(ID: ID64!): BrowserPayload @acl(permissions: ["type_browser.view.*"])
 
   """
   List of browsers
   """
   listBrowsers(
     filter: BrowserListFilter = null,
-    order: BrowserListOrder = null,
+    order: [BrowserListOrder!] = null,
     page: Page = null
   ): BrowserConnection @acl(permissions: ["type_browser.list.*"])
 }
@@ -8740,12 +8816,12 @@ extend type Mutation {
   """
   Create new browser
   """
-  createBrowser(input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
+  createBrowser(input: BrowserCreateInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
 
   """
   Update browser
   """
-  updateBrowser(ID: ID64!, input: BrowserInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
+  updateBrowser(ID: ID64!, input: BrowserUpdateInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
 
   """
   Delete browser
@@ -9352,7 +9428,7 @@ extend type Query {
   """
   listDeviceMakers(
     filter: DeviceMakerListFilter = null,
-    order: DeviceMakerListOrder = null,
+    order: [DeviceMakerListOrder!] = null,
     page: Page = null
   ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
 }
@@ -9414,6 +9490,11 @@ type DeviceModel {
   version: String!
 
   """
+  Year of release of the device model
+  """
+  yearRelease: Int!
+
+  """
   Device parent ID
   """
   parentID: ID64
@@ -9451,7 +9532,10 @@ type DeviceModel {
   """
   List of device model versions
   """
-  versions: [DeviceModel!]
+  versions(
+    filter: DeviceModelListFilter = null,
+    order: [DeviceModelListOrder!] = null
+  ): [DeviceModel!]
 
   """
   Active status of the device model
@@ -9537,6 +9621,7 @@ input DeviceModelListOrder {
   active:         Ordering
   createdAt:      Ordering
   updatedAt:      Ordering
+  yearRelease:    Ordering
 }
 
 """
@@ -9544,6 +9629,7 @@ Input model list filter
 """
 input DeviceModelListFilter {
   ID:             [ID64!]
+  parentID:       [ID64!]
   codename:       [String!]
   name:           [String!]
   typeCodename:   [String!]
@@ -9666,7 +9752,7 @@ extend type Query {
   """
   listDeviceModels(
     filter: DeviceModelListFilter = null,
-    order: DeviceModelListOrder = null,
+    order: [DeviceModelListOrder!] = null,
     page: Page = null
   ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
 }
@@ -9880,10 +9966,10 @@ type OSPayload {
 ###############################################################################
 
 input OSListFilter {
-  ID:         [ID64!]
-  parentID:   [ID64!]
-  name:       [String!]
-  active:     ActiveStatus
+  ID:           [ID64!]
+  parentID:     [ID64!]
+  name:         [String!]
+  active:       ActiveStatus
 }
 
 input OSListOrder {
@@ -9984,7 +10070,7 @@ input OSUpdateInput {
 ###############################################################################
 
 extend type Query {
-  OS(ID: ID64! = 0): OSPayload @acl(permissions: ["type_os.view.*"])
+  OS(ID: ID64!): OSPayload @acl(permissions: ["type_os.view.*"])
 
   """
   List of OS
@@ -10994,6 +11080,57 @@ func (ec *executionContext) dir_skipNoPermissions_argsPermissions(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_DeviceModel_versions_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_DeviceModel_versions_argsFilter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["filter"] = arg0
+	arg1, err := ec.field_DeviceModel_versions_argsOrder(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["order"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_DeviceModel_versions_argsFilter(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*models.DeviceModelListFilter, error) {
+	if _, ok := rawArgs["filter"]; !ok {
+		var zeroVal *models.DeviceModelListFilter
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+	if tmp, ok := rawArgs["filter"]; ok {
+		return ec.unmarshalODeviceModelListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListFilter(ctx, tmp)
+	}
+
+	var zeroVal *models.DeviceModelListFilter
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_DeviceModel_versions_argsOrder(
+	ctx context.Context,
+	rawArgs map[string]any,
+) ([]*models.DeviceModelListOrder, error) {
+	if _, ok := rawArgs["order"]; !ok {
+		var zeroVal []*models.DeviceModelListOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
+	if tmp, ok := rawArgs["order"]; ok {
+		return ec.unmarshalODeviceModelListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*models.DeviceModelListOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_activateZone_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -11420,18 +11557,18 @@ func (ec *executionContext) field_Mutation_createBrowser_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_createBrowser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.BrowserInput, error) {
+) (models.BrowserCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.BrowserInput
+		var zeroVal models.BrowserCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBrowserInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserInput(ctx, tmp)
+		return ec.unmarshalNBrowserCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.BrowserInput
+	var zeroVal models.BrowserCreateInput
 	return zeroVal, nil
 }
 
@@ -13110,11 +13247,21 @@ func (ec *executionContext) field_Mutation_setOption_args(ctx context.Context, r
 		return nil, err
 	}
 	args["name"] = arg0
-	arg1, err := ec.field_Mutation_setOption_argsInput(ctx, rawArgs)
+	arg1, err := ec.field_Mutation_setOption_argsValue(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["input"] = arg1
+	args["value"] = arg1
+	arg2, err := ec.field_Mutation_setOption_argsType(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["type"] = arg2
+	arg3, err := ec.field_Mutation_setOption_argsTargetID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["targetID"] = arg3
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_setOption_argsName(
@@ -13135,21 +13282,57 @@ func (ec *executionContext) field_Mutation_setOption_argsName(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_setOption_argsInput(
+func (ec *executionContext) field_Mutation_setOption_argsValue(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models1.OptionInput, error) {
-	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models1.OptionInput
+) (*types.NullableJSON, error) {
+	if _, ok := rawArgs["value"]; !ok {
+		var zeroVal *types.NullableJSON
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNOptionInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionInput(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("value"))
+	if tmp, ok := rawArgs["value"]; ok {
+		return ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, tmp)
 	}
 
-	var zeroVal models1.OptionInput
+	var zeroVal *types.NullableJSON
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_setOption_argsType(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (models1.OptionType, error) {
+	if _, ok := rawArgs["type"]; !ok {
+		var zeroVal models1.OptionType
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+	if tmp, ok := rawArgs["type"]; ok {
+		return ec.unmarshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, tmp)
+	}
+
+	var zeroVal models1.OptionType
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_setOption_argsTargetID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["targetID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
+	if tmp, ok := rawArgs["targetID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
 	return zeroVal, nil
 }
 
@@ -13421,18 +13604,18 @@ func (ec *executionContext) field_Mutation_updateBrowser_argsID(
 func (ec *executionContext) field_Mutation_updateBrowser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.BrowserInput, error) {
+) (models.BrowserUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.BrowserInput
+		var zeroVal models.BrowserUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNBrowserInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserInput(ctx, tmp)
+		return ec.unmarshalNBrowserUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.BrowserInput
+	var zeroVal models.BrowserUpdateInput
 	return zeroVal, nil
 }
 
@@ -14836,18 +15019,18 @@ func (ec *executionContext) field_Query_listBrowsers_argsFilter(
 func (ec *executionContext) field_Query_listBrowsers_argsOrder(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*models.BrowserListOrder, error) {
+) ([]*models.BrowserListOrder, error) {
 	if _, ok := rawArgs["order"]; !ok {
-		var zeroVal *models.BrowserListOrder
+		var zeroVal []*models.BrowserListOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
 	if tmp, ok := rawArgs["order"]; ok {
-		return ec.unmarshalOBrowserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrder(ctx, tmp)
+		return ec.unmarshalOBrowserListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *models.BrowserListOrder
+	var zeroVal []*models.BrowserListOrder
 	return zeroVal, nil
 }
 
@@ -14984,18 +15167,18 @@ func (ec *executionContext) field_Query_listDeviceMakers_argsFilter(
 func (ec *executionContext) field_Query_listDeviceMakers_argsOrder(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*models.DeviceMakerListOrder, error) {
+) ([]*models.DeviceMakerListOrder, error) {
 	if _, ok := rawArgs["order"]; !ok {
-		var zeroVal *models.DeviceMakerListOrder
+		var zeroVal []*models.DeviceMakerListOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
 	if tmp, ok := rawArgs["order"]; ok {
-		return ec.unmarshalODeviceMakerListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrder(ctx, tmp)
+		return ec.unmarshalODeviceMakerListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *models.DeviceMakerListOrder
+	var zeroVal []*models.DeviceMakerListOrder
 	return zeroVal, nil
 }
 
@@ -15058,18 +15241,18 @@ func (ec *executionContext) field_Query_listDeviceModels_argsFilter(
 func (ec *executionContext) field_Query_listDeviceModels_argsOrder(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*models.DeviceModelListOrder, error) {
+) ([]*models.DeviceModelListOrder, error) {
 	if _, ok := rawArgs["order"]; !ok {
-		var zeroVal *models.DeviceModelListOrder
+		var zeroVal []*models.DeviceModelListOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
 	if tmp, ok := rawArgs["order"]; ok {
-		return ec.unmarshalODeviceModelListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrder(ctx, tmp)
+		return ec.unmarshalODeviceModelListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *models.DeviceModelListOrder
+	var zeroVal []*models.DeviceModelListOrder
 	return zeroVal, nil
 }
 
@@ -21085,8 +21268,8 @@ func (ec *executionContext) fieldContext_Browser_description(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Browser_matchExp(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Browser_matchExp(ctx, field)
+func (ec *executionContext) _Browser_version(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_version(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -21099,7 +21282,7 @@ func (ec *executionContext) _Browser_matchExp(ctx context.Context, field graphql
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MatchExp, nil
+		return obj.Version, nil
 	})
 
 	if resTmp == nil {
@@ -21113,7 +21296,7 @@ func (ec *executionContext) _Browser_matchExp(ctx context.Context, field graphql
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Browser_matchExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Browser_version(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Browser",
 		Field:      field,
@@ -21121,6 +21304,88 @@ func (ec *executionContext) fieldContext_Browser_matchExp(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_yearRelease(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_yearRelease(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.YearRelease, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_yearRelease(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_yearEndSupport(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_yearEndSupport(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.YearEndSupport, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_yearEndSupport(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -21167,6 +21432,285 @@ func (ec *executionContext) fieldContext_Browser_active(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _Browser_matchNameExp(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_matchNameExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchNameExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_matchNameExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_matchUserAgentExp(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchUserAgentExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_matchUserAgentExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_matchVersionMinExp(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchVersionMinExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_matchVersionMinExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_matchVersionMaxExp(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MatchVersionMaxExp, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_matchVersionMaxExp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_parentID(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_parentID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ParentID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_parentID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Browser_parent(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Browser_parent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Parent, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Browser)
+	fc.Result = res
+	return ec.marshalOBrowser2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Browser_parent(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Browser",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Browser_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Browser_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Browser_description(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_Browser_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Browser_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Browser_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Browser_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Browser", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Browser_versions(ctx context.Context, field graphql.CollectedField, obj *models.Browser) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Browser_versions(ctx, field)
 	if err != nil {
@@ -21187,9 +21731,9 @@ func (ec *executionContext) _Browser_versions(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.BrowserVersion)
+	res := resTmp.([]*models.Browser)
 	fc.Result = res
-	return ec.marshalOBrowserVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionᚄ(ctx, field.Selections, res)
+	return ec.marshalOBrowser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Browser_versions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -21200,14 +21744,42 @@ func (ec *executionContext) fieldContext_Browser_versions(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "min":
-				return ec.fieldContext_BrowserVersion_min(ctx, field)
-			case "max":
-				return ec.fieldContext_BrowserVersion_max(ctx, field)
+			case "ID":
+				return ec.fieldContext_Browser_ID(ctx, field)
 			case "name":
-				return ec.fieldContext_BrowserVersion_name(ctx, field)
+				return ec.fieldContext_Browser_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Browser_description(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_Browser_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Browser_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Browser_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Browser_deletedAt(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type BrowserVersion", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Browser", field.Name)
 		},
 	}
 	return fc, nil
@@ -21463,10 +22035,26 @@ func (ec *executionContext) fieldContext_BrowserConnection_list(_ context.Contex
 				return ec.fieldContext_Browser_name(ctx, field)
 			case "description":
 				return ec.fieldContext_Browser_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_Browser_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_Browser_versions(ctx, field)
 			case "createdAt":
@@ -21622,10 +22210,26 @@ func (ec *executionContext) fieldContext_BrowserEdge_node(_ context.Context, fie
 				return ec.fieldContext_Browser_name(ctx, field)
 			case "description":
 				return ec.fieldContext_Browser_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_Browser_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_Browser_versions(ctx, field)
 			case "createdAt":
@@ -21765,10 +22369,26 @@ func (ec *executionContext) fieldContext_BrowserPayload_browser(_ context.Contex
 				return ec.fieldContext_Browser_name(ctx, field)
 			case "description":
 				return ec.fieldContext_Browser_description(ctx, field)
-			case "matchExp":
-				return ec.fieldContext_Browser_matchExp(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
 			case "active":
 				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
 			case "versions":
 				return ec.fieldContext_Browser_versions(ctx, field)
 			case "createdAt":
@@ -21779,129 +22399,6 @@ func (ec *executionContext) fieldContext_BrowserPayload_browser(_ context.Contex
 				return ec.fieldContext_Browser_deletedAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Browser", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _BrowserVersion_min(ctx context.Context, field graphql.CollectedField, obj *models.BrowserVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BrowserVersion_min(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Min, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_BrowserVersion_min(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "BrowserVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _BrowserVersion_max(ctx context.Context, field graphql.CollectedField, obj *models.BrowserVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BrowserVersion_max(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Max, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_BrowserVersion_max(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "BrowserVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _BrowserVersion_name(ctx context.Context, field graphql.CollectedField, obj *models.BrowserVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_BrowserVersion_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_BrowserVersion_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "BrowserVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -23973,6 +24470,8 @@ func (ec *executionContext) fieldContext_DeviceMaker_models(_ context.Context, f
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -24827,6 +25326,47 @@ func (ec *executionContext) fieldContext_DeviceModel_version(_ context.Context, 
 	return fc, nil
 }
 
+func (ec *executionContext) _DeviceModel_yearRelease(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeviceModel_yearRelease(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.YearRelease, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeviceModel_yearRelease(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeviceModel",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _DeviceModel_parentID(ctx context.Context, field graphql.CollectedField, obj *models.DeviceModel) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DeviceModel_parentID(ctx, field)
 	if err != nil {
@@ -24908,6 +25448,8 @@ func (ec *executionContext) fieldContext_DeviceModel_parent(_ context.Context, f
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -25186,7 +25728,7 @@ func (ec *executionContext) _DeviceModel_versions(ctx context.Context, field gra
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Versions, nil
+		return ec.resolvers.DeviceModel().Versions(rctx, obj, fc.Args["filter"].(*models.DeviceModelListFilter), fc.Args["order"].([]*models.DeviceModelListOrder))
 	})
 
 	if resTmp == nil {
@@ -25197,12 +25739,12 @@ func (ec *executionContext) _DeviceModel_versions(ctx context.Context, field gra
 	return ec.marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_DeviceModel_versions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_DeviceModel_versions(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "DeviceModel",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "ID":
@@ -25215,6 +25757,8 @@ func (ec *executionContext) fieldContext_DeviceModel_versions(_ context.Context,
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -25242,6 +25786,17 @@ func (ec *executionContext) fieldContext_DeviceModel_versions(_ context.Context,
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_DeviceModel_versions_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -25541,6 +26096,8 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_list(_ context.Co
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -25716,6 +26273,8 @@ func (ec *executionContext) fieldContext_DeviceModelEdge_node(_ context.Context,
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -25875,6 +26434,8 @@ func (ec *executionContext) fieldContext_DeviceModelPayload_model(_ context.Cont
 				return ec.fieldContext_DeviceModel_description(ctx, field)
 			case "version":
 				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
 			case "parentID":
 				return ec.fieldContext_DeviceModel_parentID(ctx, field)
 			case "parent":
@@ -30592,7 +31153,7 @@ func (ec *executionContext) _Mutation_setOption(ctx context.Context, field graph
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().SetOption(rctx, fc.Args["name"].(string), fc.Args["input"].(models1.OptionInput))
+			return ec.resolvers.Mutation().SetOption(rctx, fc.Args["name"].(string), fc.Args["value"].(*types.NullableJSON), fc.Args["type"].(models1.OptionType), fc.Args["targetID"].(uint64))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -31798,7 +32359,7 @@ func (ec *executionContext) _Mutation_createBrowser(ctx context.Context, field g
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateBrowser(rctx, fc.Args["input"].(models.BrowserInput))
+			return ec.resolvers.Mutation().CreateBrowser(rctx, fc.Args["input"].(models.BrowserCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -31882,7 +32443,7 @@ func (ec *executionContext) _Mutation_updateBrowser(ctx context.Context, field g
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateBrowser(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.BrowserInput))
+			return ec.resolvers.Mutation().UpdateBrowser(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.BrowserUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -39404,7 +39965,7 @@ func (ec *executionContext) _Query_listBrowsers(ctx context.Context, field graph
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListBrowsers(rctx, fc.Args["filter"].(*models.BrowserListFilter), fc.Args["order"].(*models.BrowserListOrder), fc.Args["page"].(*models1.Page))
+			return ec.resolvers.Query().ListBrowsers(rctx, fc.Args["filter"].(*models.BrowserListFilter), fc.Args["order"].([]*models.BrowserListOrder), fc.Args["page"].(*models1.Page))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -39858,7 +40419,7 @@ func (ec *executionContext) _Query_listDeviceMakers(ctx context.Context, field g
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListDeviceMakers(rctx, fc.Args["filter"].(*models.DeviceMakerListFilter), fc.Args["order"].(*models.DeviceMakerListOrder), fc.Args["page"].(*models1.Page))
+			return ec.resolvers.Query().ListDeviceMakers(rctx, fc.Args["filter"].(*models.DeviceMakerListFilter), fc.Args["order"].([]*models.DeviceMakerListOrder), fc.Args["page"].(*models1.Page))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -40028,7 +40589,7 @@ func (ec *executionContext) _Query_listDeviceModels(ctx context.Context, field g
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListDeviceModels(rctx, fc.Args["filter"].(*models.DeviceModelListFilter), fc.Args["order"].(*models.DeviceModelListOrder), fc.Args["page"].(*models1.Page))
+			return ec.resolvers.Query().ListDeviceModels(rctx, fc.Args["filter"].(*models.DeviceModelListFilter), fc.Args["order"].([]*models.DeviceModelListOrder), fc.Args["page"].(*models1.Page))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -52025,41 +52586,142 @@ func (ec *executionContext) unmarshalInputAuthClientListOrder(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputBrowserInput(ctx context.Context, obj any) (models.BrowserInput, error) {
-	var it models.BrowserInput
+func (ec *executionContext) unmarshalInputBrowserCreateInput(ctx context.Context, obj any) (models.BrowserCreateInput, error) {
+	var it models.BrowserCreateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "matchExp", "active", "versions"}
+	fieldsInOrder := [...]string{"parentID", "name", "version", "description", "active", "yearRelease", "yearEndSupport", "matchNameExp", "matchUserAgentExp", "matchVersionMinExp", "matchVersionMaxExp"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ParentID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Name = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Name = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Version = data
+			} else if tmp == nil {
+				it.Version = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
-		case "matchExp":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchExp"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+
+			tmp, err := directive1(ctx)
 			if err != nil {
-				return it, err
+				return it, graphql.ErrorOnPath(ctx, err)
 			}
-			it.MatchExp = data
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
@@ -52067,13 +52729,156 @@ func (ec *executionContext) unmarshalInputBrowserInput(ctx context.Context, obj 
 				return it, err
 			}
 			it.Active = data
-		case "versions":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("versions"))
-			data, err := ec.unmarshalOBrowserVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionInputᚄ(ctx, v)
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Versions = data
+			it.YearRelease = data
+		case "yearEndSupport":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearEndSupport"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearEndSupport = data
+		case "matchNameExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchNameExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchNameExp = data
+			} else if tmp == nil {
+				it.MatchNameExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchUserAgentExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchUserAgentExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchUserAgentExp = data
+			} else if tmp == nil {
+				it.MatchUserAgentExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMinExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMinExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMinExp = data
+			} else if tmp == nil {
+				it.MatchVersionMinExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMaxExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMaxExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMaxExp = data
+			} else if tmp == nil {
+				it.MatchVersionMaxExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		}
 	}
 
@@ -52087,7 +52892,7 @@ func (ec *executionContext) unmarshalInputBrowserListFilter(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active"}
+	fieldsInOrder := [...]string{"ID", "parentID", "name", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52101,6 +52906,13 @@ func (ec *executionContext) unmarshalInputBrowserListFilter(ctx context.Context,
 				return it, err
 			}
 			it.ID = data
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ParentID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -52128,7 +52940,7 @@ func (ec *executionContext) unmarshalInputBrowserListOrder(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "name", "active", "createdAt", "updatedAt", "yearRelease"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -52170,47 +52982,307 @@ func (ec *executionContext) unmarshalInputBrowserListOrder(ctx context.Context, 
 				return it, err
 			}
 			it.UpdatedAt = data
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearRelease = data
 		}
 	}
 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputBrowserVersionInput(ctx context.Context, obj any) (models.BrowserVersionInput, error) {
-	var it models.BrowserVersionInput
+func (ec *executionContext) unmarshalInputBrowserUpdateInput(ctx context.Context, obj any) (models.BrowserUpdateInput, error) {
+	var it models.BrowserUpdateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"min", "max", "name"}
+	fieldsInOrder := [...]string{"name", "version", "description", "active", "yearRelease", "yearEndSupport", "matchNameExp", "matchUserAgentExp", "matchVersionMinExp", "matchVersionMaxExp"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "min":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("min"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Min = data
-		case "max":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("max"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Max = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Name = data
+			} else if tmp == nil {
+				it.Name = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "version":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Version = data
+			} else if tmp == nil {
+				it.Version = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Name = data
+			it.Active = data
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearRelease = data
+		case "yearEndSupport":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearEndSupport"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearEndSupport = data
+		case "matchNameExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchNameExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchNameExp = data
+			} else if tmp == nil {
+				it.MatchNameExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchUserAgentExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchUserAgentExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchUserAgentExp = data
+			} else if tmp == nil {
+				it.MatchUserAgentExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMinExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMinExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMinExp = data
+			} else if tmp == nil {
+				it.MatchVersionMinExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "matchVersionMaxExp":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("matchVersionMaxExp"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.MatchVersionMaxExp = data
+			} else if tmp == nil {
+				it.MatchVersionMaxExp = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		}
 	}
 
@@ -53256,7 +54328,7 @@ func (ec *executionContext) unmarshalInputDeviceModelListFilter(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "codename", "name", "typeCodename", "makerCodename", "active"}
+	fieldsInOrder := [...]string{"ID", "parentID", "codename", "name", "typeCodename", "makerCodename", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53270,6 +54342,13 @@ func (ec *executionContext) unmarshalInputDeviceModelListFilter(ctx context.Cont
 				return it, err
 			}
 			it.ID = data
+		case "parentID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ParentID = data
 		case "codename":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -53318,7 +54397,7 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "codename", "name", "typeCodename", "makerCodename", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "codename", "name", "typeCodename", "makerCodename", "active", "createdAt", "updatedAt", "yearRelease"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53381,6 +54460,13 @@ func (ec *executionContext) unmarshalInputDeviceModelListOrder(ctx context.Conte
 				return it, err
 			}
 			it.UpdatedAt = data
+		case "yearRelease":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yearRelease"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.YearRelease = data
 		}
 	}
 
@@ -54911,47 +55997,6 @@ func (ec *executionContext) unmarshalInputOSUpdateInput(ctx context.Context, obj
 				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
 				return it, graphql.ErrorOnPath(ctx, err)
 			}
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputOptionInput(ctx context.Context, obj any) (models1.OptionInput, error) {
-	var it models1.OptionInput
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"optionType", "targetID", "value"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "optionType":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionType"))
-			data, err := ec.unmarshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.OptionType = data
-		case "targetID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
-			data, err := ec.unmarshalNID642uint64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TargetID = data
-		case "value":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("value"))
-			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Value = data
 		}
 	}
 
@@ -57308,8 +58353,18 @@ func (ec *executionContext) _Browser(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "matchExp":
-			out.Values[i] = ec._Browser_matchExp(ctx, field, obj)
+		case "version":
+			out.Values[i] = ec._Browser_version(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "yearRelease":
+			out.Values[i] = ec._Browser_yearRelease(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "yearEndSupport":
+			out.Values[i] = ec._Browser_yearEndSupport(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -57318,6 +58373,33 @@ func (ec *executionContext) _Browser(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "matchNameExp":
+			out.Values[i] = ec._Browser_matchNameExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "matchUserAgentExp":
+			out.Values[i] = ec._Browser_matchUserAgentExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "matchVersionMinExp":
+			out.Values[i] = ec._Browser_matchVersionMinExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "matchVersionMaxExp":
+			out.Values[i] = ec._Browser_matchVersionMaxExp(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "parentID":
+			out.Values[i] = ec._Browser_parentID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "parent":
+			out.Values[i] = ec._Browser_parent(ctx, field, obj)
 		case "versions":
 			out.Values[i] = ec._Browser_versions(ctx, field, obj)
 		case "createdAt":
@@ -57476,55 +58558,6 @@ func (ec *executionContext) _BrowserPayload(ctx context.Context, sel ast.Selecti
 			}
 		case "browser":
 			out.Values[i] = ec._BrowserPayload_browser(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var browserVersionImplementors = []string{"BrowserVersion"}
-
-func (ec *executionContext) _BrowserVersion(ctx context.Context, sel ast.SelectionSet, obj *models.BrowserVersion) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, browserVersionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("BrowserVersion")
-		case "min":
-			out.Values[i] = ec._BrowserVersion_min(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "max":
-			out.Values[i] = ec._BrowserVersion_max(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "name":
-			out.Values[i] = ec._BrowserVersion_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -58235,27 +59268,32 @@ func (ec *executionContext) _DeviceModel(ctx context.Context, sel ast.SelectionS
 		case "ID":
 			out.Values[i] = ec._DeviceModel_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "codename":
 			out.Values[i] = ec._DeviceModel_codename(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._DeviceModel_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "description":
 			out.Values[i] = ec._DeviceModel_description(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "version":
 			out.Values[i] = ec._DeviceModel_version(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "yearRelease":
+			out.Values[i] = ec._DeviceModel_yearRelease(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "parentID":
 			out.Values[i] = ec._DeviceModel_parentID(ctx, field, obj)
@@ -58264,38 +59302,69 @@ func (ec *executionContext) _DeviceModel(ctx context.Context, sel ast.SelectionS
 		case "matchExp":
 			out.Values[i] = ec._DeviceModel_matchExp(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "typeCodename":
 			out.Values[i] = ec._DeviceModel_typeCodename(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "type":
 			out.Values[i] = ec._DeviceModel_type(ctx, field, obj)
 		case "makerCodename":
 			out.Values[i] = ec._DeviceModel_makerCodename(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "maker":
 			out.Values[i] = ec._DeviceModel_maker(ctx, field, obj)
 		case "versions":
-			out.Values[i] = ec._DeviceModel_versions(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._DeviceModel_versions(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "active":
 			out.Values[i] = ec._DeviceModel_active(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._DeviceModel_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._DeviceModel_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "deletedAt":
 			out.Values[i] = ec._DeviceModel_deletedAt(ctx, field, obj)
@@ -63877,6 +64946,11 @@ func (ec *executionContext) marshalNBrowser2ᚖgithubᚗcomᚋsspserverᚋapiᚋ
 	return ec._Browser(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNBrowserCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserCreateInput(ctx context.Context, v any) (models.BrowserCreateInput, error) {
+	res, err := ec.unmarshalInputBrowserCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNBrowserEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.BrowserEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -63931,24 +65005,14 @@ func (ec *executionContext) marshalNBrowserEdge2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._BrowserEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNBrowserInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserInput(ctx context.Context, v any) (models.BrowserInput, error) {
-	res, err := ec.unmarshalInputBrowserInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNBrowserVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersion(ctx context.Context, sel ast.SelectionSet, v *models.BrowserVersion) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._BrowserVersion(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNBrowserVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionInput(ctx context.Context, v any) (*models.BrowserVersionInput, error) {
-	res, err := ec.unmarshalInputBrowserVersionInput(ctx, v)
+func (ec *executionContext) unmarshalNBrowserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrder(ctx context.Context, v any) (*models.BrowserListOrder, error) {
+	res, err := ec.unmarshalInputBrowserListOrder(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNBrowserUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserUpdateInput(ctx context.Context, v any) (models.BrowserUpdateInput, error) {
+	res, err := ec.unmarshalInputBrowserUpdateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Category) graphql.Marshaler {
@@ -64207,6 +65271,11 @@ func (ec *executionContext) marshalNDeviceMakerEdge2ᚖgithubᚗcomᚋsspserver�
 	return ec._DeviceMakerEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNDeviceMakerListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrder(ctx context.Context, v any) (*models.DeviceMakerListOrder, error) {
+	res, err := ec.unmarshalInputDeviceMakerListOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNDeviceMakerUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerUpdateInput(ctx context.Context, v any) (models.DeviceMakerUpdateInput, error) {
 	res, err := ec.unmarshalInputDeviceMakerUpdateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -64323,6 +65392,11 @@ func (ec *executionContext) marshalNDeviceModelEdge2ᚖgithubᚗcomᚋsspserver�
 		return graphql.Null
 	}
 	return ec._DeviceModelEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNDeviceModelListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrder(ctx context.Context, v any) (*models.DeviceModelListOrder, error) {
+	res, err := ec.unmarshalInputDeviceModelListOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNDeviceModelUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelUpdateInput(ctx context.Context, v any) (models.DeviceModelUpdateInput, error) {
@@ -64682,11 +65756,6 @@ func (ec *executionContext) marshalNOptionEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋ
 		return graphql.Null
 	}
 	return ec._OptionEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNOptionInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionInput(ctx context.Context, v any) (models1.OptionInput, error) {
-	res, err := ec.unmarshalInputOptionInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNOptionPayload2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionPayload(ctx context.Context, sel ast.SelectionSet, v models1.OptionPayload) graphql.Marshaler {
@@ -66183,37 +67252,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOBrowserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._BrowserConnection(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOBrowserListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListFilter(ctx context.Context, v any) (*models.BrowserListFilter, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputBrowserListFilter(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalOBrowserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrder(ctx context.Context, v any) (*models.BrowserListOrder, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputBrowserListOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOBrowserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserPayload(ctx context.Context, sel ast.SelectionSet, v *models.BrowserPayload) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._BrowserPayload(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOBrowserVersion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.BrowserVersion) graphql.Marshaler {
+func (ec *executionContext) marshalOBrowser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Browser) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -66240,7 +67279,7 @@ func (ec *executionContext) marshalOBrowserVersion2ᚕᚖgithubᚗcomᚋsspserve
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNBrowserVersion2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersion(ctx, sel, v[i])
+			ret[i] = ec.marshalNBrowser2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -66260,7 +67299,29 @@ func (ec *executionContext) marshalOBrowserVersion2ᚕᚖgithubᚗcomᚋsspserve
 	return ret
 }
 
-func (ec *executionContext) unmarshalOBrowserVersionInput2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionInputᚄ(ctx context.Context, v any) ([]*models.BrowserVersionInput, error) {
+func (ec *executionContext) marshalOBrowser2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowser(ctx context.Context, sel ast.SelectionSet, v *models.Browser) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Browser(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOBrowserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._BrowserConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOBrowserListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListFilter(ctx context.Context, v any) (*models.BrowserListFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputBrowserListFilter(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOBrowserListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrderᚄ(ctx context.Context, v any) ([]*models.BrowserListOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -66269,15 +67330,22 @@ func (ec *executionContext) unmarshalOBrowserVersionInput2ᚕᚖgithubᚗcomᚋs
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*models.BrowserVersionInput, len(vSlice))
+	res := make([]*models.BrowserListOrder, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNBrowserVersionInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserVersionInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNBrowserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserListOrder(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 	return res, nil
+}
+
+func (ec *executionContext) marshalOBrowserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserPayload(ctx context.Context, sel ast.SelectionSet, v *models.BrowserPayload) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._BrowserPayload(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v *models.Category) graphql.Marshaler {
@@ -66449,12 +67517,24 @@ func (ec *executionContext) unmarshalODeviceMakerListFilter2ᚖgithubᚗcomᚋss
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalODeviceMakerListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrder(ctx context.Context, v any) (*models.DeviceMakerListOrder, error) {
+func (ec *executionContext) unmarshalODeviceMakerListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrderᚄ(ctx context.Context, v any) ([]*models.DeviceMakerListOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputDeviceMakerListOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*models.DeviceMakerListOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNDeviceMakerListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerListOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) marshalODeviceMakerPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerPayload(ctx context.Context, sel ast.SelectionSet, v *models.DeviceMakerPayload) graphql.Marshaler {
@@ -66533,12 +67613,24 @@ func (ec *executionContext) unmarshalODeviceModelListFilter2ᚖgithubᚗcomᚋss
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalODeviceModelListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrder(ctx context.Context, v any) (*models.DeviceModelListOrder, error) {
+func (ec *executionContext) unmarshalODeviceModelListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrderᚄ(ctx context.Context, v any) ([]*models.DeviceModelListOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputDeviceModelListOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*models.DeviceModelListOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNDeviceModelListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelListOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) marshalODeviceModelPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelPayload(ctx context.Context, sel ast.SelectionSet, v *models.DeviceModelPayload) graphql.Marshaler {

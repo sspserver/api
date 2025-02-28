@@ -42,9 +42,9 @@ func FromApplicationModelList(list []*models.Application) []*Application {
 	return xtypes.SliceApply(list, FromApplicationModel)
 }
 
-func (inp *ApplicationCreateInput) FillModel(trg *models.Application) {
+func (inp *ApplicationCreateInput) FillModel(trg *models.Application) error {
 	if inp == nil || trg == nil {
-		return
+		return nil
 	}
 	trg.Title = strings.TrimSpace(inp.Title)
 	trg.Description = strings.TrimSpace(gocast.PtrAsValue(inp.Description, trg.Description))
@@ -55,11 +55,20 @@ func (inp *ApplicationCreateInput) FillModel(trg *models.Application) {
 
 	trg.Categories = gocast.Slice[uint](inp.Categories)
 	trg.RevenueShare = gocast.PtrAsValue(inp.RevenueShare, trg.RevenueShare)
+
+	if trg.Title == "" {
+		return ErrorRequiredField("title")
+	}
+	if trg.URI == "" {
+		return ErrorRequiredField("uri")
+	}
+
+	return nil
 }
 
-func (inp *ApplicationUpdateInput) FillModel(trg *models.Application) {
+func (inp *ApplicationUpdateInput) FillModel(trg *models.Application) error {
 	if inp == nil || trg == nil {
-		return
+		return nil
 	}
 	trg.Title = strings.TrimSpace(gocast.PtrAsValue(inp.Title, trg.Title))
 	trg.Description = strings.TrimSpace(gocast.PtrAsValue(inp.Description, trg.Description))
@@ -74,6 +83,14 @@ func (inp *ApplicationUpdateInput) FillModel(trg *models.Application) {
 
 	trg.Categories = gocast.IfThen(inp.Categories != nil, gocast.Slice[uint](inp.Categories), trg.Categories)
 	trg.RevenueShare = gocast.PtrAsValue(inp.RevenueShare, trg.RevenueShare)
+
+	if trg.Title == "" {
+		return ErrorInvalidField("title", "can`t be empty")
+	}
+	if trg.URI == "" {
+		return ErrorInvalidField("uri", "can`t be empty")
+	}
+	return nil
 }
 
 func (fl *ApplicationListFilter) Filter() *application.Filter {

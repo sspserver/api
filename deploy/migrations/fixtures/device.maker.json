@@ -1,0 +1,121 @@
+[
+  {
+    "codename": "apple",
+    "name": "Apple Inc.",
+    "description": "American technology company known for iPhones, iPads, and Mac computers.",
+    "match_exp": "$re$(?i)Apple|iPhone|iPad|Mac",
+    "active": "active"
+  },
+  {
+    "codename": "samsung",
+    "name": "Samsung Electronics",
+    "description": "South Korean multinational electronics company, known for Galaxy smartphones and other devices.",
+    "match_exp": "$re$(?i)Samsung|Galaxy",
+    "active": "active"
+  },
+  {
+    "codename": "sony",
+    "name": "Sony Corporation",
+    "description": "Japanese multinational conglomerate known for Xperia smartphones and other electronics.",
+    "match_exp": "$re$(?i)Sony|Xperia",
+    "active": "active"
+  },
+  {
+    "codename": "huawei",
+    "name": "Huawei Technologies Co., Ltd.",
+    "description": "Chinese multinational technology company known for smartphones and networking equipment.",
+    "match_exp": "Huawei",
+    "active": "active"
+  },
+  {
+    "codename": "xiaomi",
+    "name": "Xiaomi Corporation",
+    "description": "Chinese electronics company known for Mi, Redmi, and Poco brand smartphones.",
+    "match_exp": "$re$(?i)Xiaomi|Mi|Redmi|Poco",
+    "active": "active"
+  },
+  {
+    "codename": "oppo",
+    "name": "OPPO Electronics Corp.",
+    "description": "Chinese consumer electronics company known for OPPO smartphones.",
+    "match_exp": "OPPO",
+    "active": "active"
+  },
+  {
+    "codename": "vivo",
+    "name": "Vivo Communication Technology Co. Ltd.",
+    "description": "Chinese technology company known for Vivo smartphones.",
+    "match_exp": "Vivo",
+    "active": "active"
+  },
+  {
+    "codename": "oneplus",
+    "name": "OnePlus Technology Co., Ltd.",
+    "description": "Chinese consumer electronics company known for OnePlus smartphones.",
+    "match_exp": "OnePlus",
+    "active": "active"
+  },
+  {
+    "codename": "google",
+    "name": "Google LLC",
+    "description": "American technology company known for Pixel smartphones and other devices.",
+    "match_exp": "$re$(?i)Google|Pixel",
+    "active": "active"
+  },
+  {
+    "codename": "motorola",
+    "name": "Motorola Mobility LLC",
+    "description": "American consumer electronics company known for Motorola smartphones.",
+    "match_exp": "Motorola",
+    "active": "active"
+  },
+  {
+    "codename": "lg",
+    "name": "LG Electronics Inc.",
+    "description": "South Korean multinational electronics company known for LG smartphones and other devices.",
+    "match_exp": "LG",
+    "active": "active"
+  },
+  {
+    "codename": "microsoft",
+    "name": "Microsoft Corporation",
+    "description": "American technology company known for Surface tablets and other devices.",
+    "match_exp": "$re$(?i)Microsoft|Surface",
+    "active": "active"
+  },
+  {
+    "codename": "nokia",
+    "name": "Nokia Corporation",
+    "description": "Finnish multinational telecommunications company known for Nokia smartphones.",
+    "match_exp": "Nokia",
+    "active": "active"
+  },
+  {
+    "codename": "amazon",
+    "name": "Amazon.com, Inc.",
+    "description": "American technology company known for Kindle tablets and other devices.",
+    "match_exp": "$re$(?i)Amazon|Kindle",
+    "active": "active"
+  },
+  {
+    "codename": "lenovo",
+    "name": "Lenovo Group Limited",
+    "description": "Chinese multinational technology company known for Lenovo smartphones and other devices.",
+    "match_exp": "Lenovo",
+    "active": "active"
+  },
+  {
+    "codename": "asus",
+    "name": "ASUSTeK Computer Inc.",
+    "description": "Taiwanese multinational technology company known for ASUS smartphones and other devices.",
+    "match_exp": "ASUS",
+    "active": "active"
+  },
+  {
+    "codename": "nintendo",
+    "name": "Nintendo Co., Ltd.",
+    "description": "Japanese video game company known for Nintendo Switch console and other devices.",
+    "match_exp": "$re$(?i)Nintendo|Switch",
+    "active": "active"
+  }
+]

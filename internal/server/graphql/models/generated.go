@@ -205,18 +205,52 @@ type Browser struct {
 	Name string `json:"name"`
 	// Description of the browser
 	Description string `json:"description"`
-	// Match expression for the browser
-	MatchExp string `json:"matchExp"`
+	// Version of the browser
+	Version string `json:"version"`
+	// Year of release of the browser
+	YearRelease int `json:"yearRelease"`
+	// Year of end of support of the browser
+	YearEndSupport int `json:"yearEndSupport"`
 	// Active status of the browser
-	Active models.ActiveStatus `json:"active"`
-	// List of browser versions
-	Versions []*BrowserVersion `json:"versions,omitempty"`
+	Active             models.ActiveStatus `json:"active"`
+	MatchNameExp       string              `json:"matchNameExp"`
+	MatchUserAgentExp  string              `json:"matchUserAgentExp"`
+	MatchVersionMinExp string              `json:"matchVersionMinExp"`
+	MatchVersionMaxExp string              `json:"matchVersionMaxExp"`
+	// Parent ID of the browser group
+	ParentID uint64 `json:"parentID"`
+	// Parent object of the browser
+	Parent *Browser `json:"parent,omitempty"`
+	// List of child browser
+	Versions []*Browser `json:"versions,omitempty"`
 	// Creation time of the browser
 	CreatedAt time.Time `json:"createdAt"`
 	// Last update time of the browser
 	UpdatedAt time.Time `json:"updatedAt"`
 	// Deletion time of the browser
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+}
+
+// Input for querying create browsers
+type BrowserCreateInput struct {
+	// Parent ID of the OS group
+	ParentID *uint64 `json:"parentID,omitempty"`
+	// Name of the browser
+	Name string `json:"name"`
+	// Version of the browser
+	Version *string `json:"version,omitempty"`
+	// Description of the browser
+	Description *string `json:"description,omitempty"`
+	// Active status of the browser
+	Active *models.ActiveStatus `json:"active,omitempty"`
+	// Year of release of the browser
+	YearRelease *int `json:"yearRelease,omitempty"`
+	// Year of end of support of the browser
+	YearEndSupport     *int    `json:"yearEndSupport,omitempty"`
+	MatchNameExp       *string `json:"matchNameExp,omitempty"`
+	MatchUserAgentExp  *string `json:"matchUserAgentExp,omitempty"`
+	MatchVersionMinExp *string `json:"matchVersionMinExp,omitempty"`
+	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
 type BrowserEdge struct {
@@ -226,32 +260,20 @@ type BrowserEdge struct {
 	Node *Browser `json:"node"`
 }
 
-// Input for querying browsers
-type BrowserInput struct {
-	// Name of the browser
-	Name *string `json:"name,omitempty"`
-	// Description of the browser
-	Description *string `json:"description,omitempty"`
-	// Match expression for the browser
-	MatchExp *string `json:"matchExp,omitempty"`
-	// Active status of the browser
-	Active *models.ActiveStatus `json:"active,omitempty"`
-	// List of browser versions
-	Versions []*BrowserVersionInput `json:"versions,omitempty"`
-}
-
 type BrowserListFilter struct {
-	ID     []uint64              `json:"ID,omitempty"`
-	Name   []string              `json:"name,omitempty"`
-	Active []models.ActiveStatus `json:"active,omitempty"`
+	ID       []uint64              `json:"ID,omitempty"`
+	ParentID []uint64              `json:"parentID,omitempty"`
+	Name     []string              `json:"name,omitempty"`
+	Active   []models.ActiveStatus `json:"active,omitempty"`
 }
 
 type BrowserListOrder struct {
-	ID        *models.Ordering `json:"ID,omitempty"`
-	Name      *models.Ordering `json:"name,omitempty"`
-	Active    *models.Ordering `json:"active,omitempty"`
-	CreatedAt *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt *models.Ordering `json:"updatedAt,omitempty"`
+	ID          *models.Ordering `json:"ID,omitempty"`
+	Name        *models.Ordering `json:"name,omitempty"`
+	Active      *models.Ordering `json:"active,omitempty"`
+	CreatedAt   *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt   *models.Ordering `json:"updatedAt,omitempty"`
+	YearRelease *models.Ordering `json:"yearRelease,omitempty"`
 }
 
 type BrowserPayload struct {
@@ -263,24 +285,24 @@ type BrowserPayload struct {
 	Browser *Browser `json:"browser"`
 }
 
-// BrowserVersion model schema
-type BrowserVersion struct {
-	// Minimum version
-	Min string `json:"min"`
-	// Maximum version
-	Max string `json:"max"`
-	// Name of the version
-	Name string `json:"name"`
-}
-
-// Input for browser versions
-type BrowserVersionInput struct {
-	// Minimum version
-	Min *string `json:"min,omitempty"`
-	// Maximum version
-	Max *string `json:"max,omitempty"`
-	// Name of the version
+// Input for querying update browsers
+type BrowserUpdateInput struct {
+	// Name of the browser
 	Name *string `json:"name,omitempty"`
+	// Version of the browser
+	Version *string `json:"version,omitempty"`
+	// Description of the browser
+	Description *string `json:"description,omitempty"`
+	// Active status of the browser
+	Active *models.ActiveStatus `json:"active,omitempty"`
+	// Year of release of the browser
+	YearRelease *int `json:"yearRelease,omitempty"`
+	// Year of end of support of the browser
+	YearEndSupport     *int    `json:"yearEndSupport,omitempty"`
+	MatchNameExp       *string `json:"matchNameExp,omitempty"`
+	MatchUserAgentExp  *string `json:"matchUserAgentExp,omitempty"`
+	MatchVersionMinExp *string `json:"matchVersionMinExp,omitempty"`
+	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
 // Advertising category schema
@@ -504,6 +526,8 @@ type DeviceModel struct {
 	Description string `json:"description"`
 	// Version of the device model
 	Version string `json:"version"`
+	// Year of release of the device model
+	YearRelease int `json:"yearRelease"`
 	// Device parent ID
 	ParentID *uint64 `json:"parentID,omitempty"`
 	// Device parent object if exists
@@ -562,6 +586,7 @@ type DeviceModelEdge struct {
 // Input model list filter
 type DeviceModelListFilter struct {
 	ID            []uint64              `json:"ID,omitempty"`
+	ParentID      []uint64              `json:"parentID,omitempty"`
 	Codename      []string              `json:"codename,omitempty"`
 	Name          []string              `json:"name,omitempty"`
 	TypeCodename  []string              `json:"typeCodename,omitempty"`
@@ -578,6 +603,7 @@ type DeviceModelListOrder struct {
 	Active        *models.Ordering `json:"active,omitempty"`
 	CreatedAt     *models.Ordering `json:"createdAt,omitempty"`
 	UpdatedAt     *models.Ordering `json:"updatedAt,omitempty"`
+	YearRelease   *models.Ordering `json:"yearRelease,omitempty"`
 }
 
 type DeviceModelPayload struct {
