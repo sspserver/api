@@ -11,7 +11,7 @@ require (
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.2.0
 	github.com/geniusrabbit/adcorelib v0.0.0-20250227190303-76b52502bd73
-	github.com/geniusrabbit/blaze-api v0.2.1
+	github.com/geniusrabbit/blaze-api v0.2.2
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
 	github.com/geniusrabbit/gosql/v2 v2.3.1
 	github.com/go-chi/chi/v5 v5.2.1

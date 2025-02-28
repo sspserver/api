@@ -18,8 +18,8 @@ func (r *mutationResolver) SetOption(ctx context.Context, name string, value *ty
 }
 
 // Option is the resolver for the option field.
-func (r *queryResolver) Option(ctx context.Context, name string, optionType models.OptionType, targetID uint64) (*models.OptionPayload, error) {
-	return r.options.Get(ctx, name, optionType, targetID)
+func (r *queryResolver) Option(ctx context.Context, name string, typeArg models.OptionType, targetID uint64) (*models.OptionPayload, error) {
+	return r.options.Get(ctx, name, typeArg, targetID)
 }
 
 // ListOptions is the resolver for the listOptions field.

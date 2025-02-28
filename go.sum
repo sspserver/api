@@ -166,8 +166,8 @@ github.com/fsnotify/fsnotify v1.8.0 h1:dAwr6QBTBZIkG8roQaJjGof0pp0EeF+tNV7YBP3F/
 github.com/fsnotify/fsnotify v1.8.0/go.mod h1:8jBTzvmWwFyi3Pb8djgCCO5IBqzKJ/Jwo8TRcHyHii0=
 github.com/geniusrabbit/adcorelib v0.0.0-20250227190303-76b52502bd73 h1:f/cPGyVn9YbfhnqNaH2NdTiN7GStmlAEXedGv77CMJw=
 github.com/geniusrabbit/adcorelib v0.0.0-20250227190303-76b52502bd73/go.mod h1:mNrzYAiisbJ9E6wuqVl7eWcfFh7GFZKX8DEMqZ0ccv8=
-github.com/geniusrabbit/blaze-api v0.2.1 h1:+n1kXmUiRcjtMldip4Zap75ASBWJzbSpcGi+96gBXGk=
-github.com/geniusrabbit/blaze-api v0.2.1/go.mod h1:foSPk9aFjk6jbcA4BrQiC32+7OVncp0fvIhDPXkcuT8=
+github.com/geniusrabbit/blaze-api v0.2.2 h1:lfkhPynpI0yIgsntzVjf7z2584AvuhlrVTMdSfuSPiQ=
+github.com/geniusrabbit/blaze-api v0.2.2/go.mod h1:foSPk9aFjk6jbcA4BrQiC32+7OVncp0fvIhDPXkcuT8=
 github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92 h1:4zzWLdGtzQxDg6WcFpSzcfEBct6xBmGk7T26I1IlNt8=
 github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92/go.mod h1:z4vtbN4gpN4C/6fEN0gtAc9RBkqU94Y5SrVdk3xMplM=
 github.com/geniusrabbit/gosql/v2 v2.3.1 h1:pXipcITnQlOtpNmGL9gvbrAcNw/PXmcq2Z4hTQv8aEE=

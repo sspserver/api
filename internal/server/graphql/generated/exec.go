@@ -588,10 +588,10 @@ type ComplexityRoot struct {
 	}
 
 	Option struct {
-		Name       func(childComplexity int) int
-		OptionType func(childComplexity int) int
-		TargetID   func(childComplexity int) int
-		Value      func(childComplexity int) int
+		Name     func(childComplexity int) int
+		TargetID func(childComplexity int) int
+		Type     func(childComplexity int) int
+		Value    func(childComplexity int) int
 	}
 
 	OptionConnection struct {
@@ -608,8 +608,8 @@ type ComplexityRoot struct {
 
 	OptionPayload struct {
 		ClientMutationID func(childComplexity int) int
+		Name             func(childComplexity int) int
 		Option           func(childComplexity int) int
-		OptionName       func(childComplexity int) int
 	}
 
 	PageInfo struct {
@@ -679,7 +679,7 @@ type ComplexityRoot struct {
 		ListSocialAccounts             func(childComplexity int, filter *models1.SocialAccountListFilter, order *models1.SocialAccountListOrder, page *models1.Page) int
 		ListUsers                      func(childComplexity int, filter *models1.UserListFilter, order *models1.UserListOrder, page *models1.Page) int
 		ListZones                      func(childComplexity int, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) int
-		Option                         func(childComplexity int, name string, optionType models1.OptionType, targetID uint64) int
+		Option                         func(childComplexity int, name string, typeArg models1.OptionType, targetID uint64) int
 		Os                             func(childComplexity int, id uint64) int
 		RTBSource                      func(childComplexity int, id uint64) int
 		Role                           func(childComplexity int, id uint64) int
@@ -1055,7 +1055,7 @@ type QueryResolver interface {
 	GetDirectAccessToken(ctx context.Context, id uint64) (*models1.DirectAccessTokenPayload, error)
 	ListDirectAccessTokens(ctx context.Context, filter *models1.DirectAccessTokenListFilter, order *models1.DirectAccessTokenListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge], error)
 	ListHistory(ctx context.Context, filter *models1.HistoryActionListFilter, order *models1.HistoryActionListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge], error)
-	Option(ctx context.Context, name string, optionType models1.OptionType, targetID uint64) (*models1.OptionPayload, error)
+	Option(ctx context.Context, name string, typeArg models1.OptionType, targetID uint64) (*models1.OptionPayload, error)
 	ListOptions(ctx context.Context, filter *models1.OptionListFilter, order *models1.OptionListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.Option, models1.OptionEdge], error)
 	Role(ctx context.Context, id uint64) (*models1.RBACRolePayload, error)
 	CheckPermission(ctx context.Context, name string, key *string, targetID *string, idKey *string) (*string, error)
@@ -3991,19 +3991,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Option.Name(childComplexity), true
 
-	case "Option.optionType":
-		if e.complexity.Option.OptionType == nil {
-			break
-		}
-
-		return e.complexity.Option.OptionType(childComplexity), true
-
 	case "Option.targetID":
 		if e.complexity.Option.TargetID == nil {
 			break
 		}
 
 		return e.complexity.Option.TargetID(childComplexity), true
+
+	case "Option.type":
+		if e.complexity.Option.Type == nil {
+			break
+		}
+
+		return e.complexity.Option.Type(childComplexity), true
 
 	case "Option.value":
 		if e.complexity.Option.Value == nil {
@@ -4061,19 +4061,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.OptionPayload.ClientMutationID(childComplexity), true
 
+	case "OptionPayload.name":
+		if e.complexity.OptionPayload.Name == nil {
+			break
+		}
+
+		return e.complexity.OptionPayload.Name(childComplexity), true
+
 	case "OptionPayload.option":
 		if e.complexity.OptionPayload.Option == nil {
 			break
 		}
 
 		return e.complexity.OptionPayload.Option(childComplexity), true
-
-	case "OptionPayload.optionName":
-		if e.complexity.OptionPayload.OptionName == nil {
-			break
-		}
-
-		return e.complexity.OptionPayload.OptionName(childComplexity), true
 
 	case "PageInfo.count":
 		if e.complexity.PageInfo.Count == nil {
@@ -4644,7 +4644,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Option(childComplexity, args["name"].(string), args["optionType"].(models1.OptionType), args["targetID"].(uint64)), true
+		return e.complexity.Query.Option(childComplexity, args["name"].(string), args["type"].(models1.OptionType), args["targetID"].(uint64)), true
 
 	case "Query.OS":
 		if e.complexity.Query.Os == nil {
@@ -7658,7 +7658,7 @@ extend type Query {
 Option type definition represents a single option of the user or the system.
 """
 type Option {
-  optionType: OptionType!
+  type:       OptionType!
   targetID:   ID64!
   name:       String!
   value:      NullableJSON
@@ -7703,8 +7703,14 @@ type OptionPayload {
   """
   clientMutationId: String!
 
-  optionName: String!
+  """
+  Option name
+  """
+  name: String!
 
+  """
+  Option value
+  """
   option: Option
 }
 
@@ -7713,17 +7719,17 @@ type OptionPayload {
 ###############################################################################
 
 input OptionListFilter {
-  optionType: [OptionType!]
-  targetID: [ID64!]
-  name: [String!]
-  namePattern: [String!]
+  type:         [OptionType!]
+  targetID:     [ID64!]
+  name:         [String!]
+  namePattern:  [String!]
 }
 
 input OptionListOrder {
-  optionType: Ordering
-  targetID: Ordering
-  name: Ordering
-  value: Ordering
+  type:         Ordering
+  targetID:     Ordering
+  name:         Ordering
+  value:        Ordering
 }
 
 ###############################################################################
@@ -7734,7 +7740,7 @@ extend type Query {
   """
   Get the option value by name
   """
-  option(name: String!, optionType: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
+  option(name: String!, type: OptionType! = USER, targetID: ID64! = 0): OptionPayload! @hasPermissions(permissions: ["option.get.*"])
 
   """
   List of the option values which can be filtered and ordered by some fields
@@ -16152,11 +16158,11 @@ func (ec *executionContext) field_Query_option_args(ctx context.Context, rawArgs
 		return nil, err
 	}
 	args["name"] = arg0
-	arg1, err := ec.field_Query_option_argsOptionType(ctx, rawArgs)
+	arg1, err := ec.field_Query_option_argsType(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["optionType"] = arg1
+	args["type"] = arg1
 	arg2, err := ec.field_Query_option_argsTargetID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
@@ -16182,17 +16188,17 @@ func (ec *executionContext) field_Query_option_argsName(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Query_option_argsOptionType(
+func (ec *executionContext) field_Query_option_argsType(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (models1.OptionType, error) {
-	if _, ok := rawArgs["optionType"]; !ok {
+	if _, ok := rawArgs["type"]; !ok {
 		var zeroVal models1.OptionType
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("optionType"))
-	if tmp, ok := rawArgs["optionType"]; ok {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+	if tmp, ok := rawArgs["type"]; ok {
 		return ec.unmarshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, tmp)
 	}
 
@@ -31203,8 +31209,8 @@ func (ec *executionContext) fieldContext_Mutation_setOption(ctx context.Context,
 			switch field.Name {
 			case "clientMutationId":
 				return ec.fieldContext_OptionPayload_clientMutationId(ctx, field)
-			case "optionName":
-				return ec.fieldContext_OptionPayload_optionName(ctx, field)
+			case "name":
+				return ec.fieldContext_OptionPayload_name(ctx, field)
 			case "option":
 				return ec.fieldContext_OptionPayload_option(ctx, field)
 			}
@@ -36069,8 +36075,8 @@ func (ec *executionContext) fieldContext_OSPayload_OS(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Option_optionType(ctx context.Context, field graphql.CollectedField, obj *models1.Option) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Option_optionType(ctx, field)
+func (ec *executionContext) _Option_type(ctx context.Context, field graphql.CollectedField, obj *models1.Option) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Option_type(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -36083,7 +36089,7 @@ func (ec *executionContext) _Option_optionType(ctx context.Context, field graphq
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.OptionType, nil
+		return obj.Type, nil
 	})
 
 	if resTmp == nil {
@@ -36097,7 +36103,7 @@ func (ec *executionContext) _Option_optionType(ctx context.Context, field graphq
 	return ec.marshalNOptionType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionType(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Option_optionType(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Option_type(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Option",
 		Field:      field,
@@ -36354,8 +36360,8 @@ func (ec *executionContext) fieldContext_OptionConnection_list(_ context.Context
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "optionType":
-				return ec.fieldContext_Option_optionType(ctx, field)
+			case "type":
+				return ec.fieldContext_Option_type(ctx, field)
 			case "targetID":
 				return ec.fieldContext_Option_targetID(ctx, field)
 			case "name":
@@ -36503,8 +36509,8 @@ func (ec *executionContext) fieldContext_OptionEdge_node(_ context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "optionType":
-				return ec.fieldContext_Option_optionType(ctx, field)
+			case "type":
+				return ec.fieldContext_Option_type(ctx, field)
 			case "targetID":
 				return ec.fieldContext_Option_targetID(ctx, field)
 			case "name":
@@ -36559,8 +36565,8 @@ func (ec *executionContext) fieldContext_OptionPayload_clientMutationId(_ contex
 	return fc, nil
 }
 
-func (ec *executionContext) _OptionPayload_optionName(ctx context.Context, field graphql.CollectedField, obj *models1.OptionPayload) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_OptionPayload_optionName(ctx, field)
+func (ec *executionContext) _OptionPayload_name(ctx context.Context, field graphql.CollectedField, obj *models1.OptionPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_OptionPayload_name(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -36573,7 +36579,7 @@ func (ec *executionContext) _OptionPayload_optionName(ctx context.Context, field
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.OptionName, nil
+		return obj.Name, nil
 	})
 
 	if resTmp == nil {
@@ -36587,7 +36593,7 @@ func (ec *executionContext) _OptionPayload_optionName(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_OptionPayload_optionName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_OptionPayload_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "OptionPayload",
 		Field:      field,
@@ -36633,8 +36639,8 @@ func (ec *executionContext) fieldContext_OptionPayload_option(_ context.Context,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "optionType":
-				return ec.fieldContext_Option_optionType(ctx, field)
+			case "type":
+				return ec.fieldContext_Option_type(ctx, field)
 			case "targetID":
 				return ec.fieldContext_Option_targetID(ctx, field)
 			case "name":
@@ -38940,7 +38946,7 @@ func (ec *executionContext) _Query_option(ctx context.Context, field graphql.Col
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().Option(rctx, fc.Args["name"].(string), fc.Args["optionType"].(models1.OptionType), fc.Args["targetID"].(uint64))
+			return ec.resolvers.Query().Option(rctx, fc.Args["name"].(string), fc.Args["type"].(models1.OptionType), fc.Args["targetID"].(uint64))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -38990,8 +38996,8 @@ func (ec *executionContext) fieldContext_Query_option(ctx context.Context, field
 			switch field.Name {
 			case "clientMutationId":
 				return ec.fieldContext_OptionPayload_clientMutationId(ctx, field)
-			case "optionName":
-				return ec.fieldContext_OptionPayload_optionName(ctx, field)
+			case "name":
+				return ec.fieldContext_OptionPayload_name(ctx, field)
 			case "option":
 				return ec.fieldContext_OptionPayload_option(ctx, field)
 			}
@@ -56010,20 +56016,20 @@ func (ec *executionContext) unmarshalInputOptionListFilter(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"optionType", "targetID", "name", "namePattern"}
+	fieldsInOrder := [...]string{"type", "targetID", "name", "namePattern"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "optionType":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionType"))
+		case "type":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
 			data, err := ec.unmarshalOOptionType2ᚕgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOptionTypeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.OptionType = data
+			it.Type = data
 		case "targetID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
 			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
@@ -56058,20 +56064,20 @@ func (ec *executionContext) unmarshalInputOptionListOrder(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"optionType", "targetID", "name", "value"}
+	fieldsInOrder := [...]string{"type", "targetID", "name", "value"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "optionType":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionType"))
+		case "type":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.OptionType = data
+			it.Type = data
 		case "targetID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("targetID"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -60970,8 +60976,8 @@ func (ec *executionContext) _Option(ctx context.Context, sel ast.SelectionSet, o
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Option")
-		case "optionType":
-			out.Values[i] = ec._Option_optionType(ctx, field, obj)
+		case "type":
+			out.Values[i] = ec._Option_type(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -61124,8 +61130,8 @@ func (ec *executionContext) _OptionPayload(ctx context.Context, sel ast.Selectio
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "optionName":
-			out.Values[i] = ec._OptionPayload_optionName(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._OptionPayload_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
