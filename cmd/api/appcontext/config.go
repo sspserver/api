@@ -191,6 +191,13 @@ type messangerConfig struct {
 	} `json:"email_defaults" yaml:"email_defaults"`
 }
 
+type optionsConfig struct {
+	RTBServerDomain      string `json:"rtb_server_domain" yaml:"rtb_server_domain" env:"OPTION_RTB_SERVER_DOMAIN"`
+	AdTemplateCode       string `json:"ad_template_code" yaml:"ad_template_code" env:"OPTION_AD_TEMPLATE_CODE"`
+	AdDirectTemplateURL  string `json:"ad_direct_template_url" yaml:"ad_direct_template_url" env:"OPTION_AD_DIRECT_TEMPLATE_URL"`
+	AdDirectTemplateCode string `json:"ad_direct_template_code" yaml:"ad_direct_template_code" env:"OPTION_AD_DIRECT_TEMPLATE_CODE"`
+}
+
 // ConfigType contains all application options
 type ConfigType struct {
 	ServiceName    string `json:"service_name" yaml:"service_name" env:"SERVICE_NAME" default:"adnet.api"`
@@ -209,6 +216,7 @@ type ConfigType struct {
 	OAuth2      oauth2Config     `json:"oauth2" yaml:"oauth2"`
 	Messanger   messangerConfig  `json:"messanger" yaml:"messanger"`
 	Permissions permissionConfig `json:"permissions" yaml:"permissions"`
+	Options     optionsConfig    `json:"options" yaml:"options"`
 }
 
 // String implementation of Stringer interface
