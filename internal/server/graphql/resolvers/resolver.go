@@ -6,6 +6,7 @@ import (
 	authclient_graphql "github.com/geniusrabbit/blaze-api/repository/authclient/delivery/graphql"
 	directaccesstoken_graphql "github.com/geniusrabbit/blaze-api/repository/directaccesstoken/delivery/graphql"
 	historylog_graphql "github.com/geniusrabbit/blaze-api/repository/historylog/delivery/graphql"
+	"github.com/geniusrabbit/blaze-api/repository/option"
 	option_graphql "github.com/geniusrabbit/blaze-api/repository/option/delivery/graphql"
 	rbac_graphql "github.com/geniusrabbit/blaze-api/repository/rbac/delivery/graphql"
 	rbac "github.com/geniusrabbit/blaze-api/repository/rbac/repository"
@@ -61,6 +62,7 @@ type Resolver struct {
 type Usecases struct {
 	Stats     statistic.Usecase
 	RTBSource rtbsource.Usecase
+	Options   option.Usecase
 }
 
 func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
@@ -73,7 +75,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		roles:             rbac_graphql.NewQueryResolver(),
 		authclients:       authclient_graphql.NewQueryResolver(),
 		historylogs:       historylog_graphql.NewQueryResolver(),
-		options:           option_graphql.NewQueryResolver(),
+		options:           option_graphql.NewQueryResolver(usecases.Options),
 		directaccesstoken: directaccesstoken_graphql.NewQueryResolver(),
 		// Current API extensions
 		rtbsource:     rtbsource_graphql.NewQueryResolver(usecases.RTBSource),

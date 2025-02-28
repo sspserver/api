@@ -32,6 +32,8 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/profiler"
 	"github.com/geniusrabbit/blaze-api/pkg/zlogger"
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
+	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
+	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
 	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
 
 	"github.com/sspserver/api/cmd/api/appcontext"
@@ -180,10 +182,20 @@ func main() {
 	statDatabase, err := database.Connect(ctx, conf.System.Statistic.Connect, conf.IsDebug())
 	fatalError(err, "connect to statistic")
 
-	rtbSourceUsecase := rtbsourceuc.New()
-
+	// Init statistic usecase
 	statisticUsecase := statisticuc.NewUsecase(
 		statisticrc.NewRepository(statDatabase))
+
+	// Init RTB Source usecase
+	rtbSourceUsecase := rtbsourceuc.New()
+
+	// Init Options usecase
+	optionsUsecase := optionuc.NewUsecase(optionrp.New(map[string]any{
+		"ad.rtb.domain":    conf.Options.RTBServerDomain,
+		"ad.template.code": conf.Options.AdTemplateCode,
+		"ad.direct.url":    conf.Options.AdDirectTemplateURL,
+		"ad.direct.code":   conf.Options.AdDirectTemplateCode,
+	}))
 
 	// Prepare context
 	ctx = ctxlogger.WithLogger(ctx, loggerObj)
@@ -218,6 +230,7 @@ func main() {
 			mux.Handle("/graphql", graphql.GraphQL(&resolvers.Usecases{
 				Stats:     statisticUsecase,
 				RTBSource: rtbSourceUsecase,
+				Options:   optionsUsecase,
 			}, jwtProvider))
 
 			// Register OAuth2 providers
