@@ -18,7 +18,7 @@ type Filter struct {
 }
 
 func (fl *Filter) IsChildrensPreload() bool {
-	return len(fl.ParentID) > 0
+	return fl != nil && len(fl.ParentID) > 0
 }
 
 func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
