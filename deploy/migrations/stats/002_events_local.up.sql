@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS stats.events_local (
 
  , created_at               DateTime    DEFAULT NOW()
 )
-ENGINE = ReplicatedCollapsingMergeTree(sign)
+ENGINE = ${RDB_PREFIX}CollapsingMergeTree(sign)
 PARTITION BY toYYYYMM(datemark)
 ORDER BY (event, datemark, platform_type, app_id, zone_id, format_id, auc_id, auc_type, impad_id)
 SETTINGS index_granularity = 8192;

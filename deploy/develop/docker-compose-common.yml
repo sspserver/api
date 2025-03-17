@@ -39,7 +39,7 @@ services:
     #     hard: 262144
 
   clickhouse-init:
-    image: clickhouse/clickhouse-server
+    image: clickhouse/clickhouse-server:24.5.1.1763
     entrypoint: [ './migrations.sh' ]
     depends_on:
       clickhouse-server:
@@ -51,6 +51,8 @@ services:
       - "../migrations/stats:/migrations:ro"
       - "../migrations/stats-gen:/migrations-gen:ro"
       - "state:/state"
+    environment:
+      - REPLICATED=true
 
   database:
     image: postgres:16

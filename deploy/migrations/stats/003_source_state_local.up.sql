@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS stats.source_state_local (
  , nobids             UInt64      DEFAULT 0
  , errors             UInt64      DEFAULT 0
 )
-Engine = ReplicatedSummingMergeTree
+Engine = ${RDB_PREFIX}SummingMergeTree
 PARTITION BY toYYYYMM(datemark)
 PRIMARY KEY (id, intHash32(id), datemark)
 ORDER BY (id, intHash32(id), datemark)

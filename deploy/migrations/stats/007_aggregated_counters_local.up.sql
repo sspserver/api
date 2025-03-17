@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS stats.aggregated_counters_local (
 , privates                 UInt64
 , robots                   UInt64
 , backups                  UInt64
-) ENGINE = ReplicatedSummingMergeTree()
+) ENGINE = ${RDB_PREFIX}SummingMergeTree
 PARTITION BY toYYYYMM(datemark)
 PRIMARY KEY (datemark, source_id, platform_type, app_id, zone_id, format_id)
 ORDER BY (
