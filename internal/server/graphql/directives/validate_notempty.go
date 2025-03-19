@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"reflect"
-	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/demdxx/gocast/v2"
@@ -15,49 +14,28 @@ func ValidateNotEmpty(ctx context.Context, obj any, next graphql.Resolver, trim,
 		return nil, err
 	}
 
-	var (
-		str      string
-		canBeNil = false
-	)
-
 	// Check if the value is a string or a pointer to a string
-	switch v := res.(type) {
+	switch res.(type) {
 	case nil:
 		if ornil {
 			return nil, nil
 		}
 		return nil, errors.New("value is nil")
-	case string:
-		str = v
-	case *string:
-		str = *v
-		canBeNil = true
 	default:
 		if gocast.IsEmpty(res) {
-			if ornil && reflect.ValueOf(res).Kind() == reflect.Ptr {
+			kind := reflect.ValueOf(res).Kind()
+			if ornil && (kind == reflect.Ptr ||
+				kind == reflect.Slice ||
+				kind == reflect.Map ||
+				kind == reflect.Array ||
+				kind == reflect.Chan ||
+				kind == reflect.Func ||
+				kind == reflect.Interface) {
 				return nil, nil
 			}
 			return nil, errors.New("value is empty")
 		}
 	}
 
-	// Trim the string if needed
-	if trim {
-		str = strings.TrimSpace(str)
-	}
-
-	// Check if the string is empty
-	if str == "" && ornil && canBeNil {
-		return nil, nil
-	}
-
-	// Return the error if the string is empty
-	if str == "" {
-		return nil, errors.New("value is empty")
-	}
-
-	if canBeNil {
-		return &str, nil
-	}
-	return str, nil
+	return _validateLength(res, 1, 0, trim, ornil)
 }

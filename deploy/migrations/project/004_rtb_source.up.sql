@@ -55,11 +55,11 @@ CREATE TABLE IF NOT EXISTS rtb_source
 , deleted_at             TIMESTAMP
 );
 
-CREATE TRIGGER updated_at_trigger 
+CREATE OR REPLACE TRIGGER updated_at_trigger 
   BEFORE UPDATE ON rtb_source 
   FOR EACH ROW EXECUTE PROCEDURE updated_at_column();
 
-CREATE TRIGGER notify_update_event_trigger
+CREATE OR REPLACE TRIGGER notify_update_event_trigger
   AFTER INSERT OR UPDATE OR DELETE ON rtb_source
   FOR EACH ROW EXECUTE PROCEDURE notify_update_event();
 

@@ -39,11 +39,11 @@ CREATE TABLE IF NOT EXISTS adv_application
 , deleted_at             TIMESTAMP
 );
 
-CREATE TRIGGER updated_at_trigger 
+CREATE OR REPLACE TRIGGER updated_at_trigger 
   BEFORE UPDATE ON adv_application 
   FOR EACH ROW EXECUTE FUNCTION updated_at_column();
 
-CREATE TRIGGER notify_update_event_trigger
+CREATE OR REPLACE TRIGGER notify_update_event_trigger
   AFTER INSERT OR UPDATE OR DELETE ON adv_application
   FOR EACH ROW EXECUTE FUNCTION notify_update_event();
 
@@ -87,10 +87,10 @@ CREATE TABLE adv_zone
 , deleted_at             TIMESTAMP
 );
 
-CREATE TRIGGER updated_at_trigger 
+CREATE OR REPLACE TRIGGER updated_at_trigger 
   BEFORE UPDATE ON adv_zone 
   FOR EACH ROW EXECUTE FUNCTION updated_at_column();
 
-CREATE TRIGGER notify_update_event_trigger
+CREATE OR REPLACE TRIGGER notify_update_event_trigger
   AFTER INSERT OR UPDATE OR DELETE ON adv_zone
   FOR EACH ROW EXECUTE FUNCTION notify_update_event();

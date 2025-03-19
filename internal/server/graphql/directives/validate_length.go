@@ -6,15 +6,22 @@ import (
 	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
+	"github.com/demdxx/gocast/v2"
 )
 
 func ValidateLength(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim, ornil bool) (res any, err error) {
 	if res, err = next(ctx); err != nil {
 		return nil, err
 	}
+	return _validateLength(res, min, max, trim, ornil)
+}
 
+func _validateLength(val any, min int, max int, trim, ornil bool) (any, error) {
 	var (
+		res      = val
 		str      string
+		isArray  = false
+		length   = 0
 		canBeNil = false
 	)
 
@@ -31,31 +38,47 @@ func ValidateLength(ctx context.Context, obj any, next graphql.Resolver, min int
 		str = *v
 		canBeNil = true
 	default:
-		return nil, fmt.Errorf("value is not a string")
+		if isArray = gocast.IsSlice(res); !isArray {
+			return nil, fmt.Errorf("value is not a string or slice")
+		}
 	}
 
-	// Trim the string if needed
-	if trim {
-		str = strings.TrimSpace(str)
+	if isArray {
+		length = len(gocast.AnySlice[any](res))
+	} else {
+		// Trim the string if needed
+		if trim {
+			str = strings.TrimSpace(str)
+		}
+
+		if length = len(str); canBeNil {
+			res = &str
+		} else {
+			res = str
+		}
 	}
 
-	// Check if the string is empty
-	if str == "" && ornil && canBeNil {
-		return nil, nil
+	// Check if the value is empty and can be nil
+	if length == 0 {
+		if ornil && canBeNil {
+			return nil, nil
+		} else {
+			return nil, fmt.Errorf("value is empty")
+		}
 	}
 
-	// Check the min length of the string
-	if len(str) < min {
+	// Check the min length
+	if length < min {
 		return nil, fmt.Errorf("value is too short, minimum length is %d", min)
 	}
 
-	// Check the max length of the string
-	if max > min && len(str) > max {
+	// Check the max length
+	if max > min && length > max {
 		return nil, fmt.Errorf("value is too long, maximum length is %d", max)
 	}
 
-	if canBeNil {
-		return &str, nil
+	if res == nil {
+		return nil, nil
 	}
-	return str, nil
+	return res, nil
 }

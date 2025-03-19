@@ -15,11 +15,18 @@ import (
 	"github.com/sspserver/api/models"
 )
 
+const (
+	PermRun   = `run`
+	PermPause = `pause`
+)
+
 var (
 	crudPermissions = []string{
 		acl.PermView, acl.PermList, acl.PermCount, acl.PermUpdate, acl.PermCreate, acl.PermDelete,
 	}
-	crudPermissionsWithApprove = append(crudPermissions, acl.PermApprove, acl.PermReject)
+	crudPermissionsWithApprove       = append(crudPermissions, acl.PermApprove, acl.PermReject)
+	crunPermissionsWithRunnin        = append(crudPermissions, PermRun, PermPause)
+	crudPermissionsWithRunAndApprove = append(crunPermissionsWithRunnin, acl.PermApprove, acl.PermReject)
 )
 
 var (
@@ -59,6 +66,7 @@ func InitModelPermissions(pm *permissions.Manager) {
 		&models.Category{},
 		&RBACStatistic,
 		&models.Format{},
+		&models.TrafficRouter{},
 	)
 
 	// Register user permissions
@@ -96,15 +104,15 @@ func InitModelPermissions(pm *permissions.Manager) {
 
 	// =========== Current project models ===========
 	// Register basic permissions for the RTBSource model
-	_ = pm.RegisterNewOwningPermissions(&models.RTBSource{}, crudPermissionsWithApprove,
+	_ = pm.RegisterNewOwningPermissions(&models.RTBSource{}, crudPermissionsWithRunAndApprove,
 		rbac.WithDescription("RTB Source model permissions"))
 
 	// Register basic permissions for the Application model
-	_ = pm.RegisterNewOwningPermissions(&models.Application{}, crudPermissionsWithApprove,
+	_ = pm.RegisterNewOwningPermissions(&models.Application{}, crudPermissionsWithRunAndApprove,
 		rbac.WithDescription("Application model permissions"))
 
 	// Register basic permissions for the Zone model
-	_ = pm.RegisterNewOwningPermissions(&models.Zone{}, crudPermissionsWithApprove,
+	_ = pm.RegisterNewOwningPermissions(&models.Zone{}, crudPermissionsWithRunAndApprove,
 		rbac.WithDescription("Zone model permissions"))
 
 	// Register basic permissions for the Browser model
@@ -139,6 +147,10 @@ func InitModelPermissions(pm *permissions.Manager) {
 	_ = pm.RegisterNewOwningPermissions(&models.Format{}, crudPermissions,
 		rbac.WithDescription("Format model permissions"))
 
+	// Register basic permissions for the TrafficRouter model
+	_ = pm.RegisterNewOwningPermissions(&models.TrafficRouter{}, crunPermissionsWithRunnin,
+		rbac.WithDescription("Traffic Router model permissions"))
+
 	// =========== Register default roles ===========
 	pm.RegisterRole(context.Background(),
 		// Register anonymous role and fill permissions for it
@@ -158,6 +170,7 @@ func InitModelPermissions(pm *permissions.Manager) {
 				`account.{view|list|count}.owner`, PermAccountRegister,
 				`option.{get|set|list|count}.owner`,
 				`directaccesstoken.{view|list|count}.owner`,
+				`traffic_router.{view|list|count|run|pause}.owner`,
 				`role.check`,
 				`rtb_source.{view|list|count}.owner`,
 				`geo_country.{view|list|count}.owner`, `geo_continent.{view|list|count}.owner`,

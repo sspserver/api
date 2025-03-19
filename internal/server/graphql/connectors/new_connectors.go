@@ -17,6 +17,7 @@ import (
 	"github.com/sspserver/api/internal/repository/os"
 	"github.com/sspserver/api/internal/repository/rtbsource"
 	"github.com/sspserver/api/internal/repository/statistic"
+	"github.com/sspserver/api/internal/repository/trafficrouter"
 	"github.com/sspserver/api/internal/repository/zone"
 	gqlmodels "github.com/sspserver/api/internal/server/graphql/models"
 )
@@ -270,6 +271,31 @@ func NewStatisticAdItemConnection(ctx context.Context, statisticAccessor statist
 		ConvertToEdgeFunc: func(obj *gqlmodels.StatisticAdItem) *struct{} {
 			var edge struct{}
 			return &edge
+		},
+	}, page)
+}
+
+// TrafficRouterConnection implements collection accessor interface with pagination.
+type TrafficRouterConnection = connectors.CollectionConnection[gqlmodels.TrafficRouter, gqlmodels.TrafficRouterEdge]
+
+// NewTrafficRouterConnection based on query object
+func NewTrafficRouterConnection(ctx context.Context, trafficRouterAccessor trafficrouter.Usecase, filter *gqlmodels.TrafficRouterListFilter, order []*gqlmodels.TrafficRouterListOrder, page *gqlmodels.Page) *TrafficRouterConnection {
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.TrafficRouter, gqlmodels.TrafficRouterEdge]{
+		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.TrafficRouter, error) {
+			newOrder := xtypes.SliceReduce(order,
+				func(val *gqlmodels.TrafficRouterListOrder, res *trafficrouter.ListOrder) { val.Fill(res) })
+			list, err := trafficRouterAccessor.FetchList(ctx,
+				filter.Filter(), &newOrder, page.Pagination())
+			return gqlmodels.FromTrafficRouterModelList(list), err
+		},
+		CountDataFunc: func(ctx context.Context) (int64, error) {
+			return trafficRouterAccessor.Count(ctx, filter.Filter())
+		},
+		ConvertToEdgeFunc: func(obj *gqlmodels.TrafficRouter) *gqlmodels.TrafficRouterEdge {
+			return &gqlmodels.TrafficRouterEdge{
+				Cursor: gocast.Str(obj.ID),
+				Node:   obj,
+			}
 		},
 	}, page)
 }
