@@ -2742,336 +2742,336 @@ CREATE INDEX transactions_key_type_status_invoice_key_idx ON public.transactions
 -- Name: account_user_password_reset keep_for_one_week; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER keep_for_one_week BEFORE INSERT OR UPDATE ON public.account_user_password_reset FOR EACH ROW EXECUTE FUNCTION public.keep_for('expires_at', '1 week');
+CREATE OR REPLACE TRIGGER keep_for_one_week BEFORE INSERT OR UPDATE ON public.account_user_password_reset FOR EACH ROW EXECUTE FUNCTION public.keep_for('expires_at', '1 week');
 
 
 --
 -- Name: account_base notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_base FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_base FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: account_social notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_social FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_social FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: account_social_session notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_social_session FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_social_session FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: account_user notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_user FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_user FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: account_user_password_reset notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_user_password_reset FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.account_user_password_reset FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: ad_format notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.ad_format FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.ad_format FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_application notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_application FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_application FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_campaign notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_campaign FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_campaign FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_category notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_category FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_category FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_format notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_format FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_format FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_item notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_item FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_item FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_link notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_link FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_link FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: adv_zone notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_zone FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.adv_zone FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: auth_client notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.auth_client FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.auth_client FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: auth_session notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.auth_session FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.auth_session FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: direct_access_tokens notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.direct_access_tokens FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.direct_access_tokens FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: option notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.option FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.option FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: rtb_access_point notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.rtb_access_point FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.rtb_access_point FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: rtb_source notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.rtb_source FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.rtb_source FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: type_browser notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_browser FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_browser FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: type_device_maker notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_device_maker FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_device_maker FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: type_device_model notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_device_model FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_device_model FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: type_os notify_update_event_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_os FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
+CREATE OR REPLACE TRIGGER notify_update_event_trigger AFTER INSERT OR DELETE OR UPDATE ON public.type_os FOR EACH ROW EXECUTE FUNCTION public.notify_update_event();
 
 
 --
 -- Name: account_base updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_base FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_base FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: account_member updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_member FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_member FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: account_social updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_social FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_social FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: account_social_session updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_social_session FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_social_session FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: account_user updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_user FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.account_user FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: ad_format updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.ad_format FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.ad_format FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_format updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.adv_format FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.adv_format FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_item updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.adv_item FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.adv_item FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: auth_client updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.auth_client FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.auth_client FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: auth_session updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.auth_session FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.auth_session FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: m2m_rbac_role updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.m2m_rbac_role FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.m2m_rbac_role FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: option updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.option FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.option FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: rbac_role updated_at_triger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_triger BEFORE UPDATE ON public.rbac_role FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_triger BEFORE UPDATE ON public.rbac_role FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_application updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_application FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_application FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_campaign updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_campaign FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_campaign FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_category updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_category FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_category FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_link updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_link FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_link FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: adv_zone updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_zone FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.adv_zone FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: rtb_access_point updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.rtb_access_point FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.rtb_access_point FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: rtb_source updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.rtb_source FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.rtb_source FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: type_browser updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_browser FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_browser FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: type_device_maker updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_device_maker FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_device_maker FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: type_device_model updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_device_model FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_device_model FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --
 -- Name: type_os updated_at_trigger; Type: TRIGGER; Schema: public; Owner: dbuser
 --
 
-CREATE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_os FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
+CREATE OR REPLACE TRIGGER updated_at_trigger BEFORE UPDATE ON public.type_os FOR EACH ROW EXECUTE FUNCTION public.updated_at_column();
 
 
 --

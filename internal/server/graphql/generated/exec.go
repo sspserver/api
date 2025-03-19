@@ -49,6 +49,7 @@ type ResolverRoot interface {
 	OS() OSResolver
 	Query() QueryResolver
 	StatisticItemKey() StatisticItemKeyResolver
+	TrafficRouter() TrafficRouterResolver
 }
 
 type DirectiveRoot struct {
@@ -496,6 +497,7 @@ type ComplexityRoot struct {
 		CreateOs                  func(childComplexity int, input models.OSCreateInput) int
 		CreateRTBSource           func(childComplexity int, input models.RTBSourceInput) int
 		CreateRole                func(childComplexity int, input models1.RBACRoleInput) int
+		CreateTrafficRouter       func(childComplexity int, input models.TrafficRouterCreateInput) int
 		CreateUser                func(childComplexity int, input models1.UserInput) int
 		CreateZone                func(childComplexity int, input models.ZoneInput) int
 		DeactivateZone            func(childComplexity int, id uint64, msg *string) int
@@ -509,6 +511,7 @@ type ComplexityRoot struct {
 		DeleteOs                  func(childComplexity int, id uint64, msg *string) int
 		DeleteRTBSource           func(childComplexity int, id uint64, msg *string) int
 		DeleteRole                func(childComplexity int, id uint64, msg *string) int
+		DeleteTrafficRouter       func(childComplexity int, id uint64) int
 		DeleteZone                func(childComplexity int, id uint64, msg *string) int
 		DisconnectSocialAccount   func(childComplexity int, id uint64) int
 		GenerateDirectAccessToken func(childComplexity int, userID *uint64, description string, expiresAt *time.Time) int
@@ -517,6 +520,7 @@ type ComplexityRoot struct {
 		Logout                    func(childComplexity int) int
 		PauseApplication          func(childComplexity int, id uint64, msg *string) int
 		PauseRTBSource            func(childComplexity int, id uint64) int
+		PauseTrafficRouter        func(childComplexity int, id uint64, msg string) int
 		Poke                      func(childComplexity int) int
 		RegisterAccount           func(childComplexity int, input models1.AccountCreateInput) int
 		RejectAccount             func(childComplexity int, id uint64, msg string) int
@@ -530,6 +534,7 @@ type ComplexityRoot struct {
 		RevokeDirectAccessToken   func(childComplexity int, filter models1.DirectAccessTokenListFilter) int
 		RunApplication            func(childComplexity int, id uint64, msg *string) int
 		RunRTBSource              func(childComplexity int, id uint64) int
+		RunTrafficRouter          func(childComplexity int, id uint64, msg string) int
 		SetOption                 func(childComplexity int, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) int
 		SwitchAccount             func(childComplexity int, id uint64) int
 		UpdateAccount             func(childComplexity int, id uint64, input models1.AccountInput) int
@@ -544,6 +549,7 @@ type ComplexityRoot struct {
 		UpdateOs                  func(childComplexity int, id uint64, input models.OSUpdateInput) int
 		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceInput) int
 		UpdateRole                func(childComplexity int, id uint64, input models1.RBACRoleInput) int
+		UpdateTrafficRouter       func(childComplexity int, id uint64, input models.TrafficRouterUpdateInput) int
 		UpdateUser                func(childComplexity int, id uint64, input models1.UserInput) int
 		UpdateUserPassword        func(childComplexity int, token string, email string, password string) int
 		UpdateZone                func(childComplexity int, id uint64, input models.ZoneInput) int
@@ -677,6 +683,7 @@ type ComplexityRoot struct {
 		ListRTBSources                 func(childComplexity int, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) int
 		ListRoles                      func(childComplexity int, filter *models1.RBACRoleListFilter, order *models1.RBACRoleListOrder, page *models1.Page) int
 		ListSocialAccounts             func(childComplexity int, filter *models1.SocialAccountListFilter, order *models1.SocialAccountListOrder, page *models1.Page) int
+		ListTrafficRouters             func(childComplexity int, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) int
 		ListUsers                      func(childComplexity int, filter *models1.UserListFilter, order *models1.UserListOrder, page *models1.Page) int
 		ListZones                      func(childComplexity int, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) int
 		Option                         func(childComplexity int, name string, typeArg models1.OptionType, targetID uint64) int
@@ -686,6 +693,7 @@ type ComplexityRoot struct {
 		ServiceVersion                 func(childComplexity int) int
 		SocialAccount                  func(childComplexity int, id uint64) int
 		StatisticAdList                func(childComplexity int, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) int
+		TrafficRouter                  func(childComplexity int, id uint64) int
 		User                           func(childComplexity int, id uint64, username string) int
 		Zone                           func(childComplexity int, id uint64) int
 	}
@@ -889,6 +897,54 @@ type ComplexityRoot struct {
 		Name func(childComplexity int) int
 	}
 
+	TrafficRouter struct {
+		Account         func(childComplexity int) int
+		AccountID       func(childComplexity int) int
+		Active          func(childComplexity int) int
+		AdBlock         func(childComplexity int) int
+		Applications    func(childComplexity int) int
+		Browsers        func(childComplexity int) int
+		Carriers        func(childComplexity int) int
+		Categories      func(childComplexity int) int
+		Countries       func(childComplexity int) int
+		CreatedAt       func(childComplexity int) int
+		DeletedAt       func(childComplexity int) int
+		Description     func(childComplexity int) int
+		DeviceTypes     func(childComplexity int) int
+		Devices         func(childComplexity int) int
+		Domains         func(childComplexity int) int
+		Formats         func(childComplexity int) int
+		ID              func(childComplexity int) int
+		IP              func(childComplexity int) int
+		Languages       func(childComplexity int) int
+		Os              func(childComplexity int) int
+		Percent         func(childComplexity int) int
+		PrivateBrowsing func(childComplexity int) int
+		RTBSourceIDs    func(childComplexity int) int
+		RTBSources      func(childComplexity int) int
+		Secure          func(childComplexity int) int
+		UpdatedAt       func(childComplexity int) int
+		Zones           func(childComplexity int) int
+	}
+
+	TrafficRouterConnection struct {
+		Edges      func(childComplexity int) int
+		List       func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	TrafficRouterEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	TrafficRouterPayload struct {
+		ClientMutationID func(childComplexity int) int
+		Router           func(childComplexity int) int
+		RouterID         func(childComplexity int) int
+	}
+
 	User struct {
 		CreatedAt     func(childComplexity int) int
 		ID            func(childComplexity int) int
@@ -1025,6 +1081,11 @@ type MutationResolver interface {
 	PauseRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error)
 	ApproveRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
 	RejectRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
+	CreateTrafficRouter(ctx context.Context, input models.TrafficRouterCreateInput) (*models.TrafficRouterPayload, error)
+	UpdateTrafficRouter(ctx context.Context, id uint64, input models.TrafficRouterUpdateInput) (*models.TrafficRouterPayload, error)
+	DeleteTrafficRouter(ctx context.Context, id uint64) (*models.TrafficRouterPayload, error)
+	RunTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error)
+	PauseTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error)
 	CreateZone(ctx context.Context, input models.ZoneInput) (*models.ZonePayload, error)
 	UpdateZone(ctx context.Context, id uint64, input models.ZoneInput) (*models.ZonePayload, error)
 	DeleteZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
@@ -1082,11 +1143,18 @@ type QueryResolver interface {
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
 	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error)
 	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models.StatisticAdItem, struct{}], error)
+	TrafficRouter(ctx context.Context, id uint64) (*models.TrafficRouterPayload, error)
+	ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge], error)
 	Zone(ctx context.Context, id uint64) (*models.ZonePayload, error)
 	ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Zone, models.ZoneEdge], error)
 }
 type StatisticItemKeyResolver interface {
 	Text(ctx context.Context, obj *models.StatisticItemKey) (string, error)
+}
+type TrafficRouterResolver interface {
+	Account(ctx context.Context, obj *models.TrafficRouter) (*models1.Account, error)
+
+	RTBSources(ctx context.Context, obj *models.TrafficRouter) ([]*models.RTBSource, error)
 }
 
 type executableSchema struct {
@@ -3200,6 +3268,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateRole(childComplexity, args["input"].(models1.RBACRoleInput)), true
 
+	case "Mutation.createTrafficRouter":
+		if e.complexity.Mutation.CreateTrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTrafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTrafficRouter(childComplexity, args["input"].(models.TrafficRouterCreateInput)), true
+
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
 			break
@@ -3356,6 +3436,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteRole(childComplexity, args["id"].(uint64), args["msg"].(*string)), true
 
+	case "Mutation.deleteTrafficRouter":
+		if e.complexity.Mutation.DeleteTrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteTrafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteTrafficRouter(childComplexity, args["ID"].(uint64)), true
+
 	case "Mutation.deleteZone":
 		if e.complexity.Mutation.DeleteZone == nil {
 			break
@@ -3446,6 +3538,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.PauseRTBSource(childComplexity, args["ID"].(uint64)), true
+
+	case "Mutation.pauseTrafficRouter":
+		if e.complexity.Mutation.PauseTrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_pauseTrafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.PauseTrafficRouter(childComplexity, args["ID"].(uint64), args["msg"].(string)), true
 
 	case "Mutation.poke":
 		if e.complexity.Mutation.Poke == nil {
@@ -3597,6 +3701,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.RunRTBSource(childComplexity, args["ID"].(uint64)), true
+
+	case "Mutation.runTrafficRouter":
+		if e.complexity.Mutation.RunTrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_runTrafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RunTrafficRouter(childComplexity, args["ID"].(uint64), args["msg"].(string)), true
 
 	case "Mutation.setOption":
 		if e.complexity.Mutation.SetOption == nil {
@@ -3765,6 +3881,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateRole(childComplexity, args["id"].(uint64), args["input"].(models1.RBACRoleInput)), true
+
+	case "Mutation.updateTrafficRouter":
+		if e.complexity.Mutation.UpdateTrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateTrafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateTrafficRouter(childComplexity, args["ID"].(uint64), args["input"].(models.TrafficRouterUpdateInput)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -4610,6 +4738,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.ListSocialAccounts(childComplexity, args["filter"].(*models1.SocialAccountListFilter), args["order"].(*models1.SocialAccountListOrder), args["page"].(*models1.Page)), true
 
+	case "Query.listTrafficRouters":
+		if e.complexity.Query.ListTrafficRouters == nil {
+			break
+		}
+
+		args, err := ec.field_Query_listTrafficRouters_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ListTrafficRouters(childComplexity, args["filter"].(*models.TrafficRouterListFilter), args["order"].([]*models.TrafficRouterListOrder), args["page"].(*models1.Page)), true
+
 	case "Query.listUsers":
 		if e.complexity.Query.ListUsers == nil {
 			break
@@ -4712,6 +4852,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.StatisticAdList(childComplexity, args["filter"].(*models.StatisticAdListFilter), args["group"].([]models.StatisticKey), args["order"].([]*models.StatisticAdKeyOrder), args["page"].(*models1.Page)), true
+
+	case "Query.trafficRouter":
+		if e.complexity.Query.TrafficRouter == nil {
+			break
+		}
+
+		args, err := ec.field_Query_trafficRouter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TrafficRouter(childComplexity, args["ID"].(uint64)), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -5710,6 +5862,258 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TimeZone.Name(childComplexity), true
 
+	case "TrafficRouter.account":
+		if e.complexity.TrafficRouter.Account == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Account(childComplexity), true
+
+	case "TrafficRouter.accountID":
+		if e.complexity.TrafficRouter.AccountID == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.AccountID(childComplexity), true
+
+	case "TrafficRouter.active":
+		if e.complexity.TrafficRouter.Active == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Active(childComplexity), true
+
+	case "TrafficRouter.adBlock":
+		if e.complexity.TrafficRouter.AdBlock == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.AdBlock(childComplexity), true
+
+	case "TrafficRouter.applications":
+		if e.complexity.TrafficRouter.Applications == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Applications(childComplexity), true
+
+	case "TrafficRouter.browsers":
+		if e.complexity.TrafficRouter.Browsers == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Browsers(childComplexity), true
+
+	case "TrafficRouter.carriers":
+		if e.complexity.TrafficRouter.Carriers == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Carriers(childComplexity), true
+
+	case "TrafficRouter.categories":
+		if e.complexity.TrafficRouter.Categories == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Categories(childComplexity), true
+
+	case "TrafficRouter.countries":
+		if e.complexity.TrafficRouter.Countries == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Countries(childComplexity), true
+
+	case "TrafficRouter.createdAt":
+		if e.complexity.TrafficRouter.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.CreatedAt(childComplexity), true
+
+	case "TrafficRouter.deletedAt":
+		if e.complexity.TrafficRouter.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.DeletedAt(childComplexity), true
+
+	case "TrafficRouter.description":
+		if e.complexity.TrafficRouter.Description == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Description(childComplexity), true
+
+	case "TrafficRouter.deviceTypes":
+		if e.complexity.TrafficRouter.DeviceTypes == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.DeviceTypes(childComplexity), true
+
+	case "TrafficRouter.devices":
+		if e.complexity.TrafficRouter.Devices == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Devices(childComplexity), true
+
+	case "TrafficRouter.domains":
+		if e.complexity.TrafficRouter.Domains == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Domains(childComplexity), true
+
+	case "TrafficRouter.formats":
+		if e.complexity.TrafficRouter.Formats == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Formats(childComplexity), true
+
+	case "TrafficRouter.ID":
+		if e.complexity.TrafficRouter.ID == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.ID(childComplexity), true
+
+	case "TrafficRouter.IP":
+		if e.complexity.TrafficRouter.IP == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.IP(childComplexity), true
+
+	case "TrafficRouter.languages":
+		if e.complexity.TrafficRouter.Languages == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Languages(childComplexity), true
+
+	case "TrafficRouter.OS":
+		if e.complexity.TrafficRouter.Os == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Os(childComplexity), true
+
+	case "TrafficRouter.percent":
+		if e.complexity.TrafficRouter.Percent == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Percent(childComplexity), true
+
+	case "TrafficRouter.privateBrowsing":
+		if e.complexity.TrafficRouter.PrivateBrowsing == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.PrivateBrowsing(childComplexity), true
+
+	case "TrafficRouter.RTBSourceIDs":
+		if e.complexity.TrafficRouter.RTBSourceIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.RTBSourceIDs(childComplexity), true
+
+	case "TrafficRouter.RTBSources":
+		if e.complexity.TrafficRouter.RTBSources == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.RTBSources(childComplexity), true
+
+	case "TrafficRouter.secure":
+		if e.complexity.TrafficRouter.Secure == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Secure(childComplexity), true
+
+	case "TrafficRouter.updatedAt":
+		if e.complexity.TrafficRouter.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.UpdatedAt(childComplexity), true
+
+	case "TrafficRouter.zones":
+		if e.complexity.TrafficRouter.Zones == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Zones(childComplexity), true
+
+	case "TrafficRouterConnection.edges":
+		if e.complexity.TrafficRouterConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterConnection.Edges(childComplexity), true
+
+	case "TrafficRouterConnection.list":
+		if e.complexity.TrafficRouterConnection.List == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterConnection.List(childComplexity), true
+
+	case "TrafficRouterConnection.pageInfo":
+		if e.complexity.TrafficRouterConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterConnection.PageInfo(childComplexity), true
+
+	case "TrafficRouterConnection.totalCount":
+		if e.complexity.TrafficRouterConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterConnection.TotalCount(childComplexity), true
+
+	case "TrafficRouterEdge.cursor":
+		if e.complexity.TrafficRouterEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterEdge.Cursor(childComplexity), true
+
+	case "TrafficRouterEdge.node":
+		if e.complexity.TrafficRouterEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterEdge.Node(childComplexity), true
+
+	case "TrafficRouterPayload.clientMutationID":
+		if e.complexity.TrafficRouterPayload.ClientMutationID == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterPayload.ClientMutationID(childComplexity), true
+
+	case "TrafficRouterPayload.router":
+		if e.complexity.TrafficRouterPayload.Router == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterPayload.Router(childComplexity), true
+
+	case "TrafficRouterPayload.routerID":
+		if e.complexity.TrafficRouterPayload.RouterID == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouterPayload.RouterID(childComplexity), true
+
 	case "User.createdAt":
 		if e.complexity.User.CreatedAt == nil {
 			break
@@ -6074,6 +6478,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputStatisticAdKeyCondition,
 		ec.unmarshalInputStatisticAdKeyOrder,
 		ec.unmarshalInputStatisticAdListFilter,
+		ec.unmarshalInputTrafficRouterCreateInput,
+		ec.unmarshalInputTrafficRouterListFilter,
+		ec.unmarshalInputTrafficRouterListOrder,
+		ec.unmarshalInputTrafficRouterUpdateInput,
 		ec.unmarshalInputUserInput,
 		ec.unmarshalInputUserListFilter,
 		ec.unmarshalInputUserListOrder,
@@ -9836,9 +10244,9 @@ extend type Query {
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/directives.graphql", Input: `# Validation directives
-directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/os.graphql", Input: `"""
 OS model schema
@@ -10537,6 +10945,303 @@ extend type Query {
     order:  [StatisticAdKeyOrder!] = null,
     page: Page = null
   ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
+}
+`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/traffic.routing.graphql", Input: `"""
+Traffic routing represents the way of traffic distribution
+between different traffic sources and RTB ad sources
+"""
+type TrafficRouter {
+  """
+  ID of the traffic router
+  """
+  ID: ID64!
+
+  """
+  Account ID owner of the traffic router
+  """
+  accountID: ID64!
+
+  """
+  Account owner of the traffic router
+  """
+  account: Account
+
+  """
+  Traffic router percent of the traffic to share between RTB sources
+  """
+  percent: Float!
+
+  """
+  Description of the traffic router
+  """
+  description: String!
+
+  """
+  Active status of source
+  """
+  active: ActiveStatus!
+
+  """
+  RTB sources of the advertising
+  """
+  RTBSourceIDs: [ID64!]
+
+  """
+  RTB sources of the advertising
+  """
+  RTBSources: [RTBSource!]
+
+  # Targeting filters
+  formats:         [String!]
+  deviceTypes:     [Int64!]
+  devices:         [Int64!]
+  OS:              [Int64!]
+  browsers:        [Int64!]
+  carriers:        [Int64!]
+  categories:      [Int64!]
+  countries:       [String!]
+  languages:       [String!]
+  domains:         [String!]
+  applications:    [ID64!]
+  zones:           [ID64!]
+  secure:          AnyOnlyExclude!
+  adBlock:         AnyOnlyExclude!
+  privateBrowsing: AnyOnlyExclude!
+  IP:              AnyIPv4IPv6!
+
+  createdAt: Time!
+  updatedAt: Time!
+	deletedAt: Time
+}
+
+type TrafficRouterEdge {
+  """
+  Cursor for the traffic router
+  """
+  cursor: String!
+
+  """
+  Node of the traffic router
+  """
+  node: TrafficRouter!
+}
+
+type TrafficRouterConnection {
+  """
+  Total count of the traffic routers
+  """
+  totalCount: Int!
+
+  """
+  Edges of the traffic router
+  """
+  edges: [TrafficRouterEdge!]
+
+  """
+  List of the traffic routers
+  """
+  list: [TrafficRouter!]
+
+  """
+  Information about the page
+  """
+  pageInfo: PageInfo!
+}
+
+type TrafficRouterPayload {
+  """
+  Unique identifier of the client
+  """
+  clientMutationID: String!
+
+  """
+  ID of the traffic router
+  """
+  routerID: ID64!
+
+  """
+  Traffic router object
+  """
+  router: TrafficRouter!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input TrafficRouterListFilter {
+  ID:               [ID64!]
+  accountID:        ID64
+  active:           ActiveStatus
+  RTBSourceIDs:     [ID64!]
+  formats:          [String!]
+  deviceTypes:      [Int64!]
+  devices:          [Int64!]
+  OS:               [Int64!]
+  browsers:         [Int64!]
+  carriers:         [Int64!]
+  categories:       [Int64!]
+  countries:        [String!]
+  languages:        [String!]
+  domains:          [String!]
+  applications:     [ID64!]
+  zones:            [ID64!]
+  secure:           AnyOnlyExclude
+  adBlock:          AnyOnlyExclude
+  privateBrowsing:  AnyOnlyExclude
+  IP:               AnyIPv4IPv6
+}
+
+input TrafficRouterListOrder {
+  ID:        Ordering
+  active:    Ordering
+  percent:   Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+}
+
+input TrafficRouterCreateInput {
+  """
+  Account ID owner of the traffic router
+  """
+  accountID: ID64
+
+  """
+  Description of the traffic router
+  """
+  description: String
+
+  """
+  Active status of the traffic router
+  """
+  active: ActiveStatus!
+
+  """
+  Traffic router percent of the traffic to share between RTB sources
+  """
+  percent: Float!
+
+  """
+  RTB sources of the advertising
+  """
+  RTBSourceIDs: [ID64!]! @notempty(ornil: false)
+
+  # Targeting filters
+  formats:         [String!]
+  deviceTypes:     [Int64!]
+  devices:         [Int64!]
+  OS:              [Int64!]
+  browsers:        [Int64!]
+  carriers:        [Int64!]
+  categories:      [Int64!]
+  countries:       [String!]
+  languages:       [String!]
+  domains:         [String!]
+  applications:    [ID64!]
+  zones:           [ID64!]
+  secure:          AnyOnlyExclude
+  adBlock:         AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP:              AnyIPv4IPv6
+}
+
+input TrafficRouterUpdateInput {
+  """
+  Description of the traffic router
+  """
+  description: String
+
+  """
+  Active status of the traffic router
+  """
+  active: ActiveStatus
+
+  """
+  Traffic router percent of the traffic to share between RTB sources
+  """
+  percent: Float
+
+  """
+  RTB sources of the advertising
+  """
+  RTBSourceIDs: [ID64!] @notempty(ornil: false)
+
+  # Targeting filters
+  formats:         [String!]
+  deviceTypes:     [Int64!]
+  devices:         [Int64!]
+  OS:              [Int64!]
+  browsers:        [Int64!]
+  carriers:        [Int64!]
+  categories:      [Int64!]
+  countries:       [String!]
+  languages:       [String!]
+  domains:         [String!]
+  applications:    [ID64!]
+  zones:           [ID64!]
+  secure:          AnyOnlyExclude
+  adBlock:         AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP:              AnyIPv4IPv6
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Traffic router by ID
+  """
+  trafficRouter(ID: ID64!): TrafficRouterPayload @acl(permissions: ["traffic_router.view.*"])
+
+  """
+  List of traffic routers
+  """
+  listTrafficRouters(
+    """
+    Filter for the traffic routers
+    """
+    filter: TrafficRouterListFilter = null,
+
+    """
+    Order for the traffic routers
+    """
+    order: [TrafficRouterListOrder!] = null,
+
+    """
+    Pagination for the traffic routers
+    """
+    page: Page = null
+  ): TrafficRouterConnection @acl(permissions: ["traffic_router.view.*"])
+}
+
+extend type Mutation {
+  """
+  Create new traffic router
+  """
+  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"])
+
+  """
+  Update traffic router
+  """
+  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"])
+
+  """
+  Delete traffic router
+  """
+  deleteTrafficRouter(ID: ID64!): TrafficRouterPayload @acl(permissions: ["traffic_router.delete.*"])
+
+  """
+  Run traffic router
+  """
+  runTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.run.*"])
+
+  """
+  Pause traffic router
+  """
+  pauseTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.pause.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/zone.graphql", Input: `"""
@@ -11774,6 +12479,34 @@ func (ec *executionContext) field_Mutation_createRole_argsInput(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_createTrafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_createTrafficRouter_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createTrafficRouter_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (models.TrafficRouterCreateInput, error) {
+	if _, ok := rawArgs["input"]; !ok {
+		var zeroVal models.TrafficRouterCreateInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNTrafficRouterCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterCreateInput(ctx, tmp)
+	}
+
+	var zeroVal models.TrafficRouterCreateInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -12414,6 +13147,34 @@ func (ec *executionContext) field_Mutation_deleteRole_argsMsg(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_deleteTrafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_deleteTrafficRouter_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ID"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deleteTrafficRouter_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["ID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+	if tmp, ok := rawArgs["ID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteZone_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -12745,6 +13506,57 @@ func (ec *executionContext) field_Mutation_pauseRTBSource_argsID(
 	}
 
 	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_pauseTrafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_pauseTrafficRouter_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ID"] = arg0
+	arg1, err := ec.field_Mutation_pauseTrafficRouter_argsMsg(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["msg"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_pauseTrafficRouter_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["ID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+	if tmp, ok := rawArgs["ID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_pauseTrafficRouter_argsMsg(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["msg"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("msg"))
+	if tmp, ok := rawArgs["msg"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -13242,6 +14054,57 @@ func (ec *executionContext) field_Mutation_runRTBSource_argsID(
 	}
 
 	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_runTrafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_runTrafficRouter_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ID"] = arg0
+	arg1, err := ec.field_Mutation_runTrafficRouter_argsMsg(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["msg"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_runTrafficRouter_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["ID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+	if tmp, ok := rawArgs["ID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_runTrafficRouter_argsMsg(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["msg"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("msg"))
+	if tmp, ok := rawArgs["msg"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -13979,6 +14842,57 @@ func (ec *executionContext) field_Mutation_updateRole_argsInput(
 	}
 
 	var zeroVal models1.RBACRoleInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTrafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_updateTrafficRouter_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ID"] = arg0
+	arg1, err := ec.field_Mutation_updateTrafficRouter_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_updateTrafficRouter_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["ID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+	if tmp, ok := rawArgs["ID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTrafficRouter_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (models.TrafficRouterUpdateInput, error) {
+	if _, ok := rawArgs["input"]; !ok {
+		var zeroVal models.TrafficRouterUpdateInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNTrafficRouterUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterUpdateInput(ctx, tmp)
+	}
+
+	var zeroVal models.TrafficRouterUpdateInput
 	return zeroVal, nil
 }
 
@@ -16002,6 +16916,80 @@ func (ec *executionContext) field_Query_listSocialAccounts_argsPage(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_listTrafficRouters_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_listTrafficRouters_argsFilter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["filter"] = arg0
+	arg1, err := ec.field_Query_listTrafficRouters_argsOrder(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["order"] = arg1
+	arg2, err := ec.field_Query_listTrafficRouters_argsPage(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["page"] = arg2
+	return args, nil
+}
+func (ec *executionContext) field_Query_listTrafficRouters_argsFilter(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*models.TrafficRouterListFilter, error) {
+	if _, ok := rawArgs["filter"]; !ok {
+		var zeroVal *models.TrafficRouterListFilter
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+	if tmp, ok := rawArgs["filter"]; ok {
+		return ec.unmarshalOTrafficRouterListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListFilter(ctx, tmp)
+	}
+
+	var zeroVal *models.TrafficRouterListFilter
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_listTrafficRouters_argsOrder(
+	ctx context.Context,
+	rawArgs map[string]any,
+) ([]*models.TrafficRouterListOrder, error) {
+	if _, ok := rawArgs["order"]; !ok {
+		var zeroVal []*models.TrafficRouterListOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
+	if tmp, ok := rawArgs["order"]; ok {
+		return ec.unmarshalOTrafficRouterListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*models.TrafficRouterListOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_listTrafficRouters_argsPage(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*models1.Page, error) {
+	if _, ok := rawArgs["page"]; !ok {
+		var zeroVal *models1.Page
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("page"))
+	if tmp, ok := rawArgs["page"]; ok {
+		return ec.unmarshalOPage2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐPage(ctx, tmp)
+	}
+
+	var zeroVal *models1.Page
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_listUsers_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -16374,6 +17362,34 @@ func (ec *executionContext) field_Query_statisticAdList_argsPage(
 	}
 
 	var zeroVal *models1.Page
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_trafficRouter_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_trafficRouter_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ID"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_trafficRouter_argsID(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (uint64, error) {
+	if _, ok := rawArgs["ID"]; !ok {
+		var zeroVal uint64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+	if tmp, ok := rawArgs["ID"]; ok {
+		return ec.unmarshalNID642uint64(ctx, tmp)
+	}
+
+	var zeroVal uint64
 	return zeroVal, nil
 }
 
@@ -34216,6 +35232,426 @@ func (ec *executionContext) fieldContext_Mutation_rejectRTBSource(ctx context.Co
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_createTrafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createTrafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().CreateTrafficRouter(rctx, fc.Args["input"].(models.TrafficRouterCreateInput))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.create.*"})
+			if err != nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouterPayload)
+	fc.Result = res
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createTrafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateTrafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateTrafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().UpdateTrafficRouter(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.TrafficRouterUpdateInput))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.update.*"})
+			if err != nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouterPayload)
+	fc.Result = res
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateTrafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteTrafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteTrafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().DeleteTrafficRouter(rctx, fc.Args["ID"].(uint64))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.delete.*"})
+			if err != nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouterPayload)
+	fc.Result = res
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteTrafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_runTrafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_runTrafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().RunTrafficRouter(rctx, fc.Args["ID"].(uint64), fc.Args["msg"].(string))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.run.*"})
+			if err != nil {
+				var zeroVal *models1.StatusResponse
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models1.StatusResponse
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models1.StatusResponse); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models1.StatusResponse)
+	fc.Result = res
+	return ec.marshalOStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_runTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
+			case "status":
+				return ec.fieldContext_StatusResponse_status(ctx, field)
+			case "message":
+				return ec.fieldContext_StatusResponse_message(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_runTrafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_pauseTrafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_pauseTrafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().PauseTrafficRouter(rctx, fc.Args["ID"].(uint64), fc.Args["msg"].(string))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.pause.*"})
+			if err != nil {
+				var zeroVal *models1.StatusResponse
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models1.StatusResponse
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models1.StatusResponse); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models1.StatusResponse)
+	fc.Result = res
+	return ec.marshalOStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_pauseTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
+			case "status":
+				return ec.fieldContext_StatusResponse_status(ctx, field)
+			case "message":
+				return ec.fieldContext_StatusResponse_message(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_pauseTrafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_createZone(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_createZone(ctx, field)
 	if err != nil {
@@ -41173,6 +42609,176 @@ func (ec *executionContext) fieldContext_Query_statisticAdList(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_trafficRouter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_trafficRouter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().TrafficRouter(rctx, fc.Args["ID"].(uint64))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.view.*"})
+			if err != nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouterPayload)
+	fc.Result = res
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_trafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "clientMutationID":
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_trafficRouter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_listTrafficRouters(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_listTrafficRouters(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().ListTrafficRouters(rctx, fc.Args["filter"].(*models.TrafficRouterListFilter), fc.Args["order"].([]*models.TrafficRouterListOrder), fc.Args["page"].(*models1.Page))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.view.*"})
+			if err != nil {
+				var zeroVal *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/connectors.CollectionConnection[github.com/sspserver/api/internal/server/graphql/models.TrafficRouter, github.com/sspserver/api/internal/server/graphql/models.TrafficRouterEdge]`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge])
+	fc.Result = res
+	return ec.marshalOTrafficRouterConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_listTrafficRouters(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "totalCount":
+				return ec.fieldContext_TrafficRouterConnection_totalCount(ctx, field)
+			case "edges":
+				return ec.fieldContext_TrafficRouterConnection_edges(ctx, field)
+			case "list":
+				return ec.fieldContext_TrafficRouterConnection_list(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TrafficRouterConnection_pageInfo(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_listTrafficRouters_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_zone(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_zone(ctx, field)
 	if err != nil {
@@ -47650,6 +49256,1726 @@ func (ec *executionContext) fieldContext_TimeZone_lon(_ context.Context, field g
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_ID(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_ID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_ID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_accountID(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_accountID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccountID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_accountID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_account(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_account(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TrafficRouter().Account(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models1.Account)
+	fc.Result = res
+	return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_account(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Account_ID(ctx, field)
+			case "status":
+				return ec.fieldContext_Account_status(ctx, field)
+			case "statusMessage":
+				return ec.fieldContext_Account_statusMessage(ctx, field)
+			case "title":
+				return ec.fieldContext_Account_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Account_description(ctx, field)
+			case "logoURI":
+				return ec.fieldContext_Account_logoURI(ctx, field)
+			case "policyURI":
+				return ec.fieldContext_Account_policyURI(ctx, field)
+			case "termsOfServiceURI":
+				return ec.fieldContext_Account_termsOfServiceURI(ctx, field)
+			case "clientURI":
+				return ec.fieldContext_Account_clientURI(ctx, field)
+			case "contacts":
+				return ec.fieldContext_Account_contacts(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Account_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Account_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Account", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_percent(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_percent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Percent, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_percent(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_description(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_description(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_active(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_active(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Active, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models1.ActiveStatus)
+	fc.Result = res
+	return ec.marshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_active(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ActiveStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_RTBSourceIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RTBSourceIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_RTBSourceIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_RTBSources(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TrafficRouter().RTBSources(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.RTBSource)
+	fc.Result = res
+	return ec.marshalORTBSource2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_RTBSources(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_RTBSource_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_RTBSource_accountID(ctx, field)
+			case "title":
+				return ec.fieldContext_RTBSource_title(ctx, field)
+			case "description":
+				return ec.fieldContext_RTBSource_description(ctx, field)
+			case "status":
+				return ec.fieldContext_RTBSource_status(ctx, field)
+			case "active":
+				return ec.fieldContext_RTBSource_active(ctx, field)
+			case "flags":
+				return ec.fieldContext_RTBSource_flags(ctx, field)
+			case "protocol":
+				return ec.fieldContext_RTBSource_protocol(ctx, field)
+			case "minimalWeight":
+				return ec.fieldContext_RTBSource_minimalWeight(ctx, field)
+			case "URL":
+				return ec.fieldContext_RTBSource_URL(ctx, field)
+			case "method":
+				return ec.fieldContext_RTBSource_method(ctx, field)
+			case "requestType":
+				return ec.fieldContext_RTBSource_requestType(ctx, field)
+			case "headers":
+				return ec.fieldContext_RTBSource_headers(ctx, field)
+			case "RPS":
+				return ec.fieldContext_RTBSource_RPS(ctx, field)
+			case "timeout":
+				return ec.fieldContext_RTBSource_timeout(ctx, field)
+			case "accuracy":
+				return ec.fieldContext_RTBSource_accuracy(ctx, field)
+			case "priceCorrectionReduce":
+				return ec.fieldContext_RTBSource_priceCorrectionReduce(ctx, field)
+			case "auctionType":
+				return ec.fieldContext_RTBSource_auctionType(ctx, field)
+			case "minBid":
+				return ec.fieldContext_RTBSource_minBid(ctx, field)
+			case "maxBid":
+				return ec.fieldContext_RTBSource_maxBid(ctx, field)
+			case "formats":
+				return ec.fieldContext_RTBSource_formats(ctx, field)
+			case "deviceTypes":
+				return ec.fieldContext_RTBSource_deviceTypes(ctx, field)
+			case "devices":
+				return ec.fieldContext_RTBSource_devices(ctx, field)
+			case "OS":
+				return ec.fieldContext_RTBSource_OS(ctx, field)
+			case "browsers":
+				return ec.fieldContext_RTBSource_browsers(ctx, field)
+			case "carriers":
+				return ec.fieldContext_RTBSource_carriers(ctx, field)
+			case "categories":
+				return ec.fieldContext_RTBSource_categories(ctx, field)
+			case "countries":
+				return ec.fieldContext_RTBSource_countries(ctx, field)
+			case "languages":
+				return ec.fieldContext_RTBSource_languages(ctx, field)
+			case "applications":
+				return ec.fieldContext_RTBSource_applications(ctx, field)
+			case "domains":
+				return ec.fieldContext_RTBSource_domains(ctx, field)
+			case "zones":
+				return ec.fieldContext_RTBSource_zones(ctx, field)
+			case "secure":
+				return ec.fieldContext_RTBSource_secure(ctx, field)
+			case "adBlock":
+				return ec.fieldContext_RTBSource_adBlock(ctx, field)
+			case "privateBrowsing":
+				return ec.fieldContext_RTBSource_privateBrowsing(ctx, field)
+			case "IP":
+				return ec.fieldContext_RTBSource_IP(ctx, field)
+			case "config":
+				return ec.fieldContext_RTBSource_config(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_RTBSource_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_RTBSource_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_RTBSource_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type RTBSource", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_formats(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_formats(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Formats, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_formats(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_deviceTypes(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeviceTypes, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_deviceTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_devices(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_devices(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Devices, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_devices(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_OS(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_OS(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Os, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_OS(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_browsers(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_browsers(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Browsers, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_browsers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_carriers(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_carriers(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Carriers, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_carriers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_categories(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_categories(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Categories, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int64)
+	fc.Result = res
+	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_categories(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_countries(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_countries(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Countries, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_countries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_languages(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_languages(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Languages, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_languages(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_domains(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_domains(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Domains, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_domains(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_applications(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_applications(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Applications, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_applications(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_zones(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_zones(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Zones, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_zones(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_secure(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_secure(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Secure, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.AnyOnlyExclude)
+	fc.Result = res
+	return ec.marshalNAnyOnlyExclude2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_secure(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type AnyOnlyExclude does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_adBlock(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_adBlock(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AdBlock, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.AnyOnlyExclude)
+	fc.Result = res
+	return ec.marshalNAnyOnlyExclude2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_adBlock(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type AnyOnlyExclude does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_privateBrowsing(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_privateBrowsing(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PrivateBrowsing, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.AnyOnlyExclude)
+	fc.Result = res
+	return ec.marshalNAnyOnlyExclude2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_privateBrowsing(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type AnyOnlyExclude does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_IP(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_IP(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IP, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.AnyIPv4IPv6)
+	fc.Result = res
+	return ec.marshalNAnyIPv4IPv62githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_IP(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type AnyIPv4IPv6 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_updatedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_updatedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_deletedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_deletedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterConnection_totalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCount(), nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterConnection_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterConnection",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterConnection_edges(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges(), nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.TrafficRouterEdge)
+	fc.Result = res
+	return ec.marshalOTrafficRouterEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterEdgeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterConnection",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "cursor":
+				return ec.fieldContext_TrafficRouterEdge_cursor(ctx, field)
+			case "node":
+				return ec.fieldContext_TrafficRouterEdge_node(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterEdge", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterConnection_list(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.List(), nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.TrafficRouter)
+	fc.Result = res
+	return ec.marshalOTrafficRouter2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterConnection_list(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterConnection",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_TrafficRouter_account(ctx, field)
+			case "percent":
+				return ec.fieldContext_TrafficRouter_percent(ctx, field)
+			case "description":
+				return ec.fieldContext_TrafficRouter_description(ctx, field)
+			case "active":
+				return ec.fieldContext_TrafficRouter_active(ctx, field)
+			case "RTBSourceIDs":
+				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
+			case "RTBSources":
+				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formats":
+				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypes":
+				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "devices":
+				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OS":
+				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browsers":
+				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
+			case "carriers":
+				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "categories":
+				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countries":
+				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languages":
+				return ec.fieldContext_TrafficRouter_languages(ctx, field)
+			case "domains":
+				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applications":
+				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zones":
+				return ec.fieldContext_TrafficRouter_zones(ctx, field)
+			case "secure":
+				return ec.fieldContext_TrafficRouter_secure(ctx, field)
+			case "adBlock":
+				return ec.fieldContext_TrafficRouter_adBlock(ctx, field)
+			case "privateBrowsing":
+				return ec.fieldContext_TrafficRouter_privateBrowsing(ctx, field)
+			case "IP":
+				return ec.fieldContext_TrafficRouter_IP(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_TrafficRouter_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_TrafficRouter_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_TrafficRouter_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouter", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterConnection_pageInfo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo(), nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models1.PageInfo)
+	fc.Result = res
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterConnection",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "startCursor":
+				return ec.fieldContext_PageInfo_startCursor(ctx, field)
+			case "endCursor":
+				return ec.fieldContext_PageInfo_endCursor(ctx, field)
+			case "hasPreviousPage":
+				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+			case "hasNextPage":
+				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+			case "total":
+				return ec.fieldContext_PageInfo_total(ctx, field)
+			case "page":
+				return ec.fieldContext_PageInfo_page(ctx, field)
+			case "count":
+				return ec.fieldContext_PageInfo_count(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouterEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterEdge_cursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterEdge_node(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouterEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterEdge_node(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouter)
+	fc.Result = res
+	return ec.marshalNTrafficRouter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouter(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_TrafficRouter_account(ctx, field)
+			case "percent":
+				return ec.fieldContext_TrafficRouter_percent(ctx, field)
+			case "description":
+				return ec.fieldContext_TrafficRouter_description(ctx, field)
+			case "active":
+				return ec.fieldContext_TrafficRouter_active(ctx, field)
+			case "RTBSourceIDs":
+				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
+			case "RTBSources":
+				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formats":
+				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypes":
+				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "devices":
+				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OS":
+				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browsers":
+				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
+			case "carriers":
+				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "categories":
+				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countries":
+				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languages":
+				return ec.fieldContext_TrafficRouter_languages(ctx, field)
+			case "domains":
+				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applications":
+				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zones":
+				return ec.fieldContext_TrafficRouter_zones(ctx, field)
+			case "secure":
+				return ec.fieldContext_TrafficRouter_secure(ctx, field)
+			case "adBlock":
+				return ec.fieldContext_TrafficRouter_adBlock(ctx, field)
+			case "privateBrowsing":
+				return ec.fieldContext_TrafficRouter_privateBrowsing(ctx, field)
+			case "IP":
+				return ec.fieldContext_TrafficRouter_IP(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_TrafficRouter_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_TrafficRouter_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_TrafficRouter_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouter", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouterPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ClientMutationID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterPayload_clientMutationID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterPayload_routerID(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouterPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RouterID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterPayload_routerID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouterPayload_router(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouterPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouterPayload_router(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Router, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.TrafficRouter)
+	fc.Result = res
+	return ec.marshalNTrafficRouter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouter(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouterPayload_router(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouterPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_TrafficRouter_account(ctx, field)
+			case "percent":
+				return ec.fieldContext_TrafficRouter_percent(ctx, field)
+			case "description":
+				return ec.fieldContext_TrafficRouter_description(ctx, field)
+			case "active":
+				return ec.fieldContext_TrafficRouter_active(ctx, field)
+			case "RTBSourceIDs":
+				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
+			case "RTBSources":
+				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formats":
+				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypes":
+				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "devices":
+				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OS":
+				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browsers":
+				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
+			case "carriers":
+				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "categories":
+				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countries":
+				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languages":
+				return ec.fieldContext_TrafficRouter_languages(ctx, field)
+			case "domains":
+				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applications":
+				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zones":
+				return ec.fieldContext_TrafficRouter_zones(ctx, field)
+			case "secure":
+				return ec.fieldContext_TrafficRouter_secure(ctx, field)
+			case "adBlock":
+				return ec.fieldContext_TrafficRouter_adBlock(ctx, field)
+			case "privateBrowsing":
+				return ec.fieldContext_TrafficRouter_privateBrowsing(ctx, field)
+			case "IP":
+				return ec.fieldContext_TrafficRouter_IP(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_TrafficRouter_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_TrafficRouter_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_TrafficRouter_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouter", field.Name)
 		},
 	}
 	return fc, nil
@@ -56870,6 +60196,602 @@ func (ec *executionContext) unmarshalInputStatisticAdListFilter(ctx context.Cont
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.Context, obj any) (models.TrafficRouterCreateInput, error) {
+	var it models.TrafficRouterCreateInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"accountID", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		case "percent":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Percent = data
+		case "RTBSourceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RTBSourceIDs"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNID642ᚕuint64ᚄ(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal []uint64
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal []uint64
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal []uint64
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.([]uint64); ok {
+				it.RTBSourceIDs = data
+			} else if tmp == nil {
+				it.RTBSourceIDs = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be []uint64`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "formats":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Formats = data
+		case "deviceTypes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeviceTypes = data
+		case "devices":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Devices = data
+		case "OS":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Os = data
+		case "browsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Browsers = data
+		case "carriers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Carriers = data
+		case "categories":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Categories = data
+		case "countries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Countries = data
+		case "languages":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Languages = data
+		case "domains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Domains = data
+		case "applications":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Applications = data
+		case "zones":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Zones = data
+		case "secure":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Secure = data
+		case "adBlock":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adBlock"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdBlock = data
+		case "privateBrowsing":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("privateBrowsing"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PrivateBrowsing = data
+		case "IP":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("IP"))
+			data, err := ec.unmarshalOAnyIPv4IPv62ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IP = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTrafficRouterListFilter(ctx context.Context, obj any) (models.TrafficRouterListFilter, error) {
+	var it models.TrafficRouterListFilter
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"ID", "accountID", "active", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "ID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		case "RTBSourceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RTBSourceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RTBSourceIDs = data
+		case "formats":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Formats = data
+		case "deviceTypes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeviceTypes = data
+		case "devices":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Devices = data
+		case "OS":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Os = data
+		case "browsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Browsers = data
+		case "carriers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Carriers = data
+		case "categories":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Categories = data
+		case "countries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Countries = data
+		case "languages":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Languages = data
+		case "domains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Domains = data
+		case "applications":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Applications = data
+		case "zones":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Zones = data
+		case "secure":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Secure = data
+		case "adBlock":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adBlock"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdBlock = data
+		case "privateBrowsing":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("privateBrowsing"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PrivateBrowsing = data
+		case "IP":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("IP"))
+			data, err := ec.unmarshalOAnyIPv4IPv62ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IP = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTrafficRouterListOrder(ctx context.Context, obj any) (models.TrafficRouterListOrder, error) {
+	var it models.TrafficRouterListOrder
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"ID", "active", "percent", "createdAt", "updatedAt"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "ID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		case "percent":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Percent = data
+		case "createdAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAt = data
+		case "updatedAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedAt"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAt = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.Context, obj any) (models.TrafficRouterUpdateInput, error) {
+	var it models.TrafficRouterUpdateInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		case "percent":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Percent = data
+		case "RTBSourceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RTBSourceIDs"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOID642ᚕuint64ᚄ(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal []uint64
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal []uint64
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal []uint64
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.([]uint64); ok {
+				it.RTBSourceIDs = data
+			} else if tmp == nil {
+				it.RTBSourceIDs = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be []uint64`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "formats":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Formats = data
+		case "deviceTypes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeviceTypes = data
+		case "devices":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Devices = data
+		case "OS":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Os = data
+		case "browsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Browsers = data
+		case "carriers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Carriers = data
+		case "categories":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Categories = data
+		case "countries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Countries = data
+		case "languages":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Languages = data
+		case "domains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Domains = data
+		case "applications":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Applications = data
+		case "zones":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Zones = data
+		case "secure":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Secure = data
+		case "adBlock":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adBlock"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdBlock = data
+		case "privateBrowsing":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("privateBrowsing"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PrivateBrowsing = data
+		case "IP":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("IP"))
+			data, err := ec.unmarshalOAnyIPv4IPv62ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IP = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj any) (models1.UserInput, error) {
 	var it models1.UserInput
 	asMap := map[string]any{}
@@ -60614,6 +64536,26 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "createTrafficRouter":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createTrafficRouter(ctx, field)
+			})
+		case "updateTrafficRouter":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateTrafficRouter(ctx, field)
+			})
+		case "deleteTrafficRouter":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteTrafficRouter(ctx, field)
+			})
+		case "runTrafficRouter":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_runTrafficRouter(ctx, field)
+			})
+		case "pauseTrafficRouter":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_pauseTrafficRouter(ctx, field)
+			})
 		case "createZone":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createZone(ctx, field)
@@ -62273,6 +66215,44 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "trafficRouter":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_trafficRouter(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "listTrafficRouters":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_listTrafficRouters(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "zone":
 			field := field
 
@@ -63614,6 +67594,330 @@ func (ec *executionContext) _TimeZone(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "lon":
 			out.Values[i] = ec._TimeZone_lon(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var trafficRouterImplementors = []string{"TrafficRouter"}
+
+func (ec *executionContext) _TrafficRouter(ctx context.Context, sel ast.SelectionSet, obj *models.TrafficRouter) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, trafficRouterImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TrafficRouter")
+		case "ID":
+			out.Values[i] = ec._TrafficRouter_ID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "accountID":
+			out.Values[i] = ec._TrafficRouter_accountID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "account":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_account(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "percent":
+			out.Values[i] = ec._TrafficRouter_percent(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "description":
+			out.Values[i] = ec._TrafficRouter_description(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "active":
+			out.Values[i] = ec._TrafficRouter_active(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "RTBSourceIDs":
+			out.Values[i] = ec._TrafficRouter_RTBSourceIDs(ctx, field, obj)
+		case "RTBSources":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_RTBSources(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "formats":
+			out.Values[i] = ec._TrafficRouter_formats(ctx, field, obj)
+		case "deviceTypes":
+			out.Values[i] = ec._TrafficRouter_deviceTypes(ctx, field, obj)
+		case "devices":
+			out.Values[i] = ec._TrafficRouter_devices(ctx, field, obj)
+		case "OS":
+			out.Values[i] = ec._TrafficRouter_OS(ctx, field, obj)
+		case "browsers":
+			out.Values[i] = ec._TrafficRouter_browsers(ctx, field, obj)
+		case "carriers":
+			out.Values[i] = ec._TrafficRouter_carriers(ctx, field, obj)
+		case "categories":
+			out.Values[i] = ec._TrafficRouter_categories(ctx, field, obj)
+		case "countries":
+			out.Values[i] = ec._TrafficRouter_countries(ctx, field, obj)
+		case "languages":
+			out.Values[i] = ec._TrafficRouter_languages(ctx, field, obj)
+		case "domains":
+			out.Values[i] = ec._TrafficRouter_domains(ctx, field, obj)
+		case "applications":
+			out.Values[i] = ec._TrafficRouter_applications(ctx, field, obj)
+		case "zones":
+			out.Values[i] = ec._TrafficRouter_zones(ctx, field, obj)
+		case "secure":
+			out.Values[i] = ec._TrafficRouter_secure(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "adBlock":
+			out.Values[i] = ec._TrafficRouter_adBlock(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "privateBrowsing":
+			out.Values[i] = ec._TrafficRouter_privateBrowsing(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "IP":
+			out.Values[i] = ec._TrafficRouter_IP(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "createdAt":
+			out.Values[i] = ec._TrafficRouter_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "updatedAt":
+			out.Values[i] = ec._TrafficRouter_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "deletedAt":
+			out.Values[i] = ec._TrafficRouter_deletedAt(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var trafficRouterConnectionImplementors = []string{"TrafficRouterConnection"}
+
+func (ec *executionContext) _TrafficRouterConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, trafficRouterConnectionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TrafficRouterConnection")
+		case "totalCount":
+			out.Values[i] = ec._TrafficRouterConnection_totalCount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "edges":
+			out.Values[i] = ec._TrafficRouterConnection_edges(ctx, field, obj)
+		case "list":
+			out.Values[i] = ec._TrafficRouterConnection_list(ctx, field, obj)
+		case "pageInfo":
+			out.Values[i] = ec._TrafficRouterConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var trafficRouterEdgeImplementors = []string{"TrafficRouterEdge"}
+
+func (ec *executionContext) _TrafficRouterEdge(ctx context.Context, sel ast.SelectionSet, obj *models.TrafficRouterEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, trafficRouterEdgeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TrafficRouterEdge")
+		case "cursor":
+			out.Values[i] = ec._TrafficRouterEdge_cursor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "node":
+			out.Values[i] = ec._TrafficRouterEdge_node(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var trafficRouterPayloadImplementors = []string{"TrafficRouterPayload"}
+
+func (ec *executionContext) _TrafficRouterPayload(ctx context.Context, sel ast.SelectionSet, obj *models.TrafficRouterPayload) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, trafficRouterPayloadImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TrafficRouterPayload")
+		case "clientMutationID":
+			out.Values[i] = ec._TrafficRouterPayload_clientMutationID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "routerID":
+			out.Values[i] = ec._TrafficRouterPayload_routerID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "router":
+			out.Values[i] = ec._TrafficRouterPayload_router(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -65510,6 +69814,38 @@ func (ec *executionContext) marshalNID642uint64(ctx context.Context, sel ast.Sel
 	return res
 }
 
+func (ec *executionContext) unmarshalNID642ᚕuint64ᚄ(ctx context.Context, v any) ([]uint64, error) {
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]uint64, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNID642uint64(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNID642ᚕuint64ᚄ(ctx context.Context, sel ast.SelectionSet, v []uint64) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNID642uint64(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v any) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -66264,6 +70600,41 @@ func (ec *executionContext) marshalNTimeZone2ᚖgithubᚗcomᚋsspserverᚋapi�
 		return graphql.Null
 	}
 	return ec._TimeZone(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTrafficRouter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouter(ctx context.Context, sel ast.SelectionSet, v *models.TrafficRouter) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TrafficRouter(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTrafficRouterCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterCreateInput(ctx context.Context, v any) (models.TrafficRouterCreateInput, error) {
+	res, err := ec.unmarshalInputTrafficRouterCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNTrafficRouterEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterEdge(ctx context.Context, sel ast.SelectionSet, v *models.TrafficRouterEdge) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TrafficRouterEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTrafficRouterListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListOrder(ctx context.Context, v any) (*models.TrafficRouterListOrder, error) {
+	res, err := ec.unmarshalInputTrafficRouterListOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNTrafficRouterUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterUpdateInput(ctx context.Context, v any) (models.TrafficRouterUpdateInput, error) {
+	res, err := ec.unmarshalInputTrafficRouterUpdateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNUUID2githubᚗcomᚋgoogleᚋuuidᚐUUID(ctx context.Context, v any) (uuid.UUID, error) {
@@ -68843,6 +73214,53 @@ func (ec *executionContext) marshalORTBRequestFormatType2ᚖgithubᚗcomᚋsspse
 	return v
 }
 
+func (ec *executionContext) marshalORTBSource2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.RTBSource) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNRTBSource2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSource(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalORTBSourceConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -69368,6 +73786,142 @@ func (ec *executionContext) marshalOTimeZone2ᚕᚖgithubᚗcomᚋsspserverᚋap
 	}
 
 	return ret
+}
+
+func (ec *executionContext) marshalOTrafficRouter2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TrafficRouter) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTrafficRouter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouter(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalOTrafficRouterConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TrafficRouterConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOTrafficRouterEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TrafficRouterEdge) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTrafficRouterEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterEdge(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) unmarshalOTrafficRouterListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListFilter(ctx context.Context, v any) (*models.TrafficRouterListFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputTrafficRouterListFilter(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOTrafficRouterListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListOrderᚄ(ctx context.Context, v any) ([]*models.TrafficRouterListOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*models.TrafficRouterListOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNTrafficRouterListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterListOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx context.Context, sel ast.SelectionSet, v *models.TrafficRouterPayload) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TrafficRouterPayload(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOUUID2ᚕgithubᚗcomᚋgoogleᚋuuidᚐUUIDᚄ(ctx context.Context, v any) ([]uuid.UUID, error) {

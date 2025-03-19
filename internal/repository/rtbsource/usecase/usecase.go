@@ -50,14 +50,14 @@ func (u *Usecase) FetchList(ctx context.Context, qops ...rtbsource.Option) ([]*m
 }
 
 func (u *Usecase) Count(ctx context.Context, qops ...rtbsource.Option) (int64, error) {
-	if !acl.HaveAccessList(ctx, &models.RTBSource{}) {
+	if !acl.HaveAccessCount(ctx, &models.RTBSource{}) {
 		accountID := session.Account(ctx).ID
-		if acl.HaveAccessList(ctx, &models.RTBSource{AccountID: accountID}) {
+		if acl.HaveAccessCount(ctx, &models.RTBSource{AccountID: accountID}) {
 			qops = rtbsource.Options(qops).With(&rtbsource.Filter{
 				AccountID: accountID,
 			})
 		} else {
-			return 0, errors.Wrap(acl.ErrNoPermissions, "fetch list")
+			return 0, errors.Wrap(acl.ErrNoPermissions, "ciunt")
 		}
 	}
 	return u.repo.Count(ctx, qops...)

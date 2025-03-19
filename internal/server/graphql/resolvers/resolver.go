@@ -26,6 +26,7 @@ import (
 	rtbsource_graphql "github.com/sspserver/api/internal/repository/rtbsource/delivery/graphql"
 	"github.com/sspserver/api/internal/repository/statistic"
 	statistic_graphql "github.com/sspserver/api/internal/repository/statistic/delivery/graphql"
+	trafficrouter_graphql "github.com/sspserver/api/internal/repository/trafficrouter/delivery/graphql"
 	zone_graphql "github.com/sspserver/api/internal/repository/zone/delivery/graphql"
 )
 
@@ -57,6 +58,7 @@ type Resolver struct {
 	app           *application_graphql.QueryResolver
 	zone          *zone_graphql.QueryResolver
 	statistic     *statistic_graphql.QueryResolver
+	trafficrouter *trafficrouter_graphql.Resolver
 }
 
 type Usecases struct {
@@ -90,5 +92,6 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		app:           application_graphql.NewQueryResolver(),
 		zone:          zone_graphql.NewQueryResolver(),
 		statistic:     statistic_graphql.NewQueryResolver(usecases.Stats),
+		trafficrouter: trafficrouter_graphql.NewResolver(),
 	}
 }

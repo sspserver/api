@@ -925,6 +925,149 @@ type TimeZone struct {
 	Lon  float64 `json:"lon"`
 }
 
+// Traffic routing represents the way of traffic distribution
+// between different traffic sources and RTB ad sources
+type TrafficRouter struct {
+	// ID of the traffic router
+	ID uint64 `json:"ID"`
+	// Account ID owner of the traffic router
+	AccountID uint64 `json:"accountID"`
+	// Account owner of the traffic router
+	Account *models.Account `json:"account,omitempty"`
+	// Traffic router percent of the traffic to share between RTB sources
+	Percent float64 `json:"percent"`
+	// Description of the traffic router
+	Description string `json:"description"`
+	// Active status of source
+	Active models.ActiveStatus `json:"active"`
+	// RTB sources of the advertising
+	RTBSourceIDs []uint64 `json:"RTBSourceIDs,omitempty"`
+	// RTB sources of the advertising
+	RTBSources      []*RTBSource   `json:"RTBSources,omitempty"`
+	Formats         []string       `json:"formats,omitempty"`
+	DeviceTypes     []int64        `json:"deviceTypes,omitempty"`
+	Devices         []int64        `json:"devices,omitempty"`
+	Os              []int64        `json:"OS,omitempty"`
+	Browsers        []int64        `json:"browsers,omitempty"`
+	Carriers        []int64        `json:"carriers,omitempty"`
+	Categories      []int64        `json:"categories,omitempty"`
+	Countries       []string       `json:"countries,omitempty"`
+	Languages       []string       `json:"languages,omitempty"`
+	Domains         []string       `json:"domains,omitempty"`
+	Applications    []uint64       `json:"applications,omitempty"`
+	Zones           []uint64       `json:"zones,omitempty"`
+	Secure          AnyOnlyExclude `json:"secure"`
+	AdBlock         AnyOnlyExclude `json:"adBlock"`
+	PrivateBrowsing AnyOnlyExclude `json:"privateBrowsing"`
+	IP              AnyIPv4IPv6    `json:"IP"`
+	CreatedAt       time.Time      `json:"createdAt"`
+	UpdatedAt       time.Time      `json:"updatedAt"`
+	DeletedAt       *time.Time     `json:"deletedAt,omitempty"`
+}
+
+type TrafficRouterCreateInput struct {
+	// Account ID owner of the traffic router
+	AccountID *uint64 `json:"accountID,omitempty"`
+	// Description of the traffic router
+	Description *string `json:"description,omitempty"`
+	// Active status of the traffic router
+	Active models.ActiveStatus `json:"active"`
+	// Traffic router percent of the traffic to share between RTB sources
+	Percent float64 `json:"percent"`
+	// RTB sources of the advertising
+	RTBSourceIDs    []uint64        `json:"RTBSourceIDs"`
+	Formats         []string        `json:"formats,omitempty"`
+	DeviceTypes     []int64         `json:"deviceTypes,omitempty"`
+	Devices         []int64         `json:"devices,omitempty"`
+	Os              []int64         `json:"OS,omitempty"`
+	Browsers        []int64         `json:"browsers,omitempty"`
+	Carriers        []int64         `json:"carriers,omitempty"`
+	Categories      []int64         `json:"categories,omitempty"`
+	Countries       []string        `json:"countries,omitempty"`
+	Languages       []string        `json:"languages,omitempty"`
+	Domains         []string        `json:"domains,omitempty"`
+	Applications    []uint64        `json:"applications,omitempty"`
+	Zones           []uint64        `json:"zones,omitempty"`
+	Secure          *AnyOnlyExclude `json:"secure,omitempty"`
+	AdBlock         *AnyOnlyExclude `json:"adBlock,omitempty"`
+	PrivateBrowsing *AnyOnlyExclude `json:"privateBrowsing,omitempty"`
+	IP              *AnyIPv4IPv6    `json:"IP,omitempty"`
+}
+
+type TrafficRouterEdge struct {
+	// Cursor for the traffic router
+	Cursor string `json:"cursor"`
+	// Node of the traffic router
+	Node *TrafficRouter `json:"node"`
+}
+
+type TrafficRouterListFilter struct {
+	ID              []uint64             `json:"ID,omitempty"`
+	AccountID       *uint64              `json:"accountID,omitempty"`
+	Active          *models.ActiveStatus `json:"active,omitempty"`
+	RTBSourceIDs    []uint64             `json:"RTBSourceIDs,omitempty"`
+	Formats         []string             `json:"formats,omitempty"`
+	DeviceTypes     []int64              `json:"deviceTypes,omitempty"`
+	Devices         []int64              `json:"devices,omitempty"`
+	Os              []int64              `json:"OS,omitempty"`
+	Browsers        []int64              `json:"browsers,omitempty"`
+	Carriers        []int64              `json:"carriers,omitempty"`
+	Categories      []int64              `json:"categories,omitempty"`
+	Countries       []string             `json:"countries,omitempty"`
+	Languages       []string             `json:"languages,omitempty"`
+	Domains         []string             `json:"domains,omitempty"`
+	Applications    []uint64             `json:"applications,omitempty"`
+	Zones           []uint64             `json:"zones,omitempty"`
+	Secure          *AnyOnlyExclude      `json:"secure,omitempty"`
+	AdBlock         *AnyOnlyExclude      `json:"adBlock,omitempty"`
+	PrivateBrowsing *AnyOnlyExclude      `json:"privateBrowsing,omitempty"`
+	IP              *AnyIPv4IPv6         `json:"IP,omitempty"`
+}
+
+type TrafficRouterListOrder struct {
+	ID        *models.Ordering `json:"ID,omitempty"`
+	Active    *models.Ordering `json:"active,omitempty"`
+	Percent   *models.Ordering `json:"percent,omitempty"`
+	CreatedAt *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt *models.Ordering `json:"updatedAt,omitempty"`
+}
+
+type TrafficRouterPayload struct {
+	// Unique identifier of the client
+	ClientMutationID string `json:"clientMutationID"`
+	// ID of the traffic router
+	RouterID uint64 `json:"routerID"`
+	// Traffic router object
+	Router *TrafficRouter `json:"router"`
+}
+
+type TrafficRouterUpdateInput struct {
+	// Description of the traffic router
+	Description *string `json:"description,omitempty"`
+	// Active status of the traffic router
+	Active *models.ActiveStatus `json:"active,omitempty"`
+	// Traffic router percent of the traffic to share between RTB sources
+	Percent *float64 `json:"percent,omitempty"`
+	// RTB sources of the advertising
+	RTBSourceIDs    []uint64        `json:"RTBSourceIDs,omitempty"`
+	Formats         []string        `json:"formats,omitempty"`
+	DeviceTypes     []int64         `json:"deviceTypes,omitempty"`
+	Devices         []int64         `json:"devices,omitempty"`
+	Os              []int64         `json:"OS,omitempty"`
+	Browsers        []int64         `json:"browsers,omitempty"`
+	Carriers        []int64         `json:"carriers,omitempty"`
+	Categories      []int64         `json:"categories,omitempty"`
+	Countries       []string        `json:"countries,omitempty"`
+	Languages       []string        `json:"languages,omitempty"`
+	Domains         []string        `json:"domains,omitempty"`
+	Applications    []uint64        `json:"applications,omitempty"`
+	Zones           []uint64        `json:"zones,omitempty"`
+	Secure          *AnyOnlyExclude `json:"secure,omitempty"`
+	AdBlock         *AnyOnlyExclude `json:"adBlock,omitempty"`
+	PrivateBrowsing *AnyOnlyExclude `json:"privateBrowsing,omitempty"`
+	IP              *AnyIPv4IPv6    `json:"IP,omitempty"`
+}
+
 // Zone object represents a specific advertising zone within an account.
 type Zone struct {
 	ID          uint64 `json:"ID"`

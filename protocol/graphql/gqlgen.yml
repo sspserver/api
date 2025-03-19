@@ -118,6 +118,8 @@ models:
     model: github.com/sspserver/api/internal/server/graphql/connectors.ZoneConnection
   StatisticAdItemConnection:
     model: github.com/sspserver/api/internal/server/graphql/connectors.StatisticAdItemConnection
+  TrafficRouterConnection:
+    model: github.com/sspserver/api/internal/server/graphql/connectors.TrafficRouterConnection
   # Extensions
   Category:
     fields:
@@ -134,4 +136,10 @@ models:
   DeviceModel:
     fields:
       versions:
+        resolver: true
+  TrafficRouter:
+    fields:
+      account:
+        resolver: true
+      RTBSources:
         resolver: true

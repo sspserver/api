@@ -9,14 +9,24 @@ type TrafficRouter {
   ID: ID64!
 
   """
+  Account ID owner of the traffic router
+  """
+  accountID: ID64!
+
+  """
+  Account owner of the traffic router
+  """
+  account: Account
+
+  """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float64!
+  percent: Float!
 
   """
   Description of the traffic router
   """
-  description: String
+  description: String!
 
   """
   Active status of source
@@ -26,19 +36,12 @@ type TrafficRouter {
   """
   RTB sources of the advertising
   """
-  RTBSources: [ID64!]
-
-  ## Targeting of the traffic sources (entry points like applications, sites, zones, etc.)
+  RTBSourceIDs: [ID64!]
 
   """
-  List of application sources
+  RTB sources of the advertising
   """
-  applicationIDs: [ID64!]
-
-  """
-  List of zone sources
-  """
-  zoneIDs: [ID64!]
+  RTBSources: [RTBSource!]
 
   # Targeting filters
   formats:         [String!]
@@ -50,9 +53,9 @@ type TrafficRouter {
   categories:      [Int64!]
   countries:       [String!]
   languages:       [String!]
-  applications:    [Int64!]
   domains:         [String!]
-  zones:           [Int64!]
+  applications:    [ID64!]
+  zones:           [ID64!]
   secure:          AnyOnlyExclude!
   adBlock:         AnyOnlyExclude!
   privateBrowsing: AnyOnlyExclude!
@@ -120,10 +123,9 @@ type TrafficRouterPayload {
 
 input TrafficRouterListFilter {
   ID:               [ID64!]
-  active:           [ActiveStatus!]
-  RTBSources:       [ID64!]
-  applicationIDs:   [ID64!]
-  zoneIDs:          [ID64!]
+  accountID:        ID64
+  active:           ActiveStatus
+  RTBSourceIDs:     [ID64!]
   formats:          [String!]
   deviceTypes:      [Int64!]
   devices:          [Int64!]
@@ -133,13 +135,13 @@ input TrafficRouterListFilter {
   categories:       [Int64!]
   countries:        [String!]
   languages:        [String!]
-  applications:     [Int64!]
   domains:          [String!]
-  zones:            [Int64!]
-  secure:           [AnyOnlyExclude!]
-  adBlock:          [AnyOnlyExclude!]
-  privateBrowsing:  [AnyOnlyExclude!]
-  IP:               [AnyIPv4IPv6!]
+  applications:     [ID64!]
+  zones:            [ID64!]
+  secure:           AnyOnlyExclude
+  adBlock:          AnyOnlyExclude
+  privateBrowsing:  AnyOnlyExclude
+  IP:               AnyIPv4IPv6
 }
 
 input TrafficRouterListOrder {
@@ -151,6 +153,11 @@ input TrafficRouterListOrder {
 }
 
 input TrafficRouterCreateInput {
+  """
+  Account ID owner of the traffic router
+  """
+  accountID: ID64
+
   """
   Description of the traffic router
   """
@@ -164,22 +171,12 @@ input TrafficRouterCreateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float64!
+  percent: Float!
 
   """
   RTB sources of the advertising
   """
-  RTBSources: [ID64!]
-
-  """
-  List of application sources
-  """
-  applicationIDs: [ID64!]
-
-  """
-  List of zone sources
-  """
-  zoneIDs: [ID64!]
+  RTBSourceIDs: [ID64!]! @notempty(ornil: false)
 
   # Targeting filters
   formats:         [String!]
@@ -191,16 +188,16 @@ input TrafficRouterCreateInput {
   categories:      [Int64!]
   countries:       [String!]
   languages:       [String!]
-  applications:    [Int64!]
   domains:         [String!]
-  zones:           [Int64!]
-  secure:          AnyOnlyExclude!
-  adBlock:         AnyOnlyExclude!
-  privateBrowsing: AnyOnlyExclude!
-  IP:              AnyIPv4IPv6!
+  applications:    [ID64!]
+  zones:           [ID64!]
+  secure:          AnyOnlyExclude
+  adBlock:         AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP:              AnyIPv4IPv6
 }
 
-type TrafficRouterUpdateInput {
+input TrafficRouterUpdateInput {
   """
   Description of the traffic router
   """
@@ -214,22 +211,12 @@ type TrafficRouterUpdateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float64
+  percent: Float
 
   """
   RTB sources of the advertising
   """
-  RTBSources: [ID64!]
-
-  """
-  List of application sources
-  """
-  applicationIDs: [ID64!]
-
-  """
-  List of zone sources
-  """
-  zoneIDs: [ID64!]
+  RTBSourceIDs: [ID64!] @notempty(ornil: false)
 
   # Targeting filters
   formats:         [String!]
@@ -241,13 +228,13 @@ type TrafficRouterUpdateInput {
   categories:      [Int64!]
   countries:       [String!]
   languages:       [String!]
-  applications:    [Int64!]
   domains:         [String!]
-  zones:           [Int64!]
-  secure:          AnyOnlyExclude!
-  adBlock:         AnyOnlyExclude!
-  privateBrowsing: AnyOnlyExclude!
-  IP:              AnyIPv4IPv6!
+  applications:    [ID64!]
+  zones:           [ID64!]
+  secure:          AnyOnlyExclude
+  adBlock:         AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP:              AnyIPv4IPv6
 }
 
 ###############################################################################
@@ -263,7 +250,7 @@ extend type Query {
   """
   List of traffic routers
   """
-  trafficRouters(
+  listTrafficRouters(
     """
     Filter for the traffic routers
     """
@@ -277,7 +264,7 @@ extend type Query {
     """
     Pagination for the traffic routers
     """
-    pagination: Pagination = null
+    page: Page = null
   ): TrafficRouterConnection @acl(permissions: ["traffic_router.view.*"])
 }
 
@@ -296,4 +283,14 @@ extend type Mutation {
   Delete traffic router
   """
   deleteTrafficRouter(ID: ID64!): TrafficRouterPayload @acl(permissions: ["traffic_router.delete.*"])
+
+  """
+  Run traffic router
+  """
+  runTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.run.*"])
+
+  """
+  Pause traffic router
+  """
+  pauseTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.pause.*"])
 }
