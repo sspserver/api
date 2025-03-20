@@ -21,7 +21,7 @@ func _validateLength(val any, min int, max int, trim, ornil bool) (any, error) {
 		res      = val
 		str      string
 		isArray  = false
-		length   = 0
+		length   int
 		canBeNil = false
 	)
 
