@@ -18,6 +18,7 @@ env:
   DEPLOY_COMMIT_NUMBER: ${{ github.sha }}
   DEPLOY_TAG_VALUE:     ${{ github.event.workflow_run.head_branch }}
   APP_BUILD_TAGS:       nats,kafka,postgres,clickhouse,migrate
+  BUILD_PLATFORMS:      linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/amd64/v4,linux/arm64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
 
 jobs:
   can_continue:
@@ -113,6 +114,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Print all env variables
+        run: |
+          echo "IMAGE_NAME=${IMAGE_NAME}"
+          echo "DEPLOY_COMMIT_NUMBER=${DEPLOY_COMMIT_NUMBER}"
+          echo "DEPLOY_TAG_VALUE=${DEPLOY_TAG_VALUE}"
+          echo "BUILD_PLATFORMS=${BUILD_PLATFORMS}"
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image of the service
@@ -121,6 +129,8 @@ jobs:
         with:
           context: .
           file: deploy/production/Dockerfile
-          platforms: linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/amd64/v4,linux/arm64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
+          platforms: ${{ env.BUILD_PLATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.IMAGE_NAME }}:${{ env.DEPLOY_TAG_VALUE }},${{ env.IMAGE_NAME }}:latest"
+          tags: |
+            "${{ env.IMAGE_NAME }}:${{ env.DEPLOY_TAG_VALUE }}
+            ${{ env.IMAGE_NAME }}:latest"
