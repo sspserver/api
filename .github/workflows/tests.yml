@@ -29,7 +29,6 @@ jobs:
         with:
           files: |
             .github/workflows/tests.yml
-            .github/workflows/docker-build.yml
             **.go
             go.mod
     outputs:
