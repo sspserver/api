@@ -125,5 +125,5 @@ jobs:
           platforms: ${{ env.BUILD_PLATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            "${{ env.IMAGE_NAME }}:${{ env.DEPLOY_TAG_VALUE }}
-            ${{ env.IMAGE_NAME }}:latest"
+            ${{ env.IMAGE_NAME }}:${{ env.DEPLOY_TAG_VALUE }}
+            ${{ env.IMAGE_NAME }}:latest
