@@ -495,7 +495,7 @@ type ComplexityRoot struct {
 		CreateDeviceModel         func(childComplexity int, input models.DeviceModelCreateInput) int
 		CreateFormat              func(childComplexity int, input models.AdFormatInput) int
 		CreateOs                  func(childComplexity int, input models.OSCreateInput) int
-		CreateRTBSource           func(childComplexity int, input models.RTBSourceInput) int
+		CreateRTBSource           func(childComplexity int, input models.RTBSourceCreateInput) int
 		CreateRole                func(childComplexity int, input models1.RBACRoleInput) int
 		CreateTrafficRouter       func(childComplexity int, input models.TrafficRouterCreateInput) int
 		CreateUser                func(childComplexity int, input models1.UserInput) int
@@ -547,7 +547,7 @@ type ComplexityRoot struct {
 		UpdateDeviceModel         func(childComplexity int, id uint64, input models.DeviceModelUpdateInput) int
 		UpdateFormat              func(childComplexity int, id uint64, input models.AdFormatInput) int
 		UpdateOs                  func(childComplexity int, id uint64, input models.OSUpdateInput) int
-		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceInput) int
+		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceUpdateInput) int
 		UpdateRole                func(childComplexity int, id uint64, input models1.RBACRoleInput) int
 		UpdateTrafficRouter       func(childComplexity int, id uint64, input models.TrafficRouterUpdateInput) int
 		UpdateUser                func(childComplexity int, id uint64, input models1.UserInput) int
@@ -680,7 +680,7 @@ type ComplexityRoot struct {
 		ListOptions                    func(childComplexity int, filter *models1.OptionListFilter, order *models1.OptionListOrder, page *models1.Page) int
 		ListOs                         func(childComplexity int, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) int
 		ListPermissions                func(childComplexity int, patterns []string) int
-		ListRTBSources                 func(childComplexity int, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) int
+		ListRTBSources                 func(childComplexity int, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) int
 		ListRoles                      func(childComplexity int, filter *models1.RBACRoleListFilter, order *models1.RBACRoleListOrder, page *models1.Page) int
 		ListSocialAccounts             func(childComplexity int, filter *models1.SocialAccountListFilter, order *models1.SocialAccountListOrder, page *models1.Page) int
 		ListTrafficRouters             func(childComplexity int, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) int
@@ -1074,8 +1074,8 @@ type MutationResolver interface {
 	CreateOs(ctx context.Context, input models.OSCreateInput) (*models.OSPayload, error)
 	UpdateOs(ctx context.Context, id uint64, input models.OSUpdateInput) (*models.OSPayload, error)
 	DeleteOs(ctx context.Context, id uint64, msg *string) (*models.OSPayload, error)
-	CreateRTBSource(ctx context.Context, input models.RTBSourceInput) (*models.RTBSourcePayload, error)
-	UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceInput) (*models.RTBSourcePayload, error)
+	CreateRTBSource(ctx context.Context, input models.RTBSourceCreateInput) (*models.RTBSourcePayload, error)
+	UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceUpdateInput) (*models.RTBSourcePayload, error)
 	DeleteRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error)
 	RunRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error)
 	PauseRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error)
@@ -1141,7 +1141,7 @@ type QueryResolver interface {
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
 	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
-	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error)
+	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error)
 	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models.StatisticAdItem, struct{}], error)
 	TrafficRouter(ctx context.Context, id uint64) (*models.TrafficRouterPayload, error)
 	ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge], error)
@@ -3254,7 +3254,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateRTBSource(childComplexity, args["input"].(models.RTBSourceInput)), true
+		return e.complexity.Mutation.CreateRTBSource(childComplexity, args["input"].(models.RTBSourceCreateInput)), true
 
 	case "Mutation.createRole":
 		if e.complexity.Mutation.CreateRole == nil {
@@ -3868,7 +3868,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateRTBSource(childComplexity, args["ID"].(uint64), args["input"].(models.RTBSourceInput)), true
+		return e.complexity.Mutation.UpdateRTBSource(childComplexity, args["ID"].(uint64), args["input"].(models.RTBSourceUpdateInput)), true
 
 	case "Mutation.updateRole":
 		if e.complexity.Mutation.UpdateRole == nil {
@@ -4712,7 +4712,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ListRTBSources(childComplexity, args["filter"].(*models.RTBSourceListFilter), args["order"].(*models.RTBSourceListOrder), args["page"].(*models1.Page)), true
+		return e.complexity.Query.ListRTBSources(childComplexity, args["filter"].(*models.RTBSourceListFilter), args["order"].([]*models.RTBSourceListOrder), args["page"].(*models1.Page)), true
 
 	case "Query.listRoles":
 		if e.complexity.Query.ListRoles == nil {
@@ -6470,9 +6470,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputRBACRoleInput,
 		ec.unmarshalInputRBACRoleListFilter,
 		ec.unmarshalInputRBACRoleListOrder,
-		ec.unmarshalInputRTBSourceInput,
+		ec.unmarshalInputRTBSourceCreateInput,
 		ec.unmarshalInputRTBSourceListFilter,
 		ec.unmarshalInputRTBSourceListOrder,
+		ec.unmarshalInputRTBSourceUpdateInput,
 		ec.unmarshalInputSocialAccountListFilter,
 		ec.unmarshalInputSocialAccountListOrder,
 		ec.unmarshalInputStatisticAdKeyCondition,
@@ -10524,80 +10525,80 @@ extend type Mutation {
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/rtb_source.graphql", Input: `"""
-RTBSource object represents a source of RTB advertising
+RTBSource object represents a source of RTB (Real-Time Bidding) advertising.
 """
 type RTBSource {
-  ID: ID64!
-  accountID: ID64!
+  ID:         ID64!  # Unique identifier for the RTB source.
+  accountID:  ID64!  # Identifier for the associated account.
 
-  title: String!
-  description: String!
+  title:        String!  # Title of the RTB source.
+  description:  String!  # Description of the RTB source.
 
   """
-  Status of source approval
+  Status of source approval, indicating whether the source is approved or not.
   """
   status: ApproveStatus!
   
   """
-  Active status of source
+  Active status of the source, indicating whether the source is currently active.
   """
   active: ActiveStatus!
 
   """
-  Flags of source
+  Flags associated with the source, stored as a JSON object.
   """
   flags: NullableJSON!
 
-  # Protocol configs
-  protocol: String!
-  minimalWeight: Float!
+  # Protocol configurations
+  protocol:      String!  # Protocol used by the RTB source (e.g., HTTP, HTTPS).
+  minimalWeight: Float!   # Minimum weight for the source in the bidding process.
   
   """
-  After approval URL can't be changed
+  URL of the RTB source. This cannot be changed after approval.
   """
-  URL: String!
-  method: String!
-  requestType: RTBRequestFormatType!
-  headers: NullableJSON!
-  RPS: Int!
-  timeout: Int!
+  URL:          String!
+  method:       String!  # HTTP method used (e.g., GET, POST).
+  requestType:  RTBRequestFormatType!  # Format type of the RTB request.
+  headers:      NullableJSON!  # HTTP headers for the RTB request.
+  RPS:          Int!  # Requests per second allowed for the source.
+  timeout:      Int!  # Timeout for the RTB request in seconds.
 
-  # Money configs
-  accuracy: Float!
-  priceCorrectionReduce: Float!
-  auctionType: AuctionType!
+  # Money configurations
+  accuracy:               Float!  # Accuracy of the bidding process.
+  priceCorrectionReduce:  Float!  # Price correction factor for reducing bids.
+  auctionType:            AuctionType!  # Type of auction used (e.g., first-price, second-price).
 
   # Price limits
-  minBid: Float!
-  maxBid: Float!
+  minBid: Float!  # Minimum bid allowed for the source.
+  maxBid: Float!  # Maximum bid allowed for the source.
 
   # Targeting filters
-  formats:         [String!]
-  deviceTypes:     [Int64!]
-  devices:         [Int64!]
-  OS:              [Int64!]
-  browsers:        [Int64!]
-  carriers:        [Int64!]
-  categories:      [Int64!]
-  countries:       [String!]
-  languages:       [String!]
-  applications:    [Int64!]
-  domains:         [String!]
-  zones:           [Int64!]
-  secure:          AnyOnlyExclude!
-  adBlock:         AnyOnlyExclude!
-  privateBrowsing: AnyOnlyExclude!
-  IP:              AnyIPv4IPv6!
+  formats:         [String!]  # List of supported ad formats.
+  deviceTypes:     [Int64!]   # List of supported device types.
+  devices:         [Int64!]   # List of specific devices supported.
+  OS:              [Int64!]   # List of supported operating systems.
+  browsers:        [Int64!]   # List of supported browsers.
+  carriers:        [Int64!]   # List of supported carriers.
+  categories:      [Int64!]   # List of supported ad categories.
+  countries:       [String!]  # List of supported countries (ISO codes).
+  languages:       [String!]  # List of supported languages (ISO codes).
+  applications:    [Int64!]   # List of supported applications.
+  domains:         [String!]  # List of supported domains.
+  zones:           [Int64!]   # List of supported zones.
+  secure:          AnyOnlyExclude!  # Security settings (e.g., HTTPS only).
+  adBlock:         AnyOnlyExclude!  # Ad-blocking settings.
+  privateBrowsing: AnyOnlyExclude!  # Private browsing settings.
+  IP:              AnyIPv4IPv6!    # IP filtering settings.
 
-  config: NullableJSON!
+  config: NullableJSON!  # Additional configuration for the RTB source.
 
-  createdAt: Time!
-  updatedAt: Time!
-	deletedAt: Time
+  createdAt: Time!  # Timestamp when the RTB source was created.
+  updatedAt: Time!  # Timestamp when the RTB source was last updated.
+  deletedAt: Time   # Timestamp when the RTB source was deleted (if applicable).
 }
 
 """
-RTBSourceEdge wrapper to access of RTBSource objects
+RTBSourceEdge wrapper to access RTBSource objects in a paginated list.
 """
 type RTBSourceEdge {
   """
@@ -10606,27 +10607,27 @@ type RTBSourceEdge {
   cursor: String!
 
   """
-  The RTBSource at the end of RTBSourceEdge.
+  The RTBSource at the end of the RTBSourceEdge.
   """
   node: RTBSource!
 }
 
 """
-RTBSourceConnection wrapper to access of RTBSource objects
+RTBSourceConnection wrapper to access RTBSource objects in a paginated list.
 """
 type RTBSourceConnection {
   """
-  Total count of RTBSource objects
+  Total count of RTBSource objects.
   """
   totalCount: Int!
 
   """
-  Edges of RTBSource objects
+  Edges of RTBSource objects, containing nodes and cursors.
   """
   edges: [RTBSourceEdge!]!
 
   """
-  List of RTBSource objects
+  List of RTBSource objects.
   """
   list: [RTBSource!]!
 
@@ -10637,7 +10638,7 @@ type RTBSourceConnection {
 }
 
 """
-RTBSourcePayload wrapper to access of RTBSource oprtation results
+RTBSourcePayload wrapper to access the results of RTBSource operations.
 """
 type RTBSourcePayload {
   """
@@ -10646,7 +10647,7 @@ type RTBSourcePayload {
   clientMutationID: String!
 
   """
-  The RTBSource that was created by this mutation.
+  The ID of the RTBSource created or affected by the mutation.
   """
   sourceID: ID64!
 
@@ -10660,77 +10661,177 @@ type RTBSourcePayload {
 # Query
 ###############################################################################
 
+"""
+Filter options for listing RTBSource objects.
+"""
 input RTBSourceListFilter {
-  ID: [ID64!]
-  accountID: ID64
+  ID:           [ID64!]  # Filter by RTBSource IDs.
+  accountID:    ID64     # Filter by account ID.
+  protocol:     [String!]  # Filter by protocol type.
+  status:       ApproveStatus  # Filter by approval status.
+  active:       ActiveStatus   # Filter by active status.
+  # Request
+  method:       [String!]  # Filter by HTTP method.
+  requestType:  [RTBRequestFormatType!]  # Filter by request format type.
+  # Auction
+  auctionType:  [AuctionType!]  # Filter by auction type.
 }
 
+"""
+Ordering options for listing RTBSource objects.
+"""
 input RTBSourceListOrder {
-  ID:        Ordering
-  accountID: Ordering
-  title:     Ordering
-  createdAt: Ordering
-  updatedAt: Ordering
-  deletedAt: Ordering
+  ID:           Ordering  # Order by RTBSource ID.
+  accountID:    Ordering  # Order by account ID.
+  title:        Ordering  # Order by title.
+  protocol:     Ordering  # Order by protocol type.
+  status:       Ordering  # Order by approval status.
+  active:       Ordering  # Order by active status.
+
+  # Request
+  method:       Ordering  # Order by HTTP method.
+  requestType:  Ordering  # Order by request format type.
+
+  # Auction
+  auctionType:  Ordering  # Order by auction type.
+
+  createdAt:    Ordering  # Order by creation timestamp.
+  updatedAt:    Ordering  # Order by last update timestamp.
+  deletedAt:    Ordering  # Order by deletion timestamp.
 }
 
 ###############################################################################
 # Mutations
 ###############################################################################
 
-input RTBSourceInput {
-  accountID: ID64
-
-  title: String
-  description: String
+"""
+Input for creating a new RTBSource.
+"""
+input RTBSourceCreateInput {
+  accountID: ID64  # Associated account ID.
 
   """
-  Flags of source
+  Title of the RTB source.
+  """
+  title:        String! @length(min: 1, max: 255, trim: true)
+
+  """
+  Description of the RTB source.
+  """
+  description:  String  @length(min: 0, max: 1024, trim: true, ornil: true)
+
+  """
+  Flags associated with the source.
   """
   flags: NullableJSON
 
-  # Protocol configs
-  protocol: String
-  minimalWeight: Float
+  # Protocol configurations
+  protocol:      String! @notempty(trim: true)  # Protocol type.
+  minimalWeight: Float  # Minimum weight for bidding.
 
   """
-  After approval URL can't be changed
+  URL of the RTB source. Cannot be changed after approval.
   """
-  URL: String
-  method: String
-  requestType: RTBRequestFormatType
-  headers: NullableJSON
-  RPS: Int
-  timeout: Int
+  URL:          String! @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true)
+  method:       String! @notempty(trim: true)  # HTTP method.
+  requestType:  RTBRequestFormatType!  # Request format type.
+  headers:      NullableJSON  # HTTP headers.
+  RPS:          Int!  # Requests per second.
+  timeout:      Int!  # Timeout in seconds.
 
-  # Money configs
-  accuracy: Float
-  priceCorrectionReduce: Float
-  auctionType: AuctionType
+  # Money configurations
+  accuracy:               Float!  # Bidding accuracy.
+  priceCorrectionReduce:  Float!  # Price correction factor.
+  auctionType:            AuctionType!  # Auction type.
 
   # Price limits
-  minBid: Float
-  maxBid: Float
+  minBid: Float!  # Minimum bid.
+  maxBid: Float!  # Maximum bid.
 
   # Targeting filters
-  formats:         [String!]
-  deviceTypes:     [Int64!]
-  devices:         [Int64!]
-  OS:              [Int64!]
-  browsers:        [Int64!]
-  carriers:        [Int64!]
-  categories:      [Int64!]
-  countries:       [String!]
-  languages:       [String!]
-  applications:    [Int64!]
-  domains:         [String!]
-  zones:           [Int64!]
-  secure:          AnyOnlyExclude
-  adBlock:         AnyOnlyExclude
-  privateBrowsing: AnyOnlyExclude
-  IP:              AnyIPv4IPv6
+  formats:         [String!]  # Supported ad formats.
+  deviceTypes:     [Int64!]   # Supported device types.
+  devices:         [Int64!]   # Specific devices supported.
+  OS:              [Int64!]   # Supported operating systems.
+  browsers:        [Int64!]   # Supported browsers.
+  carriers:        [Int64!]   # Supported carriers.
+  categories:      [Int64!]   # Supported ad categories.
+  countries:       [String!]  # Supported countries (ISO codes).
+  languages:       [String!]  # Supported languages (ISO codes).
+  applications:    [Int64!]   # Supported applications.
+  domains:         [String!]  # Supported domains.
+  zones:           [Int64!]   # Supported zones.
+  secure:          AnyOnlyExclude  # Security settings.
+  adBlock:         AnyOnlyExclude  # Ad-blocking settings.
+  privateBrowsing: AnyOnlyExclude  # Private browsing settings.
+  IP:              AnyIPv4IPv6  # IP filtering settings.
 
-  config: NullableJSON
+  config: NullableJSON  # Additional configuration.
+}
+
+"""
+Input for updating an existing RTBSource.
+"""
+input RTBSourceUpdateInput {
+  accountID: ID64  # Associated account ID.
+
+  """
+  Title of the RTB source.
+  """
+  title:        String  @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Description of the RTB source.
+  """
+  description:  String  @length(min: 0, max: 1024, trim: true, ornil: true)
+
+  """
+  Flags associated with the source.
+  """
+  flags: NullableJSON
+
+  # Protocol configurations
+  protocol:      String @notempty(trim: true, ornil: true)  # Protocol type.
+  minimalWeight: Float  # Minimum weight for bidding.
+
+  """
+  URL of the RTB source. Cannot be changed after approval.
+  """
+  URL:          String @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true, ornil: true)
+  method:       String @notempty(trim: true, ornil: true)  # HTTP method.
+  requestType:  RTBRequestFormatType  # Request format type.
+  headers:      NullableJSON  # HTTP headers.
+  RPS:          Int  # Requests per second.
+  timeout:      Int  # Timeout in seconds.
+
+  # Money configurations
+  accuracy:               Float  # Bidding accuracy.
+  priceCorrectionReduce:  Float  # Price correction factor.
+  auctionType:            AuctionType  # Auction type.
+
+  # Price limits
+  minBid: Float  # Minimum bid.
+  maxBid: Float  # Maximum bid.
+
+  # Targeting filters
+  formats:         [String!]  # Supported ad formats.
+  deviceTypes:     [Int64!]   # Supported device types.
+  devices:         [Int64!]   # Specific devices supported.
+  OS:              [Int64!]   # Supported operating systems.
+  browsers:        [Int64!]   # Supported browsers.
+  carriers:        [Int64!]   # Supported carriers.
+  categories:      [Int64!]   # Supported ad categories.
+  countries:       [String!]  # Supported countries (ISO codes).
+  languages:       [String!]  # Supported languages (ISO codes).
+  applications:    [Int64!]   # Supported applications.
+  domains:         [String!]  # Supported domains.
+  zones:           [Int64!]   # Supported zones.
+  secure:          AnyOnlyExclude  # Security settings.
+  adBlock:         AnyOnlyExclude  # Ad-blocking settings.
+  privateBrowsing: AnyOnlyExclude  # Private browsing settings.
+  IP:              AnyIPv4IPv6  # IP filtering settings.
+
+  config: NullableJSON  # Additional configuration.
 }
 
 ###############################################################################
@@ -10739,53 +10840,53 @@ input RTBSourceInput {
 
 extend type Query {
   """
-  Get RTBSource object by ID
+  Get an RTBSource object by its unique ID.
   """
   RTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.view.*"])
 
   """
-  List of the tag objects which can be filtered and ordered by some fields
+  List RTBSource objects with optional filtering, ordering, and pagination.
   """
   listRTBSources(
     filter: RTBSourceListFilter = null,
-    order: RTBSourceListOrder = null,
+    order: [RTBSourceListOrder] = null,
     page: Page = null
   ): RTBSourceConnection @acl(permissions: ["rtb_source.list.*"])
 }
 
 extend type Mutation {
   """
-  Create the new RTBSource
+  Create a new RTBSource.
   """
-  createRTBSource(input: RTBSourceInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"])
+  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"])
 
   """
-  Update RTBSource info
+  Update an existing RTBSource by its ID.
   """
-  updateRTBSource(ID: ID64!, input: RTBSourceInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
 
   """
-  Delete RTBSource
+  Delete an RTBSource by its ID.
   """
   deleteRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload @acl(permissions: ["rtb_source.delete.*"])
 
   """
-  Run RTBSource to receive data from it
+  Run an RTBSource to start receiving data from it.
   """
   runRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
 
   """
-  Pause RTBSource to stop receiving data from it
+  Pause an RTBSource to stop receiving data from it.
   """
   pauseRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
 
   """
-  Approve RTBSource to start receiving data from it
+  Approve an RTBSource to allow it to start receiving data.
   """
   approveRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.approve.*"])
 
   """
-  Reject RTBSource to stop receiving data from it
+  Reject an RTBSource to prevent it from receiving data.
   """
   rejectRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.reject.*"])
 }
@@ -12436,18 +12537,18 @@ func (ec *executionContext) field_Mutation_createRTBSource_args(ctx context.Cont
 func (ec *executionContext) field_Mutation_createRTBSource_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.RTBSourceInput, error) {
+) (models.RTBSourceCreateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.RTBSourceInput
+		var zeroVal models.RTBSourceCreateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNRTBSourceInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceInput(ctx, tmp)
+		return ec.unmarshalNRTBSourceCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceCreateInput(ctx, tmp)
 	}
 
-	var zeroVal models.RTBSourceInput
+	var zeroVal models.RTBSourceCreateInput
 	return zeroVal, nil
 }
 
@@ -14779,18 +14880,18 @@ func (ec *executionContext) field_Mutation_updateRTBSource_argsID(
 func (ec *executionContext) field_Mutation_updateRTBSource_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (models.RTBSourceInput, error) {
+) (models.RTBSourceUpdateInput, error) {
 	if _, ok := rawArgs["input"]; !ok {
-		var zeroVal models.RTBSourceInput
+		var zeroVal models.RTBSourceUpdateInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNRTBSourceInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceInput(ctx, tmp)
+		return ec.unmarshalNRTBSourceUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceUpdateInput(ctx, tmp)
 	}
 
-	var zeroVal models.RTBSourceInput
+	var zeroVal models.RTBSourceUpdateInput
 	return zeroVal, nil
 }
 
@@ -16735,18 +16836,18 @@ func (ec *executionContext) field_Query_listRTBSources_argsFilter(
 func (ec *executionContext) field_Query_listRTBSources_argsOrder(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (*models.RTBSourceListOrder, error) {
+) ([]*models.RTBSourceListOrder, error) {
 	if _, ok := rawArgs["order"]; !ok {
-		var zeroVal *models.RTBSourceListOrder
+		var zeroVal []*models.RTBSourceListOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("order"))
 	if tmp, ok := rawArgs["order"]; ok {
-		return ec.unmarshalORTBSourceListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceListOrder(ctx, tmp)
+		return ec.unmarshalORTBSourceListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceListOrder(ctx, tmp)
 	}
 
-	var zeroVal *models.RTBSourceListOrder
+	var zeroVal []*models.RTBSourceListOrder
 	return zeroVal, nil
 }
 
@@ -34641,7 +34742,7 @@ func (ec *executionContext) _Mutation_createRTBSource(ctx context.Context, field
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().CreateRTBSource(rctx, fc.Args["input"].(models.RTBSourceInput))
+			return ec.resolvers.Mutation().CreateRTBSource(rctx, fc.Args["input"].(models.RTBSourceCreateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -34728,7 +34829,7 @@ func (ec *executionContext) _Mutation_updateRTBSource(ctx context.Context, field
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateRTBSource(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.RTBSourceInput))
+			return ec.resolvers.Mutation().UpdateRTBSource(rctx, fc.Args["ID"].(uint64), fc.Args["input"].(models.RTBSourceUpdateInput))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -42451,7 +42552,7 @@ func (ec *executionContext) _Query_listRTBSources(ctx context.Context, field gra
 	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
 		directive0 := func(rctx context.Context) (any, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().ListRTBSources(rctx, fc.Args["filter"].(*models.RTBSourceListFilter), fc.Args["order"].(*models.RTBSourceListOrder), fc.Args["page"].(*models1.Page))
+			return ec.resolvers.Query().ListRTBSources(rctx, fc.Args["filter"].(*models.RTBSourceListFilter), fc.Args["order"].([]*models.RTBSourceListOrder), fc.Args["page"].(*models1.Page))
 		}
 
 		directive1 := func(ctx context.Context) (any, error) {
@@ -59602,8 +59703,8 @@ func (ec *executionContext) unmarshalInputRBACRoleListOrder(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputRTBSourceInput(ctx context.Context, obj any) (models.RTBSourceInput, error) {
-	var it models.RTBSourceInput
+func (ec *executionContext) unmarshalInputRTBSourceCreateInput(ctx context.Context, obj any) (models.RTBSourceCreateInput, error) {
+	var it models.RTBSourceCreateInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
@@ -59625,18 +59726,90 @@ func (ec *executionContext) unmarshalInputRTBSourceInput(ctx context.Context, ob
 			it.AccountID = data
 		case "title":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Title = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Title = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 0)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "flags":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("flags"))
 			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
@@ -59646,11 +59819,36 @@ func (ec *executionContext) unmarshalInputRTBSourceInput(ctx context.Context, ob
 			it.Flags = data
 		case "protocol":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("protocol"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Protocol = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Protocol = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "minimalWeight":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("minimalWeight"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -59660,18 +59858,671 @@ func (ec *executionContext) unmarshalInputRTBSourceInput(ctx context.Context, ob
 			it.MinimalWeight = data
 		case "URL":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URL"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^(http|https|grpc|grpcs)://.*$")
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.URL = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "method":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("method"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Method = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "requestType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("requestType"))
+			data, err := ec.unmarshalNRTBRequestFormatType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatType(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.URL = data
+			it.RequestType = data
+		case "headers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("headers"))
+			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Headers = data
+		case "RPS":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RPS"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Rps = data
+		case "timeout":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeout"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Timeout = data
+		case "accuracy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accuracy"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Accuracy = data
+		case "priceCorrectionReduce":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceCorrectionReduce"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PriceCorrectionReduce = data
+		case "auctionType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("auctionType"))
+			data, err := ec.unmarshalNAuctionType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AuctionType = data
+		case "minBid":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("minBid"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MinBid = data
+		case "maxBid":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("maxBid"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MaxBid = data
+		case "formats":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Formats = data
+		case "deviceTypes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeviceTypes = data
+		case "devices":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Devices = data
+		case "OS":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Os = data
+		case "browsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Browsers = data
+		case "carriers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Carriers = data
+		case "categories":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Categories = data
+		case "countries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Countries = data
+		case "languages":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Languages = data
+		case "applications":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Applications = data
+		case "domains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Domains = data
+		case "zones":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
+			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Zones = data
+		case "secure":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Secure = data
+		case "adBlock":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adBlock"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdBlock = data
+		case "privateBrowsing":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("privateBrowsing"))
+			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PrivateBrowsing = data
+		case "IP":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("IP"))
+			data, err := ec.unmarshalOAnyIPv4IPv62ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IP = data
+		case "config":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("config"))
+			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Config = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputRTBSourceListFilter(ctx context.Context, obj any) (models.RTBSourceListFilter, error) {
+	var it models.RTBSourceListFilter
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"ID", "accountID", "protocol", "status", "active", "method", "requestType", "auctionType"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "ID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "protocol":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("protocol"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Protocol = data
+		case "status":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			data, err := ec.unmarshalOApproveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐApproveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Status = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
 		case "method":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("method"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Method = data
+		case "requestType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("requestType"))
+			data, err := ec.unmarshalORTBRequestFormatType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatTypeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RequestType = data
+		case "auctionType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("auctionType"))
+			data, err := ec.unmarshalOAuctionType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionTypeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AuctionType = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputRTBSourceListOrder(ctx context.Context, obj any) (models.RTBSourceListOrder, error) {
+	var it models.RTBSourceListOrder
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"ID", "accountID", "title", "protocol", "status", "active", "method", "requestType", "auctionType", "createdAt", "updatedAt", "deletedAt"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "ID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Title = data
+		case "protocol":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("protocol"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Protocol = data
+		case "status":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Status = data
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Active = data
+		case "method":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("method"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Method = data
+		case "requestType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("requestType"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RequestType = data
+		case "auctionType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("auctionType"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AuctionType = data
+		case "createdAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAt = data
+		case "updatedAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedAt"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAt = data
+		case "deletedAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedAt"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAt = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputRTBSourceUpdateInput(ctx context.Context, obj any) (models.RTBSourceUpdateInput, error) {
+	var it models.RTBSourceUpdateInput
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"accountID", "title", "description", "flags", "protocol", "minimalWeight", "URL", "method", "requestType", "headers", "RPS", "timeout", "accuracy", "priceCorrectionReduce", "auctionType", "minBid", "maxBid", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "applications", "domains", "zones", "secure", "adBlock", "privateBrowsing", "IP", "config"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "accountID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
+			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountID = data
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 1)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 255)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Title = data
+			} else if tmp == nil {
+				it.Title = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNInt2int(ctx, 0)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNInt2int(ctx, 1024)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Length == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive length is not implemented")
+				}
+				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "flags":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("flags"))
+			data, err := ec.unmarshalONullableJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Flags = data
+		case "protocol":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("protocol"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Protocol = data
+			} else if tmp == nil {
+				it.Protocol = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "minimalWeight":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("minimalWeight"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MinimalWeight = data
+		case "URL":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("URL"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				pattern, err := ec.unmarshalNString2string(ctx, "^(http|https|grpc|grpcs)://.*$")
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Regex == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive regex is not implemented")
+				}
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.URL = data
+			} else if tmp == nil {
+				it.URL = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+		case "method":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("method"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Method = data
+			} else if tmp == nil {
+				it.Method = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "requestType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("requestType"))
 			data, err := ec.unmarshalORTBRequestFormatType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatType(ctx, v)
@@ -59854,102 +60705,6 @@ func (ec *executionContext) unmarshalInputRTBSourceInput(ctx context.Context, ob
 				return it, err
 			}
 			it.Config = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputRTBSourceListFilter(ctx context.Context, obj any) (models.RTBSourceListFilter, error) {
-	var it models.RTBSourceListFilter
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"ID", "accountID"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "ID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "accountID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
-			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AccountID = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputRTBSourceListOrder(ctx context.Context, obj any) (models.RTBSourceListOrder, error) {
-	var it models.RTBSourceListOrder
-	asMap := map[string]any{}
-	for k, v := range obj.(map[string]any) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"ID", "accountID", "title", "createdAt", "updatedAt", "deletedAt"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "ID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "accountID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountID"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AccountID = data
-		case "title":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Title = data
-		case "createdAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdAt"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedAt"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedAt"))
-			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		}
 	}
 
@@ -70287,6 +71042,11 @@ func (ec *executionContext) marshalNRTBSource2ᚖgithubᚗcomᚋsspserverᚋapi�
 	return ec._RTBSource(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNRTBSourceCreateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceCreateInput(ctx context.Context, v any) (models.RTBSourceCreateInput, error) {
+	res, err := ec.unmarshalInputRTBSourceCreateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNRTBSourceEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.RTBSourceEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -70341,11 +71101,6 @@ func (ec *executionContext) marshalNRTBSourceEdge2ᚖgithubᚗcomᚋsspserverᚋ
 	return ec._RTBSourceEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNRTBSourceInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceInput(ctx context.Context, v any) (models.RTBSourceInput, error) {
-	res, err := ec.unmarshalInputRTBSourceInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalNRTBSourcePayload2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourcePayload(ctx context.Context, sel ast.SelectionSet, v models.RTBSourcePayload) graphql.Marshaler {
 	return ec._RTBSourcePayload(ctx, sel, &v)
 }
@@ -70358,6 +71113,11 @@ func (ec *executionContext) marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserver
 		return graphql.Null
 	}
 	return ec._RTBSourcePayload(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNRTBSourceUpdateInput2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceUpdateInput(ctx context.Context, v any) (models.RTBSourceUpdateInput, error) {
+	res, err := ec.unmarshalInputRTBSourceUpdateInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNResponseStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐResponseStatus(ctx context.Context, v any) (models1.ResponseStatus, error) {
@@ -71461,6 +72221,73 @@ func (ec *executionContext) marshalOApproveStatus2ᚖgithubᚗcomᚋgeniusrabbit
 		return graphql.Null
 	}
 	return v
+}
+
+func (ec *executionContext) unmarshalOAuctionType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionTypeᚄ(ctx context.Context, v any) ([]models.AuctionType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]models.AuctionType, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNAuctionType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionType(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOAuctionType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []models.AuctionType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNAuctionType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionType(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOAuctionType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAuctionType(ctx context.Context, v any) (*models.AuctionType, error) {
@@ -73198,6 +74025,73 @@ func (ec *executionContext) unmarshalORBACRoleListOrder2ᚖgithubᚗcomᚋgenius
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalORTBRequestFormatType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatTypeᚄ(ctx context.Context, v any) ([]models.RTBRequestFormatType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]models.RTBRequestFormatType, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNRTBRequestFormatType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatType(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalORTBRequestFormatType2ᚕgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []models.RTBRequestFormatType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNRTBRequestFormatType2githubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatType(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalORTBRequestFormatType2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBRequestFormatType(ctx context.Context, v any) (*models.RTBRequestFormatType, error) {
 	if v == nil {
 		return nil, nil
@@ -73274,6 +74168,26 @@ func (ec *executionContext) unmarshalORTBSourceListFilter2ᚖgithubᚗcomᚋssps
 	}
 	res, err := ec.unmarshalInputRTBSourceListFilter(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalORTBSourceListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceListOrder(ctx context.Context, v any) ([]*models.RTBSourceListOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*models.RTBSourceListOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalORTBSourceListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceListOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalORTBSourceListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourceListOrder(ctx context.Context, v any) (*models.RTBSourceListOrder, error) {

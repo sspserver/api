@@ -759,21 +759,21 @@ type OSUpdateInput struct {
 	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
-// RTBSource object represents a source of RTB advertising
+// RTBSource object represents a source of RTB (Real-Time Bidding) advertising.
 type RTBSource struct {
 	ID          uint64 `json:"ID"`
 	AccountID   uint64 `json:"accountID"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	// Status of source approval
+	// Status of source approval, indicating whether the source is approved or not.
 	Status models.ApproveStatus `json:"status"`
-	// Active status of source
+	// Active status of the source, indicating whether the source is currently active.
 	Active models.ActiveStatus `json:"active"`
-	// Flags of source
+	// Flags associated with the source, stored as a JSON object.
 	Flags         types.NullableJSON `json:"flags"`
 	Protocol      string             `json:"protocol"`
 	MinimalWeight float64            `json:"minimalWeight"`
-	// After approval URL can't be changed
+	// URL of the RTB source. This cannot be changed after approval.
 	URL                   string               `json:"URL"`
 	Method                string               `json:"method"`
 	RequestType           RTBRequestFormatType `json:"requestType"`
@@ -807,23 +807,106 @@ type RTBSource struct {
 	DeletedAt             *time.Time           `json:"deletedAt,omitempty"`
 }
 
-// RTBSourceEdge wrapper to access of RTBSource objects
+// Input for creating a new RTBSource.
+type RTBSourceCreateInput struct {
+	AccountID *uint64 `json:"accountID,omitempty"`
+	// Title of the RTB source.
+	Title string `json:"title"`
+	// Description of the RTB source.
+	Description *string `json:"description,omitempty"`
+	// Flags associated with the source.
+	Flags         *types.NullableJSON `json:"flags,omitempty"`
+	Protocol      string              `json:"protocol"`
+	MinimalWeight *float64            `json:"minimalWeight,omitempty"`
+	// URL of the RTB source. Cannot be changed after approval.
+	URL                   string               `json:"URL"`
+	Method                string               `json:"method"`
+	RequestType           RTBRequestFormatType `json:"requestType"`
+	Headers               *types.NullableJSON  `json:"headers,omitempty"`
+	Rps                   int                  `json:"RPS"`
+	Timeout               int                  `json:"timeout"`
+	Accuracy              float64              `json:"accuracy"`
+	PriceCorrectionReduce float64              `json:"priceCorrectionReduce"`
+	AuctionType           AuctionType          `json:"auctionType"`
+	MinBid                float64              `json:"minBid"`
+	MaxBid                float64              `json:"maxBid"`
+	Formats               []string             `json:"formats,omitempty"`
+	DeviceTypes           []int64              `json:"deviceTypes,omitempty"`
+	Devices               []int64              `json:"devices,omitempty"`
+	Os                    []int64              `json:"OS,omitempty"`
+	Browsers              []int64              `json:"browsers,omitempty"`
+	Carriers              []int64              `json:"carriers,omitempty"`
+	Categories            []int64              `json:"categories,omitempty"`
+	Countries             []string             `json:"countries,omitempty"`
+	Languages             []string             `json:"languages,omitempty"`
+	Applications          []int64              `json:"applications,omitempty"`
+	Domains               []string             `json:"domains,omitempty"`
+	Zones                 []int64              `json:"zones,omitempty"`
+	Secure                *AnyOnlyExclude      `json:"secure,omitempty"`
+	AdBlock               *AnyOnlyExclude      `json:"adBlock,omitempty"`
+	PrivateBrowsing       *AnyOnlyExclude      `json:"privateBrowsing,omitempty"`
+	IP                    *AnyIPv4IPv6         `json:"IP,omitempty"`
+	Config                *types.NullableJSON  `json:"config,omitempty"`
+}
+
+// RTBSourceEdge wrapper to access RTBSource objects in a paginated list.
 type RTBSourceEdge struct {
 	// A cursor for use in pagination.
 	Cursor string `json:"cursor"`
-	// The RTBSource at the end of RTBSourceEdge.
+	// The RTBSource at the end of the RTBSourceEdge.
 	Node *RTBSource `json:"node"`
 }
 
-type RTBSourceInput struct {
-	AccountID   *uint64 `json:"accountID,omitempty"`
-	Title       *string `json:"title,omitempty"`
+// Filter options for listing RTBSource objects.
+type RTBSourceListFilter struct {
+	ID          []uint64               `json:"ID,omitempty"`
+	AccountID   *uint64                `json:"accountID,omitempty"`
+	Protocol    []string               `json:"protocol,omitempty"`
+	Status      *models.ApproveStatus  `json:"status,omitempty"`
+	Active      *models.ActiveStatus   `json:"active,omitempty"`
+	Method      []string               `json:"method,omitempty"`
+	RequestType []RTBRequestFormatType `json:"requestType,omitempty"`
+	AuctionType []AuctionType          `json:"auctionType,omitempty"`
+}
+
+// Ordering options for listing RTBSource objects.
+type RTBSourceListOrder struct {
+	ID          *models.Ordering `json:"ID,omitempty"`
+	AccountID   *models.Ordering `json:"accountID,omitempty"`
+	Title       *models.Ordering `json:"title,omitempty"`
+	Protocol    *models.Ordering `json:"protocol,omitempty"`
+	Status      *models.Ordering `json:"status,omitempty"`
+	Active      *models.Ordering `json:"active,omitempty"`
+	Method      *models.Ordering `json:"method,omitempty"`
+	RequestType *models.Ordering `json:"requestType,omitempty"`
+	AuctionType *models.Ordering `json:"auctionType,omitempty"`
+	CreatedAt   *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt   *models.Ordering `json:"updatedAt,omitempty"`
+	DeletedAt   *models.Ordering `json:"deletedAt,omitempty"`
+}
+
+// RTBSourcePayload wrapper to access the results of RTBSource operations.
+type RTBSourcePayload struct {
+	// A unique identifier for the client performing the mutation.
+	ClientMutationID string `json:"clientMutationID"`
+	// The ID of the RTBSource created or affected by the mutation.
+	SourceID uint64 `json:"sourceID"`
+	// The RTBSource object accessible by a client.
+	Source *RTBSource `json:"source"`
+}
+
+// Input for updating an existing RTBSource.
+type RTBSourceUpdateInput struct {
+	AccountID *uint64 `json:"accountID,omitempty"`
+	// Title of the RTB source.
+	Title *string `json:"title,omitempty"`
+	// Description of the RTB source.
 	Description *string `json:"description,omitempty"`
-	// Flags of source
+	// Flags associated with the source.
 	Flags         *types.NullableJSON `json:"flags,omitempty"`
 	Protocol      *string             `json:"protocol,omitempty"`
 	MinimalWeight *float64            `json:"minimalWeight,omitempty"`
-	// After approval URL can't be changed
+	// URL of the RTB source. Cannot be changed after approval.
 	URL                   *string               `json:"URL,omitempty"`
 	Method                *string               `json:"method,omitempty"`
 	RequestType           *RTBRequestFormatType `json:"requestType,omitempty"`
@@ -852,30 +935,6 @@ type RTBSourceInput struct {
 	PrivateBrowsing       *AnyOnlyExclude       `json:"privateBrowsing,omitempty"`
 	IP                    *AnyIPv4IPv6          `json:"IP,omitempty"`
 	Config                *types.NullableJSON   `json:"config,omitempty"`
-}
-
-type RTBSourceListFilter struct {
-	ID        []uint64 `json:"ID,omitempty"`
-	AccountID *uint64  `json:"accountID,omitempty"`
-}
-
-type RTBSourceListOrder struct {
-	ID        *models.Ordering `json:"ID,omitempty"`
-	AccountID *models.Ordering `json:"accountID,omitempty"`
-	Title     *models.Ordering `json:"title,omitempty"`
-	CreatedAt *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt *models.Ordering `json:"updatedAt,omitempty"`
-	DeletedAt *models.Ordering `json:"deletedAt,omitempty"`
-}
-
-// RTBSourcePayload wrapper to access of RTBSource oprtation results
-type RTBSourcePayload struct {
-	// A unique identifier for the client performing the mutation.
-	ClientMutationID string `json:"clientMutationID"`
-	// The RTBSource that was created by this mutation.
-	SourceID uint64 `json:"sourceID"`
-	// The RTBSource object accessible by a client.
-	Source *RTBSource `json:"source"`
 }
 
 type StatisticAdItem struct {

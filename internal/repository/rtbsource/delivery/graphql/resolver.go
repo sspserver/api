@@ -41,12 +41,12 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.RTBSourceP
 }
 
 // List RTBSources is the resolver for the listRTBSources field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.RTBSourceListFilter, order *qmodels.RTBSourceListOrder, page *qmodels.Page) (*connectors.RTBSourceConnection, error) {
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.RTBSourceListFilter, order []*qmodels.RTBSourceListOrder, page *qmodels.Page) (*connectors.RTBSourceConnection, error) {
 	return connectors.NewRTBSourceConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // Create RTBSource is the resolver for the createRTBSource field.
-func (r *QueryResolver) Create(ctx context.Context, input qmodels.RTBSourceInput) (*qmodels.RTBSourcePayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qmodels.RTBSourceCreateInput) (*qmodels.RTBSourcePayload, error) {
 	var source models.RTBSource
 	input.FillModel(&source)
 
@@ -63,7 +63,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.RTBSourceInput
 }
 
 // Update RTBSource is the resolver for the updateRTBSource field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.RTBSourceInput) (*qmodels.RTBSourcePayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.RTBSourceUpdateInput) (*qmodels.RTBSourcePayload, error) {
 	source, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err

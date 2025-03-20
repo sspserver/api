@@ -13,12 +13,12 @@ import (
 )
 
 // CreateRTBSource is the resolver for the createRTBSource field.
-func (r *mutationResolver) CreateRTBSource(ctx context.Context, input models.RTBSourceInput) (*models.RTBSourcePayload, error) {
+func (r *mutationResolver) CreateRTBSource(ctx context.Context, input models.RTBSourceCreateInput) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Create(ctx, input)
 }
 
 // UpdateRTBSource is the resolver for the updateRTBSource field.
-func (r *mutationResolver) UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceInput) (*models.RTBSourcePayload, error) {
+func (r *mutationResolver) UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceUpdateInput) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Update(ctx, id, input)
 }
 
@@ -53,6 +53,6 @@ func (r *queryResolver) RTBSource(ctx context.Context, id uint64) (*models.RTBSo
 }
 
 // ListRTBSources is the resolver for the listRTBSources field.
-func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order *models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error) {
+func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error) {
 	return r.rtbsource.List(ctx, filter, order, page)
 }

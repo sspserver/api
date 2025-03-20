@@ -73,6 +73,14 @@ func (fl *RTBSourceListFilter) Filter() *rtbsource.Filter {
 	return &rtbsource.Filter{
 		ID:        fl.ID,
 		AccountID: gocast.PtrAsValue(fl.AccountID, 0),
+		Protocol:  fl.Protocol,
+		Status:    ApproveStatusPtr(fl.Status),
+		Active:    ActiveStatusPtr(fl.Active),
+		Method:    fl.Method,
+		RequestType: xtypes.SliceApply(fl.RequestType,
+			func(t RTBRequestFormatType) models.RTBRequestType { return t.RequestType() }),
+		AuctionType: xtypes.SliceApply(fl.AuctionType,
+			func(t AuctionType) models.AuctionType { return t.AuctionType() }),
 	}
 }
 
@@ -81,14 +89,128 @@ func (ord *RTBSourceListOrder) Order() *rtbsource.ListOrder {
 		return nil
 	}
 	return &rtbsource.ListOrder{
-		Title:     ord.Title.AsOrder(),
-		AccountID: ord.AccountID.AsOrder(),
-		CreatedAt: ord.CreatedAt.AsOrder(),
-		UpdatedAt: ord.UpdatedAt.AsOrder(),
+		ID:          ord.ID.AsOrder(),
+		Title:       ord.Title.AsOrder(),
+		AccountID:   ord.AccountID.AsOrder(),
+		Protocol:    ord.Protocol.AsOrder(),
+		Status:      ord.Status.AsOrder(),
+		Active:      ord.Active.AsOrder(),
+		Method:      ord.Method.AsOrder(),
+		RequestType: ord.RequestType.AsOrder(),
+		AuctionType: ord.AuctionType.AsOrder(),
+		CreatedAt:   ord.CreatedAt.AsOrder(),
+		UpdatedAt:   ord.UpdatedAt.AsOrder(),
 	}
 }
 
-func (inp *RTBSourceInput) FillModel(m *models.RTBSource) {
+func (ord *RTBSourceListOrder) Fill(order *rtbsource.ListOrder) {
+	if ord == nil || order == nil {
+		return
+	}
+	if ord.ID != nil {
+		order.ID = ord.ID.AsOrder()
+	}
+	if ord.Title != nil {
+		order.Title = ord.Title.AsOrder()
+	}
+	if ord.AccountID != nil {
+		order.AccountID = ord.AccountID.AsOrder()
+	}
+	if ord.Protocol != nil {
+		order.Protocol = ord.Protocol.AsOrder()
+	}
+	if ord.Status != nil {
+		order.Status = ord.Status.AsOrder()
+	}
+	if ord.Active != nil {
+		order.Active = ord.Active.AsOrder()
+	}
+	if ord.Method != nil {
+		order.Method = ord.Method.AsOrder()
+	}
+	if ord.RequestType != nil {
+		order.RequestType = ord.RequestType.AsOrder()
+	}
+	if ord.AuctionType != nil {
+		order.AuctionType = ord.AuctionType.AsOrder()
+	}
+	if ord.CreatedAt != nil {
+		order.CreatedAt = ord.CreatedAt.AsOrder()
+	}
+	if ord.UpdatedAt != nil {
+		order.UpdatedAt = ord.UpdatedAt.AsOrder()
+	}
+}
+
+func (inp *RTBSourceCreateInput) FillModel(m *models.RTBSource) {
+	*m = models.RTBSource{
+		AccountID:   gocast.PtrAsValue(inp.AccountID, 0),
+		Title:       inp.Title,
+		Description: gocast.PtrAsValue(inp.Description, ""),
+
+		Flags: gocast.IfThenExec(inp.Flags != nil,
+			func() gosql.NullableJSON[models.RTBSourceFlags] {
+				return *gosql.MustNullableJSON[models.RTBSourceFlags](
+					inp.Flags.DataOr(nil),
+				)
+			},
+			func() gosql.NullableJSON[models.RTBSourceFlags] {
+				return gosql.NullableJSON[models.RTBSourceFlags]{}
+			}),
+		Protocol:      inp.Protocol,
+		MinimalWeight: gocast.PtrAsValue(inp.MinimalWeight, 0),
+
+		URL:         inp.URL,
+		Method:      inp.Method,
+		RequestType: gocast.PtrAsValue(inp.RequestType.RequestTypePtr(), models.RTBRequestTypeJSON),
+		Headers: gocast.IfThenExec(inp.Headers != nil,
+			func() gosql.NullableJSON[map[string]string] {
+				return *gosql.MustNullableJSON[map[string]string](
+					inp.Headers.DataOr(nil),
+				)
+			},
+			func() gosql.NullableJSON[map[string]string] {
+				return gosql.NullableJSON[map[string]string]{}
+			}),
+		RPS:     inp.Rps,
+		Timeout: inp.Timeout,
+
+		Accuracy:              inp.Accuracy,
+		PriceCorrectionReduce: inp.PriceCorrectionReduce,
+		AuctionType:           gocast.PtrAsValue(inp.AuctionType.AuctionTypePtr(), models.AuctionTypeFirstPrice),
+
+		MinBid: inp.MinBid,
+		MaxBid: inp.MaxBid,
+
+		// Targeting filters
+		Formats:         inp.Formats,
+		DeviceTypes:     inp.DeviceTypes,
+		Devices:         inp.Devices,
+		OS:              inp.Os,
+		Browsers:        inp.Browsers,
+		Carriers:        inp.Carriers,
+		Categories:      inp.Categories,
+		Countries:       inp.Countries,
+		Languages:       inp.Languages,
+		Applications:    inp.Applications,
+		Domains:         inp.Domains,
+		Zones:           inp.Zones,
+		Secure:          gocast.PtrAsValue(inp.Secure.IntPtr(), 0),
+		AdBlock:         gocast.PtrAsValue(inp.AdBlock.IntPtr(), 0),
+		PrivateBrowsing: gocast.PtrAsValue(inp.PrivateBrowsing.IntPtr(), 0),
+		IP:              gocast.PtrAsValue(inp.IP.IntPtr(), 0),
+
+		Config: gocast.IfThenExec(inp.Config != nil,
+			func() gosql.NullableJSON[any] {
+				return *(*gosql.NullableJSON[any])(inp.Config)
+			},
+			func() gosql.NullableJSON[any] {
+				return gosql.NullableJSON[any]{}
+			}),
+	}
+}
+
+func (inp *RTBSourceUpdateInput) FillModel(m *models.RTBSource) {
 	m.AccountID = gocast.PtrAsValue(inp.AccountID, m.AccountID)
 	m.Title = gocast.PtrAsValue(inp.Title, m.Title)
 	m.Description = gocast.PtrAsValue(inp.Description, m.Description)
