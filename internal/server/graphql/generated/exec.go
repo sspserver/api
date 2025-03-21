@@ -8890,7 +8890,7 @@ input ApplicationCreateInput {
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String! @length(min: 1, max: 255, trim: true)
+  URI:          String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
 
   type:         ApplicationType
   platform:     PlatformType
@@ -55378,12 +55378,7 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
 
 			directive1 := func(ctx context.Context) (any, error) {
-				min, err := ec.unmarshalNInt2int(ctx, 1)
-				if err != nil {
-					var zeroVal string
-					return zeroVal, err
-				}
-				max, err := ec.unmarshalNInt2int(ctx, 255)
+				pattern, err := ec.unmarshalNString2string(ctx, "^[a-zA-Z0-9.-]*$")
 				if err != nil {
 					var zeroVal string
 					return zeroVal, err
@@ -55398,11 +55393,11 @@ func (ec *executionContext) unmarshalInputApplicationCreateInput(ctx context.Con
 					var zeroVal string
 					return zeroVal, err
 				}
-				if ec.directives.Length == nil {
+				if ec.directives.Regex == nil {
 					var zeroVal string
-					return zeroVal, errors.New("directive length is not implemented")
+					return zeroVal, errors.New("directive regex is not implemented")
 				}
-				return ec.directives.Length(ctx, obj, directive0, min, max, trim, ornil)
+				return ec.directives.Regex(ctx, obj, directive0, pattern, trim, ornil)
 			}
 
 			tmp, err := directive1(ctx)
