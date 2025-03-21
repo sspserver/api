@@ -179,7 +179,7 @@ input ApplicationCreateInput {
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String! @length(min: 1, max: 255, trim: true)
+  URI:          String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
 
   type:         ApplicationType
   platform:     PlatformType
