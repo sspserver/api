@@ -28,22 +28,22 @@ func (r *mutationResolver) DeleteZone(ctx context.Context, id uint64, msg *strin
 }
 
 // ActivateZone is the resolver for the activateZone field.
-func (r *mutationResolver) ActivateZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) ActivateZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error) {
 	return r.zone.Run(ctx, id, msg)
 }
 
 // DeactivateZone is the resolver for the deactivateZone field.
-func (r *mutationResolver) DeactivateZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) DeactivateZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error) {
 	return r.zone.Pause(ctx, id, msg)
 }
 
 // ApproveZone is the resolver for the approveZone field.
-func (r *mutationResolver) ApproveZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) ApproveZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error) {
 	return r.zone.Approve(ctx, id, msg)
 }
 
 // RejectZone is the resolver for the rejectZone field.
-func (r *mutationResolver) RejectZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RejectZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error) {
 	return r.zone.Reject(ctx, id, msg)
 }
 

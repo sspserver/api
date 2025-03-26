@@ -28,22 +28,22 @@ func (r *mutationResolver) DeleteApplication(ctx context.Context, id uint64, msg
 }
 
 // RunApplication is the resolver for the runApplication field.
-func (r *mutationResolver) RunApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RunApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error) {
 	return r.app.Run(ctx, id, msg)
 }
 
 // PauseApplication is the resolver for the pauseApplication field.
-func (r *mutationResolver) PauseApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) PauseApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error) {
 	return r.app.Pause(ctx, id, msg)
 }
 
 // ApproveApplication is the resolver for the approveApplication field.
-func (r *mutationResolver) ApproveApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) ApproveApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error) {
 	return r.app.Approve(ctx, id, msg)
 }
 
 // RejectApplication is the resolver for the rejectApplication field.
-func (r *mutationResolver) RejectApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RejectApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error) {
 	return r.app.Reject(ctx, id, msg)
 }
 

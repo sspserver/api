@@ -215,20 +215,20 @@ extend type Mutation {
   """
   Activate the Zone
   """
-  activateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+  activateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
 
   """
   Deactivate the Zone
   """
-  deactivateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+  deactivateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
 
   """
   Approve the Zone to be active
   """
-  approveZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.approve.*"])
+  approveZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.approve.*"])
 
   """
   Reject the Zone
   """
-  rejectZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.reject.*"])
+  rejectZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.reject.*"])
 }

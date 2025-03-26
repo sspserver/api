@@ -247,20 +247,20 @@ extend type Mutation {
   """
   Run the Application
   """
-  runApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+  runApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Pause the Application
   """
-  pauseApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Approve the Application to be active
   """
-  approveApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.approve.*"])
+  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.approve.*"])
 
   """
   Reject the Application
   """
-  rejectApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.reject.*"])
+  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.reject.*"])
 }

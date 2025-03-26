@@ -108,49 +108,57 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*ql
 }
 
 // Run Zone is the resolver for the runApplication field.
-func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
 	err := r.uc.Run(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	zone, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ZoneID:           id,
+		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
 }
 
 // Pause Zone is the resolver for the pauseApplication field.
-func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
 	err := r.uc.Pause(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	zone, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ZoneID:           id,
+		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
 }
 
 // Approve Zone is the resolver for the approveApplication field.
-func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
 	err := r.uc.Approve(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	zone, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ZoneID:           id,
+		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
 }
 
 // Reject Zone is the resolver for the rejectApplication field.
-func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
 	err := r.uc.Reject(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	zone, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ZoneID:           id,
+		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
 }

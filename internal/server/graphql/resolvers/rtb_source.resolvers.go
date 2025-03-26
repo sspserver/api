@@ -28,22 +28,22 @@ func (r *mutationResolver) DeleteRTBSource(ctx context.Context, id uint64, msg *
 }
 
 // RunRTBSource is the resolver for the runRTBSource field.
-func (r *mutationResolver) RunRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RunRTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Run(ctx, id)
 }
 
 // PauseRTBSource is the resolver for the pauseRTBSource field.
-func (r *mutationResolver) PauseRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error) {
+func (r *mutationResolver) PauseRTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Pause(ctx, id)
 }
 
 // ApproveRTBSource is the resolver for the approveRTBSource field.
-func (r *mutationResolver) ApproveRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) ApproveRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Approve(ctx, id, msg)
 }
 
 // RejectRTBSource is the resolver for the rejectRTBSource field.
-func (r *mutationResolver) RejectRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RejectRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error) {
 	return r.rtbsource.Reject(ctx, id, msg)
 }
 
