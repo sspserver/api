@@ -105,31 +105,35 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 }
 
 // Run RTBSource is the resolver for the runRTBSource field.
-func (r *QueryResolver) Run(ctx context.Context, id uint64) (*qmodels.StatusResponse, error) {
+func (r *QueryResolver) Run(ctx context.Context, id uint64) (*qmodels.RTBSourcePayload, error) {
 	err := r.uc.Run(ctx, id, "")
 	if err != nil {
 		return nil, err
 	}
-	return &qmodels.StatusResponse{
+	source, _ := r.uc.Get(ctx, id)
+	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qmodels.ResponseStatusSuccess,
+		SourceID:         id,
+		Source:           qmodels.FromRTBSourceModel(source),
 	}, nil
 }
 
 // PauseRTBSource is the resolver for the pauseRTBSource field.
-func (r *QueryResolver) Pause(ctx context.Context, id uint64) (*qmodels.StatusResponse, error) {
+func (r *QueryResolver) Pause(ctx context.Context, id uint64) (*qmodels.RTBSourcePayload, error) {
 	err := r.uc.Pause(ctx, id, "")
 	if err != nil {
 		return nil, err
 	}
-	return &qmodels.StatusResponse{
+	source, _ := r.uc.Get(ctx, id)
+	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qmodels.ResponseStatusSuccess,
+		SourceID:         id,
+		Source:           qmodels.FromRTBSourceModel(source),
 	}, nil
 }
 
 // Approve RTBSource is the resolver for the approveRTBSource field.
-func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qmodels.StatusResponse, error) {
+func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qmodels.RTBSourcePayload, error) {
 	err := r.uc.Approve(ctx, id,
 		gocast.IfThenExec(msg != nil,
 			func() string { return *msg },
@@ -138,14 +142,16 @@ func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*q
 	if err != nil {
 		return nil, err
 	}
-	return &qmodels.StatusResponse{
+	source, _ := r.uc.Get(ctx, id)
+	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qmodels.ResponseStatusSuccess,
+		SourceID:         id,
+		Source:           qmodels.FromRTBSourceModel(source),
 	}, nil
 }
 
 // Reject RTBSource is the resolver for the rejectRTBSource field.
-func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qmodels.StatusResponse, error) {
+func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qmodels.RTBSourcePayload, error) {
 	err := r.uc.Reject(ctx, id,
 		gocast.IfThenExec(msg != nil,
 			func() string { return *msg },
@@ -154,8 +160,10 @@ func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qm
 	if err != nil {
 		return nil, err
 	}
-	return &qmodels.StatusResponse{
+	source, _ := r.uc.Get(ctx, id)
+	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qmodels.ResponseStatusSuccess,
+		SourceID:         id,
+		Source:           qmodels.FromRTBSourceModel(source),
 	}, nil
 }

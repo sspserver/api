@@ -1055,10 +1055,10 @@ type MutationResolver interface {
 	CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error)
 	UpdateApplication(ctx context.Context, id uint64, input models.ApplicationUpdateInput) (*models.ApplicationPayload, error)
 	DeleteApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
-	RunApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	PauseApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	ApproveApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	RejectApplication(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
+	RunApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
+	PauseApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
+	ApproveApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
+	RejectApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
 	CreateBrowser(ctx context.Context, input models.BrowserCreateInput) (*models.BrowserPayload, error)
 	UpdateBrowser(ctx context.Context, id uint64, input models.BrowserUpdateInput) (*models.BrowserPayload, error)
 	DeleteBrowser(ctx context.Context, id uint64, msg *string) (*models.BrowserPayload, error)
@@ -1077,22 +1077,22 @@ type MutationResolver interface {
 	CreateRTBSource(ctx context.Context, input models.RTBSourceCreateInput) (*models.RTBSourcePayload, error)
 	UpdateRTBSource(ctx context.Context, id uint64, input models.RTBSourceUpdateInput) (*models.RTBSourcePayload, error)
 	DeleteRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error)
-	RunRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error)
-	PauseRTBSource(ctx context.Context, id uint64) (*models1.StatusResponse, error)
-	ApproveRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	RejectRTBSource(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
+	RunRTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
+	PauseRTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
+	ApproveRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error)
+	RejectRTBSource(ctx context.Context, id uint64, msg *string) (*models.RTBSourcePayload, error)
 	CreateTrafficRouter(ctx context.Context, input models.TrafficRouterCreateInput) (*models.TrafficRouterPayload, error)
 	UpdateTrafficRouter(ctx context.Context, id uint64, input models.TrafficRouterUpdateInput) (*models.TrafficRouterPayload, error)
 	DeleteTrafficRouter(ctx context.Context, id uint64) (*models.TrafficRouterPayload, error)
-	RunTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error)
-	PauseTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error)
+	RunTrafficRouter(ctx context.Context, id uint64, msg string) (*models.TrafficRouterPayload, error)
+	PauseTrafficRouter(ctx context.Context, id uint64, msg string) (*models.TrafficRouterPayload, error)
 	CreateZone(ctx context.Context, input models.ZoneInput) (*models.ZonePayload, error)
 	UpdateZone(ctx context.Context, id uint64, input models.ZoneInput) (*models.ZonePayload, error)
 	DeleteZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
-	ActivateZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	DeactivateZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	ApproveZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
-	RejectZone(ctx context.Context, id uint64, msg *string) (*models1.StatusResponse, error)
+	ActivateZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
+	DeactivateZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
+	ApproveZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
+	RejectZone(ctx context.Context, id uint64, msg *string) (*models.ZonePayload, error)
 }
 type OSResolver interface {
 	Versions(ctx context.Context, obj *models.Os) ([]*models.Os, error)
@@ -8958,22 +8958,22 @@ extend type Mutation {
   """
   Run the Application
   """
-  runApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+  runApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Pause the Application
   """
-  pauseApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.update.*"])
+  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
 
   """
   Approve the Application to be active
   """
-  approveApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.approve.*"])
+  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.approve.*"])
 
   """
   Reject the Application
   """
-  rejectApplication(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_application.reject.*"])
+  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.reject.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/browser.graphql", Input: `"""
@@ -10873,22 +10873,22 @@ extend type Mutation {
   """
   Run an RTBSource to start receiving data from it.
   """
-  runRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+  runRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
 
   """
   Pause an RTBSource to stop receiving data from it.
   """
-  pauseRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+  pauseRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
 
   """
   Approve an RTBSource to allow it to start receiving data.
   """
-  approveRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.approve.*"])
+  approveRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.approve.*"])
 
   """
   Reject an RTBSource to prevent it from receiving data.
   """
-  rejectRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.reject.*"])
+  rejectRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.reject.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/schema.graphql", Input: `# https://github.com/prisma/graphql-import
@@ -11337,12 +11337,12 @@ extend type Mutation {
   """
   Run traffic router
   """
-  runTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.run.*"])
+  runTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.run.*"])
 
   """
   Pause traffic router
   """
-  pauseTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.pause.*"])
+  pauseTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.pause.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/zone.graphql", Input: `"""
@@ -11562,22 +11562,22 @@ extend type Mutation {
   """
   Activate the Zone
   """
-  activateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+  activateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
 
   """
   Deactivate the Zone
   """
-  deactivateZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.update.*"])
+  deactivateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
 
   """
   Approve the Zone to be active
   """
-  approveZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.approve.*"])
+  approveZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.approve.*"])
 
   """
   Reject the Zone
   """
-  rejectZone(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["adv_zone.reject.*"])
+  rejectZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.reject.*"])
 }`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
@@ -33140,11 +33140,11 @@ func (ec *executionContext) _Mutation_runApplication(ctx context.Context, field 
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_application.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -33157,10 +33157,10 @@ func (ec *executionContext) _Mutation_runApplication(ctx context.Context, field 
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ApplicationPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ApplicationPayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -33169,9 +33169,9 @@ func (ec *executionContext) _Mutation_runApplication(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ApplicationPayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNApplicationPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_runApplication(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -33183,13 +33183,13 @@ func (ec *executionContext) fieldContext_Mutation_runApplication(ctx context.Con
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ApplicationPayload_clientMutationID(ctx, field)
+			case "applicationID":
+				return ec.fieldContext_ApplicationPayload_applicationID(ctx, field)
+			case "application":
+				return ec.fieldContext_ApplicationPayload_application(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ApplicationPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -33227,11 +33227,11 @@ func (ec *executionContext) _Mutation_pauseApplication(ctx context.Context, fiel
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_application.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -33244,10 +33244,10 @@ func (ec *executionContext) _Mutation_pauseApplication(ctx context.Context, fiel
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ApplicationPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ApplicationPayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -33256,9 +33256,9 @@ func (ec *executionContext) _Mutation_pauseApplication(ctx context.Context, fiel
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ApplicationPayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNApplicationPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_pauseApplication(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -33270,13 +33270,13 @@ func (ec *executionContext) fieldContext_Mutation_pauseApplication(ctx context.C
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ApplicationPayload_clientMutationID(ctx, field)
+			case "applicationID":
+				return ec.fieldContext_ApplicationPayload_applicationID(ctx, field)
+			case "application":
+				return ec.fieldContext_ApplicationPayload_application(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ApplicationPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -33314,11 +33314,11 @@ func (ec *executionContext) _Mutation_approveApplication(ctx context.Context, fi
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_application.approve.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -33331,10 +33331,10 @@ func (ec *executionContext) _Mutation_approveApplication(ctx context.Context, fi
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ApplicationPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ApplicationPayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -33343,9 +33343,9 @@ func (ec *executionContext) _Mutation_approveApplication(ctx context.Context, fi
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ApplicationPayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNApplicationPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_approveApplication(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -33357,13 +33357,13 @@ func (ec *executionContext) fieldContext_Mutation_approveApplication(ctx context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ApplicationPayload_clientMutationID(ctx, field)
+			case "applicationID":
+				return ec.fieldContext_ApplicationPayload_applicationID(ctx, field)
+			case "application":
+				return ec.fieldContext_ApplicationPayload_application(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ApplicationPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -33401,11 +33401,11 @@ func (ec *executionContext) _Mutation_rejectApplication(ctx context.Context, fie
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_application.reject.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ApplicationPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -33418,10 +33418,10 @@ func (ec *executionContext) _Mutation_rejectApplication(ctx context.Context, fie
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ApplicationPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ApplicationPayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -33430,9 +33430,9 @@ func (ec *executionContext) _Mutation_rejectApplication(ctx context.Context, fie
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ApplicationPayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNApplicationPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_rejectApplication(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -33444,13 +33444,13 @@ func (ec *executionContext) fieldContext_Mutation_rejectApplication(ctx context.
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ApplicationPayload_clientMutationID(ctx, field)
+			case "applicationID":
+				return ec.fieldContext_ApplicationPayload_applicationID(ctx, field)
+			case "application":
+				return ec.fieldContext_ApplicationPayload_application(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ApplicationPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35006,11 +35006,11 @@ func (ec *executionContext) _Mutation_runRTBSource(ctx context.Context, field gr
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"rtb_source.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35023,10 +35023,10 @@ func (ec *executionContext) _Mutation_runRTBSource(ctx context.Context, field gr
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.RTBSourcePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.RTBSourcePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -35035,9 +35035,9 @@ func (ec *executionContext) _Mutation_runRTBSource(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.RTBSourcePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourcePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_runRTBSource(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35049,13 +35049,13 @@ func (ec *executionContext) fieldContext_Mutation_runRTBSource(ctx context.Conte
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_RTBSourcePayload_clientMutationID(ctx, field)
+			case "sourceID":
+				return ec.fieldContext_RTBSourcePayload_sourceID(ctx, field)
+			case "source":
+				return ec.fieldContext_RTBSourcePayload_source(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type RTBSourcePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35093,11 +35093,11 @@ func (ec *executionContext) _Mutation_pauseRTBSource(ctx context.Context, field 
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"rtb_source.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35110,10 +35110,10 @@ func (ec *executionContext) _Mutation_pauseRTBSource(ctx context.Context, field 
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.RTBSourcePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.RTBSourcePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -35122,9 +35122,9 @@ func (ec *executionContext) _Mutation_pauseRTBSource(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.RTBSourcePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourcePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_pauseRTBSource(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35136,13 +35136,13 @@ func (ec *executionContext) fieldContext_Mutation_pauseRTBSource(ctx context.Con
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_RTBSourcePayload_clientMutationID(ctx, field)
+			case "sourceID":
+				return ec.fieldContext_RTBSourcePayload_sourceID(ctx, field)
+			case "source":
+				return ec.fieldContext_RTBSourcePayload_source(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type RTBSourcePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35180,11 +35180,11 @@ func (ec *executionContext) _Mutation_approveRTBSource(ctx context.Context, fiel
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"rtb_source.approve.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35197,10 +35197,10 @@ func (ec *executionContext) _Mutation_approveRTBSource(ctx context.Context, fiel
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.RTBSourcePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.RTBSourcePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -35209,9 +35209,9 @@ func (ec *executionContext) _Mutation_approveRTBSource(ctx context.Context, fiel
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.RTBSourcePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourcePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_approveRTBSource(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35223,13 +35223,13 @@ func (ec *executionContext) fieldContext_Mutation_approveRTBSource(ctx context.C
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_RTBSourcePayload_clientMutationID(ctx, field)
+			case "sourceID":
+				return ec.fieldContext_RTBSourcePayload_sourceID(ctx, field)
+			case "source":
+				return ec.fieldContext_RTBSourcePayload_source(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type RTBSourcePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35267,11 +35267,11 @@ func (ec *executionContext) _Mutation_rejectRTBSource(ctx context.Context, field
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"rtb_source.reject.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.RTBSourcePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35284,10 +35284,10 @@ func (ec *executionContext) _Mutation_rejectRTBSource(ctx context.Context, field
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.RTBSourcePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.RTBSourcePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -35296,9 +35296,9 @@ func (ec *executionContext) _Mutation_rejectRTBSource(ctx context.Context, field
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.RTBSourcePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐRTBSourcePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_rejectRTBSource(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35310,13 +35310,13 @@ func (ec *executionContext) fieldContext_Mutation_rejectRTBSource(ctx context.Co
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_RTBSourcePayload_clientMutationID(ctx, field)
+			case "sourceID":
+				return ec.fieldContext_RTBSourcePayload_sourceID(ctx, field)
+			case "source":
+				return ec.fieldContext_RTBSourcePayload_source(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type RTBSourcePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35606,11 +35606,11 @@ func (ec *executionContext) _Mutation_runTrafficRouter(ctx context.Context, fiel
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.run.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.TrafficRouterPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.TrafficRouterPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35623,18 +35623,18 @@ func (ec *executionContext) _Mutation_runTrafficRouter(ctx context.Context, fiel
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.TrafficRouterPayload)
 	fc.Result = res
-	return ec.marshalOStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_runTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35646,13 +35646,13 @@ func (ec *executionContext) fieldContext_Mutation_runTrafficRouter(ctx context.C
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -35690,11 +35690,11 @@ func (ec *executionContext) _Mutation_pauseTrafficRouter(ctx context.Context, fi
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.pause.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.TrafficRouterPayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.TrafficRouterPayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -35707,18 +35707,18 @@ func (ec *executionContext) _Mutation_pauseTrafficRouter(ctx context.Context, fi
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.TrafficRouterPayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.TrafficRouterPayload`, tmp)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.TrafficRouterPayload)
 	fc.Result = res
-	return ec.marshalOStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalOTrafficRouterPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐTrafficRouterPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_pauseTrafficRouter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -35730,13 +35730,13 @@ func (ec *executionContext) fieldContext_Mutation_pauseTrafficRouter(ctx context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_TrafficRouterPayload_clientMutationID(ctx, field)
+			case "routerID":
+				return ec.fieldContext_TrafficRouterPayload_routerID(ctx, field)
+			case "router":
+				return ec.fieldContext_TrafficRouterPayload_router(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TrafficRouterPayload", field.Name)
 		},
 	}
 	defer func() {
@@ -36032,11 +36032,11 @@ func (ec *executionContext) _Mutation_activateZone(ctx context.Context, field gr
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_zone.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -36049,10 +36049,10 @@ func (ec *executionContext) _Mutation_activateZone(ctx context.Context, field gr
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ZonePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ZonePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -36061,9 +36061,9 @@ func (ec *executionContext) _Mutation_activateZone(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ZonePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNZonePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZonePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_activateZone(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -36075,13 +36075,13 @@ func (ec *executionContext) fieldContext_Mutation_activateZone(ctx context.Conte
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ZonePayload_clientMutationID(ctx, field)
+			case "zoneID":
+				return ec.fieldContext_ZonePayload_zoneID(ctx, field)
+			case "zone":
+				return ec.fieldContext_ZonePayload_zone(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ZonePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -36119,11 +36119,11 @@ func (ec *executionContext) _Mutation_deactivateZone(ctx context.Context, field 
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_zone.update.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -36136,10 +36136,10 @@ func (ec *executionContext) _Mutation_deactivateZone(ctx context.Context, field 
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ZonePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ZonePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -36148,9 +36148,9 @@ func (ec *executionContext) _Mutation_deactivateZone(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ZonePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNZonePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZonePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_deactivateZone(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -36162,13 +36162,13 @@ func (ec *executionContext) fieldContext_Mutation_deactivateZone(ctx context.Con
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ZonePayload_clientMutationID(ctx, field)
+			case "zoneID":
+				return ec.fieldContext_ZonePayload_zoneID(ctx, field)
+			case "zone":
+				return ec.fieldContext_ZonePayload_zone(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ZonePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -36206,11 +36206,11 @@ func (ec *executionContext) _Mutation_approveZone(ctx context.Context, field gra
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_zone.approve.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -36223,10 +36223,10 @@ func (ec *executionContext) _Mutation_approveZone(ctx context.Context, field gra
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ZonePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ZonePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -36235,9 +36235,9 @@ func (ec *executionContext) _Mutation_approveZone(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ZonePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNZonePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZonePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_approveZone(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -36249,13 +36249,13 @@ func (ec *executionContext) fieldContext_Mutation_approveZone(ctx context.Contex
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ZonePayload_clientMutationID(ctx, field)
+			case "zoneID":
+				return ec.fieldContext_ZonePayload_zoneID(ctx, field)
+			case "zone":
+				return ec.fieldContext_ZonePayload_zone(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ZonePayload", field.Name)
 		},
 	}
 	defer func() {
@@ -36293,11 +36293,11 @@ func (ec *executionContext) _Mutation_rejectZone(ctx context.Context, field grap
 		directive1 := func(ctx context.Context) (any, error) {
 			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_zone.reject.*"})
 			if err != nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, err
 			}
 			if ec.directives.Acl == nil {
-				var zeroVal *models1.StatusResponse
+				var zeroVal *models.ZonePayload
 				return zeroVal, errors.New("directive acl is not implemented")
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
@@ -36310,10 +36310,10 @@ func (ec *executionContext) _Mutation_rejectZone(ctx context.Context, field grap
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*models1.StatusResponse); ok {
+		if data, ok := tmp.(*models.ZonePayload); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/geniusrabbit/blaze-api/server/graphql/models.StatusResponse`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/internal/server/graphql/models.ZonePayload`, tmp)
 	})
 
 	if resTmp == nil {
@@ -36322,9 +36322,9 @@ func (ec *executionContext) _Mutation_rejectZone(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models1.StatusResponse)
+	res := resTmp.(*models.ZonePayload)
 	fc.Result = res
-	return ec.marshalNStatusResponse2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐStatusResponse(ctx, field.Selections, res)
+	return ec.marshalNZonePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZonePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_rejectZone(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -36336,13 +36336,13 @@ func (ec *executionContext) fieldContext_Mutation_rejectZone(ctx context.Context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationID":
-				return ec.fieldContext_StatusResponse_clientMutationID(ctx, field)
-			case "status":
-				return ec.fieldContext_StatusResponse_status(ctx, field)
-			case "message":
-				return ec.fieldContext_StatusResponse_message(ctx, field)
+				return ec.fieldContext_ZonePayload_clientMutationID(ctx, field)
+			case "zoneID":
+				return ec.fieldContext_ZonePayload_zoneID(ctx, field)
+			case "zone":
+				return ec.fieldContext_ZonePayload_zone(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type StatusResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ZonePayload", field.Name)
 		},
 	}
 	defer func() {

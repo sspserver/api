@@ -287,10 +287,10 @@ extend type Mutation {
   """
   Run traffic router
   """
-  runTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.run.*"])
+  runTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.run.*"])
 
   """
   Pause traffic router
   """
-  pauseTrafficRouter(ID: ID64!, msg: String! = ""): StatusResponse @acl(permissions: ["traffic_router.pause.*"])
+  pauseTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.pause.*"])
 }

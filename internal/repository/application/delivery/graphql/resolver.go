@@ -126,49 +126,57 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*ql
 }
 
 // Run Application is the resolver for the runApplication field.
-func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmodels.ApplicationPayload, error) {
 	err := r.uc.Run(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	app, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ApplicationID:    id,
+		Application:      qlmodels.FromApplicationModel(app),
 	}, nil
 }
 
 // Pause Application is the resolver for the pauseApplication field.
-func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlmodels.ApplicationPayload, error) {
 	err := r.uc.Pause(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	app, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ApplicationID:    id,
+		Application:      qlmodels.FromApplicationModel(app),
 	}, nil
 }
 
 // Approve Application is the resolver for the approveApplication field.
-func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qlmodels.ApplicationPayload, error) {
 	err := r.uc.Approve(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	app, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ApplicationID:    id,
+		Application:      qlmodels.FromApplicationModel(app),
 	}, nil
 }
 
 // Reject Application is the resolver for the rejectApplication field.
-func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qlmodels.StatusResponse, error) {
+func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qlmodels.ApplicationPayload, error) {
 	err := r.uc.Reject(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.StatusResponse{
+	app, _ := r.uc.Get(ctx, id)
+	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           qlmodels.ResponseStatusSuccess,
+		ApplicationID:    id,
+		Application:      qlmodels.FromApplicationModel(app),
 	}, nil
 }

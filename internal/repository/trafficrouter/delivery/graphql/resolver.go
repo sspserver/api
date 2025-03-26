@@ -103,23 +103,27 @@ func (r *Resolver) Delete(ctx context.Context, id uint64) (*gqlmodels.TrafficRou
 }
 
 // Run TrafficRouter is the resolver for the runTrafficRouter field.
-func (r *Resolver) Run(ctx context.Context, id uint64, message string) (*gqlmodels.StatusResponse, error) {
+func (r *Resolver) Run(ctx context.Context, id uint64, message string) (*gqlmodels.TrafficRouterPayload, error) {
 	if err := r.uc.Run(ctx, id, message); err != nil {
 		return nil, err
 	}
-	return &gqlmodels.StatusResponse{
+	router, _ := r.uc.Get(ctx, id)
+	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           gqlmodels.ResponseStatusSuccess,
+		RouterID:         id,
+		Router:           gqlmodels.FromTrafficRouterModel(router),
 	}, nil
 }
 
 // Pause TrafficRouter is the resolver for the pauseTrafficRouter field.
-func (r *Resolver) Pause(ctx context.Context, id uint64, message string) (*gqlmodels.StatusResponse, error) {
+func (r *Resolver) Pause(ctx context.Context, id uint64, message string) (*gqlmodels.TrafficRouterPayload, error) {
 	if err := r.uc.Pause(ctx, id, message); err != nil {
 		return nil, err
 	}
-	return &gqlmodels.StatusResponse{
+	router, _ := r.uc.Get(ctx, id)
+	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
-		Status:           gqlmodels.ResponseStatusSuccess,
+		RouterID:         id,
+		Router:           gqlmodels.FromTrafficRouterModel(router),
 	}, nil
 }

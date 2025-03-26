@@ -347,20 +347,20 @@ extend type Mutation {
   """
   Run an RTBSource to start receiving data from it.
   """
-  runRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+  runRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
 
   """
   Pause an RTBSource to stop receiving data from it.
   """
-  pauseRTBSource(ID: ID64!): StatusResponse! @acl(permissions: ["rtb_source.update.*"])
+  pauseRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
 
   """
   Approve an RTBSource to allow it to start receiving data.
   """
-  approveRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.approve.*"])
+  approveRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.approve.*"])
 
   """
   Reject an RTBSource to prevent it from receiving data.
   """
-  rejectRTBSource(ID: ID64!, msg: String = null): StatusResponse! @acl(permissions: ["rtb_source.reject.*"])
+  rejectRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.reject.*"])
 }

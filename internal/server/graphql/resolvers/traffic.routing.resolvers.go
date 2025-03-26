@@ -29,12 +29,12 @@ func (r *mutationResolver) DeleteTrafficRouter(ctx context.Context, id uint64) (
 }
 
 // RunTrafficRouter is the resolver for the runTrafficRouter field.
-func (r *mutationResolver) RunTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) RunTrafficRouter(ctx context.Context, id uint64, msg string) (*models.TrafficRouterPayload, error) {
 	return r.trafficrouter.Run(ctx, id, msg)
 }
 
 // PauseTrafficRouter is the resolver for the pauseTrafficRouter field.
-func (r *mutationResolver) PauseTrafficRouter(ctx context.Context, id uint64, msg string) (*models1.StatusResponse, error) {
+func (r *mutationResolver) PauseTrafficRouter(ctx context.Context, id uint64, msg string) (*models.TrafficRouterPayload, error) {
 	return r.trafficrouter.Pause(ctx, id, msg)
 }
 
