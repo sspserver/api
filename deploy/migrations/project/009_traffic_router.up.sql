@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS adv_traffic_router
 
 , description            TEXT                       NOT NULL
 
+-- Is Approved traffic router
+, status                 ApproveStatus              NOT NULL      DEFAULT 'pending'
 -- Is Active traffic router
 , active                 ActiveStatus               NOT NULL      DEFAULT 'pause'
 

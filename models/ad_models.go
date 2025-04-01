@@ -8,20 +8,22 @@ import (
 
 // Models set of types
 type (
-	Format      = models.Format
-	Application = models.Application
-	Zone        = models.Zone
-	RTBSource   = models.RTBSource
-	Category    = models.Category
-	OS          = models.OS
-	Browser     = models.Browser
-	DeviceType  = models.DeviceType
-	DeviceMaker = models.DeviceMaker
-	DeviceModel = models.DeviceModel
+	Format        = models.Format
+	Application   = models.Application
+	Zone          = models.Zone
+	RTBSource     = models.RTBSource
+	TrafficRouter = models.TrafficRouter
+	Category      = models.Category
+	OS            = models.OS
+	Browser       = models.Browser
+	DeviceType    = models.DeviceType
+	DeviceMaker   = models.DeviceMaker
+	DeviceModel   = models.DeviceModel
 )
 
 var DeviceTypeList = models.DeviceTypeList
 
+// AdType set of types
 type (
 	ApproveStatus   = types.ApproveStatus
 	ActiveStatus    = types.ActiveStatus
