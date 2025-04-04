@@ -51,7 +51,6 @@ func (r *Repository) Count(ctx context.Context, qops ...rtbsource.Option) (count
 func (r *Repository) Create(ctx context.Context, source *models.RTBSource) (uint64, error) {
 	source.CreatedAt = time.Now()
 	source.UpdatedAt = source.CreatedAt
-	source.Status = types.StatusPending
 	err := r.Master(ctx).Create(source).Error
 	return source.ID, err
 }
@@ -59,38 +58,41 @@ func (r *Repository) Create(ctx context.Context, source *models.RTBSource) (uint
 func (r *Repository) Update(ctx context.Context, id uint64, source *models.RTBSource) error {
 	obj := *source
 	obj.ID = id
-	return r.Master(ctx).Omit(`status`, `active`, `account_id`).
+	return r.Master(ctx).
+		Omit(`status`, `active`, `account_id`).
 		Save(&obj).Error
 }
 
 func (r *Repository) Run(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.RTBSource)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusActive).Error
 }
 
 func (r *Repository) Pause(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.RTBSource)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusPause).Error
 }
 
 func (r *Repository) Approve(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.RTBSource)(nil)).Where(`id=?`, id).
 		Update(`status`, types.StatusApproved).Error
 }
 
 func (r *Repository) Reject(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.RTBSource)(nil)).Where(`id=?`, id).
 		Update(`status`, types.StatusRejected).Error
 }
 
 func (r *Repository) Delete(ctx context.Context, id uint64) error {
-	return r.Master(ctx).Model((*models.RTBSource)(nil)).Delete(`id=?`, id).Error
+	return r.Master(
+		historylog.WithPK(ctx, id),
+	).Model((*models.RTBSource)(nil)).Delete(`id=?`, id).Error
 }

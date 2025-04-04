@@ -6,6 +6,7 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 	"github.com/pkg/errors"
+	"github.com/sspserver/api/internal/sysops"
 	"github.com/sspserver/api/models"
 )
 
@@ -70,6 +71,9 @@ func (uc *UsecaseImpl) Create(ctx context.Context, router *models.TrafficRouter)
 	if !acl.HaveAccessCreate(ctx, router) {
 		return 0, errors.Wrap(acl.ErrNoPermissions, "create")
 	}
+	router.Status = models.ApproveStatus(
+		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
+			Int())
 	return uc.repo.Create(ctx, router)
 }
 
@@ -117,4 +121,28 @@ func (uc *UsecaseImpl) Pause(ctx context.Context, id uint64, message string) err
 		return errors.Wrap(acl.ErrNoPermissions, "update::pause")
 	}
 	return uc.repo.Pause(ctx, id, message)
+}
+
+// Approve approves the router by id
+func (uc *UsecaseImpl) Approve(ctx context.Context, id uint64, message string) error {
+	router, err := uc.repo.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	if !acl.HaveAccessUpdate(ctx, router) {
+		return errors.Wrap(acl.ErrNoPermissions, "update::approve")
+	}
+	return uc.repo.Approve(ctx, id, message)
+}
+
+// Reject rejects the router by id
+func (uc *UsecaseImpl) Reject(ctx context.Context, id uint64, message string) error {
+	router, err := uc.repo.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	if !acl.HaveAccessUpdate(ctx, router) {
+		return errors.Wrap(acl.ErrNoPermissions, "update::reject")
+	}
+	return uc.repo.Reject(ctx, id, message)
 }

@@ -10,6 +10,7 @@ import (
 
 	"github.com/sspserver/api/internal/repository/rtbsource"
 	"github.com/sspserver/api/internal/repository/rtbsource/repository"
+	"github.com/sspserver/api/internal/sysops"
 	"github.com/sspserver/api/models"
 )
 
@@ -70,6 +71,9 @@ func (u *Usecase) Create(ctx context.Context, source *models.RTBSource) (uint64,
 	if !acl.HaveAccessCreate(ctx, source) {
 		return 0, errors.Wrap(acl.ErrNoPermissions, "create")
 	}
+	source.Status = models.ApproveStatus(
+		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
+			Int())
 	return u.repo.Create(ctx, source)
 }
 

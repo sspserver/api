@@ -15,4 +15,6 @@ type Repository interface {
 	Delete(ctx context.Context, id uint64) error
 	Run(ctx context.Context, id uint64, message string) error
 	Pause(ctx context.Context, id uint64, message string) error
+	Approve(ctx context.Context, id uint64, message string) error
+	Reject(ctx context.Context, id uint64, message string) error
 }

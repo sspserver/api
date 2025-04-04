@@ -44,6 +44,7 @@ import (
 	statisticuc "github.com/sspserver/api/internal/repository/statistic/usecase"
 	"github.com/sspserver/api/internal/server/graphql"
 	"github.com/sspserver/api/internal/server/graphql/resolvers"
+	"github.com/sspserver/api/internal/sysops"
 	"github.com/sspserver/api/private/emails"
 )
 
@@ -196,6 +197,14 @@ func main() {
 		"ad.direct.url":    conf.Options.AdDirectTemplateURL,
 		"ad.direct.code":   conf.Options.AdDirectTemplateCode,
 	}))
+
+	// Init system options
+	sysops.Set(`system.version`, buildVersion)
+	sysops.Set(`system.commit`, buildCommit)
+	sysops.Set(`system.build_date`, buildDate)
+	sysops.Set(`system.hostname`, conf.Hostname)
+	sysops.Set(`system.datacenter`, conf.DatacenterName)
+	sysops.Set(`logic.crud.default.approval`, true)
 
 	// Prepare context
 	ctx = ctxlogger.WithLogger(ctx, loggerObj)

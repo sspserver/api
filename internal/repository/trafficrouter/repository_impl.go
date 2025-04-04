@@ -76,19 +76,22 @@ func (rep *RepositoryImpl) Update(ctx context.Context, id uint64, router *models
 	}
 	obj := *router
 	obj.ID = id
-	return rep.Master(ctx).Omit(`active`, `account_id`).
+	return rep.Master(ctx).
+		Omit(`active`, `status`, `account_id`).
 		Save(&obj).Error
 }
 
 // Delete deletes a TrafficRouter object by ID.
 func (rep *RepositoryImpl) Delete(ctx context.Context, id uint64) error {
-	return rep.Master(ctx).Model((*models.TrafficRouter)(nil)).Delete(`id=?`, id).Error
+	return rep.Master(
+		historylog.WithPK(ctx, id),
+	).Model((*models.TrafficRouter)(nil)).Delete(`id=?`, id).Error
 }
 
 // Run sets the TrafficRouter object to active status.
 func (rep *RepositoryImpl) Run(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusActive).Error
 }
@@ -96,7 +99,23 @@ func (rep *RepositoryImpl) Run(ctx context.Context, id uint64, message string) e
 // Pause sets the TrafficRouter object to pause status.
 func (rep *RepositoryImpl) Pause(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusPause).Error
+}
+
+// Approve sets the TrafficRouter object to approved status.
+func (rep *RepositoryImpl) Approve(ctx context.Context, id uint64, message string) error {
+	return rep.Master(
+		historylog.WithMessageAndPK(ctx, message, id),
+	).Model((*models.TrafficRouter)(nil)).
+		Where(`id=?`, id).Update(`status`, types.StatusApproved).Error
+}
+
+// Reject sets the TrafficRouter object to rejected status.
+func (rep *RepositoryImpl) Reject(ctx context.Context, id uint64, message string) error {
+	return rep.Master(
+		historylog.WithMessageAndPK(ctx, message, id),
+	).Model((*models.TrafficRouter)(nil)).
+		Where(`id=?`, id).Update(`status`, types.StatusRejected).Error
 }

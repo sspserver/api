@@ -10,14 +10,15 @@ import (
 
 // Filter of the objects list
 type Filter struct {
-	ID       []uint64
-	Title    string
-	URI      string
-	Type     []models.ApplicationType
-	Platform []models.PlatformType
-	Permium  *bool
-	Status   *types.ApproveStatus
-	Active   *types.ActiveStatus
+	ID        []uint64
+	AccountID []uint64
+	Title     string
+	URI       string
+	Type      []models.ApplicationType
+	Platform  []models.PlatformType
+	Permium   *bool
+	Status    *types.ApproveStatus
+	Active    *types.ActiveStatus
 }
 
 func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
@@ -26,6 +27,9 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 	}
 	if len(fl.ID) > 0 {
 		query = query.Where(`id IN (?)`, fl.ID)
+	}
+	if len(fl.AccountID) > 0 {
+		query = query.Where(`account_id IN (?)`, fl.AccountID)
 	}
 	if len(fl.Title) > 0 {
 		query = query.Where(`title ILIKE ?`, fl.Title)

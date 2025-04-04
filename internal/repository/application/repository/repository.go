@@ -60,9 +60,12 @@ func (r *Repository) Create(ctx context.Context, object *models.Application) (ui
 func (r *Repository) Update(ctx context.Context, id uint64, object *models.Application) error {
 	obj := *object
 	sqlStr := r.Master(ctx).ToSQL(func(tx *gorm.DB) *gorm.DB {
-		return tx.Where(`id=?`, id).Save(&obj)
+		return tx.Where(`id=?`, id).
+			Omit(`status`, `active`, `account_id`).
+			Save(&obj)
 	})
-	return r.Master(historylog.WithPK(ctx, id)).Exec(sqlStr).Error
+	return r.Master(historylog.WithPK(ctx, id)).
+		Exec(sqlStr).Error
 }
 
 func (r *Repository) Delete(ctx context.Context, id uint64, message string) error {

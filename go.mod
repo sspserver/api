@@ -9,7 +9,7 @@ require (
 	github.com/demdxx/goconfig v1.3.1
 	github.com/demdxx/rbac v0.1.8
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
-	github.com/demdxx/xtypes v0.2.0
+	github.com/demdxx/xtypes v0.3.0
 	github.com/geniusrabbit/adcorelib v0.0.0-20250331161235-6cd254991b72
 	github.com/geniusrabbit/blaze-api v0.2.3
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92

@@ -8,6 +8,7 @@ import (
 
 	"github.com/sspserver/api/internal/repository/zone"
 	"github.com/sspserver/api/internal/repository/zone/repository"
+	"github.com/sspserver/api/internal/sysops"
 	"github.com/sspserver/api/models"
 )
 
@@ -58,21 +59,24 @@ func (u *Usecase) Count(ctx context.Context, qops ...zone.Option) (int64, error)
 	return u.repo.Count(ctx, qops...)
 }
 
-func (u *Usecase) Create(ctx context.Context, source *models.Zone) (uint64, error) {
-	if source.AccountID == 0 {
-		source.AccountID = session.Account(ctx).ID
+func (u *Usecase) Create(ctx context.Context, object *models.Zone) (uint64, error) {
+	if object.AccountID == 0 {
+		object.AccountID = session.Account(ctx).ID
 	}
-	if !acl.HaveAccessCreate(ctx, source) {
+	if !acl.HaveAccessCreate(ctx, object) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
-	return u.repo.Create(ctx, source)
+	object.Status = models.ApproveStatus(
+		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
+			Int())
+	return u.repo.Create(ctx, object)
 }
 
-func (u *Usecase) Update(ctx context.Context, id uint64, source *models.Zone) error {
-	if !acl.HaveAccessUpdate(ctx, source) {
+func (u *Usecase) Update(ctx context.Context, id uint64, object *models.Zone) error {
+	if !acl.HaveAccessUpdate(ctx, object) {
 		return acl.ErrNoPermissions.WithMessage("update")
 	}
-	return u.repo.Update(ctx, id, source)
+	return u.repo.Update(ctx, id, object)
 }
 
 func (u *Usecase) Delete(ctx context.Context, id uint64, msg string) error {

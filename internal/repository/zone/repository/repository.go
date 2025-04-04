@@ -71,34 +71,35 @@ func (r *Repository) Update(ctx context.Context, id uint64, object *models.Zone)
 }
 
 func (r *Repository) Delete(ctx context.Context, id uint64, message string) error {
-	return r.Master(historylog.WithMessage(ctx, message)).
-		Model((*models.Zone)(nil)).Delete(`id=?`, id).Error
+	return r.Master(
+		historylog.WithMessageAndPK(ctx, message, id),
+	).Model((*models.Zone)(nil)).Delete(`id=?`, id).Error
 }
 
 func (r *Repository) Run(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.Zone)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusActive).Error
 }
 
 func (r *Repository) Pause(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.Zone)(nil)).
 		Where(`id=?`, id).Update(`active`, types.StatusPause).Error
 }
 
 func (r *Repository) Approve(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.Zone)(nil)).
 		Where(`id=?`, id).Update(`status`, types.StatusApproved).Error
 }
 
 func (r *Repository) Reject(ctx context.Context, id uint64, message string) error {
 	return r.Master(
-		historylog.WithMessage(ctx, message),
+		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.Zone)(nil)).
 		Where(`id=?`, id).Update(`status`, types.StatusRejected).Error
 }
