@@ -449,6 +449,13 @@ type ComplexityRoot struct {
 		ClientMutationID func(childComplexity int) int
 	}
 
+	Lang struct {
+		ID         func(childComplexity int) int
+		Iso2       func(childComplexity int) int
+		Name       func(childComplexity int) int
+		NativeName func(childComplexity int) int
+	}
+
 	Member struct {
 		Account   func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
@@ -663,6 +670,7 @@ type ComplexityRoot struct {
 		DeviceModel                    func(childComplexity int, id uint64, codename string) int
 		Format                         func(childComplexity int, id uint64, codename string) int
 		GetDirectAccessToken           func(childComplexity int, id uint64) int
+		Languages                      func(childComplexity int, filter *models.LangListFilter) int
 		ListAccountRolesAndPermissions func(childComplexity int, accountID uint64, order *models1.RBACRoleListOrder) int
 		ListAccounts                   func(childComplexity int, filter *models1.AccountListFilter, order *models1.AccountListOrder, page *models1.Page) int
 		ListApplications               func(childComplexity int, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) int
@@ -1138,6 +1146,7 @@ type QueryResolver interface {
 	DeviceModel(ctx context.Context, id uint64, codename string) (*models.DeviceModelPayload, error)
 	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
 	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
+	Languages(ctx context.Context, filter *models.LangListFilter) ([]*models.Lang, error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
 	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
@@ -2938,6 +2947,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.HistoryActionPayload.ClientMutationID(childComplexity), true
 
+	case "Lang.ID":
+		if e.complexity.Lang.ID == nil {
+			break
+		}
+
+		return e.complexity.Lang.ID(childComplexity), true
+
+	case "Lang.iso2":
+		if e.complexity.Lang.Iso2 == nil {
+			break
+		}
+
+		return e.complexity.Lang.Iso2(childComplexity), true
+
+	case "Lang.name":
+		if e.complexity.Lang.Name == nil {
+			break
+		}
+
+		return e.complexity.Lang.Name(childComplexity), true
+
+	case "Lang.nativeName":
+		if e.complexity.Lang.NativeName == nil {
+			break
+		}
+
+		return e.complexity.Lang.NativeName(childComplexity), true
+
 	case "Member.account":
 		if e.complexity.Member.Account == nil {
 			break
@@ -4502,6 +4539,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetDirectAccessToken(childComplexity, args["id"].(uint64)), true
+
+	case "Query.languages":
+		if e.complexity.Query.Languages == nil {
+			break
+		}
+
+		args, err := ec.field_Query_languages_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Languages(childComplexity, args["filter"].(*models.LangListFilter)), true
 
 	case "Query.listAccountRolesAndPermissions":
 		if e.complexity.Query.ListAccountRolesAndPermissions == nil {
@@ -6457,6 +6506,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputHistoryActionListFilter,
 		ec.unmarshalInputHistoryActionListOrder,
 		ec.unmarshalInputInviteMemberInput,
+		ec.unmarshalInputLangListFilter,
 		ec.unmarshalInputMemberInput,
 		ec.unmarshalInputMemberListFilter,
 		ec.unmarshalInputMemberListOrder,
@@ -10248,6 +10298,50 @@ extend type Query {
 directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/language.graphql", Input: `"""
+Lang is a language used in the system.
+"""
+type Lang {
+  ID: ID64!
+
+  """
+  Language code (ISO 639-1)
+  """
+  iso2: String!
+
+  """
+  Name of the language
+  """
+  name: String!
+
+  """
+  Native name of the language
+  """
+  nativeName: String!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input LangListFilter {
+  ID: [ID64!]
+  iso2: [String!]
+  name: [String!]
+  nativeName: [String!]
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+extend type Query {
+  """
+  List of languages
+  """
+  languages(filter: LangListFilter = null): [Lang!]
+}
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/os.graphql", Input: `"""
 OS model schema
@@ -15723,6 +15817,34 @@ func (ec *executionContext) field_Query_getDirectAccessToken_argsID(
 	}
 
 	var zeroVal uint64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_languages_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_languages_argsFilter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_languages_argsFilter(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*models.LangListFilter, error) {
+	if _, ok := rawArgs["filter"]; !ok {
+		var zeroVal *models.LangListFilter
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+	if tmp, ok := rawArgs["filter"]; ok {
+		return ec.unmarshalOLangListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangListFilter(ctx, tmp)
+	}
+
+	var zeroVal *models.LangListFilter
 	return zeroVal, nil
 }
 
@@ -29370,6 +29492,170 @@ func (ec *executionContext) fieldContext_HistoryActionPayload_action(_ context.C
 	return fc, nil
 }
 
+func (ec *executionContext) _Lang_ID(ctx context.Context, field graphql.CollectedField, obj *models.Lang) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lang_ID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lang_ID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lang",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lang_iso2(ctx context.Context, field graphql.CollectedField, obj *models.Lang) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lang_iso2(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Iso2, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lang_iso2(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lang",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lang_name(ctx context.Context, field graphql.CollectedField, obj *models.Lang) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lang_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lang_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lang",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lang_nativeName(ctx context.Context, field graphql.CollectedField, obj *models.Lang) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lang_nativeName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NativeName, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lang_nativeName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lang",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Member_ID(ctx context.Context, field graphql.CollectedField, obj *models1.Member) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Member_ID(ctx, field)
 	if err != nil {
@@ -42276,6 +42562,65 @@ func (ec *executionContext) fieldContext_Query_listDeviceTypes(_ context.Context
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
 		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_languages(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_languages(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Languages(rctx, fc.Args["filter"].(*models.LangListFilter))
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Lang)
+	fc.Result = res
+	return ec.marshalOLang2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_languages(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Lang_ID(ctx, field)
+			case "iso2":
+				return ec.fieldContext_Lang_iso2(ctx, field)
+			case "name":
+				return ec.fieldContext_Lang_name(ctx, field)
+			case "nativeName":
+				return ec.fieldContext_Lang_nativeName(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lang", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_languages_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -58566,6 +58911,54 @@ func (ec *executionContext) unmarshalInputInviteMemberInput(ctx context.Context,
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputLangListFilter(ctx context.Context, obj any) (models.LangListFilter, error) {
+	var it models.LangListFilter
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"ID", "iso2", "name", "nativeName"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "ID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ID"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "iso2":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("iso2"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Iso2 = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "nativeName":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nativeName"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NativeName = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputMemberInput(ctx context.Context, obj any) (models1.MemberInput, error) {
 	var it models1.MemberInput
 	asMap := map[string]any{}
@@ -64698,6 +65091,60 @@ func (ec *executionContext) _HistoryActionPayload(ctx context.Context, sel ast.S
 	return out
 }
 
+var langImplementors = []string{"Lang"}
+
+func (ec *executionContext) _Lang(ctx context.Context, sel ast.SelectionSet, obj *models.Lang) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, langImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Lang")
+		case "ID":
+			out.Values[i] = ec._Lang_ID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "iso2":
+			out.Values[i] = ec._Lang_iso2(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "name":
+			out.Values[i] = ec._Lang_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "nativeName":
+			out.Values[i] = ec._Lang_nativeName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var memberImplementors = []string{"Member"}
 
 func (ec *executionContext) _Member(ctx context.Context, sel ast.SelectionSet, obj *models1.Member) graphql.Marshaler {
@@ -66855,6 +67302,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_listDeviceTypes(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "languages":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_languages(ctx, field)
 				return res
 			}
 
@@ -70631,6 +71097,16 @@ func (ec *executionContext) unmarshalNInviteMemberInput2githubᚗcomᚋgeniusrab
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNLang2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLang(ctx context.Context, sel ast.SelectionSet, v *models.Lang) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Lang(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNMember2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐMember(ctx context.Context, sel ast.SelectionSet, v *models1.Member) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -73317,6 +73793,61 @@ func (ec *executionContext) marshalOJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblaze�
 		return graphql.Null
 	}
 	return v
+}
+
+func (ec *executionContext) marshalOLang2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Lang) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNLang2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLang(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) unmarshalOLangListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangListFilter(ctx context.Context, v any) (*models.LangListFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputLangListFilter(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalOMember2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐMemberᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.Member) graphql.Marshaler {

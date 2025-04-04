@@ -21,6 +21,7 @@ import (
 	devicemodel_graphql "github.com/sspserver/api/internal/repository/devicemodel/delivery/graphql"
 	devicetype_graphql "github.com/sspserver/api/internal/repository/devicetype/delivery/graphql"
 	geo_graphql "github.com/sspserver/api/internal/repository/geo/delivery/graphql"
+	languages_graphql "github.com/sspserver/api/internal/repository/languages/delivery/graphql"
 	os_graphql "github.com/sspserver/api/internal/repository/os/delivery/graphql"
 	"github.com/sspserver/api/internal/repository/rtbsource"
 	rtbsource_graphql "github.com/sspserver/api/internal/repository/rtbsource/delivery/graphql"
@@ -49,6 +50,7 @@ type Resolver struct {
 	rtbsource     *rtbsource_graphql.QueryResolver
 	adformat      *adformat_graphql.QueryResolver
 	geo           *geo_graphql.QueryResolver
+	langs         *languages_graphql.QueryResolver
 	catergories   *category_graphql.QueryResolver
 	os            *os_graphql.QueryResolver
 	browsers      *browser_graphql.QueryResolver
@@ -83,6 +85,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		rtbsource:     rtbsource_graphql.NewQueryResolver(usecases.RTBSource),
 		adformat:      adformat_graphql.NewQueryResolver(),
 		geo:           geo_graphql.NewQueryResolver(),
+		langs:         languages_graphql.NewQueryResolver(),
 		catergories:   category_graphql.NewQueryResolver(),
 		os:            os_graphql.NewQueryResolver(),
 		browsers:      browser_graphql.NewQueryResolver(),

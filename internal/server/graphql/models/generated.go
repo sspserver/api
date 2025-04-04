@@ -652,6 +652,24 @@ type DeviceType struct {
 	Active models.ActiveStatus `json:"active"`
 }
 
+// Lang is a language used in the system.
+type Lang struct {
+	ID uint64 `json:"ID"`
+	// Language code (ISO 639-1)
+	Iso2 string `json:"iso2"`
+	// Name of the language
+	Name string `json:"name"`
+	// Native name of the language
+	NativeName string `json:"nativeName"`
+}
+
+type LangListFilter struct {
+	ID         []uint64 `json:"ID,omitempty"`
+	Iso2       []string `json:"iso2,omitempty"`
+	Name       []string `json:"name,omitempty"`
+	NativeName []string `json:"nativeName,omitempty"`
+}
+
 // OS model schema
 type Os struct {
 	// OS ID
