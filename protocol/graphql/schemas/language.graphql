@@ -1,0 +1,43 @@
+"""
+Lang is a language used in the system.
+"""
+type Lang {
+  ID: ID64!
+
+  """
+  Language code (ISO 639-1)
+  """
+  iso2: String!
+
+  """
+  Name of the language
+  """
+  name: String!
+
+  """
+  Native name of the language
+  """
+  nativeName: String!
+}
+
+###############################################################################
+### Query input & output
+###############################################################################
+
+input LangListFilter {
+  ID: [ID64!]
+  iso2: [String!]
+  name: [String!]
+  nativeName: [String!]
+}
+
+###############################################################################
+# Query
+###############################################################################
+
+extend type Query {
+  """
+  List of languages
+  """
+  languages(filter: LangListFilter = null): [Lang!]
+}
