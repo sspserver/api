@@ -9,6 +9,11 @@ type TrafficRouter {
   ID: ID64!
 
   """
+  Title of the traffic router
+  """
+  title: String!
+
+  """
   Account ID owner of the traffic router
   """
   accountID: ID64!
@@ -159,9 +164,14 @@ input TrafficRouterCreateInput {
   accountID: ID64
 
   """
+  Title of the traffic router
+  """
+  title: String! @notempty(trim: true)
+
+  """
   Description of the traffic router
   """
-  description: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the traffic router
@@ -171,7 +181,7 @@ input TrafficRouterCreateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float!
+  percent: Float! @range(min: 0, max: 100)
 
   """
   RTB sources of the advertising
@@ -199,9 +209,14 @@ input TrafficRouterCreateInput {
 
 input TrafficRouterUpdateInput {
   """
+  Title of the traffic router
+  """
+  title: String @notempty(trim: true, ornil: true)
+
+  """
   Description of the traffic router
   """
-  description: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the traffic router
@@ -211,7 +226,7 @@ input TrafficRouterUpdateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float
+  percent: Float @range(min: 0, max: 100, ornil: true)
 
   """
   RTB sources of the advertising

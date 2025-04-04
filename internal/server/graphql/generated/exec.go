@@ -58,6 +58,7 @@ type DirectiveRoot struct {
 	HasPermissions    func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 	Length            func(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim bool, ornil bool) (res any, err error)
 	Notempty          func(ctx context.Context, obj any, next graphql.Resolver, trim bool, ornil bool) (res any, err error)
+	Range             func(ctx context.Context, obj any, next graphql.Resolver, min float64, max float64, ornil bool) (res any, err error)
 	Regex             func(ctx context.Context, obj any, next graphql.Resolver, pattern string, trim bool, ornil bool) (res any, err error)
 	SkipNoPermissions func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 }
@@ -931,6 +932,7 @@ type ComplexityRoot struct {
 		RTBSourceIDs    func(childComplexity int) int
 		RTBSources      func(childComplexity int) int
 		Secure          func(childComplexity int) int
+		Title           func(childComplexity int) int
 		UpdatedAt       func(childComplexity int) int
 		Zones           func(childComplexity int) int
 	}
@@ -6086,6 +6088,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.Secure(childComplexity), true
 
+	case "TrafficRouter.title":
+		if e.complexity.TrafficRouter.Title == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.Title(childComplexity), true
+
 	case "TrafficRouter.updatedAt":
 		if e.complexity.TrafficRouter.UpdatedAt == nil {
 			break
@@ -10298,7 +10307,7 @@ extend type Query {
 directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-`, BuiltIn: false},
+directive @range(min: Float!, max: Float! = 0, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/language.graphql", Input: `"""
 Lang is a language used in the system.
 """
@@ -11153,6 +11162,11 @@ type TrafficRouter {
   ID: ID64!
 
   """
+  Title of the traffic router
+  """
+  title: String!
+
+  """
   Account ID owner of the traffic router
   """
   accountID: ID64!
@@ -11303,9 +11317,14 @@ input TrafficRouterCreateInput {
   accountID: ID64
 
   """
+  Title of the traffic router
+  """
+  title: String! @notempty(trim: true)
+
+  """
   Description of the traffic router
   """
-  description: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the traffic router
@@ -11315,7 +11334,7 @@ input TrafficRouterCreateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float!
+  percent: Float! @range(min: 0, max: 100)
 
   """
   RTB sources of the advertising
@@ -11343,9 +11362,14 @@ input TrafficRouterCreateInput {
 
 input TrafficRouterUpdateInput {
   """
+  Title of the traffic router
+  """
+  title: String @notempty(trim: true, ornil: true)
+
+  """
   Description of the traffic router
   """
-  description: String
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Active status of the traffic router
@@ -11355,7 +11379,7 @@ input TrafficRouterUpdateInput {
   """
   Traffic router percent of the traffic to share between RTB sources
   """
-  percent: Float
+  percent: Float @range(min: 0, max: 100, ornil: true)
 
   """
   RTB sources of the advertising
@@ -11867,6 +11891,80 @@ func (ec *executionContext) dir_notempty_argsTrim(
 }
 
 func (ec *executionContext) dir_notempty_argsOrnil(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (bool, error) {
+	if _, ok := rawArgs["ornil"]; !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ornil"))
+	if tmp, ok := rawArgs["ornil"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_range_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.dir_range_argsMin(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["min"] = arg0
+	arg1, err := ec.dir_range_argsMax(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["max"] = arg1
+	arg2, err := ec.dir_range_argsOrnil(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["ornil"] = arg2
+	return args, nil
+}
+func (ec *executionContext) dir_range_argsMin(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (float64, error) {
+	if _, ok := rawArgs["min"]; !ok {
+		var zeroVal float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("min"))
+	if tmp, ok := rawArgs["min"]; ok {
+		return ec.unmarshalNFloat2float64(ctx, tmp)
+	}
+
+	var zeroVal float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_range_argsMax(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (float64, error) {
+	if _, ok := rawArgs["max"]; !ok {
+		var zeroVal float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("max"))
+	if tmp, ok := rawArgs["max"]; ok {
+		return ec.unmarshalNFloat2float64(ctx, tmp)
+	}
+
+	var zeroVal float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) dir_range_argsOrnil(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (bool, error) {
@@ -49748,6 +49846,47 @@ func (ec *executionContext) fieldContext_TrafficRouter_ID(_ context.Context, fie
 	return fc, nil
 }
 
+func (ec *executionContext) _TrafficRouter_title(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TrafficRouter_accountID(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TrafficRouter_accountID(ctx, field)
 	if err != nil {
@@ -50994,6 +51133,8 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_list(_ context.
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "title":
+				return ec.fieldContext_TrafficRouter_title(ctx, field)
 			case "accountID":
 				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
 			case "account":
@@ -51189,6 +51330,8 @@ func (ec *executionContext) fieldContext_TrafficRouterEdge_node(_ context.Contex
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "title":
+				return ec.fieldContext_TrafficRouter_title(ctx, field)
 			case "accountID":
 				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
 			case "account":
@@ -51368,6 +51511,8 @@ func (ec *executionContext) fieldContext_TrafficRouterPayload_router(_ context.C
 			switch field.Name {
 			case "ID":
 				return ec.fieldContext_TrafficRouter_ID(ctx, field)
+			case "title":
+				return ec.fieldContext_TrafficRouter_title(ctx, field)
 			case "accountID":
 				return ec.fieldContext_TrafficRouter_accountID(ctx, field)
 			case "account":
@@ -61346,7 +61491,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61360,13 +61505,72 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 				return it, err
 			}
 			it.AccountID = data
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNString2string(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(string); ok {
+				it.Title = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
@@ -61376,11 +61580,41 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 			it.Active = data
 		case "percent":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNFloat2float64(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNFloat2float64(ctx, 0)
+				if err != nil {
+					var zeroVal float64
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNFloat2float64(ctx, 100)
+				if err != nil {
+					var zeroVal float64
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, false)
+				if err != nil {
+					var zeroVal float64
+					return zeroVal, err
+				}
+				if ec.directives.Range == nil {
+					var zeroVal float64
+					return zeroVal, errors.New("directive range is not implemented")
+				}
+				return ec.directives.Range(ctx, obj, directive0, min, max, ornil)
 			}
-			it.Percent = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(float64); ok {
+				it.Percent = data
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be float64`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "RTBSourceIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RTBSourceIDs"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNID642ᚕuint64ᚄ(ctx, v) }
@@ -61755,20 +61989,81 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"title", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
+			}
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Title = data
+			} else if tmp == nil {
+				it.Title = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOString2ᚖstring(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				trim, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *string
+					return zeroVal, err
+				}
+				if ec.directives.Notempty == nil {
+					var zeroVal *string
+					return zeroVal, errors.New("directive notempty is not implemented")
+				}
+				return ec.directives.Notempty(ctx, obj, directive0, trim, ornil)
 			}
-			it.Description = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*string); ok {
+				it.Description = data
+			} else if tmp == nil {
+				it.Description = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
@@ -61778,11 +62073,43 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 			it.Active = data
 		case "percent":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
+			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOFloat2ᚖfloat64(ctx, v) }
+
+			directive1 := func(ctx context.Context) (any, error) {
+				min, err := ec.unmarshalNFloat2float64(ctx, 0)
+				if err != nil {
+					var zeroVal *float64
+					return zeroVal, err
+				}
+				max, err := ec.unmarshalNFloat2float64(ctx, 100)
+				if err != nil {
+					var zeroVal *float64
+					return zeroVal, err
+				}
+				ornil, err := ec.unmarshalNBoolean2bool(ctx, true)
+				if err != nil {
+					var zeroVal *float64
+					return zeroVal, err
+				}
+				if ec.directives.Range == nil {
+					var zeroVal *float64
+					return zeroVal, errors.New("directive range is not implemented")
+				}
+				return ec.directives.Range(ctx, obj, directive0, min, max, ornil)
 			}
-			it.Percent = data
+
+			tmp, err := directive1(ctx)
+			if err != nil {
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
+			if data, ok := tmp.(*float64); ok {
+				it.Percent = data
+			} else if tmp == nil {
+				it.Percent = nil
+			} else {
+				err := fmt.Errorf(`unexpected type %T from directive, should be *float64`, tmp)
+				return it, graphql.ErrorOnPath(ctx, err)
+			}
 		case "RTBSourceIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("RTBSourceIDs"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOID642ᚕuint64ᚄ(ctx, v) }
@@ -68849,6 +69176,11 @@ func (ec *executionContext) _TrafficRouter(ctx context.Context, sel ast.Selectio
 			out.Values[i] = graphql.MarshalString("TrafficRouter")
 		case "ID":
 			out.Values[i] = ec._TrafficRouter_ID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "title":
+			out.Values[i] = ec._TrafficRouter_title(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}

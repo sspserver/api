@@ -2,7 +2,6 @@ package directives
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"reflect"
 	"regexp"
@@ -27,7 +26,7 @@ func ValidateRegex(ctx context.Context, obj any, next graphql.Resolver, pattern 
 		if ornil {
 			return nil, nil
 		}
-		return nil, errors.New("value is nil")
+		return nil, ErrValueIsNil
 	case string:
 		str = v
 	case *string:
@@ -38,7 +37,7 @@ func ValidateRegex(ctx context.Context, obj any, next graphql.Resolver, pattern 
 			if ornil && reflect.ValueOf(res).Kind() == reflect.Ptr {
 				return nil, nil
 			}
-			return nil, errors.New("value is empty")
+			return nil, ErrValueIsEmpty
 		}
 	}
 

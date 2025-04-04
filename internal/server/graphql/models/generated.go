@@ -1007,6 +1007,8 @@ type TimeZone struct {
 type TrafficRouter struct {
 	// ID of the traffic router
 	ID uint64 `json:"ID"`
+	// Title of the traffic router
+	Title string `json:"title"`
 	// Account ID owner of the traffic router
 	AccountID uint64 `json:"accountID"`
 	// Account owner of the traffic router
@@ -1045,6 +1047,8 @@ type TrafficRouter struct {
 type TrafficRouterCreateInput struct {
 	// Account ID owner of the traffic router
 	AccountID *uint64 `json:"accountID,omitempty"`
+	// Title of the traffic router
+	Title string `json:"title"`
 	// Description of the traffic router
 	Description *string `json:"description,omitempty"`
 	// Active status of the traffic router
@@ -1119,6 +1123,8 @@ type TrafficRouterPayload struct {
 }
 
 type TrafficRouterUpdateInput struct {
+	// Title of the traffic router
+	Title *string `json:"title,omitempty"`
 	// Description of the traffic router
 	Description *string `json:"description,omitempty"`
 	// Active status of the traffic router

@@ -15,6 +15,7 @@ func FromTrafficRouterModel(m *models.TrafficRouter) *TrafficRouter {
 	return &TrafficRouter{
 		ID:          m.ID,
 		AccountID:   m.AccountID,
+		Title:       m.Title,
 		Percent:     m.Percent,
 		Description: m.Description,
 

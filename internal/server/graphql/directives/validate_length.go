@@ -31,7 +31,7 @@ func _validateLength(val any, min int, max int, trim, ornil bool) (any, error) {
 		if ornil {
 			return nil, nil
 		}
-		return nil, fmt.Errorf("value is nil")
+		return nil, ErrValueIsNil
 	case string:
 		str = v
 	case *string:
@@ -63,7 +63,7 @@ func _validateLength(val any, min int, max int, trim, ornil bool) (any, error) {
 		if ornil && canBeNil {
 			return nil, nil
 		} else {
-			return nil, fmt.Errorf("value is empty")
+			return nil, ErrValueIsEmpty
 		}
 	}
 

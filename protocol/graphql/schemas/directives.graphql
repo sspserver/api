@@ -2,3 +2,4 @@
 directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
 directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+directive @range(min: Float!, max: Float! = 0, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR

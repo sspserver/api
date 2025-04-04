@@ -2,7 +2,6 @@ package directives
 
 import (
 	"context"
-	"errors"
 	"reflect"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -20,7 +19,7 @@ func ValidateNotEmpty(ctx context.Context, obj any, next graphql.Resolver, trim,
 		if ornil {
 			return nil, nil
 		}
-		return nil, errors.New("value is nil")
+		return nil, ErrValueIsNil
 	default:
 		if gocast.IsEmpty(res) {
 			kind := reflect.ValueOf(res).Kind()
@@ -33,7 +32,7 @@ func ValidateNotEmpty(ctx context.Context, obj any, next graphql.Resolver, trim,
 				kind == reflect.Interface) {
 				return nil, nil
 			}
-			return nil, errors.New("value is empty")
+			return nil, ErrValueIsEmpty
 		}
 	}
 

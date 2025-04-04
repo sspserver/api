@@ -36,6 +36,7 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 				Length:            directives.ValidateLength,
 				Notempty:          directives.ValidateNotEmpty,
 				Regex:             directives.ValidateRegex,
+				Range:             directives.ValidateRange,
 			},
 		}),
 	)
