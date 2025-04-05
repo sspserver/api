@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS adv_traffic_router
                                                                        ON UPDATE NO ACTION
                                                                        ON DELETE RESTRICT
 
+, title                  TEXT                       NOT NULL
 , percent                NUMERIC                    NOT NULL       DEFAULT 100
                                                         CHECK (percent >= 0 AND percent <= 100)
 
