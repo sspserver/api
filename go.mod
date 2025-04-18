@@ -1,6 +1,6 @@
 module github.com/sspserver/api
 
-go 1.24
+go 1.24.2
 
 require (
 	github.com/99designs/gqlgen v0.17.71
