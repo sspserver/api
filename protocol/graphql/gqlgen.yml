@@ -143,3 +143,47 @@ models:
         resolver: true
       RTBSources:
         resolver: true
+      formats:
+        resolver: true
+      deviceTypes:
+        resolver: true
+      devices:
+        resolver: true
+      OS:
+        resolver: true
+      browsers:
+        resolver: true
+      categories:
+        resolver: true
+      countries:
+        resolver: true
+      languages:
+        resolver: true
+      applications:
+        resolver: true
+      zones:
+        resolver: true
+  RTBSource:
+    fields:
+      account:
+        resolver: true
+      formats:
+        resolver: true
+      deviceTypes:
+        resolver: true
+      devices:
+        resolver: true
+      OS:
+        resolver: true
+      browsers:
+        resolver: true
+      categories:
+        resolver: true
+      countries:
+        resolver: true
+      languages:
+        resolver: true
+      applications:
+        resolver: true
+      zones:
+        resolver: true

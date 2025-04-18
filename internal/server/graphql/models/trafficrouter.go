@@ -24,18 +24,18 @@ func FromTrafficRouterModel(m *models.TrafficRouter) *TrafficRouter {
 		RTBSourceIDs: m.RTBSourceIDs,
 
 		// Targeting filters
-		Formats:         m.Formats,
-		DeviceTypes:     m.DeviceTypes,
-		Devices:         m.Devices,
-		Os:              m.OS,
-		Browsers:        m.Browsers,
-		Carriers:        m.Carriers,
-		Categories:      m.Categories,
-		Countries:       m.Countries,
-		Languages:       m.Languages,
+		FormatCodes:     m.Formats,
+		DeviceTypeIDs:   m.DeviceTypes,
+		DeviceIDs:       m.Devices,
+		OSIDs:           m.OS,
+		BrowserIDs:      m.Browsers,
+		CarrierIDs:      m.Carriers,
+		CategoryIDs:     m.Categories,
+		CountryCodes:    m.Countries,
+		LanguageCodes:   m.Languages,
 		Domains:         m.Domains,
-		Applications:    m.Applications,
-		Zones:           m.Zones,
+		ApplicationIDs:  m.Applications,
+		ZoneIDs:         m.Zones,
 		Secure:          FromAnyOnlyExclude(m.Secure),
 		AdBlock:         FromAnyOnlyExclude(m.AdBlock),
 		PrivateBrowsing: FromAnyOnlyExclude(m.PrivateBrowsing),
@@ -58,18 +58,18 @@ func (fl *TrafficRouterListFilter) Filter() *trafficrouter.Filter {
 		AccountID:       gocast.PtrAsValue(fl.AccountID, 0),
 		Active:          ActiveStatusPtr(fl.Active),
 		RTBSourceIDs:    fl.RTBSourceIDs,
-		Formats:         fl.Formats,
-		DeviceTypes:     fl.DeviceTypes,
-		Devices:         fl.Devices,
-		OS:              fl.Os,
-		Browsers:        fl.Browsers,
-		Carriers:        fl.Carriers,
-		Categories:      fl.Categories,
-		Countries:       fl.Countries,
-		Languages:       fl.Languages,
+		Formats:         fl.FormatCodes,
+		DeviceTypes:     fl.DeviceTypeIDs,
+		Devices:         fl.DeviceIDs,
+		OS:              fl.OSIDs,
+		Browsers:        fl.BrowserIDs,
+		Carriers:        fl.CarrierIDs,
+		Categories:      fl.CategoryIDs,
+		Countries:       fl.CountryCodes,
+		Languages:       fl.LanguageCodes,
 		Domains:         fl.Domains,
-		Applications:    fl.Applications,
-		Zones:           fl.Zones,
+		Applications:    fl.ApplicationIDs,
+		Zones:           fl.ZoneIDs,
 		Secure:          gocast.PtrAsValue(fl.Secure.IntPtr(), 0),
 		AdBlock:         gocast.PtrAsValue(fl.AdBlock.IntPtr(), 0),
 		PrivateBrowsing: gocast.PtrAsValue(fl.PrivateBrowsing.IntPtr(), 0),
@@ -97,6 +97,9 @@ func (ord *TrafficRouterListOrder) Fill(order *trafficrouter.ListOrder) {
 	if ord.ID != nil {
 		order.ID = ord.ID.AsOrder()
 	}
+	if ord.Title != nil {
+		order.Title = ord.Title.AsOrder()
+	}
 	if ord.Active != nil {
 		order.Active = ord.Active.AsOrder()
 	}
@@ -120,18 +123,18 @@ func (inp *TrafficRouterCreateInput) FillModel(obj *models.TrafficRouter) {
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
 	obj.Active = ActiveStatusFrom(inp.Active)
 	obj.RTBSourceIDs = inp.RTBSourceIDs
-	obj.Formats = inp.Formats
-	obj.DeviceTypes = inp.DeviceTypes
-	obj.Devices = inp.Devices
-	obj.OS = inp.Os
-	obj.Browsers = inp.Browsers
-	obj.Carriers = inp.Carriers
-	obj.Categories = inp.Categories
-	obj.Countries = inp.Countries
-	obj.Languages = inp.Languages
+	obj.Formats = inp.FormatCodes
+	obj.DeviceTypes = inp.DeviceTypeIDs
+	obj.Devices = inp.DeviceIDs
+	obj.OS = inp.OSIDs
+	obj.Browsers = inp.BrowserIDs
+	obj.Carriers = inp.CarrierIDs
+	obj.Categories = inp.CategoryIDs
+	obj.Countries = inp.CountryCodes
+	obj.Languages = inp.LanguageCodes
 	obj.Domains = inp.Domains
-	obj.Applications = inp.Applications
-	obj.Zones = inp.Zones
+	obj.Applications = inp.ApplicationIDs
+	obj.Zones = inp.ZoneIDs
 	obj.Secure = inp.Secure.Int()
 	obj.AdBlock = inp.AdBlock.Int()
 	obj.PrivateBrowsing = inp.PrivateBrowsing.Int()
@@ -146,18 +149,18 @@ func (inp *TrafficRouterUpdateInput) FillModel(obj *models.TrafficRouter) {
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
 	obj.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), obj.Active)
 	obj.RTBSourceIDs = gocast.IfThen(inp.RTBSourceIDs != nil, inp.RTBSourceIDs, obj.RTBSourceIDs)
-	obj.Formats = gocast.IfThen(inp.Formats != nil, inp.Formats, obj.Formats)
-	obj.DeviceTypes = gocast.IfThen(inp.DeviceTypes != nil, inp.DeviceTypes, obj.DeviceTypes)
-	obj.Devices = gocast.IfThen(inp.Devices != nil, inp.Devices, obj.Devices)
-	obj.OS = gocast.IfThen(inp.Os != nil, inp.Os, obj.OS)
-	obj.Browsers = gocast.IfThen(inp.Browsers != nil, inp.Browsers, obj.Browsers)
-	obj.Carriers = gocast.IfThen(inp.Carriers != nil, inp.Carriers, obj.Carriers)
-	obj.Categories = gocast.IfThen(inp.Categories != nil, inp.Categories, obj.Categories)
-	obj.Countries = gocast.IfThen(inp.Countries != nil, inp.Countries, obj.Countries)
-	obj.Languages = gocast.IfThen(inp.Languages != nil, inp.Languages, obj.Languages)
+	obj.Formats = gocast.IfThen(inp.FormatCodes != nil, inp.FormatCodes, obj.Formats)
+	obj.DeviceTypes = gocast.IfThen(inp.DeviceTypeIDs != nil, inp.DeviceTypeIDs, obj.DeviceTypes)
+	obj.Devices = gocast.IfThen(inp.DeviceIDs != nil, inp.DeviceIDs, obj.Devices)
+	obj.OS = gocast.IfThen(inp.OSIDs != nil, inp.OSIDs, obj.OS)
+	obj.Browsers = gocast.IfThen(inp.BrowserIDs != nil, inp.BrowserIDs, obj.Browsers)
+	obj.Carriers = gocast.IfThen(inp.CarrierIDs != nil, inp.CarrierIDs, obj.Carriers)
+	obj.Categories = gocast.IfThen(inp.CategoryIDs != nil, inp.CategoryIDs, obj.Categories)
+	obj.Countries = gocast.IfThen(inp.CountryCodes != nil, inp.CountryCodes, obj.Countries)
+	obj.Languages = gocast.IfThen(inp.LanguageCodes != nil, inp.LanguageCodes, obj.Languages)
 	obj.Domains = gocast.IfThen(inp.Domains != nil, inp.Domains, obj.Domains)
-	obj.Applications = gocast.IfThen(inp.Applications != nil, inp.Applications, obj.Applications)
-	obj.Zones = gocast.IfThen(inp.Zones != nil, inp.Zones, obj.Zones)
+	obj.Applications = gocast.IfThen(inp.ApplicationIDs != nil, inp.ApplicationIDs, obj.Applications)
+	obj.Zones = gocast.IfThen(inp.ZoneIDs != nil, inp.ZoneIDs, obj.Zones)
 	obj.Secure = gocast.PtrAsValue(inp.Secure.IntPtr(), obj.Secure)
 	obj.AdBlock = gocast.PtrAsValue(inp.AdBlock.IntPtr(), obj.AdBlock)
 	obj.PrivateBrowsing = gocast.PtrAsValue(inp.PrivateBrowsing.IntPtr(), obj.PrivateBrowsing)

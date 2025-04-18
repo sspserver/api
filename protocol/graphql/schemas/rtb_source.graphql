@@ -5,6 +5,11 @@ type RTBSource {
   ID:         ID64!  # Unique identifier for the RTB source.
   accountID:  ID64!  # Identifier for the associated account.
 
+  """
+  Account owner of the traffic router
+  """
+  account: Account
+
   title:        String!  # Title of the RTB source.
   description:  String!  # Description of the RTB source.
 
@@ -47,22 +52,32 @@ type RTBSource {
   maxBid: Float!  # Maximum bid allowed for the source.
 
   # Targeting filters
-  formats:         [String!]  # List of supported ad formats.
-  deviceTypes:     [Int64!]   # List of supported device types.
-  devices:         [Int64!]   # List of specific devices supported.
-  OS:              [Int64!]   # List of supported operating systems.
-  browsers:        [Int64!]   # List of supported browsers.
-  carriers:        [Int64!]   # List of supported carriers.
-  categories:      [Int64!]   # List of supported ad categories.
-  countries:       [String!]  # List of supported countries (ISO codes).
-  languages:       [String!]  # List of supported languages (ISO codes).
-  applications:    [Int64!]   # List of supported applications.
-  domains:         [String!]  # List of supported domains.
-  zones:           [Int64!]   # List of supported zones.
-  secure:          AnyOnlyExclude!  # Security settings (e.g., HTTPS only).
-  adBlock:         AnyOnlyExclude!  # Ad-blocking settings.
-  privateBrowsing: AnyOnlyExclude!  # Private browsing settings.
-  IP:              AnyIPv4IPv6!    # IP filtering settings.
+  formatCodes:     [String!]       # List of format codes for targeting
+  formats:         [AdFormat!]     # List of ad formats for targeting
+  deviceTypeIDs:   [ID64!]         # List of device type IDs for targeting
+  deviceTypes:     [DeviceType!]   # List of device types for targeting
+  deviceIDs:       [ID64!]         # List of device model IDs for targeting
+  devices:         [DeviceModel!]  # List of device models for targeting
+  OSIDs:           [ID64!]         # List of operating system IDs for targeting
+  OS:              [OS!]           # List of operating systems for targeting
+  browserIDs:      [ID64!]         # List of browser IDs for targeting
+  browsers:        [Browser!]      # List of browsers for targeting
+  carrierIDs:      [ID64!]         # List of carrier IDs for targeting
+  categoryIDs:     [ID64!]         # List of category IDs for targeting
+  categories:      [Category!]     # List of categories for targeting
+  countryCodes:    [String!]       # List of country codes for targeting
+  countries:       [Country!]      # List of countries for targeting
+  languageCodes:   [String!]       # List of language codes for targeting
+  languages:       [Lang!]         # List of languages for targeting
+  domains:         [String!]       # List of domains for targeting
+  applicationIDs:  [ID64!]         # List of application IDs for targeting
+  applications:    [Application!]  # List of applications for targeting
+  zoneIDs:         [ID64!]         # List of zone IDs for targeting
+  zones:           [Zone!]         # List of zones for targeting
+  secure:          AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
+  adBlock:         AnyOnlyExclude! # AdBlock targeting option
+  privateBrowsing: AnyOnlyExclude! # Private browsing targeting option
+  IP:              AnyIPv4IPv6!    # IP targeting option (IPv4/IPv6)
 
   config: NullableJSON!  # Additional configuration for the RTB source.
 
@@ -223,18 +238,18 @@ input RTBSourceCreateInput {
   maxBid: Float!  # Maximum bid.
 
   # Targeting filters
-  formats:         [String!]  # Supported ad formats.
-  deviceTypes:     [Int64!]   # Supported device types.
-  devices:         [Int64!]   # Specific devices supported.
-  OS:              [Int64!]   # Supported operating systems.
-  browsers:        [Int64!]   # Supported browsers.
-  carriers:        [Int64!]   # Supported carriers.
-  categories:      [Int64!]   # Supported ad categories.
-  countries:       [String!]  # Supported countries (ISO codes).
-  languages:       [String!]  # Supported languages (ISO codes).
-  applications:    [Int64!]   # Supported applications.
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
   domains:         [String!]  # Supported domains.
-  zones:           [Int64!]   # Supported zones.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude  # Security settings.
   adBlock:         AnyOnlyExclude  # Ad-blocking settings.
   privateBrowsing: AnyOnlyExclude  # Private browsing settings.
@@ -288,18 +303,18 @@ input RTBSourceUpdateInput {
   maxBid: Float  # Maximum bid.
 
   # Targeting filters
-  formats:         [String!]  # Supported ad formats.
-  deviceTypes:     [Int64!]   # Supported device types.
-  devices:         [Int64!]   # Specific devices supported.
-  OS:              [Int64!]   # Supported operating systems.
-  browsers:        [Int64!]   # Supported browsers.
-  carriers:        [Int64!]   # Supported carriers.
-  categories:      [Int64!]   # Supported ad categories.
-  countries:       [String!]  # Supported countries (ISO codes).
-  languages:       [String!]  # Supported languages (ISO codes).
-  applications:    [Int64!]   # Supported applications.
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
   domains:         [String!]  # Supported domains.
-  zones:           [Int64!]   # Supported zones.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude  # Security settings.
   adBlock:         AnyOnlyExclude  # Ad-blocking settings.
   privateBrowsing: AnyOnlyExclude  # Private browsing settings.

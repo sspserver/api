@@ -37,18 +37,18 @@ func FromRTBSourceModel(src *models.RTBSource) *RTBSource {
 		MinBid:                src.MinBid,
 		MaxBid:                src.MaxBid,
 
-		Formats:         src.Formats,
-		DeviceTypes:     src.DeviceTypes,
-		Devices:         src.Devices,
-		Os:              src.OS,
-		Browsers:        src.Browsers,
-		Carriers:        src.Carriers,
-		Categories:      src.Categories,
-		Countries:       src.Countries,
-		Languages:       src.Languages,
-		Applications:    src.Applications,
+		FormatCodes:     src.Formats,
+		DeviceTypeIDs:   src.DeviceTypes,
+		DeviceIDs:       src.Devices,
+		OSIDs:           src.OS,
+		BrowserIDs:      src.Browsers,
+		CarrierIDs:      src.Carriers,
+		CategoryIDs:     src.Categories,
+		CountryCodes:    src.Countries,
+		LanguageCodes:   src.Languages,
+		ApplicationIDs:  src.Applications,
 		Domains:         src.Domains,
-		Zones:           src.Zones,
+		ZoneIDs:         src.Zones,
 		Secure:          FromAnyOnlyExclude(src.Secure),
 		AdBlock:         FromAnyOnlyExclude(src.AdBlock),
 		PrivateBrowsing: FromAnyOnlyExclude(src.PrivateBrowsing),
@@ -183,18 +183,18 @@ func (inp *RTBSourceCreateInput) FillModel(m *models.RTBSource) {
 		MaxBid: inp.MaxBid,
 
 		// Targeting filters
-		Formats:         inp.Formats,
-		DeviceTypes:     inp.DeviceTypes,
-		Devices:         inp.Devices,
-		OS:              inp.Os,
-		Browsers:        inp.Browsers,
-		Carriers:        inp.Carriers,
-		Categories:      inp.Categories,
-		Countries:       inp.Countries,
-		Languages:       inp.Languages,
-		Applications:    inp.Applications,
+		Formats:         inp.FormatCodes,
+		DeviceTypes:     inp.DeviceTypeIDs,
+		Devices:         inp.DeviceIDs,
+		OS:              inp.OSIDs,
+		Browsers:        inp.BrowserIDs,
+		Carriers:        inp.CarrierIDs,
+		Categories:      inp.CategoryIDs,
+		Countries:       inp.CountryCodes,
+		Languages:       inp.LanguageCodes,
+		Applications:    inp.ApplicationIDs,
 		Domains:         inp.Domains,
-		Zones:           inp.Zones,
+		Zones:           inp.ZoneIDs,
 		Secure:          gocast.PtrAsValue(inp.Secure.IntPtr(), 0),
 		AdBlock:         gocast.PtrAsValue(inp.AdBlock.IntPtr(), 0),
 		PrivateBrowsing: gocast.PtrAsValue(inp.PrivateBrowsing.IntPtr(), 0),
@@ -244,18 +244,18 @@ func (inp *RTBSourceUpdateInput) FillModel(m *models.RTBSource) {
 	m.MinBid = gocast.PtrAsValue(inp.MinBid, m.MinBid)
 	m.MaxBid = gocast.PtrAsValue(inp.MaxBid, m.MaxBid)
 
-	m.Formats = gocast.IfThen(inp.Formats != nil, inp.Formats, []string(m.Formats))
-	m.DeviceTypes = gocast.IfThen(inp.DeviceTypes != nil, inp.DeviceTypes, []int64(m.DeviceTypes))
-	m.Devices = gocast.IfThen(inp.Devices != nil, inp.Devices, []int64(m.Devices))
-	m.OS = gocast.IfThen(inp.Os != nil, inp.Os, []int64(m.OS))
-	m.Browsers = gocast.IfThen(inp.Browsers != nil, inp.Browsers, []int64(m.Browsers))
-	m.Carriers = gocast.IfThen(inp.Carriers != nil, inp.Carriers, []int64(m.Carriers))
-	m.Categories = gocast.IfThen(inp.Categories != nil, inp.Categories, []int64(m.Categories))
-	m.Countries = gocast.IfThen(inp.Countries != nil, inp.Countries, []string(m.Countries))
-	m.Languages = gocast.IfThen(inp.Languages != nil, inp.Languages, []string(m.Languages))
-	m.Applications = gocast.IfThen(inp.Applications != nil, inp.Applications, []int64(m.Applications))
+	m.Formats = gocast.IfThen(inp.FormatCodes != nil, inp.FormatCodes, []string(m.Formats))
+	m.DeviceTypes = gocast.IfThen(inp.DeviceTypeIDs != nil, inp.DeviceTypeIDs, []uint64(m.DeviceTypes))
+	m.Devices = gocast.IfThen(inp.DeviceIDs != nil, inp.DeviceIDs, []uint64(m.Devices))
+	m.OS = gocast.IfThen(inp.OSIDs != nil, inp.OSIDs, []uint64(m.OS))
+	m.Browsers = gocast.IfThen(inp.BrowserIDs != nil, inp.BrowserIDs, []uint64(m.Browsers))
+	m.Carriers = gocast.IfThen(inp.CarrierIDs != nil, inp.CarrierIDs, []uint64(m.Carriers))
+	m.Categories = gocast.IfThen(inp.CategoryIDs != nil, inp.CategoryIDs, []uint64(m.Categories))
+	m.Countries = gocast.IfThen(inp.CountryCodes != nil, inp.CountryCodes, []string(m.Countries))
+	m.Languages = gocast.IfThen(inp.LanguageCodes != nil, inp.LanguageCodes, []string(m.Languages))
+	m.Applications = gocast.IfThen(inp.ApplicationIDs != nil, inp.ApplicationIDs, []uint64(m.Applications))
 	m.Domains = gocast.IfThen(inp.Domains != nil, inp.Domains, []string(m.Domains))
-	m.Zones = gocast.IfThen(inp.Zones != nil, inp.Zones, []int64(m.Zones))
+	m.Zones = gocast.IfThen(inp.ZoneIDs != nil, inp.ZoneIDs, []uint64(m.Zones))
 	m.Secure = gocast.PtrAsValue(inp.Secure.IntPtr(), m.Secure)
 	m.AdBlock = gocast.PtrAsValue(inp.AdBlock.IntPtr(), m.AdBlock)
 	m.PrivateBrowsing = gocast.PtrAsValue(inp.PrivateBrowsing.IntPtr(), m.PrivateBrowsing)

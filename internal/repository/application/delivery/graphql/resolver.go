@@ -3,6 +3,7 @@ package graphql
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
@@ -26,15 +27,10 @@ func NewQueryResolver() *QueryResolver {
 
 // Get is the resolver for the application field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.ApplicationPayload, error) {
-	appObj, err := ctxcache.GetCache(ctx, "Application").GetOrCache(id, func(key any) (any, error) {
-		return r.uc.Get(ctx, id)
-	})
+	obj, err := r.cachedItemByID(ctx, id, true)
 	if err != nil {
 		return nil, err
 	}
-	obj := gocast.IfThenExec(appObj != nil,
-		func() *models.Application { return appObj.(*models.Application) },
-		func() *models.Application { return nil })
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    gocast.IfThenExec(obj != nil, func() uint64 { return obj.ID }, func() uint64 { return 0 }),
@@ -45,6 +41,45 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.Applicati
 // List Applications is the resolver for the listApplications field.
 func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationListFilter, order *qlmodels.ApplicationListOrder, page *qlmodels.Page) (*connectors.ApplicationConnection, error) {
 	return connectors.NewApplicationConnection(ctx, r.uc, filter, order, page), nil
+}
+
+func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodels.Application, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
+	var (
+		list   = make([]*models.Application, 0, len(ids))
+		cached []uint64
+	)
+	for _, id := range ids {
+		if obj, err := r.cachedItemByID(ctx, id, false); err != nil {
+			return nil, err
+		} else {
+			list = append(list, obj)
+			cached = append(cached, id)
+		}
+	}
+	if len(cached) < len(ids) {
+		// not all formats are cached, so we need to load them from the database
+		// and cache them
+		newIDs := gocast.IfThenExec(len(cached) == 0,
+			func() []uint64 { return ids },
+			func() []uint64 {
+				return slices.DeleteFunc(ids, func(id uint64) bool {
+					return slices.Contains(cached, id)
+				})
+			})
+		newList, err := r.uc.FetchList(ctx, &application.Filter{ID: newIDs}, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		cache := r.cacheObj(ctx)
+		for _, obj := range newList {
+			cache.Set(obj.ID, obj)
+		}
+		list = append(list, newList...)
+	}
+	return qlmodels.FromApplicationModelList(list), nil
 }
 
 // Create Application is the resolver for the createApplication field.
@@ -179,4 +214,27 @@ func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*ql
 		ApplicationID:    id,
 		Application:      qlmodels.FromApplicationModel(app),
 	}, nil
+}
+
+func (r *QueryResolver) cachedItemByID(ctx context.Context, id uint64, orLoad bool) (*models.Application, error) {
+	var (
+		cache = r.cacheObj(ctx)
+		obj   any
+		err   error
+	)
+	if orLoad {
+		obj, err = cache.GetOrCache(id, func(any) (any, error) {
+			return r.uc.Get(ctx, id)
+		})
+	} else {
+		obj = cache.Get(id)
+	}
+	if err != nil || obj == nil {
+		return nil, err
+	}
+	return obj.(*models.Application), nil
+}
+
+func (r *QueryResolver) cacheObj(ctx context.Context) ctxcache.Cacher {
+	return ctxcache.GetCache(ctx, "Application")
 }

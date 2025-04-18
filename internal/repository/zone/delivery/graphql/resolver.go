@@ -3,6 +3,7 @@ package graphql
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
@@ -25,24 +26,60 @@ func NewQueryResolver() *QueryResolver {
 
 // Get is the resolver for the zone field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.ZonePayload, error) {
-	obj, err := ctxcache.GetCache(ctx, "Zone").GetOrCache(id, func(key any) (any, error) {
-		return r.uc.Get(ctx, id)
-	})
+	obj, err := r.cachedZoneByID(ctx, id, true)
 	if err != nil {
 		return nil, err
 	}
-	zone := gocast.IfThenExec(obj != nil,
-		func() *models.Zone { return obj.(*models.Zone) },
-		func() *models.Zone { return nil })
 	return &qlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Zone:             qlmodels.FromZoneModel(zone),
+		Zone:             qlmodels.FromZoneModel(obj),
 	}, nil
 }
 
 // List Zones is the resolver for the listApplications field.
 func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ZoneListFilter, order *qlmodels.ZoneListOrder, page *qlmodels.Page) (*connectors.ZoneConnection, error) {
 	return connectors.NewZoneConnection(ctx, r.uc, filter, order, page), nil
+}
+
+func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodels.Zone, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
+
+	var (
+		list   = make([]*models.Zone, 0, len(ids))
+		cached []uint64
+	)
+
+	for _, id := range ids {
+		if id == 0 {
+			continue
+		}
+		if obj, err := r.cachedZoneByID(ctx, id, false); err != nil {
+			return nil, err
+		} else if obj != nil {
+			list = append(list, obj)
+			cached = append(cached, id)
+		}
+	}
+
+	if len(cached) < len(ids) {
+		newIDs := gocast.IfThenExec(len(cached) == 0,
+			func() []uint64 { return ids },
+			func() []uint64 {
+				return slices.DeleteFunc(ids, func(code uint64) bool {
+					return slices.Contains(cached, code)
+				})
+			})
+		zoneList, err := r.uc.FetchList(ctx, &zone.Filter{ID: newIDs})
+		if err != nil {
+			return nil, err
+		}
+		r.cacheList(ctx, zoneList)
+		list = append(list, zoneList...)
+	}
+
+	return qlmodels.FromZoneModelList(list), nil
 }
 
 // Create Zone is the resolver for the createApplication field.
@@ -161,4 +198,36 @@ func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*ql
 		ZoneID:           id,
 		Zone:             qlmodels.FromZoneModel(zone),
 	}, nil
+}
+
+func (r *QueryResolver) cachedZoneByID(ctx context.Context, id uint64, orLoad bool) (*models.Zone, error) {
+	var (
+		cache = r.cacheObj(ctx)
+		obj   any
+		err   error
+	)
+	if orLoad {
+		obj, err = cache.GetOrCache(id, func(any) (any, error) {
+			return r.uc.Get(ctx, id)
+		})
+	} else {
+		obj = cache.Get(id)
+	}
+	if err != nil || obj == nil {
+		return nil, err
+	}
+	return obj.(*models.Zone), nil
+}
+
+func (r *QueryResolver) cacheList(ctx context.Context, list []*models.Zone) {
+	if len(list) > 0 {
+		cache := r.cacheObj(ctx)
+		for _, obj := range list {
+			cache.Set(obj.ID, obj)
+		}
+	}
+}
+
+func (r *QueryResolver) cacheObj(ctx context.Context) ctxcache.Cacher {
+	return ctxcache.GetCache(ctx, "Zone")
 }

@@ -48,6 +48,7 @@ type ResolverRoot interface {
 	Mutation() MutationResolver
 	OS() OSResolver
 	Query() QueryResolver
+	RTBSource() RTBSourceResolver
 	StatisticItemKey() StatisticItemKeyResolver
 	TrafficRouter() TrafficRouterResolver
 }
@@ -748,33 +749,43 @@ type ComplexityRoot struct {
 	}
 
 	RTBSource struct {
+		Account               func(childComplexity int) int
 		AccountID             func(childComplexity int) int
 		Accuracy              func(childComplexity int) int
 		Active                func(childComplexity int) int
 		AdBlock               func(childComplexity int) int
+		ApplicationIDs        func(childComplexity int) int
 		Applications          func(childComplexity int) int
 		AuctionType           func(childComplexity int) int
+		BrowserIDs            func(childComplexity int) int
 		Browsers              func(childComplexity int) int
-		Carriers              func(childComplexity int) int
+		CarrierIDs            func(childComplexity int) int
 		Categories            func(childComplexity int) int
+		CategoryIDs           func(childComplexity int) int
 		Config                func(childComplexity int) int
 		Countries             func(childComplexity int) int
+		CountryCodes          func(childComplexity int) int
 		CreatedAt             func(childComplexity int) int
 		DeletedAt             func(childComplexity int) int
 		Description           func(childComplexity int) int
+		DeviceIDs             func(childComplexity int) int
+		DeviceTypeIDs         func(childComplexity int) int
 		DeviceTypes           func(childComplexity int) int
 		Devices               func(childComplexity int) int
 		Domains               func(childComplexity int) int
 		Flags                 func(childComplexity int) int
+		FormatCodes           func(childComplexity int) int
 		Formats               func(childComplexity int) int
 		Headers               func(childComplexity int) int
 		ID                    func(childComplexity int) int
 		IP                    func(childComplexity int) int
+		LanguageCodes         func(childComplexity int) int
 		Languages             func(childComplexity int) int
 		MaxBid                func(childComplexity int) int
 		Method                func(childComplexity int) int
 		MinBid                func(childComplexity int) int
 		MinimalWeight         func(childComplexity int) int
+		OSIDs                 func(childComplexity int) int
 		Os                    func(childComplexity int) int
 		PriceCorrectionReduce func(childComplexity int) int
 		PrivateBrowsing       func(childComplexity int) int
@@ -787,6 +798,7 @@ type ComplexityRoot struct {
 		Title                 func(childComplexity int) int
 		URL                   func(childComplexity int) int
 		UpdatedAt             func(childComplexity int) int
+		ZoneIDs               func(childComplexity int) int
 		Zones                 func(childComplexity int) int
 	}
 
@@ -911,21 +923,30 @@ type ComplexityRoot struct {
 		AccountID       func(childComplexity int) int
 		Active          func(childComplexity int) int
 		AdBlock         func(childComplexity int) int
+		ApplicationIDs  func(childComplexity int) int
 		Applications    func(childComplexity int) int
+		BrowserIDs      func(childComplexity int) int
 		Browsers        func(childComplexity int) int
-		Carriers        func(childComplexity int) int
+		CarrierIDs      func(childComplexity int) int
 		Categories      func(childComplexity int) int
+		CategoryIDs     func(childComplexity int) int
 		Countries       func(childComplexity int) int
+		CountryCodes    func(childComplexity int) int
 		CreatedAt       func(childComplexity int) int
 		DeletedAt       func(childComplexity int) int
 		Description     func(childComplexity int) int
+		DeviceIDs       func(childComplexity int) int
+		DeviceTypeIDs   func(childComplexity int) int
 		DeviceTypes     func(childComplexity int) int
 		Devices         func(childComplexity int) int
 		Domains         func(childComplexity int) int
+		FormatCodes     func(childComplexity int) int
 		Formats         func(childComplexity int) int
 		ID              func(childComplexity int) int
 		IP              func(childComplexity int) int
+		LanguageCodes   func(childComplexity int) int
 		Languages       func(childComplexity int) int
+		OSIDs           func(childComplexity int) int
 		Os              func(childComplexity int) int
 		Percent         func(childComplexity int) int
 		PrivateBrowsing func(childComplexity int) int
@@ -934,6 +955,7 @@ type ComplexityRoot struct {
 		Secure          func(childComplexity int) int
 		Title           func(childComplexity int) int
 		UpdatedAt       func(childComplexity int) int
+		ZoneIDs         func(childComplexity int) int
 		Zones           func(childComplexity int) int
 	}
 
@@ -1159,6 +1181,29 @@ type QueryResolver interface {
 	Zone(ctx context.Context, id uint64) (*models.ZonePayload, error)
 	ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Zone, models.ZoneEdge], error)
 }
+type RTBSourceResolver interface {
+	Account(ctx context.Context, obj *models.RTBSource) (*models1.Account, error)
+
+	Formats(ctx context.Context, obj *models.RTBSource) ([]*models.AdFormat, error)
+
+	DeviceTypes(ctx context.Context, obj *models.RTBSource) ([]*models.DeviceType, error)
+
+	Devices(ctx context.Context, obj *models.RTBSource) ([]*models.DeviceModel, error)
+
+	Os(ctx context.Context, obj *models.RTBSource) ([]*models.Os, error)
+
+	Browsers(ctx context.Context, obj *models.RTBSource) ([]*models.Browser, error)
+
+	Categories(ctx context.Context, obj *models.RTBSource) ([]*models.Category, error)
+
+	Countries(ctx context.Context, obj *models.RTBSource) ([]*models.Country, error)
+
+	Languages(ctx context.Context, obj *models.RTBSource) ([]*models.Lang, error)
+
+	Applications(ctx context.Context, obj *models.RTBSource) ([]*models.Application, error)
+
+	Zones(ctx context.Context, obj *models.RTBSource) ([]*models.Zone, error)
+}
 type StatisticItemKeyResolver interface {
 	Text(ctx context.Context, obj *models.StatisticItemKey) (string, error)
 }
@@ -1166,6 +1211,26 @@ type TrafficRouterResolver interface {
 	Account(ctx context.Context, obj *models.TrafficRouter) (*models1.Account, error)
 
 	RTBSources(ctx context.Context, obj *models.TrafficRouter) ([]*models.RTBSource, error)
+
+	Formats(ctx context.Context, obj *models.TrafficRouter) ([]*models.AdFormat, error)
+
+	DeviceTypes(ctx context.Context, obj *models.TrafficRouter) ([]*models.DeviceType, error)
+
+	Devices(ctx context.Context, obj *models.TrafficRouter) ([]*models.DeviceModel, error)
+
+	Os(ctx context.Context, obj *models.TrafficRouter) ([]*models.Os, error)
+
+	Browsers(ctx context.Context, obj *models.TrafficRouter) ([]*models.Browser, error)
+
+	Categories(ctx context.Context, obj *models.TrafficRouter) ([]*models.Category, error)
+
+	Countries(ctx context.Context, obj *models.TrafficRouter) ([]*models.Country, error)
+
+	Languages(ctx context.Context, obj *models.TrafficRouter) ([]*models.Lang, error)
+
+	Applications(ctx context.Context, obj *models.TrafficRouter) ([]*models.Application, error)
+
+	Zones(ctx context.Context, obj *models.TrafficRouter) ([]*models.Zone, error)
 }
 
 type executableSchema struct {
@@ -1182,7 +1247,7 @@ func (e *executableSchema) Schema() *ast.Schema {
 	return parsedSchema
 }
 
-func (e *executableSchema) Complexity(typeName, field string, childComplexity int, rawArgs map[string]any) (int, bool) {
+func (e *executableSchema) Complexity(ctx context.Context, typeName, field string, childComplexity int, rawArgs map[string]any) (int, bool) {
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
@@ -2592,7 +2657,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_DeviceModel_versions_args(context.TODO(), rawArgs)
+		args, err := ec.field_DeviceModel_versions_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3108,7 +3173,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_activateZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_activateZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3120,7 +3185,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3132,7 +3197,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveAccountMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveAccountMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3144,7 +3209,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3156,7 +3221,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3168,7 +3233,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveUser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveUser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3180,7 +3245,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_approveZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_approveZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3192,7 +3257,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3204,7 +3269,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createAuthClient_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createAuthClient_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3216,7 +3281,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createBrowser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createBrowser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3228,7 +3293,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createCategory_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createCategory_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3240,7 +3305,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createDeviceMaker_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createDeviceMaker_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3252,7 +3317,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createDeviceModel_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createDeviceModel_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3264,7 +3329,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createFormat_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createFormat_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3276,7 +3341,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createOS_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createOS_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3288,7 +3353,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3300,7 +3365,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createRole_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createRole_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3312,7 +3377,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createTrafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createTrafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3324,7 +3389,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createUser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createUser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3336,7 +3401,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3348,7 +3413,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deactivateZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deactivateZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3360,7 +3425,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3372,7 +3437,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteAuthClient_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteAuthClient_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3384,7 +3449,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteBrowser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteBrowser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3396,7 +3461,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteCategory_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteCategory_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3408,7 +3473,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteDeviceMaker_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteDeviceMaker_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3420,7 +3485,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteDeviceModel_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteDeviceModel_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3432,7 +3497,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteFormat_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteFormat_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3444,7 +3509,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteOS_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteOS_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3456,7 +3521,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3468,7 +3533,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteRole_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteRole_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3480,7 +3545,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteTrafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteTrafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3492,7 +3557,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3504,7 +3569,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_disconnectSocialAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_disconnectSocialAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3516,7 +3581,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_generateDirectAccessToken_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_generateDirectAccessToken_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3528,7 +3593,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_inviteAccountMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_inviteAccountMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3540,7 +3605,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_login_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_login_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3559,7 +3624,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_pauseApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_pauseApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3571,7 +3636,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_pauseRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_pauseRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3583,7 +3648,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_pauseTrafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_pauseTrafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3602,7 +3667,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_registerAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_registerAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3614,7 +3679,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3626,7 +3691,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectAccountMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectAccountMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3638,7 +3703,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3650,7 +3715,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3662,7 +3727,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectUser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectUser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3674,7 +3739,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_rejectZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_rejectZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3686,7 +3751,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_removeAccountMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_removeAccountMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3698,7 +3763,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_resetUserPassword_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_resetUserPassword_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3710,7 +3775,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_revokeDirectAccessToken_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_revokeDirectAccessToken_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3722,7 +3787,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_runApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_runApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3734,7 +3799,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_runRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_runRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3746,7 +3811,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_runTrafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_runTrafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3758,7 +3823,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_setOption_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_setOption_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3770,7 +3835,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_switchAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_switchAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3782,7 +3847,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3794,7 +3859,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateAccountMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateAccountMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3806,7 +3871,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateApplication_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateApplication_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3818,7 +3883,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateAuthClient_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateAuthClient_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3830,7 +3895,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateBrowser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateBrowser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3842,7 +3907,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateCategory_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateCategory_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3854,7 +3919,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateDeviceMaker_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateDeviceMaker_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3866,7 +3931,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateDeviceModel_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateDeviceModel_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3878,7 +3943,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateFormat_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateFormat_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3890,7 +3955,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateOS_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateOS_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3902,7 +3967,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateRTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateRTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3914,7 +3979,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateRole_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateRole_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3926,7 +3991,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateTrafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateTrafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3938,7 +4003,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateUser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateUser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3950,7 +4015,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateUserPassword_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateUserPassword_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -3962,7 +4027,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateZone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateZone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4380,7 +4445,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_account_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_account_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4392,7 +4457,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_application_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_application_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4404,7 +4469,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_authClient_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_authClient_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4416,7 +4481,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_browser_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_browser_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4428,7 +4493,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_category_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_category_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4440,7 +4505,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_checkPermission_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_checkPermission_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4480,7 +4545,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_currentSocialAccounts_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_currentSocialAccounts_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4499,7 +4564,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_deviceMaker_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_deviceMaker_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4511,7 +4576,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_deviceModel_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_deviceModel_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4523,7 +4588,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_format_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_format_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4535,7 +4600,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_getDirectAccessToken_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_getDirectAccessToken_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4547,7 +4612,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_languages_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_languages_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4559,7 +4624,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listAccountRolesAndPermissions_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listAccountRolesAndPermissions_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4571,7 +4636,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listAccounts_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listAccounts_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4583,7 +4648,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listApplications_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listApplications_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4595,7 +4660,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listAuthClients_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listAuthClients_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4607,7 +4672,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listBrowsers_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listBrowsers_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4619,7 +4684,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listCategories_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listCategories_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4631,7 +4696,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listDeviceMakers_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listDeviceMakers_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4643,7 +4708,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listDeviceModels_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listDeviceModels_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4662,7 +4727,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listDirectAccessTokens_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listDirectAccessTokens_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4674,7 +4739,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listFormats_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listFormats_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4686,7 +4751,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listHistory_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listHistory_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4698,7 +4763,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listMembers_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listMembers_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4710,7 +4775,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listMyPermissions_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listMyPermissions_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4722,7 +4787,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listOptions_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listOptions_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4734,7 +4799,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listOS_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listOS_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4746,7 +4811,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listPermissions_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listPermissions_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4758,7 +4823,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listRTBSources_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listRTBSources_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4770,7 +4835,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listRoles_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listRoles_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4782,7 +4847,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listSocialAccounts_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listSocialAccounts_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4794,7 +4859,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listTrafficRouters_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listTrafficRouters_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4806,7 +4871,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listUsers_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listUsers_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4818,7 +4883,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_listZones_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_listZones_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4830,7 +4895,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_option_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_option_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4842,7 +4907,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_OS_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_OS_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4854,7 +4919,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_RTBSource_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_RTBSource_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4866,7 +4931,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_role_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_role_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4885,7 +4950,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_socialAccount_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_socialAccount_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4897,7 +4962,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_statisticAdList_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_statisticAdList_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4909,7 +4974,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_trafficRouter_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_trafficRouter_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4921,7 +4986,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_user_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_user_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -4933,7 +4998,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_zone_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_zone_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -5115,6 +5180,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.RBACRolePayload.RoleID(childComplexity), true
 
+	case "RTBSource.account":
+		if e.complexity.RTBSource.Account == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.Account(childComplexity), true
+
 	case "RTBSource.accountID":
 		if e.complexity.RTBSource.AccountID == nil {
 			break
@@ -5143,6 +5215,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.RTBSource.AdBlock(childComplexity), true
 
+	case "RTBSource.applicationIDs":
+		if e.complexity.RTBSource.ApplicationIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.ApplicationIDs(childComplexity), true
+
 	case "RTBSource.applications":
 		if e.complexity.RTBSource.Applications == nil {
 			break
@@ -5157,6 +5236,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.RTBSource.AuctionType(childComplexity), true
 
+	case "RTBSource.browserIDs":
+		if e.complexity.RTBSource.BrowserIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.BrowserIDs(childComplexity), true
+
 	case "RTBSource.browsers":
 		if e.complexity.RTBSource.Browsers == nil {
 			break
@@ -5164,12 +5250,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.RTBSource.Browsers(childComplexity), true
 
-	case "RTBSource.carriers":
-		if e.complexity.RTBSource.Carriers == nil {
+	case "RTBSource.carrierIDs":
+		if e.complexity.RTBSource.CarrierIDs == nil {
 			break
 		}
 
-		return e.complexity.RTBSource.Carriers(childComplexity), true
+		return e.complexity.RTBSource.CarrierIDs(childComplexity), true
 
 	case "RTBSource.categories":
 		if e.complexity.RTBSource.Categories == nil {
@@ -5177,6 +5263,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.Categories(childComplexity), true
+
+	case "RTBSource.categoryIDs":
+		if e.complexity.RTBSource.CategoryIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.CategoryIDs(childComplexity), true
 
 	case "RTBSource.config":
 		if e.complexity.RTBSource.Config == nil {
@@ -5191,6 +5284,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.Countries(childComplexity), true
+
+	case "RTBSource.countryCodes":
+		if e.complexity.RTBSource.CountryCodes == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.CountryCodes(childComplexity), true
 
 	case "RTBSource.createdAt":
 		if e.complexity.RTBSource.CreatedAt == nil {
@@ -5212,6 +5312,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.Description(childComplexity), true
+
+	case "RTBSource.deviceIDs":
+		if e.complexity.RTBSource.DeviceIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.DeviceIDs(childComplexity), true
+
+	case "RTBSource.deviceTypeIDs":
+		if e.complexity.RTBSource.DeviceTypeIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.DeviceTypeIDs(childComplexity), true
 
 	case "RTBSource.deviceTypes":
 		if e.complexity.RTBSource.DeviceTypes == nil {
@@ -5241,6 +5355,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.RTBSource.Flags(childComplexity), true
 
+	case "RTBSource.formatCodes":
+		if e.complexity.RTBSource.FormatCodes == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.FormatCodes(childComplexity), true
+
 	case "RTBSource.formats":
 		if e.complexity.RTBSource.Formats == nil {
 			break
@@ -5268,6 +5389,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.IP(childComplexity), true
+
+	case "RTBSource.languageCodes":
+		if e.complexity.RTBSource.LanguageCodes == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.LanguageCodes(childComplexity), true
 
 	case "RTBSource.languages":
 		if e.complexity.RTBSource.Languages == nil {
@@ -5303,6 +5431,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.MinimalWeight(childComplexity), true
+
+	case "RTBSource.OSIDs":
+		if e.complexity.RTBSource.OSIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.OSIDs(childComplexity), true
 
 	case "RTBSource.OS":
 		if e.complexity.RTBSource.Os == nil {
@@ -5387,6 +5522,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.RTBSource.UpdatedAt(childComplexity), true
+
+	case "RTBSource.zoneIDs":
+		if e.complexity.RTBSource.ZoneIDs == nil {
+			break
+		}
+
+		return e.complexity.RTBSource.ZoneIDs(childComplexity), true
 
 	case "RTBSource.zones":
 		if e.complexity.RTBSource.Zones == nil {
@@ -5941,12 +6083,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.AdBlock(childComplexity), true
 
+	case "TrafficRouter.applicationIDs":
+		if e.complexity.TrafficRouter.ApplicationIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.ApplicationIDs(childComplexity), true
+
 	case "TrafficRouter.applications":
 		if e.complexity.TrafficRouter.Applications == nil {
 			break
 		}
 
 		return e.complexity.TrafficRouter.Applications(childComplexity), true
+
+	case "TrafficRouter.browserIDs":
+		if e.complexity.TrafficRouter.BrowserIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.BrowserIDs(childComplexity), true
 
 	case "TrafficRouter.browsers":
 		if e.complexity.TrafficRouter.Browsers == nil {
@@ -5955,12 +6111,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.Browsers(childComplexity), true
 
-	case "TrafficRouter.carriers":
-		if e.complexity.TrafficRouter.Carriers == nil {
+	case "TrafficRouter.carrierIDs":
+		if e.complexity.TrafficRouter.CarrierIDs == nil {
 			break
 		}
 
-		return e.complexity.TrafficRouter.Carriers(childComplexity), true
+		return e.complexity.TrafficRouter.CarrierIDs(childComplexity), true
 
 	case "TrafficRouter.categories":
 		if e.complexity.TrafficRouter.Categories == nil {
@@ -5969,12 +6125,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.Categories(childComplexity), true
 
+	case "TrafficRouter.categoryIDs":
+		if e.complexity.TrafficRouter.CategoryIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.CategoryIDs(childComplexity), true
+
 	case "TrafficRouter.countries":
 		if e.complexity.TrafficRouter.Countries == nil {
 			break
 		}
 
 		return e.complexity.TrafficRouter.Countries(childComplexity), true
+
+	case "TrafficRouter.countryCodes":
+		if e.complexity.TrafficRouter.CountryCodes == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.CountryCodes(childComplexity), true
 
 	case "TrafficRouter.createdAt":
 		if e.complexity.TrafficRouter.CreatedAt == nil {
@@ -5997,6 +6167,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.Description(childComplexity), true
 
+	case "TrafficRouter.deviceIDs":
+		if e.complexity.TrafficRouter.DeviceIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.DeviceIDs(childComplexity), true
+
+	case "TrafficRouter.deviceTypeIDs":
+		if e.complexity.TrafficRouter.DeviceTypeIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.DeviceTypeIDs(childComplexity), true
+
 	case "TrafficRouter.deviceTypes":
 		if e.complexity.TrafficRouter.DeviceTypes == nil {
 			break
@@ -6017,6 +6201,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TrafficRouter.Domains(childComplexity), true
+
+	case "TrafficRouter.formatCodes":
+		if e.complexity.TrafficRouter.FormatCodes == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.FormatCodes(childComplexity), true
 
 	case "TrafficRouter.formats":
 		if e.complexity.TrafficRouter.Formats == nil {
@@ -6039,12 +6230,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TrafficRouter.IP(childComplexity), true
 
+	case "TrafficRouter.languageCodes":
+		if e.complexity.TrafficRouter.LanguageCodes == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.LanguageCodes(childComplexity), true
+
 	case "TrafficRouter.languages":
 		if e.complexity.TrafficRouter.Languages == nil {
 			break
 		}
 
 		return e.complexity.TrafficRouter.Languages(childComplexity), true
+
+	case "TrafficRouter.OSIDs":
+		if e.complexity.TrafficRouter.OSIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.OSIDs(childComplexity), true
 
 	case "TrafficRouter.OS":
 		if e.complexity.TrafficRouter.Os == nil {
@@ -6101,6 +6306,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TrafficRouter.UpdatedAt(childComplexity), true
+
+	case "TrafficRouter.zoneIDs":
+		if e.complexity.TrafficRouter.ZoneIDs == nil {
+			break
+		}
+
+		return e.complexity.TrafficRouter.ZoneIDs(childComplexity), true
 
 	case "TrafficRouter.zones":
 		if e.complexity.TrafficRouter.Zones == nil {
@@ -10304,10 +10516,19 @@ extend type Query {
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/directives.graphql", Input: `# Validation directives
+
+## @length validates the length of a string or array.
 directive @length(min: Int!, max: Int! = 0, trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+
+## @notempty validates that a string or array is not empty.
 directive @notempty(trim: Boolean! = false, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+
+## @regex validates a string against a regular expression.
 directive @regex(pattern: String!, trim: Boolean! = true, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
-directive @range(min: Float!, max: Float! = 0, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR`, BuiltIn: false},
+
+## @range validates that a number is within a specified range.
+directive @range(min: Float!, max: Float! = 0, ornil: Boolean! = false) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/language.graphql", Input: `"""
 Lang is a language used in the system.
 """
@@ -10634,6 +10855,11 @@ type RTBSource {
   ID:         ID64!  # Unique identifier for the RTB source.
   accountID:  ID64!  # Identifier for the associated account.
 
+  """
+  Account owner of the traffic router
+  """
+  account: Account
+
   title:        String!  # Title of the RTB source.
   description:  String!  # Description of the RTB source.
 
@@ -10676,22 +10902,32 @@ type RTBSource {
   maxBid: Float!  # Maximum bid allowed for the source.
 
   # Targeting filters
-  formats:         [String!]  # List of supported ad formats.
-  deviceTypes:     [Int64!]   # List of supported device types.
-  devices:         [Int64!]   # List of specific devices supported.
-  OS:              [Int64!]   # List of supported operating systems.
-  browsers:        [Int64!]   # List of supported browsers.
-  carriers:        [Int64!]   # List of supported carriers.
-  categories:      [Int64!]   # List of supported ad categories.
-  countries:       [String!]  # List of supported countries (ISO codes).
-  languages:       [String!]  # List of supported languages (ISO codes).
-  applications:    [Int64!]   # List of supported applications.
-  domains:         [String!]  # List of supported domains.
-  zones:           [Int64!]   # List of supported zones.
-  secure:          AnyOnlyExclude!  # Security settings (e.g., HTTPS only).
-  adBlock:         AnyOnlyExclude!  # Ad-blocking settings.
-  privateBrowsing: AnyOnlyExclude!  # Private browsing settings.
-  IP:              AnyIPv4IPv6!    # IP filtering settings.
+  formatCodes:     [String!]       # List of format codes for targeting
+  formats:         [AdFormat!]     # List of ad formats for targeting
+  deviceTypeIDs:   [ID64!]         # List of device type IDs for targeting
+  deviceTypes:     [DeviceType!]   # List of device types for targeting
+  deviceIDs:       [ID64!]         # List of device model IDs for targeting
+  devices:         [DeviceModel!]  # List of device models for targeting
+  OSIDs:           [ID64!]         # List of operating system IDs for targeting
+  OS:              [OS!]           # List of operating systems for targeting
+  browserIDs:      [ID64!]         # List of browser IDs for targeting
+  browsers:        [Browser!]      # List of browsers for targeting
+  carrierIDs:      [ID64!]         # List of carrier IDs for targeting
+  categoryIDs:     [ID64!]         # List of category IDs for targeting
+  categories:      [Category!]     # List of categories for targeting
+  countryCodes:    [String!]       # List of country codes for targeting
+  countries:       [Country!]      # List of countries for targeting
+  languageCodes:   [String!]       # List of language codes for targeting
+  languages:       [Lang!]         # List of languages for targeting
+  domains:         [String!]       # List of domains for targeting
+  applicationIDs:  [ID64!]         # List of application IDs for targeting
+  applications:    [Application!]  # List of applications for targeting
+  zoneIDs:         [ID64!]         # List of zone IDs for targeting
+  zones:           [Zone!]         # List of zones for targeting
+  secure:          AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
+  adBlock:         AnyOnlyExclude! # AdBlock targeting option
+  privateBrowsing: AnyOnlyExclude! # Private browsing targeting option
+  IP:              AnyIPv4IPv6!    # IP targeting option (IPv4/IPv6)
 
   config: NullableJSON!  # Additional configuration for the RTB source.
 
@@ -10852,18 +11088,18 @@ input RTBSourceCreateInput {
   maxBid: Float!  # Maximum bid.
 
   # Targeting filters
-  formats:         [String!]  # Supported ad formats.
-  deviceTypes:     [Int64!]   # Supported device types.
-  devices:         [Int64!]   # Specific devices supported.
-  OS:              [Int64!]   # Supported operating systems.
-  browsers:        [Int64!]   # Supported browsers.
-  carriers:        [Int64!]   # Supported carriers.
-  categories:      [Int64!]   # Supported ad categories.
-  countries:       [String!]  # Supported countries (ISO codes).
-  languages:       [String!]  # Supported languages (ISO codes).
-  applications:    [Int64!]   # Supported applications.
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
   domains:         [String!]  # Supported domains.
-  zones:           [Int64!]   # Supported zones.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude  # Security settings.
   adBlock:         AnyOnlyExclude  # Ad-blocking settings.
   privateBrowsing: AnyOnlyExclude  # Private browsing settings.
@@ -10917,18 +11153,18 @@ input RTBSourceUpdateInput {
   maxBid: Float  # Maximum bid.
 
   # Targeting filters
-  formats:         [String!]  # Supported ad formats.
-  deviceTypes:     [Int64!]   # Supported device types.
-  devices:         [Int64!]   # Specific devices supported.
-  OS:              [Int64!]   # Supported operating systems.
-  browsers:        [Int64!]   # Supported browsers.
-  carriers:        [Int64!]   # Supported carriers.
-  categories:      [Int64!]   # Supported ad categories.
-  countries:       [String!]  # Supported countries (ISO codes).
-  languages:       [String!]  # Supported languages (ISO codes).
-  applications:    [Int64!]   # Supported applications.
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
   domains:         [String!]  # Supported domains.
-  zones:           [Int64!]   # Supported zones.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude  # Security settings.
   adBlock:         AnyOnlyExclude  # Ad-blocking settings.
   privateBrowsing: AnyOnlyExclude  # Private browsing settings.
@@ -11202,22 +11438,32 @@ type TrafficRouter {
   RTBSources: [RTBSource!]
 
   # Targeting filters
-  formats:         [String!]
-  deviceTypes:     [Int64!]
-  devices:         [Int64!]
-  OS:              [Int64!]
-  browsers:        [Int64!]
-  carriers:        [Int64!]
-  categories:      [Int64!]
-  countries:       [String!]
-  languages:       [String!]
-  domains:         [String!]
-  applications:    [ID64!]
-  zones:           [ID64!]
-  secure:          AnyOnlyExclude!
-  adBlock:         AnyOnlyExclude!
-  privateBrowsing: AnyOnlyExclude!
-  IP:              AnyIPv4IPv6!
+  formatCodes:     [String!]       # List of format codes for targeting
+  formats:         [AdFormat!]     # List of ad formats for targeting
+  deviceTypeIDs:   [ID64!]         # List of device type IDs for targeting
+  deviceTypes:     [DeviceType!]   # List of device types for targeting
+  deviceIDs:       [ID64!]         # List of device model IDs for targeting
+  devices:         [DeviceModel!]  # List of device models for targeting
+  OSIDs:           [ID64!]         # List of operating system IDs for targeting
+  OS:              [OS!]           # List of operating systems for targeting
+  browserIDs:      [ID64!]         # List of browser IDs for targeting
+  browsers:        [Browser!]      # List of browsers for targeting
+  carrierIDs:      [ID64!]         # List of carrier IDs for targeting
+  categoryIDs:     [ID64!]         # List of category IDs for targeting
+  categories:      [Category!]     # List of categories for targeting
+  countryCodes:    [String!]       # List of country codes for targeting
+  countries:       [Country!]      # List of countries for targeting
+  languageCodes:   [String!]       # List of language codes for targeting
+  languages:       [Lang!]         # List of languages for targeting
+  domains:         [String!]       # List of domains for targeting
+  applicationIDs:  [ID64!]         # List of application IDs for targeting
+  applications:    [Application!]  # List of applications for targeting
+  zoneIDs:         [ID64!]         # List of zone IDs for targeting
+  zones:           [Zone!]         # List of zones for targeting
+  secure:          AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
+  adBlock:         AnyOnlyExclude! # AdBlock targeting option
+  privateBrowsing: AnyOnlyExclude! # Private browsing targeting option
+  IP:              AnyIPv4IPv6!    # IP targeting option (IPv4/IPv6)
 
   createdAt: Time!
   updatedAt: Time!
@@ -11282,20 +11528,20 @@ type TrafficRouterPayload {
 input TrafficRouterListFilter {
   ID:               [ID64!]
   accountID:        ID64
-  active:           ActiveStatus
-  RTBSourceIDs:     [ID64!]
-  formats:          [String!]
-  deviceTypes:      [Int64!]
-  devices:          [Int64!]
-  OS:               [Int64!]
-  browsers:         [Int64!]
-  carriers:         [Int64!]
-  categories:       [Int64!]
-  countries:        [String!]
-  languages:        [String!]
-  domains:          [String!]
-  applications:     [ID64!]
-  zones:            [ID64!]
+  active:           ActiveStatus   # Active status of the traffic router
+  RTBSourceIDs:     [ID64!]        # RTB sources of the advertising
+  formatCodes:      [String!]      # Supported ad formats.
+  deviceTypeIDs:    [ID64!]        # Supported device types.
+  deviceIDs:        [ID64!]        # Specific devices supported.
+  OSIDs:            [ID64!]        # Supported operating systems.
+  browserIDs:       [ID64!]        # Supported browsers.
+  carrierIDs:       [ID64!]        # Supported carriers.
+  categoryIDs:      [ID64!]        # Supported ad categories.
+  countryCodes:     [String!]      # Supported countries (ISO codes).
+  languageCodes:    [String!]      # Supported languages (ISO codes).
+  applicationIDs:   [ID64!]        # Supported applications.
+  domains:          [String!]      # Supported domains.
+  zoneIDs:          [ID64!]        # Supported zones.
   secure:           AnyOnlyExclude
   adBlock:          AnyOnlyExclude
   privateBrowsing:  AnyOnlyExclude
@@ -11304,6 +11550,7 @@ input TrafficRouterListFilter {
 
 input TrafficRouterListOrder {
   ID:        Ordering
+  title:     Ordering
   active:    Ordering
   percent:   Ordering
   createdAt: Ordering
@@ -11342,18 +11589,18 @@ input TrafficRouterCreateInput {
   RTBSourceIDs: [ID64!]! @notempty(ornil: false)
 
   # Targeting filters
-  formats:         [String!]
-  deviceTypes:     [Int64!]
-  devices:         [Int64!]
-  OS:              [Int64!]
-  browsers:        [Int64!]
-  carriers:        [Int64!]
-  categories:      [Int64!]
-  countries:       [String!]
-  languages:       [String!]
-  domains:         [String!]
-  applications:    [ID64!]
-  zones:           [ID64!]
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
+  domains:         [String!]  # Supported domains.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude
   adBlock:         AnyOnlyExclude
   privateBrowsing: AnyOnlyExclude
@@ -11387,18 +11634,18 @@ input TrafficRouterUpdateInput {
   RTBSourceIDs: [ID64!] @notempty(ornil: false)
 
   # Targeting filters
-  formats:         [String!]
-  deviceTypes:     [Int64!]
-  devices:         [Int64!]
-  OS:              [Int64!]
-  browsers:        [Int64!]
-  carriers:        [Int64!]
-  categories:      [Int64!]
-  countries:       [String!]
-  languages:       [String!]
-  domains:         [String!]
-  applications:    [ID64!]
-  zones:           [ID64!]
+  formatCodes:     [String!]  # Supported ad formats.
+  deviceTypeIDs:   [ID64!]    # Supported device types.
+  deviceIDs:       [ID64!]    # Specific devices supported.
+  OSIDs:           [ID64!]    # Supported operating systems.
+  browserIDs:      [ID64!]    # Supported browsers.
+  carrierIDs:      [ID64!]    # Supported carriers.
+  categoryIDs:     [ID64!]    # Supported ad categories.
+  countryCodes:    [String!]  # Supported countries (ISO codes).
+  languageCodes:   [String!]  # Supported languages (ISO codes).
+  applicationIDs:  [ID64!]    # Supported applications.
+  domains:         [String!]  # Supported domains.
+  zoneIDs:         [ID64!]    # Supported zones.
   secure:          AnyOnlyExclude
   adBlock:         AnyOnlyExclude
   privateBrowsing: AnyOnlyExclude
@@ -43535,6 +43782,8 @@ func (ec *executionContext) fieldContext_Query___type(ctx context.Context, field
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -43547,8 +43796,6 @@ func (ec *executionContext) fieldContext_Query___type(ctx context.Context, field
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -44825,6 +45072,70 @@ func (ec *executionContext) fieldContext_RTBSource_accountID(_ context.Context, 
 	return fc, nil
 }
 
+func (ec *executionContext) _RTBSource_account(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_account(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.RTBSource().Account(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models1.Account)
+	fc.Result = res
+	return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_account(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Account_ID(ctx, field)
+			case "status":
+				return ec.fieldContext_Account_status(ctx, field)
+			case "statusMessage":
+				return ec.fieldContext_Account_statusMessage(ctx, field)
+			case "title":
+				return ec.fieldContext_Account_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Account_description(ctx, field)
+			case "logoURI":
+				return ec.fieldContext_Account_logoURI(ctx, field)
+			case "policyURI":
+				return ec.fieldContext_Account_policyURI(ctx, field)
+			case "termsOfServiceURI":
+				return ec.fieldContext_Account_termsOfServiceURI(ctx, field)
+			case "clientURI":
+				return ec.fieldContext_Account_clientURI(ctx, field)
+			case "contacts":
+				return ec.fieldContext_Account_contacts(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Account_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Account_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Account", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _RTBSource_title(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_RTBSource_title(ctx, field)
 	if err != nil {
@@ -45563,6 +45874,44 @@ func (ec *executionContext) fieldContext_RTBSource_maxBid(_ context.Context, fie
 	return fc, nil
 }
 
+func (ec *executionContext) _RTBSource_formatCodes(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_formatCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FormatCodes, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_formatCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _RTBSource_formats(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_RTBSource_formats(ctx, field)
 	if err != nil {
@@ -45577,25 +45926,93 @@ func (ec *executionContext) _RTBSource_formats(ctx context.Context, field graphq
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Formats, nil
+		return ec.resolvers.RTBSource().Formats(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.([]*models.AdFormat)
 	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalOAdFormat2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAdFormatᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_formats(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_AdFormat_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_AdFormat_codename(ctx, field)
+			case "type":
+				return ec.fieldContext_AdFormat_type(ctx, field)
+			case "title":
+				return ec.fieldContext_AdFormat_title(ctx, field)
+			case "description":
+				return ec.fieldContext_AdFormat_description(ctx, field)
+			case "active":
+				return ec.fieldContext_AdFormat_active(ctx, field)
+			case "width":
+				return ec.fieldContext_AdFormat_width(ctx, field)
+			case "height":
+				return ec.fieldContext_AdFormat_height(ctx, field)
+			case "minWidth":
+				return ec.fieldContext_AdFormat_minWidth(ctx, field)
+			case "minHeight":
+				return ec.fieldContext_AdFormat_minHeight(ctx, field)
+			case "config":
+				return ec.fieldContext_AdFormat_config(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_AdFormat_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_AdFormat_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_AdFormat_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type AdFormat", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_deviceTypeIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_deviceTypeIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeviceTypeIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_deviceTypeIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45615,25 +46032,75 @@ func (ec *executionContext) _RTBSource_deviceTypes(ctx context.Context, field gr
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeviceTypes, nil
+		return ec.resolvers.RTBSource().DeviceTypes(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.DeviceType)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_deviceTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceType_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceType_name(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceType_codename(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceType_description(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceType_active(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_deviceIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_deviceIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeviceIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_deviceIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45653,25 +46120,101 @@ func (ec *executionContext) _RTBSource_devices(ctx context.Context, field graphq
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Devices, nil
+		return ec.resolvers.RTBSource().Devices(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.DeviceModel)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_devices(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceModel_name(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
+			case "matchExp":
+				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
+			case "type":
+				return ec.fieldContext_DeviceModel_type(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
+			case "maker":
+				return ec.fieldContext_DeviceModel_maker(ctx, field)
+			case "versions":
+				return ec.fieldContext_DeviceModel_versions(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceModel_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_DeviceModel_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_DeviceModel_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_OSIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_OSIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.OSIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_OSIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45691,25 +46234,99 @@ func (ec *executionContext) _RTBSource_OS(ctx context.Context, field graphql.Col
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Os, nil
+		return ec.resolvers.RTBSource().Os(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Os)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOOS2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOsᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_OS(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_OS_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_OS_name(ctx, field)
+			case "description":
+				return ec.fieldContext_OS_description(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_OS_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_OS_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_OS_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_OS_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type OS", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_browserIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_browserIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BrowserIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_browserIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45729,32 +46346,68 @@ func (ec *executionContext) _RTBSource_browsers(ctx context.Context, field graph
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Browsers, nil
+		return ec.resolvers.RTBSource().Browsers(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Browser)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOBrowser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_browsers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Browser_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Browser_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Browser_description(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_Browser_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Browser_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Browser_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Browser_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Browser", field.Name)
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _RTBSource_carriers(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RTBSource_carriers(ctx, field)
+func (ec *executionContext) _RTBSource_carrierIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_carrierIDs(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -45767,25 +46420,63 @@ func (ec *executionContext) _RTBSource_carriers(ctx context.Context, field graph
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Carriers, nil
+		return obj.CarrierIDs, nil
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]uint64)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_RTBSource_carriers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_RTBSource_carrierIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_categoryIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_categoryIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_categoryIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45805,25 +46496,89 @@ func (ec *executionContext) _RTBSource_categories(ctx context.Context, field gra
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Categories, nil
+		return ec.resolvers.RTBSource().Categories(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Category)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOCategory2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_categories(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Category_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Category_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Category_description(ctx, field)
+			case "IABCode":
+				return ec.fieldContext_Category_IABCode(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Category_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
+			case "position":
+				return ec.fieldContext_Category_position(ctx, field)
+			case "active":
+				return ec.fieldContext_Category_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Category_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Category_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Category_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Category", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_countryCodes(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_countryCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CountryCodes, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_countryCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45843,7 +46598,73 @@ func (ec *executionContext) _RTBSource_countries(ctx context.Context, field grap
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Countries, nil
+		return ec.resolvers.RTBSource().Countries(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Country)
+	fc.Result = res
+	return ec.marshalOCountry2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCountryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_countries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Country_ID(ctx, field)
+			case "code2":
+				return ec.fieldContext_Country_code2(ctx, field)
+			case "code3":
+				return ec.fieldContext_Country_code3(ctx, field)
+			case "name":
+				return ec.fieldContext_Country_name(ctx, field)
+			case "nativeName":
+				return ec.fieldContext_Country_nativeName(ctx, field)
+			case "continentCode":
+				return ec.fieldContext_Country_continentCode(ctx, field)
+			case "continent":
+				return ec.fieldContext_Country_continent(ctx, field)
+			case "capital":
+				return ec.fieldContext_Country_capital(ctx, field)
+			case "languages":
+				return ec.fieldContext_Country_languages(ctx, field)
+			case "phoneCodes":
+				return ec.fieldContext_Country_phoneCodes(ctx, field)
+			case "timeZones":
+				return ec.fieldContext_Country_timeZones(ctx, field)
+			case "coordinates":
+				return ec.fieldContext_Country_coordinates(ctx, field)
+			case "currency":
+				return ec.fieldContext_Country_currency(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Country", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_languageCodes(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_languageCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LanguageCodes, nil
 	})
 
 	if resTmp == nil {
@@ -45854,7 +46675,7 @@ func (ec *executionContext) _RTBSource_countries(ctx context.Context, field grap
 	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_RTBSource_countries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_RTBSource_languageCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
@@ -45881,63 +46702,35 @@ func (ec *executionContext) _RTBSource_languages(ctx context.Context, field grap
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Languages, nil
+		return ec.resolvers.RTBSource().Languages(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.([]*models.Lang)
 	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalOLang2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_languages(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _RTBSource_applications(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RTBSource_applications(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Applications, nil
-	})
-
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]int64)
-	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_RTBSource_applications(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "RTBSource",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Lang_ID(ctx, field)
+			case "iso2":
+				return ec.fieldContext_Lang_iso2(ctx, field)
+			case "name":
+				return ec.fieldContext_Lang_name(ctx, field)
+			case "nativeName":
+				return ec.fieldContext_Lang_nativeName(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lang", field.Name)
 		},
 	}
 	return fc, nil
@@ -45981,6 +46774,156 @@ func (ec *executionContext) fieldContext_RTBSource_domains(_ context.Context, fi
 	return fc, nil
 }
 
+func (ec *executionContext) _RTBSource_applicationIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_applicationIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApplicationIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_applicationIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_applications(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_applications(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.RTBSource().Applications(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Application)
+	fc.Result = res
+	return ec.marshalOApplication2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_applications(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Application_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_Application_accountID(ctx, field)
+			case "creatorID":
+				return ec.fieldContext_Application_creatorID(ctx, field)
+			case "title":
+				return ec.fieldContext_Application_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Application_description(ctx, field)
+			case "URI":
+				return ec.fieldContext_Application_URI(ctx, field)
+			case "type":
+				return ec.fieldContext_Application_type(ctx, field)
+			case "platform":
+				return ec.fieldContext_Application_platform(ctx, field)
+			case "premium":
+				return ec.fieldContext_Application_premium(ctx, field)
+			case "status":
+				return ec.fieldContext_Application_status(ctx, field)
+			case "active":
+				return ec.fieldContext_Application_active(ctx, field)
+			case "private":
+				return ec.fieldContext_Application_private(ctx, field)
+			case "categories":
+				return ec.fieldContext_Application_categories(ctx, field)
+			case "revenueShare":
+				return ec.fieldContext_Application_revenueShare(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Application_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Application_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Application_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Application", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _RTBSource_zoneIDs(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_RTBSource_zoneIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ZoneIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_RTBSource_zoneIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "RTBSource",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _RTBSource_zones(ctx context.Context, field graphql.CollectedField, obj *models.RTBSource) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_RTBSource_zones(ctx, field)
 	if err != nil {
@@ -45995,25 +46938,65 @@ func (ec *executionContext) _RTBSource_zones(ctx context.Context, field graphql.
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Zones, nil
+		return ec.resolvers.RTBSource().Zones(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Zone)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOZone2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_RTBSource_zones(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "RTBSource",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Zone_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_Zone_codename(ctx, field)
+			case "accountID":
+				return ec.fieldContext_Zone_accountID(ctx, field)
+			case "title":
+				return ec.fieldContext_Zone_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Zone_description(ctx, field)
+			case "status":
+				return ec.fieldContext_Zone_status(ctx, field)
+			case "active":
+				return ec.fieldContext_Zone_active(ctx, field)
+			case "defaultCode":
+				return ec.fieldContext_Zone_defaultCode(ctx, field)
+			case "context":
+				return ec.fieldContext_Zone_context(ctx, field)
+			case "minECPM":
+				return ec.fieldContext_Zone_minECPM(ctx, field)
+			case "fixedPurchasePrice":
+				return ec.fieldContext_Zone_fixedPurchasePrice(ctx, field)
+			case "allowedFormats":
+				return ec.fieldContext_Zone_allowedFormats(ctx, field)
+			case "allowedTypes":
+				return ec.fieldContext_Zone_allowedTypes(ctx, field)
+			case "allowedSources":
+				return ec.fieldContext_Zone_allowedSources(ctx, field)
+			case "disallowedSources":
+				return ec.fieldContext_Zone_disallowedSources(ctx, field)
+			case "campaigns":
+				return ec.fieldContext_Zone_campaigns(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Zone_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Zone_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Zone_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Zone", field.Name)
 		},
 	}
 	return fc, nil
@@ -46472,6 +47455,8 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_list(_ context.Cont
 				return ec.fieldContext_RTBSource_ID(ctx, field)
 			case "accountID":
 				return ec.fieldContext_RTBSource_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_RTBSource_account(ctx, field)
 			case "title":
 				return ec.fieldContext_RTBSource_title(ctx, field)
 			case "description":
@@ -46508,28 +47493,48 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_list(_ context.Cont
 				return ec.fieldContext_RTBSource_minBid(ctx, field)
 			case "maxBid":
 				return ec.fieldContext_RTBSource_maxBid(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_RTBSource_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_RTBSource_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_RTBSource_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_RTBSource_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_RTBSource_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_RTBSource_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_RTBSource_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_RTBSource_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_RTBSource_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_RTBSource_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_RTBSource_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_RTBSource_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_RTBSource_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_RTBSource_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_RTBSource_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_RTBSource_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_RTBSource_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_RTBSource_languages(ctx, field)
-			case "applications":
-				return ec.fieldContext_RTBSource_applications(ctx, field)
 			case "domains":
 				return ec.fieldContext_RTBSource_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_RTBSource_applicationIDs(ctx, field)
+			case "applications":
+				return ec.fieldContext_RTBSource_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_RTBSource_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_RTBSource_zones(ctx, field)
 			case "secure":
@@ -46693,6 +47698,8 @@ func (ec *executionContext) fieldContext_RTBSourceEdge_node(_ context.Context, f
 				return ec.fieldContext_RTBSource_ID(ctx, field)
 			case "accountID":
 				return ec.fieldContext_RTBSource_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_RTBSource_account(ctx, field)
 			case "title":
 				return ec.fieldContext_RTBSource_title(ctx, field)
 			case "description":
@@ -46729,28 +47736,48 @@ func (ec *executionContext) fieldContext_RTBSourceEdge_node(_ context.Context, f
 				return ec.fieldContext_RTBSource_minBid(ctx, field)
 			case "maxBid":
 				return ec.fieldContext_RTBSource_maxBid(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_RTBSource_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_RTBSource_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_RTBSource_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_RTBSource_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_RTBSource_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_RTBSource_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_RTBSource_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_RTBSource_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_RTBSource_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_RTBSource_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_RTBSource_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_RTBSource_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_RTBSource_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_RTBSource_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_RTBSource_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_RTBSource_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_RTBSource_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_RTBSource_languages(ctx, field)
-			case "applications":
-				return ec.fieldContext_RTBSource_applications(ctx, field)
 			case "domains":
 				return ec.fieldContext_RTBSource_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_RTBSource_applicationIDs(ctx, field)
+			case "applications":
+				return ec.fieldContext_RTBSource_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_RTBSource_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_RTBSource_zones(ctx, field)
 			case "secure":
@@ -46898,6 +47925,8 @@ func (ec *executionContext) fieldContext_RTBSourcePayload_source(_ context.Conte
 				return ec.fieldContext_RTBSource_ID(ctx, field)
 			case "accountID":
 				return ec.fieldContext_RTBSource_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_RTBSource_account(ctx, field)
 			case "title":
 				return ec.fieldContext_RTBSource_title(ctx, field)
 			case "description":
@@ -46934,28 +47963,48 @@ func (ec *executionContext) fieldContext_RTBSourcePayload_source(_ context.Conte
 				return ec.fieldContext_RTBSource_minBid(ctx, field)
 			case "maxBid":
 				return ec.fieldContext_RTBSource_maxBid(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_RTBSource_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_RTBSource_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_RTBSource_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_RTBSource_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_RTBSource_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_RTBSource_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_RTBSource_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_RTBSource_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_RTBSource_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_RTBSource_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_RTBSource_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_RTBSource_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_RTBSource_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_RTBSource_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_RTBSource_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_RTBSource_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_RTBSource_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_RTBSource_languages(ctx, field)
-			case "applications":
-				return ec.fieldContext_RTBSource_applications(ctx, field)
 			case "domains":
 				return ec.fieldContext_RTBSource_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_RTBSource_applicationIDs(ctx, field)
+			case "applications":
+				return ec.fieldContext_RTBSource_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_RTBSource_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_RTBSource_zones(ctx, field)
 			case "secure":
@@ -50190,6 +51239,8 @@ func (ec *executionContext) fieldContext_TrafficRouter_RTBSources(_ context.Cont
 				return ec.fieldContext_RTBSource_ID(ctx, field)
 			case "accountID":
 				return ec.fieldContext_RTBSource_accountID(ctx, field)
+			case "account":
+				return ec.fieldContext_RTBSource_account(ctx, field)
 			case "title":
 				return ec.fieldContext_RTBSource_title(ctx, field)
 			case "description":
@@ -50226,28 +51277,48 @@ func (ec *executionContext) fieldContext_TrafficRouter_RTBSources(_ context.Cont
 				return ec.fieldContext_RTBSource_minBid(ctx, field)
 			case "maxBid":
 				return ec.fieldContext_RTBSource_maxBid(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_RTBSource_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_RTBSource_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_RTBSource_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_RTBSource_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_RTBSource_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_RTBSource_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_RTBSource_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_RTBSource_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_RTBSource_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_RTBSource_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_RTBSource_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_RTBSource_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_RTBSource_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_RTBSource_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_RTBSource_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_RTBSource_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_RTBSource_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_RTBSource_languages(ctx, field)
-			case "applications":
-				return ec.fieldContext_RTBSource_applications(ctx, field)
 			case "domains":
 				return ec.fieldContext_RTBSource_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_RTBSource_applicationIDs(ctx, field)
+			case "applications":
+				return ec.fieldContext_RTBSource_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_RTBSource_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_RTBSource_zones(ctx, field)
 			case "secure":
@@ -50273,6 +51344,44 @@ func (ec *executionContext) fieldContext_TrafficRouter_RTBSources(_ context.Cont
 	return fc, nil
 }
 
+func (ec *executionContext) _TrafficRouter_formatCodes(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_formatCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FormatCodes, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_formatCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TrafficRouter_formats(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TrafficRouter_formats(ctx, field)
 	if err != nil {
@@ -50287,25 +51396,93 @@ func (ec *executionContext) _TrafficRouter_formats(ctx context.Context, field gr
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Formats, nil
+		return ec.resolvers.TrafficRouter().Formats(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.([]*models.AdFormat)
 	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalOAdFormat2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAdFormatᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_formats(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_AdFormat_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_AdFormat_codename(ctx, field)
+			case "type":
+				return ec.fieldContext_AdFormat_type(ctx, field)
+			case "title":
+				return ec.fieldContext_AdFormat_title(ctx, field)
+			case "description":
+				return ec.fieldContext_AdFormat_description(ctx, field)
+			case "active":
+				return ec.fieldContext_AdFormat_active(ctx, field)
+			case "width":
+				return ec.fieldContext_AdFormat_width(ctx, field)
+			case "height":
+				return ec.fieldContext_AdFormat_height(ctx, field)
+			case "minWidth":
+				return ec.fieldContext_AdFormat_minWidth(ctx, field)
+			case "minHeight":
+				return ec.fieldContext_AdFormat_minHeight(ctx, field)
+			case "config":
+				return ec.fieldContext_AdFormat_config(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_AdFormat_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_AdFormat_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_AdFormat_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type AdFormat", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_deviceTypeIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_deviceTypeIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeviceTypeIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_deviceTypeIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50325,25 +51502,75 @@ func (ec *executionContext) _TrafficRouter_deviceTypes(ctx context.Context, fiel
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeviceTypes, nil
+		return ec.resolvers.TrafficRouter().DeviceTypes(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.DeviceType)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalODeviceType2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceTypeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_deviceTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceType_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceType_name(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceType_codename(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceType_description(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceType_active(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceType", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_deviceIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_deviceIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeviceIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_deviceIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50363,25 +51590,101 @@ func (ec *executionContext) _TrafficRouter_devices(ctx context.Context, field gr
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Devices, nil
+		return ec.resolvers.TrafficRouter().Devices(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.DeviceModel)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalODeviceModel2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐDeviceModelᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_devices(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_DeviceModel_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_DeviceModel_codename(ctx, field)
+			case "name":
+				return ec.fieldContext_DeviceModel_name(ctx, field)
+			case "description":
+				return ec.fieldContext_DeviceModel_description(ctx, field)
+			case "version":
+				return ec.fieldContext_DeviceModel_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_DeviceModel_yearRelease(ctx, field)
+			case "parentID":
+				return ec.fieldContext_DeviceModel_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_DeviceModel_parent(ctx, field)
+			case "matchExp":
+				return ec.fieldContext_DeviceModel_matchExp(ctx, field)
+			case "typeCodename":
+				return ec.fieldContext_DeviceModel_typeCodename(ctx, field)
+			case "type":
+				return ec.fieldContext_DeviceModel_type(ctx, field)
+			case "makerCodename":
+				return ec.fieldContext_DeviceModel_makerCodename(ctx, field)
+			case "maker":
+				return ec.fieldContext_DeviceModel_maker(ctx, field)
+			case "versions":
+				return ec.fieldContext_DeviceModel_versions(ctx, field)
+			case "active":
+				return ec.fieldContext_DeviceModel_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_DeviceModel_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_DeviceModel_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_DeviceModel_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DeviceModel", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_OSIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_OSIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.OSIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_OSIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50401,25 +51704,99 @@ func (ec *executionContext) _TrafficRouter_OS(ctx context.Context, field graphql
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Os, nil
+		return ec.resolvers.TrafficRouter().Os(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Os)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOOS2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOsᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_OS(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_OS_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_OS_name(ctx, field)
+			case "description":
+				return ec.fieldContext_OS_description(ctx, field)
+			case "version":
+				return ec.fieldContext_OS_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_OS_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_OS_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_OS_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_OS_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_OS_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_OS_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_OS_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_OS_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_OS_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_OS_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_OS_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_OS_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_OS_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type OS", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_browserIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_browserIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BrowserIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_browserIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50439,32 +51816,68 @@ func (ec *executionContext) _TrafficRouter_browsers(ctx context.Context, field g
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Browsers, nil
+		return ec.resolvers.TrafficRouter().Browsers(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Browser)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOBrowser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐBrowserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_browsers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Browser_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Browser_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Browser_description(ctx, field)
+			case "version":
+				return ec.fieldContext_Browser_version(ctx, field)
+			case "yearRelease":
+				return ec.fieldContext_Browser_yearRelease(ctx, field)
+			case "yearEndSupport":
+				return ec.fieldContext_Browser_yearEndSupport(ctx, field)
+			case "active":
+				return ec.fieldContext_Browser_active(ctx, field)
+			case "matchNameExp":
+				return ec.fieldContext_Browser_matchNameExp(ctx, field)
+			case "matchUserAgentExp":
+				return ec.fieldContext_Browser_matchUserAgentExp(ctx, field)
+			case "matchVersionMinExp":
+				return ec.fieldContext_Browser_matchVersionMinExp(ctx, field)
+			case "matchVersionMaxExp":
+				return ec.fieldContext_Browser_matchVersionMaxExp(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Browser_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Browser_parent(ctx, field)
+			case "versions":
+				return ec.fieldContext_Browser_versions(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Browser_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Browser_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Browser_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Browser", field.Name)
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _TrafficRouter_carriers(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TrafficRouter_carriers(ctx, field)
+func (ec *executionContext) _TrafficRouter_carrierIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_carrierIDs(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -50477,25 +51890,63 @@ func (ec *executionContext) _TrafficRouter_carriers(ctx context.Context, field g
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Carriers, nil
+		return obj.CarrierIDs, nil
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]uint64)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TrafficRouter_carriers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TrafficRouter_carrierIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_categoryIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_categoryIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CategoryIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_categoryIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50515,25 +51966,89 @@ func (ec *executionContext) _TrafficRouter_categories(ctx context.Context, field
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Categories, nil
+		return ec.resolvers.TrafficRouter().Categories(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]int64)
+	res := resTmp.([]*models.Category)
 	fc.Result = res
-	return ec.marshalOInt642ᚕint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOCategory2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_categories(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Category_ID(ctx, field)
+			case "name":
+				return ec.fieldContext_Category_name(ctx, field)
+			case "description":
+				return ec.fieldContext_Category_description(ctx, field)
+			case "IABCode":
+				return ec.fieldContext_Category_IABCode(ctx, field)
+			case "parentID":
+				return ec.fieldContext_Category_parentID(ctx, field)
+			case "parent":
+				return ec.fieldContext_Category_parent(ctx, field)
+			case "childrens":
+				return ec.fieldContext_Category_childrens(ctx, field)
+			case "position":
+				return ec.fieldContext_Category_position(ctx, field)
+			case "active":
+				return ec.fieldContext_Category_active(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Category_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Category_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Category_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Category", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_countryCodes(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_countryCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CountryCodes, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_countryCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int64 does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -50553,7 +52068,73 @@ func (ec *executionContext) _TrafficRouter_countries(ctx context.Context, field 
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Countries, nil
+		return ec.resolvers.TrafficRouter().Countries(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Country)
+	fc.Result = res
+	return ec.marshalOCountry2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCountryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_countries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Country_ID(ctx, field)
+			case "code2":
+				return ec.fieldContext_Country_code2(ctx, field)
+			case "code3":
+				return ec.fieldContext_Country_code3(ctx, field)
+			case "name":
+				return ec.fieldContext_Country_name(ctx, field)
+			case "nativeName":
+				return ec.fieldContext_Country_nativeName(ctx, field)
+			case "continentCode":
+				return ec.fieldContext_Country_continentCode(ctx, field)
+			case "continent":
+				return ec.fieldContext_Country_continent(ctx, field)
+			case "capital":
+				return ec.fieldContext_Country_capital(ctx, field)
+			case "languages":
+				return ec.fieldContext_Country_languages(ctx, field)
+			case "phoneCodes":
+				return ec.fieldContext_Country_phoneCodes(ctx, field)
+			case "timeZones":
+				return ec.fieldContext_Country_timeZones(ctx, field)
+			case "coordinates":
+				return ec.fieldContext_Country_coordinates(ctx, field)
+			case "currency":
+				return ec.fieldContext_Country_currency(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Country", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_languageCodes(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_languageCodes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LanguageCodes, nil
 	})
 
 	if resTmp == nil {
@@ -50564,7 +52145,7 @@ func (ec *executionContext) _TrafficRouter_countries(ctx context.Context, field 
 	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TrafficRouter_countries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TrafficRouter_languageCodes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
@@ -50591,25 +52172,35 @@ func (ec *executionContext) _TrafficRouter_languages(ctx context.Context, field 
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Languages, nil
+		return ec.resolvers.TrafficRouter().Languages(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.([]*models.Lang)
 	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalOLang2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐLangᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_languages(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Lang_ID(ctx, field)
+			case "iso2":
+				return ec.fieldContext_Lang_iso2(ctx, field)
+			case "name":
+				return ec.fieldContext_Lang_name(ctx, field)
+			case "nativeName":
+				return ec.fieldContext_Lang_nativeName(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lang", field.Name)
 		},
 	}
 	return fc, nil
@@ -50653,6 +52244,44 @@ func (ec *executionContext) fieldContext_TrafficRouter_domains(_ context.Context
 	return fc, nil
 }
 
+func (ec *executionContext) _TrafficRouter_applicationIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_applicationIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApplicationIDs, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]uint64)
+	fc.Result = res
+	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_applicationIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TrafficRouter_applications(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TrafficRouter_applications(ctx, field)
 	if err != nil {
@@ -50667,7 +52296,81 @@ func (ec *executionContext) _TrafficRouter_applications(ctx context.Context, fie
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Applications, nil
+		return ec.resolvers.TrafficRouter().Applications(rctx, obj)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Application)
+	fc.Result = res
+	return ec.marshalOApplication2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TrafficRouter_applications(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TrafficRouter",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Application_ID(ctx, field)
+			case "accountID":
+				return ec.fieldContext_Application_accountID(ctx, field)
+			case "creatorID":
+				return ec.fieldContext_Application_creatorID(ctx, field)
+			case "title":
+				return ec.fieldContext_Application_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Application_description(ctx, field)
+			case "URI":
+				return ec.fieldContext_Application_URI(ctx, field)
+			case "type":
+				return ec.fieldContext_Application_type(ctx, field)
+			case "platform":
+				return ec.fieldContext_Application_platform(ctx, field)
+			case "premium":
+				return ec.fieldContext_Application_premium(ctx, field)
+			case "status":
+				return ec.fieldContext_Application_status(ctx, field)
+			case "active":
+				return ec.fieldContext_Application_active(ctx, field)
+			case "private":
+				return ec.fieldContext_Application_private(ctx, field)
+			case "categories":
+				return ec.fieldContext_Application_categories(ctx, field)
+			case "revenueShare":
+				return ec.fieldContext_Application_revenueShare(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Application_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Application_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Application_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Application", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TrafficRouter_zoneIDs(ctx context.Context, field graphql.CollectedField, obj *models.TrafficRouter) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TrafficRouter_zoneIDs(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ZoneIDs, nil
 	})
 
 	if resTmp == nil {
@@ -50678,7 +52381,7 @@ func (ec *executionContext) _TrafficRouter_applications(ctx context.Context, fie
 	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TrafficRouter_applications(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TrafficRouter_zoneIDs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
@@ -50705,25 +52408,65 @@ func (ec *executionContext) _TrafficRouter_zones(ctx context.Context, field grap
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Zones, nil
+		return ec.resolvers.TrafficRouter().Zones(rctx, obj)
 	})
 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]uint64)
+	res := resTmp.([]*models.Zone)
 	fc.Result = res
-	return ec.marshalOID642ᚕuint64ᚄ(ctx, field.Selections, res)
+	return ec.marshalOZone2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐZoneᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TrafficRouter_zones(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TrafficRouter",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID64 does not have child fields")
+			switch field.Name {
+			case "ID":
+				return ec.fieldContext_Zone_ID(ctx, field)
+			case "codename":
+				return ec.fieldContext_Zone_codename(ctx, field)
+			case "accountID":
+				return ec.fieldContext_Zone_accountID(ctx, field)
+			case "title":
+				return ec.fieldContext_Zone_title(ctx, field)
+			case "description":
+				return ec.fieldContext_Zone_description(ctx, field)
+			case "status":
+				return ec.fieldContext_Zone_status(ctx, field)
+			case "active":
+				return ec.fieldContext_Zone_active(ctx, field)
+			case "defaultCode":
+				return ec.fieldContext_Zone_defaultCode(ctx, field)
+			case "context":
+				return ec.fieldContext_Zone_context(ctx, field)
+			case "minECPM":
+				return ec.fieldContext_Zone_minECPM(ctx, field)
+			case "fixedPurchasePrice":
+				return ec.fieldContext_Zone_fixedPurchasePrice(ctx, field)
+			case "allowedFormats":
+				return ec.fieldContext_Zone_allowedFormats(ctx, field)
+			case "allowedTypes":
+				return ec.fieldContext_Zone_allowedTypes(ctx, field)
+			case "allowedSources":
+				return ec.fieldContext_Zone_allowedSources(ctx, field)
+			case "disallowedSources":
+				return ec.fieldContext_Zone_disallowedSources(ctx, field)
+			case "campaigns":
+				return ec.fieldContext_Zone_campaigns(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Zone_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Zone_updatedAt(ctx, field)
+			case "deletedAt":
+				return ec.fieldContext_Zone_deletedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Zone", field.Name)
 		},
 	}
 	return fc, nil
@@ -51149,28 +52892,48 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_list(_ context.
 				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
 			case "RTBSources":
 				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_TrafficRouter_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_TrafficRouter_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_TrafficRouter_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_TrafficRouter_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_TrafficRouter_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_TrafficRouter_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_TrafficRouter_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_TrafficRouter_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_TrafficRouter_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_TrafficRouter_languages(ctx, field)
 			case "domains":
 				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_TrafficRouter_applicationIDs(ctx, field)
 			case "applications":
 				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_TrafficRouter_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_TrafficRouter_zones(ctx, field)
 			case "secure":
@@ -51346,28 +53109,48 @@ func (ec *executionContext) fieldContext_TrafficRouterEdge_node(_ context.Contex
 				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
 			case "RTBSources":
 				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_TrafficRouter_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_TrafficRouter_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_TrafficRouter_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_TrafficRouter_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_TrafficRouter_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_TrafficRouter_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_TrafficRouter_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_TrafficRouter_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_TrafficRouter_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_TrafficRouter_languages(ctx, field)
 			case "domains":
 				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_TrafficRouter_applicationIDs(ctx, field)
 			case "applications":
 				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_TrafficRouter_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_TrafficRouter_zones(ctx, field)
 			case "secure":
@@ -51527,28 +53310,48 @@ func (ec *executionContext) fieldContext_TrafficRouterPayload_router(_ context.C
 				return ec.fieldContext_TrafficRouter_RTBSourceIDs(ctx, field)
 			case "RTBSources":
 				return ec.fieldContext_TrafficRouter_RTBSources(ctx, field)
+			case "formatCodes":
+				return ec.fieldContext_TrafficRouter_formatCodes(ctx, field)
 			case "formats":
 				return ec.fieldContext_TrafficRouter_formats(ctx, field)
+			case "deviceTypeIDs":
+				return ec.fieldContext_TrafficRouter_deviceTypeIDs(ctx, field)
 			case "deviceTypes":
 				return ec.fieldContext_TrafficRouter_deviceTypes(ctx, field)
+			case "deviceIDs":
+				return ec.fieldContext_TrafficRouter_deviceIDs(ctx, field)
 			case "devices":
 				return ec.fieldContext_TrafficRouter_devices(ctx, field)
+			case "OSIDs":
+				return ec.fieldContext_TrafficRouter_OSIDs(ctx, field)
 			case "OS":
 				return ec.fieldContext_TrafficRouter_OS(ctx, field)
+			case "browserIDs":
+				return ec.fieldContext_TrafficRouter_browserIDs(ctx, field)
 			case "browsers":
 				return ec.fieldContext_TrafficRouter_browsers(ctx, field)
-			case "carriers":
-				return ec.fieldContext_TrafficRouter_carriers(ctx, field)
+			case "carrierIDs":
+				return ec.fieldContext_TrafficRouter_carrierIDs(ctx, field)
+			case "categoryIDs":
+				return ec.fieldContext_TrafficRouter_categoryIDs(ctx, field)
 			case "categories":
 				return ec.fieldContext_TrafficRouter_categories(ctx, field)
+			case "countryCodes":
+				return ec.fieldContext_TrafficRouter_countryCodes(ctx, field)
 			case "countries":
 				return ec.fieldContext_TrafficRouter_countries(ctx, field)
+			case "languageCodes":
+				return ec.fieldContext_TrafficRouter_languageCodes(ctx, field)
 			case "languages":
 				return ec.fieldContext_TrafficRouter_languages(ctx, field)
 			case "domains":
 				return ec.fieldContext_TrafficRouter_domains(ctx, field)
+			case "applicationIDs":
+				return ec.fieldContext_TrafficRouter_applicationIDs(ctx, field)
 			case "applications":
 				return ec.fieldContext_TrafficRouter_applications(ctx, field)
+			case "zoneIDs":
+				return ec.fieldContext_TrafficRouter_zoneIDs(ctx, field)
 			case "zones":
 				return ec.fieldContext_TrafficRouter_zones(ctx, field)
 			case "secure":
@@ -53581,6 +55384,47 @@ func (ec *executionContext) fieldContext___Directive_description(_ context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) ___Directive_isRepeatable(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext___Directive_isRepeatable(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsRepeatable, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext___Directive_isRepeatable(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "__Directive",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) ___Directive_locations(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext___Directive_locations(ctx, field)
 	if err != nil {
@@ -53684,47 +55528,6 @@ func (ec *executionContext) fieldContext___Directive_args(ctx context.Context, f
 	if fc.Args, err = ec.field___Directive_args_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) ___Directive_isRepeatable(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext___Directive_isRepeatable(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.IsRepeatable, nil
-	})
-
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext___Directive_isRepeatable(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "__Directive",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
 	}
 	return fc, nil
 }
@@ -54074,6 +55877,8 @@ func (ec *executionContext) fieldContext___Field_type(_ context.Context, field g
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54086,8 +55891,6 @@ func (ec *executionContext) fieldContext___Field_type(_ context.Context, field g
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54297,6 +56100,8 @@ func (ec *executionContext) fieldContext___InputValue_type(_ context.Context, fi
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54309,8 +56114,6 @@ func (ec *executionContext) fieldContext___InputValue_type(_ context.Context, fi
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54517,6 +56320,8 @@ func (ec *executionContext) fieldContext___Schema_types(_ context.Context, field
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54529,8 +56334,6 @@ func (ec *executionContext) fieldContext___Schema_types(_ context.Context, field
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54582,6 +56385,8 @@ func (ec *executionContext) fieldContext___Schema_queryType(_ context.Context, f
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54594,8 +56399,6 @@ func (ec *executionContext) fieldContext___Schema_queryType(_ context.Context, f
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54644,6 +56447,8 @@ func (ec *executionContext) fieldContext___Schema_mutationType(_ context.Context
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54656,8 +56461,6 @@ func (ec *executionContext) fieldContext___Schema_mutationType(_ context.Context
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54706,6 +56509,8 @@ func (ec *executionContext) fieldContext___Schema_subscriptionType(_ context.Con
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -54718,8 +56523,6 @@ func (ec *executionContext) fieldContext___Schema_subscriptionType(_ context.Con
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -54769,12 +56572,12 @@ func (ec *executionContext) fieldContext___Schema_directives(_ context.Context, 
 				return ec.fieldContext___Directive_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Directive_description(ctx, field)
+			case "isRepeatable":
+				return ec.fieldContext___Directive_isRepeatable(ctx, field)
 			case "locations":
 				return ec.fieldContext___Directive_locations(ctx, field)
 			case "args":
 				return ec.fieldContext___Directive_args(ctx, field)
-			case "isRepeatable":
-				return ec.fieldContext___Directive_isRepeatable(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Directive", field.Name)
 		},
@@ -54899,6 +56702,44 @@ func (ec *executionContext) fieldContext___Type_description(_ context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) ___Type_specifiedByURL(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext___Type_specifiedByURL(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SpecifiedByURL(), nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "__Type",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) ___Type_fields(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext___Type_fields(ctx, field)
 	if err != nil {
@@ -55001,6 +56842,8 @@ func (ec *executionContext) fieldContext___Type_interfaces(_ context.Context, fi
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -55013,8 +56856,6 @@ func (ec *executionContext) fieldContext___Type_interfaces(_ context.Context, fi
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -55063,6 +56904,8 @@ func (ec *executionContext) fieldContext___Type_possibleTypes(_ context.Context,
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -55075,8 +56918,6 @@ func (ec *executionContext) fieldContext___Type_possibleTypes(_ context.Context,
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
@@ -55236,6 +57077,8 @@ func (ec *executionContext) fieldContext___Type_ofType(_ context.Context, field 
 				return ec.fieldContext___Type_name(ctx, field)
 			case "description":
 				return ec.fieldContext___Type_description(ctx, field)
+			case "specifiedByURL":
+				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "fields":
 				return ec.fieldContext___Type_fields(ctx, field)
 			case "interfaces":
@@ -55248,50 +57091,10 @@ func (ec *executionContext) fieldContext___Type_ofType(_ context.Context, field 
 				return ec.fieldContext___Type_inputFields(ctx, field)
 			case "ofType":
 				return ec.fieldContext___Type_ofType(ctx, field)
-			case "specifiedByURL":
-				return ec.fieldContext___Type_specifiedByURL(ctx, field)
 			case "isOneOf":
 				return ec.fieldContext___Type_isOneOf(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Type", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) ___Type_specifiedByURL(ctx context.Context, field graphql.CollectedField, obj *introspection.Type) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext___Type_specifiedByURL(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.SpecifiedByURL(), nil
-	})
-
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "__Type",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -60243,7 +62046,7 @@ func (ec *executionContext) unmarshalInputRTBSourceCreateInput(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "title", "description", "flags", "protocol", "minimalWeight", "URL", "method", "requestType", "headers", "RPS", "timeout", "accuracy", "priceCorrectionReduce", "auctionType", "minBid", "maxBid", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "applications", "domains", "zones", "secure", "adBlock", "privateBrowsing", "IP", "config"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "flags", "protocol", "minimalWeight", "URL", "method", "requestType", "headers", "RPS", "timeout", "accuracy", "priceCorrectionReduce", "auctionType", "minBid", "maxBid", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP", "config"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -60521,76 +62324,76 @@ func (ec *executionContext) unmarshalInputRTBSourceCreateInput(ctx context.Conte
 				return it, err
 			}
 			it.MaxBid = data
-		case "formats":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+		case "formatCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formatCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Formats = data
-		case "deviceTypes":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.FormatCodes = data
+		case "deviceTypeIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypeIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DeviceTypes = data
-		case "devices":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceTypeIDs = data
+		case "deviceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Devices = data
-		case "OS":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceIDs = data
+		case "OSIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OSIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Os = data
-		case "browsers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.OSIDs = data
+		case "browserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browserIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Browsers = data
-		case "carriers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.BrowserIDs = data
+		case "carrierIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carrierIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Carriers = data
-		case "categories":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.CarrierIDs = data
+		case "categoryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Categories = data
-		case "countries":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			it.CategoryIDs = data
+		case "countryCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Countries = data
-		case "languages":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			it.CountryCodes = data
+		case "languageCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Languages = data
-		case "applications":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.LanguageCodes = data
+		case "applicationIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Applications = data
+			it.ApplicationIDs = data
 		case "domains":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -60598,13 +62401,13 @@ func (ec *executionContext) unmarshalInputRTBSourceCreateInput(ctx context.Conte
 				return it, err
 			}
 			it.Domains = data
-		case "zones":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+		case "zoneIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zoneIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Zones = data
+			it.ZoneIDs = data
 		case "secure":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
 			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
@@ -60833,7 +62636,7 @@ func (ec *executionContext) unmarshalInputRTBSourceUpdateInput(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "title", "description", "flags", "protocol", "minimalWeight", "URL", "method", "requestType", "headers", "RPS", "timeout", "accuracy", "priceCorrectionReduce", "auctionType", "minBid", "maxBid", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "applications", "domains", "zones", "secure", "adBlock", "privateBrowsing", "IP", "config"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "flags", "protocol", "minimalWeight", "URL", "method", "requestType", "headers", "RPS", "timeout", "accuracy", "priceCorrectionReduce", "auctionType", "minBid", "maxBid", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP", "config"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61119,76 +62922,76 @@ func (ec *executionContext) unmarshalInputRTBSourceUpdateInput(ctx context.Conte
 				return it, err
 			}
 			it.MaxBid = data
-		case "formats":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+		case "formatCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formatCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Formats = data
-		case "deviceTypes":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.FormatCodes = data
+		case "deviceTypeIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypeIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DeviceTypes = data
-		case "devices":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceTypeIDs = data
+		case "deviceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Devices = data
-		case "OS":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceIDs = data
+		case "OSIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OSIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Os = data
-		case "browsers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.OSIDs = data
+		case "browserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browserIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Browsers = data
-		case "carriers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.BrowserIDs = data
+		case "carrierIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carrierIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Carriers = data
-		case "categories":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.CarrierIDs = data
+		case "categoryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Categories = data
-		case "countries":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			it.CategoryIDs = data
+		case "countryCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Countries = data
-		case "languages":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			it.CountryCodes = data
+		case "languageCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Languages = data
-		case "applications":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.LanguageCodes = data
+		case "applicationIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Applications = data
+			it.ApplicationIDs = data
 		case "domains":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -61196,13 +62999,13 @@ func (ec *executionContext) unmarshalInputRTBSourceUpdateInput(ctx context.Conte
 				return it, err
 			}
 			it.Domains = data
-		case "zones":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+		case "zoneIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zoneIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Zones = data
+			it.ZoneIDs = data
 		case "secure":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
 			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
@@ -61491,7 +63294,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "title", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "active", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61649,69 +63452,76 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 				err := fmt.Errorf(`unexpected type %T from directive, should be []uint64`, tmp)
 				return it, graphql.ErrorOnPath(ctx, err)
 			}
-		case "formats":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+		case "formatCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formatCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Formats = data
-		case "deviceTypes":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.FormatCodes = data
+		case "deviceTypeIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypeIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DeviceTypes = data
-		case "devices":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceTypeIDs = data
+		case "deviceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Devices = data
-		case "OS":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceIDs = data
+		case "OSIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OSIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Os = data
-		case "browsers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.OSIDs = data
+		case "browserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browserIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Browsers = data
-		case "carriers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.BrowserIDs = data
+		case "carrierIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carrierIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Carriers = data
-		case "categories":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.CarrierIDs = data
+		case "categoryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Categories = data
-		case "countries":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			it.CategoryIDs = data
+		case "countryCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Countries = data
-		case "languages":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			it.CountryCodes = data
+		case "languageCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Languages = data
+			it.LanguageCodes = data
+		case "applicationIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApplicationIDs = data
 		case "domains":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -61719,20 +63529,13 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 				return it, err
 			}
 			it.Domains = data
-		case "applications":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+		case "zoneIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zoneIDs"))
 			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Applications = data
-		case "zones":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Zones = data
+			it.ZoneIDs = data
 		case "secure":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
 			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
@@ -61774,7 +63577,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterListFilter(ctx context.Co
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "accountID", "active", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"ID", "accountID", "active", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61809,69 +63612,76 @@ func (ec *executionContext) unmarshalInputTrafficRouterListFilter(ctx context.Co
 				return it, err
 			}
 			it.RTBSourceIDs = data
-		case "formats":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+		case "formatCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formatCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Formats = data
-		case "deviceTypes":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.FormatCodes = data
+		case "deviceTypeIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypeIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DeviceTypes = data
-		case "devices":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceTypeIDs = data
+		case "deviceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Devices = data
-		case "OS":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceIDs = data
+		case "OSIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OSIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Os = data
-		case "browsers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.OSIDs = data
+		case "browserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browserIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Browsers = data
-		case "carriers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.BrowserIDs = data
+		case "carrierIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carrierIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Carriers = data
-		case "categories":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.CarrierIDs = data
+		case "categoryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Categories = data
-		case "countries":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			it.CategoryIDs = data
+		case "countryCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Countries = data
-		case "languages":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			it.CountryCodes = data
+		case "languageCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Languages = data
+			it.LanguageCodes = data
+		case "applicationIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApplicationIDs = data
 		case "domains":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -61879,20 +63689,13 @@ func (ec *executionContext) unmarshalInputTrafficRouterListFilter(ctx context.Co
 				return it, err
 			}
 			it.Domains = data
-		case "applications":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+		case "zoneIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zoneIDs"))
 			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Applications = data
-		case "zones":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Zones = data
+			it.ZoneIDs = data
 		case "secure":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
 			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
@@ -61934,7 +63737,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterListOrder(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "active", "percent", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "title", "active", "percent", "createdAt", "updatedAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61948,6 +63751,13 @@ func (ec *executionContext) unmarshalInputTrafficRouterListOrder(ctx context.Con
 				return it, err
 			}
 			it.ID = data
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Title = data
 		case "active":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -61989,7 +63799,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "description", "active", "percent", "RTBSourceIDs", "formats", "deviceTypes", "devices", "OS", "browsers", "carriers", "categories", "countries", "languages", "domains", "applications", "zones", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"title", "description", "active", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -62144,69 +63954,76 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 				err := fmt.Errorf(`unexpected type %T from directive, should be []uint64`, tmp)
 				return it, graphql.ErrorOnPath(ctx, err)
 			}
-		case "formats":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formats"))
+		case "formatCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formatCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Formats = data
-		case "deviceTypes":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypes"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.FormatCodes = data
+		case "deviceTypeIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceTypeIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DeviceTypes = data
-		case "devices":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("devices"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceTypeIDs = data
+		case "deviceIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deviceIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Devices = data
-		case "OS":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OS"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.DeviceIDs = data
+		case "OSIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("OSIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Os = data
-		case "browsers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browsers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.OSIDs = data
+		case "browserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("browserIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Browsers = data
-		case "carriers":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carriers"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.BrowserIDs = data
+		case "carrierIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("carrierIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Carriers = data
-		case "categories":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categories"))
-			data, err := ec.unmarshalOInt642ᚕint64ᚄ(ctx, v)
+			it.CarrierIDs = data
+		case "categoryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Categories = data
-		case "countries":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countries"))
+			it.CategoryIDs = data
+		case "countryCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Countries = data
-		case "languages":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languages"))
+			it.CountryCodes = data
+		case "languageCodes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageCodes"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Languages = data
+			it.LanguageCodes = data
+		case "applicationIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationIDs"))
+			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApplicationIDs = data
 		case "domains":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("domains"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -62214,20 +64031,13 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 				return it, err
 			}
 			it.Domains = data
-		case "applications":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applications"))
+		case "zoneIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zoneIDs"))
 			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Applications = data
-		case "zones":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("zones"))
-			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Zones = data
+			it.ZoneIDs = data
 		case "secure":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secure"))
 			data, err := ec.unmarshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAnyOnlyExclude(ctx, v)
@@ -68144,161 +69954,524 @@ func (ec *executionContext) _RTBSource(ctx context.Context, sel ast.SelectionSet
 		case "ID":
 			out.Values[i] = ec._RTBSource_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "accountID":
 			out.Values[i] = ec._RTBSource_accountID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "account":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_account(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "title":
 			out.Values[i] = ec._RTBSource_title(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "description":
 			out.Values[i] = ec._RTBSource_description(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "status":
 			out.Values[i] = ec._RTBSource_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "active":
 			out.Values[i] = ec._RTBSource_active(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "flags":
 			out.Values[i] = ec._RTBSource_flags(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "protocol":
 			out.Values[i] = ec._RTBSource_protocol(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "minimalWeight":
 			out.Values[i] = ec._RTBSource_minimalWeight(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "URL":
 			out.Values[i] = ec._RTBSource_URL(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "method":
 			out.Values[i] = ec._RTBSource_method(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "requestType":
 			out.Values[i] = ec._RTBSource_requestType(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "headers":
 			out.Values[i] = ec._RTBSource_headers(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "RPS":
 			out.Values[i] = ec._RTBSource_RPS(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "timeout":
 			out.Values[i] = ec._RTBSource_timeout(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "accuracy":
 			out.Values[i] = ec._RTBSource_accuracy(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "priceCorrectionReduce":
 			out.Values[i] = ec._RTBSource_priceCorrectionReduce(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "auctionType":
 			out.Values[i] = ec._RTBSource_auctionType(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "minBid":
 			out.Values[i] = ec._RTBSource_minBid(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "maxBid":
 			out.Values[i] = ec._RTBSource_maxBid(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "formatCodes":
+			out.Values[i] = ec._RTBSource_formatCodes(ctx, field, obj)
 		case "formats":
-			out.Values[i] = ec._RTBSource_formats(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_formats(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "deviceTypeIDs":
+			out.Values[i] = ec._RTBSource_deviceTypeIDs(ctx, field, obj)
 		case "deviceTypes":
-			out.Values[i] = ec._RTBSource_deviceTypes(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_deviceTypes(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "deviceIDs":
+			out.Values[i] = ec._RTBSource_deviceIDs(ctx, field, obj)
 		case "devices":
-			out.Values[i] = ec._RTBSource_devices(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_devices(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "OSIDs":
+			out.Values[i] = ec._RTBSource_OSIDs(ctx, field, obj)
 		case "OS":
-			out.Values[i] = ec._RTBSource_OS(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_OS(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "browserIDs":
+			out.Values[i] = ec._RTBSource_browserIDs(ctx, field, obj)
 		case "browsers":
-			out.Values[i] = ec._RTBSource_browsers(ctx, field, obj)
-		case "carriers":
-			out.Values[i] = ec._RTBSource_carriers(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_browsers(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "carrierIDs":
+			out.Values[i] = ec._RTBSource_carrierIDs(ctx, field, obj)
+		case "categoryIDs":
+			out.Values[i] = ec._RTBSource_categoryIDs(ctx, field, obj)
 		case "categories":
-			out.Values[i] = ec._RTBSource_categories(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_categories(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "countryCodes":
+			out.Values[i] = ec._RTBSource_countryCodes(ctx, field, obj)
 		case "countries":
-			out.Values[i] = ec._RTBSource_countries(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_countries(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "languageCodes":
+			out.Values[i] = ec._RTBSource_languageCodes(ctx, field, obj)
 		case "languages":
-			out.Values[i] = ec._RTBSource_languages(ctx, field, obj)
-		case "applications":
-			out.Values[i] = ec._RTBSource_applications(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_languages(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "domains":
 			out.Values[i] = ec._RTBSource_domains(ctx, field, obj)
+		case "applicationIDs":
+			out.Values[i] = ec._RTBSource_applicationIDs(ctx, field, obj)
+		case "applications":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_applications(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "zoneIDs":
+			out.Values[i] = ec._RTBSource_zoneIDs(ctx, field, obj)
 		case "zones":
-			out.Values[i] = ec._RTBSource_zones(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSource_zones(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "secure":
 			out.Values[i] = ec._RTBSource_secure(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "adBlock":
 			out.Values[i] = ec._RTBSource_adBlock(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "privateBrowsing":
 			out.Values[i] = ec._RTBSource_privateBrowsing(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "IP":
 			out.Values[i] = ec._RTBSource_IP(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "config":
 			out.Values[i] = ec._RTBSource_config(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._RTBSource_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._RTBSource_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "deletedAt":
 			out.Values[i] = ec._RTBSource_deletedAt(ctx, field, obj)
@@ -69272,30 +71445,360 @@ func (ec *executionContext) _TrafficRouter(ctx context.Context, sel ast.Selectio
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "formatCodes":
+			out.Values[i] = ec._TrafficRouter_formatCodes(ctx, field, obj)
 		case "formats":
-			out.Values[i] = ec._TrafficRouter_formats(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_formats(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "deviceTypeIDs":
+			out.Values[i] = ec._TrafficRouter_deviceTypeIDs(ctx, field, obj)
 		case "deviceTypes":
-			out.Values[i] = ec._TrafficRouter_deviceTypes(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_deviceTypes(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "deviceIDs":
+			out.Values[i] = ec._TrafficRouter_deviceIDs(ctx, field, obj)
 		case "devices":
-			out.Values[i] = ec._TrafficRouter_devices(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_devices(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "OSIDs":
+			out.Values[i] = ec._TrafficRouter_OSIDs(ctx, field, obj)
 		case "OS":
-			out.Values[i] = ec._TrafficRouter_OS(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_OS(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "browserIDs":
+			out.Values[i] = ec._TrafficRouter_browserIDs(ctx, field, obj)
 		case "browsers":
-			out.Values[i] = ec._TrafficRouter_browsers(ctx, field, obj)
-		case "carriers":
-			out.Values[i] = ec._TrafficRouter_carriers(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_browsers(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "carrierIDs":
+			out.Values[i] = ec._TrafficRouter_carrierIDs(ctx, field, obj)
+		case "categoryIDs":
+			out.Values[i] = ec._TrafficRouter_categoryIDs(ctx, field, obj)
 		case "categories":
-			out.Values[i] = ec._TrafficRouter_categories(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_categories(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "countryCodes":
+			out.Values[i] = ec._TrafficRouter_countryCodes(ctx, field, obj)
 		case "countries":
-			out.Values[i] = ec._TrafficRouter_countries(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_countries(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "languageCodes":
+			out.Values[i] = ec._TrafficRouter_languageCodes(ctx, field, obj)
 		case "languages":
-			out.Values[i] = ec._TrafficRouter_languages(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_languages(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "domains":
 			out.Values[i] = ec._TrafficRouter_domains(ctx, field, obj)
+		case "applicationIDs":
+			out.Values[i] = ec._TrafficRouter_applicationIDs(ctx, field, obj)
 		case "applications":
-			out.Values[i] = ec._TrafficRouter_applications(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_applications(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "zoneIDs":
+			out.Values[i] = ec._TrafficRouter_zoneIDs(ctx, field, obj)
 		case "zones":
-			out.Values[i] = ec._TrafficRouter_zones(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouter_zones(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "secure":
 			out.Values[i] = ec._TrafficRouter_secure(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -69958,6 +72461,11 @@ func (ec *executionContext) ___Directive(ctx context.Context, sel ast.SelectionS
 			}
 		case "description":
 			out.Values[i] = ec.___Directive_description(ctx, field, obj)
+		case "isRepeatable":
+			out.Values[i] = ec.___Directive_isRepeatable(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "locations":
 			out.Values[i] = ec.___Directive_locations(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -69965,11 +72473,6 @@ func (ec *executionContext) ___Directive(ctx context.Context, sel ast.SelectionS
 			}
 		case "args":
 			out.Values[i] = ec.___Directive_args(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "isRepeatable":
-			out.Values[i] = ec.___Directive_isRepeatable(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -70232,6 +72735,8 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec.___Type_name(ctx, field, obj)
 		case "description":
 			out.Values[i] = ec.___Type_description(ctx, field, obj)
+		case "specifiedByURL":
+			out.Values[i] = ec.___Type_specifiedByURL(ctx, field, obj)
 		case "fields":
 			out.Values[i] = ec.___Type_fields(ctx, field, obj)
 		case "interfaces":
@@ -70244,8 +72749,6 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec.___Type_inputFields(ctx, field, obj)
 		case "ofType":
 			out.Values[i] = ec.___Type_ofType(ctx, field, obj)
-		case "specifiedByURL":
-			out.Values[i] = ec.___Type_specifiedByURL(ctx, field, obj)
 		case "isOneOf":
 			out.Values[i] = ec.___Type_isOneOf(ctx, field, obj)
 		default:
@@ -70484,9 +72987,7 @@ func (ec *executionContext) marshalNAny2interface(ctx context.Context, sel ast.S
 
 func (ec *executionContext) unmarshalNAny2ᚕinterfaceᚄ(ctx context.Context, v any) ([]any, error) {
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]any, len(vSlice))
 	for i := range vSlice {
@@ -71364,9 +73865,7 @@ func (ec *executionContext) marshalNID642uint64(ctx context.Context, sel ast.Sel
 
 func (ec *executionContext) unmarshalNID642ᚕuint64ᚄ(ctx context.Context, v any) ([]uint64, error) {
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]uint64, len(vSlice))
 	for i := range vSlice {
@@ -71525,9 +74024,7 @@ func (ec *executionContext) marshalNOSEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋi
 
 func (ec *executionContext) unmarshalNOSListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐOSListOrderᚄ(ctx context.Context, v any) ([]*models.OSListOrder, error) {
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.OSListOrder, len(vSlice))
 	for i := range vSlice {
@@ -72110,9 +74607,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 
 func (ec *executionContext) unmarshalNString2ᚕstringᚄ(ctx context.Context, v any) ([]string, error) {
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]string, len(vSlice))
 	for i := range vSlice {
@@ -72373,9 +74868,7 @@ func (ec *executionContext) marshalN__DirectiveLocation2string(ctx context.Conte
 
 func (ec *executionContext) unmarshalN__DirectiveLocation2ᚕstringᚄ(ctx context.Context, v any) ([]string, error) {
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]string, len(vSlice))
 	for i := range vSlice {
@@ -72690,9 +75183,7 @@ func (ec *executionContext) unmarshalOActiveStatus2ᚕgithubᚗcomᚋgeniusrabbi
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models1.ActiveStatus, len(vSlice))
 	for i := range vSlice {
@@ -72768,6 +75259,53 @@ func (ec *executionContext) marshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbit�
 	return v
 }
 
+func (ec *executionContext) marshalOAdFormat2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAdFormatᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.AdFormat) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNAdFormat2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐAdFormat(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalOAdFormatConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -72830,6 +75368,53 @@ func (ec *executionContext) marshalOAnyOnlyExclude2ᚖgithubᚗcomᚋsspserver�
 	return v
 }
 
+func (ec *executionContext) marshalOApplication2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplicationᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Application) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNApplication2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐApplication(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalOApplicationConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -72865,9 +75450,7 @@ func (ec *executionContext) unmarshalOApplicationType2ᚕgithubᚗcomᚋsspserve
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models.ApplicationType, len(vSlice))
 	for i := range vSlice {
@@ -72948,9 +75531,7 @@ func (ec *executionContext) unmarshalOApproveStatus2ᚕgithubᚗcomᚋgeniusrabb
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models1.ApproveStatus, len(vSlice))
 	for i := range vSlice {
@@ -73031,9 +75612,7 @@ func (ec *executionContext) unmarshalOAuctionType2ᚕgithubᚗcomᚋsspserverᚋ
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models.AuctionType, len(vSlice))
 	for i := range vSlice {
@@ -73333,9 +75912,7 @@ func (ec *executionContext) unmarshalOBrowserListOrder2ᚕᚖgithubᚗcomᚋssps
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.BrowserListOrder, len(vSlice))
 	for i := range vSlice {
@@ -73353,6 +75930,53 @@ func (ec *executionContext) marshalOBrowserPayload2ᚖgithubᚗcomᚋsspserver�
 		return graphql.Null
 	}
 	return ec._BrowserPayload(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOCategory2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Category) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNCategory2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategory(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋsspserverᚋapiᚋinternalᚋserverᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v *models.Category) graphql.Marshaler {
@@ -73529,9 +76153,7 @@ func (ec *executionContext) unmarshalODeviceMakerListOrder2ᚕᚖgithubᚗcomᚋ
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.DeviceMakerListOrder, len(vSlice))
 	for i := range vSlice {
@@ -73625,9 +76247,7 @@ func (ec *executionContext) unmarshalODeviceModelListOrder2ᚕᚖgithubᚗcomᚋ
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.DeviceModelListOrder, len(vSlice))
 	for i := range vSlice {
@@ -73970,9 +76590,7 @@ func (ec *executionContext) unmarshalOID642ᚕuint64ᚄ(ctx context.Context, v a
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]uint64, len(vSlice))
 	for i := range vSlice {
@@ -74024,9 +76642,7 @@ func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v any) 
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]int, len(vSlice))
 	for i := range vSlice {
@@ -74078,9 +76694,7 @@ func (ec *executionContext) unmarshalOInt642ᚕint64ᚄ(ctx context.Context, v a
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]int64, len(vSlice))
 	for i := range vSlice {
@@ -74480,9 +77094,7 @@ func (ec *executionContext) unmarshalOOptionType2ᚕgithubᚗcomᚋgeniusrabbit�
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models1.OptionType, len(vSlice))
 	for i := range vSlice {
@@ -74571,9 +77183,7 @@ func (ec *executionContext) unmarshalOPlatformType2ᚕgithubᚗcomᚋsspserver�
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models.PlatformType, len(vSlice))
 	for i := range vSlice {
@@ -74888,9 +77498,7 @@ func (ec *executionContext) unmarshalORTBRequestFormatType2ᚕgithubᚗcomᚋssp
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models.RTBRequestFormatType, len(vSlice))
 	for i := range vSlice {
@@ -75033,9 +77641,7 @@ func (ec *executionContext) unmarshalORTBSourceListOrder2ᚕᚖgithubᚗcomᚋss
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.RTBSourceListOrder, len(vSlice))
 	for i := range vSlice {
@@ -75279,9 +77885,7 @@ func (ec *executionContext) unmarshalOStatisticAdKeyCondition2ᚕᚖgithubᚗcom
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.StatisticAdKeyCondition, len(vSlice))
 	for i := range vSlice {
@@ -75299,9 +77903,7 @@ func (ec *executionContext) unmarshalOStatisticAdKeyOrder2ᚕᚖgithubᚗcomᚋs
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.StatisticAdKeyOrder, len(vSlice))
 	for i := range vSlice {
@@ -75374,9 +77976,7 @@ func (ec *executionContext) unmarshalOStatisticKey2ᚕgithubᚗcomᚋsspserver�
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]models.StatisticKey, len(vSlice))
 	for i := range vSlice {
@@ -75448,9 +78048,7 @@ func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]string, len(vSlice))
 	for i := range vSlice {
@@ -75674,9 +78272,7 @@ func (ec *executionContext) unmarshalOTrafficRouterListOrder2ᚕᚖgithubᚗcom�
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*models.TrafficRouterListOrder, len(vSlice))
 	for i := range vSlice {
@@ -75701,9 +78297,7 @@ func (ec *executionContext) unmarshalOUUID2ᚕgithubᚗcomᚋgoogleᚋuuidᚐUUI
 		return nil, nil
 	}
 	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
+	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]uuid.UUID, len(vSlice))
 	for i := range vSlice {

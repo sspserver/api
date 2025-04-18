@@ -3,6 +3,7 @@
 package models
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"strconv"
@@ -779,10 +780,12 @@ type OSUpdateInput struct {
 
 // RTBSource object represents a source of RTB (Real-Time Bidding) advertising.
 type RTBSource struct {
-	ID          uint64 `json:"ID"`
-	AccountID   uint64 `json:"accountID"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	ID        uint64 `json:"ID"`
+	AccountID uint64 `json:"accountID"`
+	// Account owner of the traffic router
+	Account     *models.Account `json:"account,omitempty"`
+	Title       string          `json:"title"`
+	Description string          `json:"description"`
 	// Status of source approval, indicating whether the source is approved or not.
 	Status models.ApproveStatus `json:"status"`
 	// Active status of the source, indicating whether the source is currently active.
@@ -803,18 +806,28 @@ type RTBSource struct {
 	AuctionType           AuctionType          `json:"auctionType"`
 	MinBid                float64              `json:"minBid"`
 	MaxBid                float64              `json:"maxBid"`
-	Formats               []string             `json:"formats,omitempty"`
-	DeviceTypes           []int64              `json:"deviceTypes,omitempty"`
-	Devices               []int64              `json:"devices,omitempty"`
-	Os                    []int64              `json:"OS,omitempty"`
-	Browsers              []int64              `json:"browsers,omitempty"`
-	Carriers              []int64              `json:"carriers,omitempty"`
-	Categories            []int64              `json:"categories,omitempty"`
-	Countries             []string             `json:"countries,omitempty"`
-	Languages             []string             `json:"languages,omitempty"`
-	Applications          []int64              `json:"applications,omitempty"`
+	FormatCodes           []string             `json:"formatCodes,omitempty"`
+	Formats               []*AdFormat          `json:"formats,omitempty"`
+	DeviceTypeIDs         []uint64             `json:"deviceTypeIDs,omitempty"`
+	DeviceTypes           []*DeviceType        `json:"deviceTypes,omitempty"`
+	DeviceIDs             []uint64             `json:"deviceIDs,omitempty"`
+	Devices               []*DeviceModel       `json:"devices,omitempty"`
+	OSIDs                 []uint64             `json:"OSIDs,omitempty"`
+	Os                    []*Os                `json:"OS,omitempty"`
+	BrowserIDs            []uint64             `json:"browserIDs,omitempty"`
+	Browsers              []*Browser           `json:"browsers,omitempty"`
+	CarrierIDs            []uint64             `json:"carrierIDs,omitempty"`
+	CategoryIDs           []uint64             `json:"categoryIDs,omitempty"`
+	Categories            []*Category          `json:"categories,omitempty"`
+	CountryCodes          []string             `json:"countryCodes,omitempty"`
+	Countries             []*Country           `json:"countries,omitempty"`
+	LanguageCodes         []string             `json:"languageCodes,omitempty"`
+	Languages             []*Lang              `json:"languages,omitempty"`
 	Domains               []string             `json:"domains,omitempty"`
-	Zones                 []int64              `json:"zones,omitempty"`
+	ApplicationIDs        []uint64             `json:"applicationIDs,omitempty"`
+	Applications          []*Application       `json:"applications,omitempty"`
+	ZoneIDs               []uint64             `json:"zoneIDs,omitempty"`
+	Zones                 []*Zone              `json:"zones,omitempty"`
 	Secure                AnyOnlyExclude       `json:"secure"`
 	AdBlock               AnyOnlyExclude       `json:"adBlock"`
 	PrivateBrowsing       AnyOnlyExclude       `json:"privateBrowsing"`
@@ -848,18 +861,18 @@ type RTBSourceCreateInput struct {
 	AuctionType           AuctionType          `json:"auctionType"`
 	MinBid                float64              `json:"minBid"`
 	MaxBid                float64              `json:"maxBid"`
-	Formats               []string             `json:"formats,omitempty"`
-	DeviceTypes           []int64              `json:"deviceTypes,omitempty"`
-	Devices               []int64              `json:"devices,omitempty"`
-	Os                    []int64              `json:"OS,omitempty"`
-	Browsers              []int64              `json:"browsers,omitempty"`
-	Carriers              []int64              `json:"carriers,omitempty"`
-	Categories            []int64              `json:"categories,omitempty"`
-	Countries             []string             `json:"countries,omitempty"`
-	Languages             []string             `json:"languages,omitempty"`
-	Applications          []int64              `json:"applications,omitempty"`
+	FormatCodes           []string             `json:"formatCodes,omitempty"`
+	DeviceTypeIDs         []uint64             `json:"deviceTypeIDs,omitempty"`
+	DeviceIDs             []uint64             `json:"deviceIDs,omitempty"`
+	OSIDs                 []uint64             `json:"OSIDs,omitempty"`
+	BrowserIDs            []uint64             `json:"browserIDs,omitempty"`
+	CarrierIDs            []uint64             `json:"carrierIDs,omitempty"`
+	CategoryIDs           []uint64             `json:"categoryIDs,omitempty"`
+	CountryCodes          []string             `json:"countryCodes,omitempty"`
+	LanguageCodes         []string             `json:"languageCodes,omitempty"`
+	ApplicationIDs        []uint64             `json:"applicationIDs,omitempty"`
 	Domains               []string             `json:"domains,omitempty"`
-	Zones                 []int64              `json:"zones,omitempty"`
+	ZoneIDs               []uint64             `json:"zoneIDs,omitempty"`
 	Secure                *AnyOnlyExclude      `json:"secure,omitempty"`
 	AdBlock               *AnyOnlyExclude      `json:"adBlock,omitempty"`
 	PrivateBrowsing       *AnyOnlyExclude      `json:"privateBrowsing,omitempty"`
@@ -936,18 +949,18 @@ type RTBSourceUpdateInput struct {
 	AuctionType           *AuctionType          `json:"auctionType,omitempty"`
 	MinBid                *float64              `json:"minBid,omitempty"`
 	MaxBid                *float64              `json:"maxBid,omitempty"`
-	Formats               []string              `json:"formats,omitempty"`
-	DeviceTypes           []int64               `json:"deviceTypes,omitempty"`
-	Devices               []int64               `json:"devices,omitempty"`
-	Os                    []int64               `json:"OS,omitempty"`
-	Browsers              []int64               `json:"browsers,omitempty"`
-	Carriers              []int64               `json:"carriers,omitempty"`
-	Categories            []int64               `json:"categories,omitempty"`
-	Countries             []string              `json:"countries,omitempty"`
-	Languages             []string              `json:"languages,omitempty"`
-	Applications          []int64               `json:"applications,omitempty"`
+	FormatCodes           []string              `json:"formatCodes,omitempty"`
+	DeviceTypeIDs         []uint64              `json:"deviceTypeIDs,omitempty"`
+	DeviceIDs             []uint64              `json:"deviceIDs,omitempty"`
+	OSIDs                 []uint64              `json:"OSIDs,omitempty"`
+	BrowserIDs            []uint64              `json:"browserIDs,omitempty"`
+	CarrierIDs            []uint64              `json:"carrierIDs,omitempty"`
+	CategoryIDs           []uint64              `json:"categoryIDs,omitempty"`
+	CountryCodes          []string              `json:"countryCodes,omitempty"`
+	LanguageCodes         []string              `json:"languageCodes,omitempty"`
+	ApplicationIDs        []uint64              `json:"applicationIDs,omitempty"`
 	Domains               []string              `json:"domains,omitempty"`
-	Zones                 []int64               `json:"zones,omitempty"`
+	ZoneIDs               []uint64              `json:"zoneIDs,omitempty"`
 	Secure                *AnyOnlyExclude       `json:"secure,omitempty"`
 	AdBlock               *AnyOnlyExclude       `json:"adBlock,omitempty"`
 	PrivateBrowsing       *AnyOnlyExclude       `json:"privateBrowsing,omitempty"`
@@ -1023,18 +1036,28 @@ type TrafficRouter struct {
 	RTBSourceIDs []uint64 `json:"RTBSourceIDs,omitempty"`
 	// RTB sources of the advertising
 	RTBSources      []*RTBSource   `json:"RTBSources,omitempty"`
-	Formats         []string       `json:"formats,omitempty"`
-	DeviceTypes     []int64        `json:"deviceTypes,omitempty"`
-	Devices         []int64        `json:"devices,omitempty"`
-	Os              []int64        `json:"OS,omitempty"`
-	Browsers        []int64        `json:"browsers,omitempty"`
-	Carriers        []int64        `json:"carriers,omitempty"`
-	Categories      []int64        `json:"categories,omitempty"`
-	Countries       []string       `json:"countries,omitempty"`
-	Languages       []string       `json:"languages,omitempty"`
+	FormatCodes     []string       `json:"formatCodes,omitempty"`
+	Formats         []*AdFormat    `json:"formats,omitempty"`
+	DeviceTypeIDs   []uint64       `json:"deviceTypeIDs,omitempty"`
+	DeviceTypes     []*DeviceType  `json:"deviceTypes,omitempty"`
+	DeviceIDs       []uint64       `json:"deviceIDs,omitempty"`
+	Devices         []*DeviceModel `json:"devices,omitempty"`
+	OSIDs           []uint64       `json:"OSIDs,omitempty"`
+	Os              []*Os          `json:"OS,omitempty"`
+	BrowserIDs      []uint64       `json:"browserIDs,omitempty"`
+	Browsers        []*Browser     `json:"browsers,omitempty"`
+	CarrierIDs      []uint64       `json:"carrierIDs,omitempty"`
+	CategoryIDs     []uint64       `json:"categoryIDs,omitempty"`
+	Categories      []*Category    `json:"categories,omitempty"`
+	CountryCodes    []string       `json:"countryCodes,omitempty"`
+	Countries       []*Country     `json:"countries,omitempty"`
+	LanguageCodes   []string       `json:"languageCodes,omitempty"`
+	Languages       []*Lang        `json:"languages,omitempty"`
 	Domains         []string       `json:"domains,omitempty"`
-	Applications    []uint64       `json:"applications,omitempty"`
-	Zones           []uint64       `json:"zones,omitempty"`
+	ApplicationIDs  []uint64       `json:"applicationIDs,omitempty"`
+	Applications    []*Application `json:"applications,omitempty"`
+	ZoneIDs         []uint64       `json:"zoneIDs,omitempty"`
+	Zones           []*Zone        `json:"zones,omitempty"`
 	Secure          AnyOnlyExclude `json:"secure"`
 	AdBlock         AnyOnlyExclude `json:"adBlock"`
 	PrivateBrowsing AnyOnlyExclude `json:"privateBrowsing"`
@@ -1057,18 +1080,18 @@ type TrafficRouterCreateInput struct {
 	Percent float64 `json:"percent"`
 	// RTB sources of the advertising
 	RTBSourceIDs    []uint64        `json:"RTBSourceIDs"`
-	Formats         []string        `json:"formats,omitempty"`
-	DeviceTypes     []int64         `json:"deviceTypes,omitempty"`
-	Devices         []int64         `json:"devices,omitempty"`
-	Os              []int64         `json:"OS,omitempty"`
-	Browsers        []int64         `json:"browsers,omitempty"`
-	Carriers        []int64         `json:"carriers,omitempty"`
-	Categories      []int64         `json:"categories,omitempty"`
-	Countries       []string        `json:"countries,omitempty"`
-	Languages       []string        `json:"languages,omitempty"`
+	FormatCodes     []string        `json:"formatCodes,omitempty"`
+	DeviceTypeIDs   []uint64        `json:"deviceTypeIDs,omitempty"`
+	DeviceIDs       []uint64        `json:"deviceIDs,omitempty"`
+	OSIDs           []uint64        `json:"OSIDs,omitempty"`
+	BrowserIDs      []uint64        `json:"browserIDs,omitempty"`
+	CarrierIDs      []uint64        `json:"carrierIDs,omitempty"`
+	CategoryIDs     []uint64        `json:"categoryIDs,omitempty"`
+	CountryCodes    []string        `json:"countryCodes,omitempty"`
+	LanguageCodes   []string        `json:"languageCodes,omitempty"`
+	ApplicationIDs  []uint64        `json:"applicationIDs,omitempty"`
 	Domains         []string        `json:"domains,omitempty"`
-	Applications    []uint64        `json:"applications,omitempty"`
-	Zones           []uint64        `json:"zones,omitempty"`
+	ZoneIDs         []uint64        `json:"zoneIDs,omitempty"`
 	Secure          *AnyOnlyExclude `json:"secure,omitempty"`
 	AdBlock         *AnyOnlyExclude `json:"adBlock,omitempty"`
 	PrivateBrowsing *AnyOnlyExclude `json:"privateBrowsing,omitempty"`
@@ -1087,18 +1110,18 @@ type TrafficRouterListFilter struct {
 	AccountID       *uint64              `json:"accountID,omitempty"`
 	Active          *models.ActiveStatus `json:"active,omitempty"`
 	RTBSourceIDs    []uint64             `json:"RTBSourceIDs,omitempty"`
-	Formats         []string             `json:"formats,omitempty"`
-	DeviceTypes     []int64              `json:"deviceTypes,omitempty"`
-	Devices         []int64              `json:"devices,omitempty"`
-	Os              []int64              `json:"OS,omitempty"`
-	Browsers        []int64              `json:"browsers,omitempty"`
-	Carriers        []int64              `json:"carriers,omitempty"`
-	Categories      []int64              `json:"categories,omitempty"`
-	Countries       []string             `json:"countries,omitempty"`
-	Languages       []string             `json:"languages,omitempty"`
+	FormatCodes     []string             `json:"formatCodes,omitempty"`
+	DeviceTypeIDs   []uint64             `json:"deviceTypeIDs,omitempty"`
+	DeviceIDs       []uint64             `json:"deviceIDs,omitempty"`
+	OSIDs           []uint64             `json:"OSIDs,omitempty"`
+	BrowserIDs      []uint64             `json:"browserIDs,omitempty"`
+	CarrierIDs      []uint64             `json:"carrierIDs,omitempty"`
+	CategoryIDs     []uint64             `json:"categoryIDs,omitempty"`
+	CountryCodes    []string             `json:"countryCodes,omitempty"`
+	LanguageCodes   []string             `json:"languageCodes,omitempty"`
+	ApplicationIDs  []uint64             `json:"applicationIDs,omitempty"`
 	Domains         []string             `json:"domains,omitempty"`
-	Applications    []uint64             `json:"applications,omitempty"`
-	Zones           []uint64             `json:"zones,omitempty"`
+	ZoneIDs         []uint64             `json:"zoneIDs,omitempty"`
 	Secure          *AnyOnlyExclude      `json:"secure,omitempty"`
 	AdBlock         *AnyOnlyExclude      `json:"adBlock,omitempty"`
 	PrivateBrowsing *AnyOnlyExclude      `json:"privateBrowsing,omitempty"`
@@ -1107,6 +1130,7 @@ type TrafficRouterListFilter struct {
 
 type TrafficRouterListOrder struct {
 	ID        *models.Ordering `json:"ID,omitempty"`
+	Title     *models.Ordering `json:"title,omitempty"`
 	Active    *models.Ordering `json:"active,omitempty"`
 	Percent   *models.Ordering `json:"percent,omitempty"`
 	CreatedAt *models.Ordering `json:"createdAt,omitempty"`
@@ -1133,18 +1157,18 @@ type TrafficRouterUpdateInput struct {
 	Percent *float64 `json:"percent,omitempty"`
 	// RTB sources of the advertising
 	RTBSourceIDs    []uint64        `json:"RTBSourceIDs,omitempty"`
-	Formats         []string        `json:"formats,omitempty"`
-	DeviceTypes     []int64         `json:"deviceTypes,omitempty"`
-	Devices         []int64         `json:"devices,omitempty"`
-	Os              []int64         `json:"OS,omitempty"`
-	Browsers        []int64         `json:"browsers,omitempty"`
-	Carriers        []int64         `json:"carriers,omitempty"`
-	Categories      []int64         `json:"categories,omitempty"`
-	Countries       []string        `json:"countries,omitempty"`
-	Languages       []string        `json:"languages,omitempty"`
+	FormatCodes     []string        `json:"formatCodes,omitempty"`
+	DeviceTypeIDs   []uint64        `json:"deviceTypeIDs,omitempty"`
+	DeviceIDs       []uint64        `json:"deviceIDs,omitempty"`
+	OSIDs           []uint64        `json:"OSIDs,omitempty"`
+	BrowserIDs      []uint64        `json:"browserIDs,omitempty"`
+	CarrierIDs      []uint64        `json:"carrierIDs,omitempty"`
+	CategoryIDs     []uint64        `json:"categoryIDs,omitempty"`
+	CountryCodes    []string        `json:"countryCodes,omitempty"`
+	LanguageCodes   []string        `json:"languageCodes,omitempty"`
+	ApplicationIDs  []uint64        `json:"applicationIDs,omitempty"`
 	Domains         []string        `json:"domains,omitempty"`
-	Applications    []uint64        `json:"applications,omitempty"`
-	Zones           []uint64        `json:"zones,omitempty"`
+	ZoneIDs         []uint64        `json:"zoneIDs,omitempty"`
 	Secure          *AnyOnlyExclude `json:"secure,omitempty"`
 	AdBlock         *AnyOnlyExclude `json:"adBlock,omitempty"`
 	PrivateBrowsing *AnyOnlyExclude `json:"privateBrowsing,omitempty"`
@@ -1284,6 +1308,20 @@ func (e AnyIPv4IPv6) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+func (e *AnyIPv4IPv6) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e AnyIPv4IPv6) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
+}
+
 type AnyOnlyExclude string
 
 const (
@@ -1325,6 +1363,20 @@ func (e *AnyOnlyExclude) UnmarshalGQL(v any) error {
 
 func (e AnyOnlyExclude) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *AnyOnlyExclude) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e AnyOnlyExclude) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type ApplicationType string
@@ -1372,6 +1424,20 @@ func (e ApplicationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+func (e *ApplicationType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e ApplicationType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
+}
+
 type AuctionType string
 
 const (
@@ -1413,6 +1479,20 @@ func (e *AuctionType) UnmarshalGQL(v any) error {
 
 func (e AuctionType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *AuctionType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e AuctionType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type PlatformType string
@@ -1476,6 +1556,20 @@ func (e PlatformType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+func (e *PlatformType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e PlatformType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
+}
+
 type PricingModel string
 
 const (
@@ -1521,6 +1615,20 @@ func (e PricingModel) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+func (e *PricingModel) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e PricingModel) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
+}
+
 type PrivateStatus string
 
 const (
@@ -1560,6 +1668,20 @@ func (e *PrivateStatus) UnmarshalGQL(v any) error {
 
 func (e PrivateStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *PrivateStatus) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e PrivateStatus) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type RTBRequestFormatType string
@@ -1603,6 +1725,20 @@ func (e *RTBRequestFormatType) UnmarshalGQL(v any) error {
 
 func (e RTBRequestFormatType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *RTBRequestFormatType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e RTBRequestFormatType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type StatisticCondition string
@@ -1668,6 +1804,20 @@ func (e *StatisticCondition) UnmarshalGQL(v any) error {
 
 func (e StatisticCondition) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *StatisticCondition) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e StatisticCondition) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type StatisticKey string
@@ -1739,6 +1889,20 @@ func (e *StatisticKey) UnmarshalGQL(v any) error {
 
 func (e StatisticKey) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *StatisticKey) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e StatisticKey) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type StatisticOrderingKey string
@@ -1842,4 +2006,18 @@ func (e *StatisticOrderingKey) UnmarshalGQL(v any) error {
 
 func (e StatisticOrderingKey) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *StatisticOrderingKey) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e StatisticOrderingKey) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }

@@ -14,7 +14,7 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
 	blazeDirectives "github.com/geniusrabbit/blaze-api/server/graphql/directives"
-	"github.com/opentracing/opentracing-go"
+	opentracing "github.com/opentracing/opentracing-go"
 	"github.com/vektah/gqlparser/v2/ast"
 
 	"github.com/sspserver/api/internal/context/ctxcache"

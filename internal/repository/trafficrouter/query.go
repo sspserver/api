@@ -13,12 +13,12 @@ type Filter struct {
 	Active          *models.ActiveStatus
 	RTBSourceIDs    []uint64
 	Formats         []string
-	DeviceTypes     []int64
-	Devices         []int64
-	OS              []int64
-	Browsers        []int64
-	Carriers        []int64
-	Categories      []int64
+	DeviceTypes     []uint64
+	Devices         []uint64
+	OS              []uint64
+	Browsers        []uint64
+	Carriers        []uint64
+	Categories      []uint64
 	Countries       []string
 	Languages       []string
 	Domains         []string
@@ -100,6 +100,7 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 // ListOrder of the objects list
 type ListOrder struct {
 	ID        models.Order
+	Title     models.Order
 	Active    models.Order
 	Percent   models.Order
 	CreatedAt models.Order
@@ -111,6 +112,7 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 		return query
 	}
 	query = ol.ID.PrepareQuery(query, `id`)
+	query = ol.Title.PrepareQuery(query, `title`)
 	query = ol.Active.PrepareQuery(query, `active`)
 	query = ol.Percent.PrepareQuery(query, `percent`)
 	query = ol.CreatedAt.PrepareQuery(query, `created_at`)

@@ -51,7 +51,7 @@ type Resolver struct {
 	adformat      *adformat_graphql.QueryResolver
 	geo           *geo_graphql.QueryResolver
 	langs         *languages_graphql.QueryResolver
-	catergories   *category_graphql.QueryResolver
+	categories    *category_graphql.QueryResolver
 	os            *os_graphql.QueryResolver
 	browsers      *browser_graphql.QueryResolver
 	device_types  *devicetype_graphql.QueryResolver
@@ -86,7 +86,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		adformat:      adformat_graphql.NewQueryResolver(),
 		geo:           geo_graphql.NewQueryResolver(),
 		langs:         languages_graphql.NewQueryResolver(),
-		catergories:   category_graphql.NewQueryResolver(),
+		categories:    category_graphql.NewQueryResolver(),
 		os:            os_graphql.NewQueryResolver(),
 		browsers:      browser_graphql.NewQueryResolver(),
 		device_types:  devicetype_graphql.NewQueryResolver(),

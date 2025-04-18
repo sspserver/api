@@ -3,11 +3,13 @@ package graphql
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 	"github.com/geniusrabbit/blaze-api/repository"
 
+	"github.com/sspserver/api/internal/context/ctxcache"
 	"github.com/sspserver/api/internal/repository/category"
 	"github.com/sspserver/api/internal/repository/category/usecase"
 	"github.com/sspserver/api/internal/server/graphql/connectors"
@@ -25,7 +27,7 @@ func NewQueryResolver() *QueryResolver {
 
 // Get Category is the resolver for the Category field.
 func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.CategoryPayload, error) {
-	object, err := r.uc.Get(ctx, id)
+	object, err := r.cachedItemByID(ctx, id, true)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +41,46 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.CategoryPa
 // List Categorys is the resolver for the listCategorys field.
 func (r *QueryResolver) List(ctx context.Context, filter *qmodels.CategoryListFilter, order *qmodels.CategoryListOrder, page *qmodels.Page) (*connectors.CategoryConnection, error) {
 	return connectors.NewCategoryConnection(ctx, r.uc, filter, order, page), nil
+}
+
+// ListByIDs returns a list of DeviceModels by their IDs.
+func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels.Category, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
+	var (
+		list   = make([]*models.Category, 0, len(ids))
+		cached []uint64
+	)
+	for _, id := range ids {
+		if obj, err := r.cachedItemByID(ctx, id, false); err != nil {
+			return nil, err
+		} else {
+			list = append(list, obj)
+			cached = append(cached, id)
+		}
+	}
+	if len(cached) < len(ids) {
+		// not all formats are cached, so we need to load them from the database
+		// and cache them
+		newIDs := gocast.IfThenExec(len(cached) == 0,
+			func() []uint64 { return ids },
+			func() []uint64 {
+				return slices.DeleteFunc(ids, func(id uint64) bool {
+					return slices.Contains(cached, id)
+				})
+			})
+		newList, err := r.uc.FetchList(ctx, &category.Filter{ID: newIDs}, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		cache := r.cacheObj(ctx)
+		for _, obj := range newList {
+			cache.Set(obj.ID, obj)
+		}
+		list = append(list, newList...)
+	}
+	return qmodels.FromCategoryModelList(list), nil
 }
 
 // Childrens is the resolver for the childrens field.
@@ -122,4 +164,27 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 		CategoryID:       object.ID,
 		Category:         qmodels.FromCategoryModel(object),
 	}, nil
+}
+
+func (r *QueryResolver) cachedItemByID(ctx context.Context, id uint64, orLoad bool) (*models.Category, error) {
+	var (
+		cache = r.cacheObj(ctx)
+		obj   any
+		err   error
+	)
+	if orLoad {
+		obj, err = cache.GetOrCache(id, func(any) (any, error) {
+			return r.uc.Get(ctx, id)
+		})
+	} else {
+		obj = cache.Get(id)
+	}
+	if err != nil || obj == nil {
+		return nil, err
+	}
+	return obj.(*models.Category), nil
+}
+
+func (r *QueryResolver) cacheObj(ctx context.Context) ctxcache.Cacher {
+	return ctxcache.GetCache(ctx, "Category")
 }
