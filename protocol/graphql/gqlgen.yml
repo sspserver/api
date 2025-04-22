@@ -10,21 +10,21 @@ skip_mod_tidy: yes
 
 # Where should the generated server code go?
 exec:
-  filename: ../../internal/server/graphql/generated/exec.go
+  filename: ../../pkg/server/graphql/generated/exec.go
   package: generated
 
 # federation:
-#   filename: ../../internal/server/graphql/generated/federation.go
+#   filename: ../../pkg/server/graphql/generated/federation.go
 #   package: generated
 
 model:
-  filename: ../../internal/server/graphql/models/generated.go
+  filename: ../../pkg/server/graphql/models/generated.go
   package: models
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: ../../internal/server/graphql/resolvers
+  dir: ../../pkg/server/graphql/resolvers
   package: resolvers
 
 # Optional: turn on use ` + "`" + `gqlgen:"fieldName"` + "`" + ` tags in your models
@@ -99,27 +99,27 @@ models:
     model: github.com/geniusrabbit/blaze-api/server/graphql/connectors.DirectAccessTokenConnection
   # Project connectors
   RTBSourceConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.RTBSourceConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.RTBSourceConnection
   AdFormatConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.AdFormatConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.AdFormatConnection
   CategoryConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.CategoryConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.CategoryConnection
   OSConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.OSConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.OSConnection
   BrowserConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.BrowserConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.BrowserConnection
   DeviceMakerConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.DeviceMakerConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.DeviceMakerConnection
   DeviceModelConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.DeviceModelConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.DeviceModelConnection
   ApplicationConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.ApplicationConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.ApplicationConnection
   ZoneConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.ZoneConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.ZoneConnection
   StatisticAdItemConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.StatisticAdItemConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.StatisticAdItemConnection
   TrafficRouterConnection:
-    model: github.com/sspserver/api/internal/server/graphql/connectors.TrafficRouterConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.TrafficRouterConnection
   # Extensions
   Category:
     fields:

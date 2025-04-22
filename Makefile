@@ -17,11 +17,7 @@ DOCKER_CONTAINER_IMAGE := ${PROJECT_WORKSPACE}/${PROJECT_NAME}
 all: lint cover
 
 .PHONY: lint
-lint: golint ## Run linters
-
-.PHONY: golint
-golint:
-	# golint -set_exit_status ./...
+lint: ## Run linters
 	golangci-lint run -v ./...
 
 .PHONY: fmt

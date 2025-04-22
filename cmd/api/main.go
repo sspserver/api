@@ -39,12 +39,12 @@ import (
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/appinit"
 	"github.com/sspserver/api/cmd/api/server"
-	rtbsourceuc "github.com/sspserver/api/internal/repository/rtbsource/usecase"
-	statisticrc "github.com/sspserver/api/internal/repository/statistic/repository"
-	statisticuc "github.com/sspserver/api/internal/repository/statistic/usecase"
-	"github.com/sspserver/api/internal/server/graphql"
-	"github.com/sspserver/api/internal/server/graphql/resolvers"
-	"github.com/sspserver/api/internal/sysops"
+	rtbsourceuc "github.com/sspserver/api/pkg/repository/rtbsource/usecase"
+	statisticrc "github.com/sspserver/api/pkg/repository/statistic/repository"
+	statisticuc "github.com/sspserver/api/pkg/repository/statistic/usecase"
+	"github.com/sspserver/api/pkg/server/graphql"
+	"github.com/sspserver/api/pkg/server/graphql/resolvers"
+	"github.com/sspserver/api/pkg/sysops"
 	"github.com/sspserver/api/private/emails"
 )
 

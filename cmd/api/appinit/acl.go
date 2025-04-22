@@ -12,7 +12,7 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/permissions"
 	"github.com/geniusrabbit/blaze-api/repository/account/repository"
 
-	"github.com/sspserver/api/models"
+	"github.com/sspserver/api/pkg/models"
 )
 
 const (
