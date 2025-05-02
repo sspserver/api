@@ -3,11 +3,11 @@ package usecase
 import (
 	"context"
 
-	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 	"github.com/go-faster/errors"
 
+	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/rtbsource"
 	"github.com/sspserver/api/pkg/repository/rtbsource/repository"
@@ -44,7 +44,7 @@ func (u *Usecase) FetchList(ctx context.Context, qops ...rtbsource.Option) ([]*m
 				AccountID: accountID,
 			})
 		} else {
-			return nil, errors.Wrap(acl.ErrNoPermissions, "fetch list")
+			return nil, acl.ErrNoPermissions.WithMessage("fetch list")
 		}
 	}
 	return u.repo.FetchList(ctx, qops...)
@@ -58,7 +58,7 @@ func (u *Usecase) Count(ctx context.Context, qops ...rtbsource.Option) (int64, e
 				AccountID: accountID,
 			})
 		} else {
-			return 0, errors.Wrap(acl.ErrNoPermissions, "ciunt")
+			return 0, acl.ErrNoPermissions.WithMessage("count")
 		}
 	}
 	return u.repo.Count(ctx, qops...)
@@ -69,7 +69,7 @@ func (u *Usecase) Create(ctx context.Context, source *models.RTBSource) (uint64,
 		source.AccountID = session.Account(ctx).ID
 	}
 	if !acl.HaveAccessCreate(ctx, source) {
-		return 0, errors.Wrap(acl.ErrNoPermissions, "create")
+		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
 	source.Status = models.ApproveStatus(
 		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
@@ -81,7 +81,7 @@ func (u *Usecase) Update(ctx context.Context, id uint64, source *models.RTBSourc
 	srcObj := *source
 	srcObj.ID = id
 	if !acl.HaveAccessUpdate(ctx, srcObj) {
-		return errors.Wrap(acl.ErrNoPermissions, "update")
+		return acl.ErrNoPermissions.WithMessage("update")
 	}
 	return u.repo.Update(ctx, id, source)
 }
@@ -91,8 +91,8 @@ func (u *Usecase) Run(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, src) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::run")
+	if !acl.HaveAccessRun(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("run")
 	}
 	return u.repo.Run(ctx, id, message)
 }
@@ -102,8 +102,8 @@ func (u *Usecase) Pause(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, src) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::pause")
+	if !acl.HaveAccessPause(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("pause")
 	}
 	return u.repo.Pause(ctx, id, message)
 }
@@ -113,8 +113,8 @@ func (u *Usecase) Approve(ctx context.Context, id uint64, message string) error 
 	if err != nil {
 		return err
 	}
-	if !acl.HaveObjectPermissions(ctx, src, acl.PermApprove+`.*`) {
-		return errors.Wrap(acl.ErrNoPermissions, "approve")
+	if !acl.HaveAccessApprove(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("approve")
 	}
 	return u.repo.Approve(ctx, id, message)
 }
@@ -124,8 +124,8 @@ func (u *Usecase) Reject(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveObjectPermissions(ctx, src, acl.PermReject+`.*`) {
-		return errors.Wrap(acl.ErrNoPermissions, "reject")
+	if !acl.HaveAccessReject(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("reject")
 	}
 	return u.repo.Reject(ctx, id, message)
 }
@@ -136,7 +136,7 @@ func (u *Usecase) Delete(ctx context.Context, id uint64, msg *string) error {
 		return err
 	}
 	if !acl.HaveAccessDelete(ctx, src) {
-		return errors.Wrap(acl.ErrNoPermissions, "delete")
+		return acl.ErrNoPermissions.WithMessage("delete")
 	}
 	if msg != nil {
 		ctx = historylog.WithMessage(ctx, *msg)

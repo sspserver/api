@@ -1,9 +1,11 @@
 CREATE TABLE IF NOT EXISTS adv_format
 ( id              BIGSERIAL              PRIMARY KEY
-, codename        VARCHAR(255)           NOT NULL
+, codename        VARCHAR(255)           NOT NULL       UNIQUE
 , type            VARCHAR(255)           NOT NULL
+
 , title           VARCHAR(255)           NOT NULL
 , description     TEXT                   NOT NULL       DEFAULT ''
+
 , active          ActiveStatus           NOT NULL
 
 , width           INT

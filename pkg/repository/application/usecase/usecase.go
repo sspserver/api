@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 
+	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/application"
 	"github.com/sspserver/api/pkg/repository/application/repository"
@@ -104,8 +104,8 @@ func (u *Usecase) Run(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, src) {
-		return acl.ErrNoPermissions.WithMessage("update::run")
+	if !acl.HaveAccessRun(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("run")
 	}
 	return u.repo.Run(ctx, id, message)
 }
@@ -116,8 +116,8 @@ func (u *Usecase) Pause(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, src) {
-		return acl.ErrNoPermissions.WithMessage("update::pause")
+	if !acl.HaveAccessPause(ctx, src) {
+		return acl.ErrNoPermissions.WithMessage("pause")
 	}
 	return u.repo.Pause(ctx, id, message)
 }
@@ -128,7 +128,7 @@ func (u *Usecase) Approve(ctx context.Context, id uint64, message string) error 
 	if err != nil {
 		return err
 	}
-	if !acl.HaveObjectPermissions(ctx, src, acl.PermApprove+`.*`) {
+	if !acl.HaveAccessApprove(ctx, src) {
 		return acl.ErrNoPermissions.WithMessage("approve")
 	}
 	return u.repo.Approve(ctx, id, message)
@@ -140,7 +140,7 @@ func (u *Usecase) Reject(ctx context.Context, id uint64, message string) error {
 	if err != nil {
 		return err
 	}
-	if !acl.HaveObjectPermissions(ctx, src, acl.PermReject+`.*`) {
+	if !acl.HaveAccessReject(ctx, src) {
 		return acl.ErrNoPermissions.WithMessage("reject")
 	}
 	return u.repo.Reject(ctx, id, message)

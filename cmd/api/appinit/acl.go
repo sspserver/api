@@ -7,17 +7,12 @@ import (
 	"github.com/demdxx/rbac"
 
 	"github.com/geniusrabbit/blaze-api/model"
-	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 	"github.com/geniusrabbit/blaze-api/pkg/permissions"
 	"github.com/geniusrabbit/blaze-api/repository/account/repository"
 
+	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/models"
-)
-
-const (
-	PermRun   = `run`
-	PermPause = `pause`
 )
 
 var (
@@ -25,7 +20,7 @@ var (
 		acl.PermView, acl.PermList, acl.PermCount, acl.PermUpdate, acl.PermCreate, acl.PermDelete,
 	}
 	crudPermissionsWithApprove       = append(crudPermissions, acl.PermApprove, acl.PermReject)
-	crunPermissionsWithRunnin        = append(crudPermissions, PermRun, PermPause)
+	crunPermissionsWithRunnin        = append(crudPermissions, acl.PermRun, acl.PermPause)
 	crudPermissionsWithRunAndApprove = append(crunPermissionsWithRunnin, acl.PermApprove, acl.PermReject)
 )
 

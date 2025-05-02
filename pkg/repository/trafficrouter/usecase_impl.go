@@ -3,11 +3,11 @@ package trafficrouter
 import (
 	"context"
 
-	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
-	"github.com/pkg/errors"
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/sysops"
+
+	"github.com/sspserver/api/pkg/acl"
 )
 
 type UsecaseImpl struct {
@@ -28,7 +28,7 @@ func (uc *UsecaseImpl) Get(ctx context.Context, id uint64) (*models.TrafficRoute
 		return nil, err
 	}
 	if !acl.HaveAccessView(ctx, src) {
-		return nil, errors.Wrap(acl.ErrNoPermissions, "view")
+		return nil, acl.ErrNoPermissions.WithMessage("view")
 	}
 	return src, nil
 }
@@ -38,11 +38,9 @@ func (uc *UsecaseImpl) FetchList(ctx context.Context, qops ...Option) ([]*models
 	if !acl.HaveAccessList(ctx, &models.TrafficRouter{}) {
 		accountID := session.Account(ctx).ID
 		if acl.HaveAccessList(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = Options(qops).With(&Filter{
-				AccountID: accountID,
-			})
+			qops = Options(qops).With(&Filter{AccountID: accountID})
 		} else {
-			return nil, errors.Wrap(acl.ErrNoPermissions, "fetch list")
+			return nil, acl.ErrNoPermissions.WithMessage("fetch list")
 		}
 	}
 	return uc.repo.FetchList(ctx, qops...)
@@ -53,11 +51,9 @@ func (uc *UsecaseImpl) Count(ctx context.Context, qops ...Option) (int64, error)
 	if !acl.HaveAccessCount(ctx, &models.TrafficRouter{}) {
 		accountID := session.Account(ctx).ID
 		if acl.HaveAccessCount(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = Options(qops).With(&Filter{
-				AccountID: accountID,
-			})
+			qops = Options(qops).With(&Filter{AccountID: accountID})
 		} else {
-			return 0, errors.Wrap(acl.ErrNoPermissions, "count")
+			return 0, acl.ErrNoPermissions.WithMessage("count")
 		}
 	}
 	return uc.repo.Count(ctx, qops...)
@@ -69,7 +65,7 @@ func (uc *UsecaseImpl) Create(ctx context.Context, router *models.TrafficRouter)
 		router.AccountID = session.Account(ctx).ID
 	}
 	if !acl.HaveAccessCreate(ctx, router) {
-		return 0, errors.Wrap(acl.ErrNoPermissions, "create")
+		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
 	router.Status = models.ApproveStatus(
 		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
@@ -82,7 +78,7 @@ func (uc *UsecaseImpl) Update(ctx context.Context, id uint64, router *models.Tra
 	routerObj := *router
 	routerObj.ID = id
 	if !acl.HaveAccessUpdate(ctx, routerObj) {
-		return errors.Wrap(acl.ErrNoPermissions, "update")
+		return acl.ErrNoPermissions.WithMessage("update")
 	}
 	return uc.repo.Update(ctx, id, router)
 }
@@ -94,7 +90,7 @@ func (uc *UsecaseImpl) Delete(ctx context.Context, id uint64) error {
 		return err
 	}
 	if !acl.HaveAccessDelete(ctx, router) {
-		return errors.Wrap(acl.ErrNoPermissions, "delete")
+		return acl.ErrNoPermissions.WithMessage("delete")
 	}
 	return uc.repo.Delete(ctx, id)
 }
@@ -105,8 +101,8 @@ func (uc *UsecaseImpl) Run(ctx context.Context, id uint64, message string) error
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, router) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::run")
+	if !acl.HaveAccessRun(ctx, router) {
+		return acl.ErrNoPermissions.WithMessage("run")
 	}
 	return uc.repo.Run(ctx, id, message)
 }
@@ -117,8 +113,8 @@ func (uc *UsecaseImpl) Pause(ctx context.Context, id uint64, message string) err
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, router) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::pause")
+	if !acl.HaveAccessPause(ctx, router) {
+		return acl.ErrNoPermissions.WithMessage("pause")
 	}
 	return uc.repo.Pause(ctx, id, message)
 }
@@ -129,8 +125,8 @@ func (uc *UsecaseImpl) Approve(ctx context.Context, id uint64, message string) e
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, router) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::approve")
+	if !acl.HaveAccessApprove(ctx, router) {
+		return acl.ErrNoPermissions.WithMessage("approve")
 	}
 	return uc.repo.Approve(ctx, id, message)
 }
@@ -141,8 +137,8 @@ func (uc *UsecaseImpl) Reject(ctx context.Context, id uint64, message string) er
 	if err != nil {
 		return err
 	}
-	if !acl.HaveAccessUpdate(ctx, router) {
-		return errors.Wrap(acl.ErrNoPermissions, "update::reject")
+	if !acl.HaveAccessReject(ctx, router) {
+		return acl.ErrNoPermissions.WithMessage("reject")
 	}
 	return uc.repo.Reject(ctx, id, message)
 }
