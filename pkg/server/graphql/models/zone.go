@@ -88,11 +88,36 @@ func (ord *ZoneListOrder) Order() *zone.ListOrder {
 	}
 }
 
-func (inp *ZoneInput) FillModel(obj *models.Zone) {
+func (inp *ZoneCreateInput) FillModel(obj *models.Zone) {
 	if obj == nil {
 		return
 	}
-	obj.Codename = gocast.PtrAsValue(inp.Codename, obj.Codename)
+	obj.AccountID = gocast.PtrAsValue(inp.AccountID, obj.AccountID)
+
+	obj.Title = inp.Title
+	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
+
+	if inp.DefaultCode != nil && inp.DefaultCode.Data != nil {
+		_ = obj.DefaultCode.SetValue(inp.DefaultCode.Data)
+	}
+	if inp.Context != nil && inp.Context.Data != nil {
+		_ = obj.Context.SetValue(inp.Context.Data)
+	}
+
+	obj.MinECPM = gocast.PtrAsValue(inp.MinEcpm, obj.MinECPM)
+	obj.FixedPurchasePrice = gocast.PtrAsValue(inp.FixedPurchasePrice, obj.FixedPurchasePrice)
+
+	obj.AllowedFormats = inp.AllowedFormats
+	obj.AllowedTypes = inp.AllowedTypes
+	obj.AllowedSources = inp.AllowedSources
+	obj.DisallowedSources = inp.DisallowedSources
+	obj.Campaigns = inp.Campaigns
+}
+
+func (inp *ZoneUpdateInput) FillModel(obj *models.Zone) {
+	if obj == nil {
+		return
+	}
 	obj.AccountID = gocast.PtrAsValue(inp.AccountID, obj.AccountID)
 
 	obj.Title = gocast.PtrAsValue(inp.Title, obj.Title)

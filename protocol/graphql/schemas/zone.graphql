@@ -27,11 +27,11 @@ type Zone {
   fixedPurchasePrice: Float!
 
   allowedFormats:    [String!]
-  allowedTypes:      [Int64!]
-  allowedSources:    [Int64!]
-  disallowedSources: [Int64!]
+  allowedTypes:      [ID64!]
+  allowedSources:    [ID64!]
+  disallowedSources: [ID64!]
 
-  campaigns: [Int64!]
+  campaigns: [ID64!]
 
   createdAt: Time!
   updatedAt: Time!
@@ -138,28 +138,23 @@ input ZoneListOrder {
 }
 
 """
-Input type for creating or updating a Zone.
+Input type for creating a Zone.
 """
-input ZoneInput {
+input ZoneCreateInput {
   """
   Account ID associated with the Zone. Must have appropriate permissions.
   """
   accountID: ID64
 
   """
-  Unique codename for the Zone.
-  """
-  codename: String
-
-  """
   Title of the Zone.
   """
-  title: String
+  title: String! @length(min: 1, max: 255, trim: true)
 
   """
   Description of the Zone.
   """
-  description: String
+  description: String @notempty(trim: true, ornil: true)
 
   defaultCode: JSON
   context: JSON
@@ -169,11 +164,45 @@ input ZoneInput {
   fixedPurchasePrice: Float
 
   allowedFormats:    [String!]
-  allowedTypes:      [Int64!]
-  allowedSources:    [Int64!]
-  disallowedSources: [Int64!]
+  allowedTypes:      [ID64!]
+  allowedSources:    [ID64!]
+  disallowedSources: [ID64!]
 
-  campaigns: [Int64!]
+  campaigns: [ID64!]
+}
+
+"""
+Input type for updating a Zone.
+"""
+input ZoneUpdateInput {
+  """
+  Account ID associated with the Zone. Must have appropriate permissions.
+  """
+  accountID: ID64
+
+  """
+  Title of the Zone.
+  """
+  title: String @length(min: 1, max: 255, trim: true, ornil: true)
+
+  """
+  Description of the Zone.
+  """
+  description: String @notempty(trim: true, ornil: true)
+
+  defaultCode: JSON
+  context: JSON
+  minECPM: Float
+  minECPMByGeo: JSON
+
+  fixedPurchasePrice: Float
+
+  allowedFormats:    [String!]
+  allowedTypes:      [ID64!]
+  allowedSources:    [ID64!]
+  disallowedSources: [ID64!]
+
+  campaigns: [ID64!]
 }
 
 ###############################################################################
@@ -200,12 +229,12 @@ extend type Mutation {
   """
   Create a new Zone
   """
-  createZone(input: ZoneInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"])
+  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"])
 
   """
   Update Zone information
   """
-  updateZone(ID: ID64!, input: ZoneInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
 
   """
   Delete Zone

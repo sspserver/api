@@ -83,7 +83,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodel
 }
 
 // Create Zone is the resolver for the createApplication field.
-func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ZoneInput) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ZoneCreateInput) (*qlmodels.ZonePayload, error) {
 	var obj models.Zone
 	input.FillModel(&obj)
 
@@ -100,7 +100,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ZoneInput) (*
 }
 
 // Update Zone is the resolver for the updateApplication field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.ZoneInput) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.ZoneUpdateInput) (*qlmodels.ZonePayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err

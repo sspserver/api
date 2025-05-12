@@ -36,6 +36,8 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
+	general *generalResolver
+	// Basic resolvers
 	users             *user_graphql.QueryResolver
 	accAuth           *account_graphql.AuthResolver
 	accounts          *account_graphql.QueryResolver
@@ -70,7 +72,7 @@ type Usecases struct {
 }
 
 func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
-	return &Resolver{
+	res := &Resolver{
 		users:             user_graphql.NewQueryResolver(),
 		accAuth:           account_graphql.NewAuthResolver(provider, rbac.New()),
 		accounts:          account_graphql.NewQueryResolver(),
@@ -97,4 +99,6 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		statistic:     statistic_graphql.NewQueryResolver(usecases.Stats),
 		trafficrouter: trafficrouter_graphql.NewResolver(),
 	}
+	res.general = &generalResolver{res}
+	return res
 }

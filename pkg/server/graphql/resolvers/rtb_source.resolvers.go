@@ -60,79 +60,71 @@ func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSo
 
 // Account is the resolver for the account field.
 func (r *rTBSourceResolver) Account(ctx context.Context, obj *models.RTBSource) (_ *models1.Account, err error) {
-	obj.Account, err = r.g.Account(ctx, obj.Account, obj.AccountID)
+	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
 	return obj.Account, err
 }
 
 // Formats is the resolver for the formats field.
 func (r *rTBSourceResolver) Formats(ctx context.Context, obj *models.RTBSource) (_ []*models.AdFormat, err error) {
-	obj.Formats, err = r.g.Formats(ctx, obj.Formats, obj.FormatCodes)
+	obj.Formats, err = r.general.Formats(ctx, obj.Formats, obj.FormatCodes)
 	return obj.Formats, err
 }
 
 // DeviceTypes is the resolver for the deviceTypes field.
 func (r *rTBSourceResolver) DeviceTypes(ctx context.Context, obj *models.RTBSource) (_ []*models.DeviceType, err error) {
-	obj.DeviceTypes, err = r.g.DeviceTypes(ctx, obj.DeviceTypes, obj.DeviceTypeIDs)
+	obj.DeviceTypes, err = r.general.DeviceTypes(ctx, obj.DeviceTypes, obj.DeviceTypeIDs)
 	return obj.DeviceTypes, err
 }
 
 // Devices is the resolver for the devices field.
 func (r *rTBSourceResolver) Devices(ctx context.Context, obj *models.RTBSource) (_ []*models.DeviceModel, err error) {
-	obj.Devices, err = r.g.Devices(ctx, obj.Devices, obj.DeviceIDs)
+	obj.Devices, err = r.general.Devices(ctx, obj.Devices, obj.DeviceIDs)
 	return obj.Devices, err
 }
 
 // Os is the resolver for the OS field.
 func (r *rTBSourceResolver) Os(ctx context.Context, obj *models.RTBSource) (_ []*models.Os, err error) {
-	obj.Os, err = r.g.Os(ctx, obj.Os, obj.OSIDs)
+	obj.Os, err = r.general.Os(ctx, obj.Os, obj.OSIDs)
 	return obj.Os, err
 }
 
 // Browsers is the resolver for the browsers field.
 func (r *rTBSourceResolver) Browsers(ctx context.Context, obj *models.RTBSource) (_ []*models.Browser, err error) {
-	obj.Browsers, err = r.g.Browsers(ctx, obj.Browsers, obj.BrowserIDs)
+	obj.Browsers, err = r.general.Browsers(ctx, obj.Browsers, obj.BrowserIDs)
 	return obj.Browsers, err
 }
 
 // Categories is the resolver for the categories field.
 func (r *rTBSourceResolver) Categories(ctx context.Context, obj *models.RTBSource) (_ []*models.Category, err error) {
-	obj.Categories, err = r.g.Categories(ctx, obj.Categories, obj.CategoryIDs)
+	obj.Categories, err = r.general.Categories(ctx, obj.Categories, obj.CategoryIDs)
 	return obj.Categories, err
 }
 
 // Countries is the resolver for the countries field.
 func (r *rTBSourceResolver) Countries(ctx context.Context, obj *models.RTBSource) (_ []*models.Country, err error) {
-	obj.Countries, err = r.g.Countries(ctx, obj.Countries, obj.CountryCodes)
+	obj.Countries, err = r.general.Countries(ctx, obj.Countries, obj.CountryCodes)
 	return obj.Countries, err
 }
 
 // Languages is the resolver for the languages field.
 func (r *rTBSourceResolver) Languages(ctx context.Context, obj *models.RTBSource) (_ []*models.Lang, err error) {
-	obj.Languages, err = r.g.Languages(ctx, obj.Languages, obj.LanguageCodes)
+	obj.Languages, err = r.general.Languages(ctx, obj.Languages, obj.LanguageCodes)
 	return obj.Languages, err
 }
 
 // Applications is the resolver for the applications field.
 func (r *rTBSourceResolver) Applications(ctx context.Context, obj *models.RTBSource) (_ []*models.Application, err error) {
-	obj.Applications, err = r.g.Applications(ctx, obj.Applications, obj.ApplicationIDs)
+	obj.Applications, err = r.general.Applications(ctx, obj.Applications, obj.ApplicationIDs)
 	return obj.Applications, err
 }
 
 // Zones is the resolver for the zones field.
 func (r *rTBSourceResolver) Zones(ctx context.Context, obj *models.RTBSource) (_ []*models.Zone, err error) {
-	obj.Zones, err = r.g.Zones(ctx, obj.Zones, obj.ZoneIDs)
+	obj.Zones, err = r.general.Zones(ctx, obj.Zones, obj.ZoneIDs)
 	return obj.Zones, err
 }
 
 // RTBSource returns generated.RTBSourceResolver implementation.
-func (r *Resolver) RTBSource() generated.RTBSourceResolver {
-	return &rTBSourceResolver{
-		Resolver: r,
-		g:        &generalResolver{r},
-	}
-}
+func (r *Resolver) RTBSource() generated.RTBSourceResolver { return &rTBSourceResolver{r} }
 
-type rTBSourceResolver struct {
-	*Resolver
-	g *generalResolver
-}
+type rTBSourceResolver struct{ *Resolver }

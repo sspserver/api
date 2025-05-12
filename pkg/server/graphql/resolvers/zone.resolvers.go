@@ -13,12 +13,12 @@ import (
 )
 
 // CreateZone is the resolver for the createZone field.
-func (r *mutationResolver) CreateZone(ctx context.Context, input models.ZoneInput) (*models.ZonePayload, error) {
+func (r *mutationResolver) CreateZone(ctx context.Context, input models.ZoneCreateInput) (*models.ZonePayload, error) {
 	return r.zone.Create(ctx, input)
 }
 
 // UpdateZone is the resolver for the updateZone field.
-func (r *mutationResolver) UpdateZone(ctx context.Context, id uint64, input models.ZoneInput) (*models.ZonePayload, error) {
+func (r *mutationResolver) UpdateZone(ctx context.Context, id uint64, input models.ZoneUpdateInput) (*models.ZonePayload, error) {
 	return r.zone.Update(ctx, id, input)
 }
 

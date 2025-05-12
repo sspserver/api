@@ -1191,31 +1191,21 @@ type Zone struct {
 	MinEcpm            float64             `json:"minECPM"`
 	FixedPurchasePrice float64             `json:"fixedPurchasePrice"`
 	AllowedFormats     []string            `json:"allowedFormats,omitempty"`
-	AllowedTypes       []int64             `json:"allowedTypes,omitempty"`
-	AllowedSources     []int64             `json:"allowedSources,omitempty"`
-	DisallowedSources  []int64             `json:"disallowedSources,omitempty"`
-	Campaigns          []int64             `json:"campaigns,omitempty"`
+	AllowedTypes       []uint64            `json:"allowedTypes,omitempty"`
+	AllowedSources     []uint64            `json:"allowedSources,omitempty"`
+	DisallowedSources  []uint64            `json:"disallowedSources,omitempty"`
+	Campaigns          []uint64            `json:"campaigns,omitempty"`
 	CreatedAt          time.Time           `json:"createdAt"`
 	UpdatedAt          time.Time           `json:"updatedAt"`
 	DeletedAt          *time.Time          `json:"deletedAt,omitempty"`
 }
 
-// ZoneEdge wrapper to access Zone objects
-type ZoneEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The Zone at the end of ZoneEdge.
-	Node *Zone `json:"node"`
-}
-
-// Input type for creating or updating a Zone.
-type ZoneInput struct {
+// Input type for creating a Zone.
+type ZoneCreateInput struct {
 	// Account ID associated with the Zone. Must have appropriate permissions.
 	AccountID *uint64 `json:"accountID,omitempty"`
-	// Unique codename for the Zone.
-	Codename *string `json:"codename,omitempty"`
 	// Title of the Zone.
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title"`
 	// Description of the Zone.
 	Description        *string     `json:"description,omitempty"`
 	DefaultCode        *types.JSON `json:"defaultCode,omitempty"`
@@ -1224,10 +1214,18 @@ type ZoneInput struct {
 	MinECPMByGeo       *types.JSON `json:"minECPMByGeo,omitempty"`
 	FixedPurchasePrice *float64    `json:"fixedPurchasePrice,omitempty"`
 	AllowedFormats     []string    `json:"allowedFormats,omitempty"`
-	AllowedTypes       []int64     `json:"allowedTypes,omitempty"`
-	AllowedSources     []int64     `json:"allowedSources,omitempty"`
-	DisallowedSources  []int64     `json:"disallowedSources,omitempty"`
-	Campaigns          []int64     `json:"campaigns,omitempty"`
+	AllowedTypes       []uint64    `json:"allowedTypes,omitempty"`
+	AllowedSources     []uint64    `json:"allowedSources,omitempty"`
+	DisallowedSources  []uint64    `json:"disallowedSources,omitempty"`
+	Campaigns          []uint64    `json:"campaigns,omitempty"`
+}
+
+// ZoneEdge wrapper to access Zone objects
+type ZoneEdge struct {
+	// A cursor for use in pagination.
+	Cursor string `json:"cursor"`
+	// The Zone at the end of ZoneEdge.
+	Node *Zone `json:"node"`
 }
 
 // Filter input for listing Zones.
@@ -1263,6 +1261,26 @@ type ZonePayload struct {
 	ZoneID uint64 `json:"zoneID"`
 	// The Zone object accessible by a client.
 	Zone *Zone `json:"zone"`
+}
+
+// Input type for updating a Zone.
+type ZoneUpdateInput struct {
+	// Account ID associated with the Zone. Must have appropriate permissions.
+	AccountID *uint64 `json:"accountID,omitempty"`
+	// Title of the Zone.
+	Title *string `json:"title,omitempty"`
+	// Description of the Zone.
+	Description        *string     `json:"description,omitempty"`
+	DefaultCode        *types.JSON `json:"defaultCode,omitempty"`
+	Context            *types.JSON `json:"context,omitempty"`
+	MinEcpm            *float64    `json:"minECPM,omitempty"`
+	MinECPMByGeo       *types.JSON `json:"minECPMByGeo,omitempty"`
+	FixedPurchasePrice *float64    `json:"fixedPurchasePrice,omitempty"`
+	AllowedFormats     []string    `json:"allowedFormats,omitempty"`
+	AllowedTypes       []uint64    `json:"allowedTypes,omitempty"`
+	AllowedSources     []uint64    `json:"allowedSources,omitempty"`
+	DisallowedSources  []uint64    `json:"disallowedSources,omitempty"`
+	Campaigns          []uint64    `json:"campaigns,omitempty"`
 }
 
 type AnyIPv4IPv6 string
