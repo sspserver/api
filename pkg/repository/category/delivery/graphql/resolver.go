@@ -55,7 +55,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 	for _, id := range ids {
 		if obj, err := r.cachedItemByID(ctx, id, false); err != nil {
 			return nil, err
-		} else {
+		} else if obj != nil {
 			list = append(list, obj)
 			cached = append(cached, id)
 		}
@@ -70,7 +70,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 					return slices.Contains(cached, id)
 				})
 			})
-		newList, err := r.uc.FetchList(ctx, &category.Filter{ID: newIDs}, nil, nil)
+		newList, err := r.uc.FetchList(ctx, &category.Filter{ID: newIDs})
 		if err != nil {
 			return nil, err
 		}

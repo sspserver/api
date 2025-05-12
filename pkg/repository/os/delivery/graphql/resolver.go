@@ -55,7 +55,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 	for _, id := range ids {
 		if obj, err := r.cachedOS(ctx, id, false); err != nil {
 			return nil, err
-		} else {
+		} else if obj != nil {
 			list = append(list, obj)
 			cached = append(cached, id)
 		}

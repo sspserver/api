@@ -62,7 +62,7 @@ func (r *QueryResolver) ListByCodes(ctx context.Context, codes []string) ([]*qmo
 	for _, code := range codes {
 		if obj, err := r.cachedAdFormat(ctx, code, false); err != nil {
 			return nil, err
-		} else {
+		} else if obj != nil {
 			list = append(list, obj)
 			cached = append(cached, code)
 		}
@@ -77,7 +77,7 @@ func (r *QueryResolver) ListByCodes(ctx context.Context, codes []string) ([]*qmo
 					return slices.Contains(cached, code)
 				})
 			})
-		newList, err := r.uc.FetchList(ctx, &adformat.Filter{Codename: newCodes}, nil, nil)
+		newList, err := r.uc.FetchList(ctx, &adformat.Filter{Codename: newCodes})
 		if err != nil {
 			return nil, err
 		}
