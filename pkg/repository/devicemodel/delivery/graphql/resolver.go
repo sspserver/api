@@ -83,7 +83,9 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 		}
 		cache := r.cacheObj(ctx)
 		for _, obj := range newList {
-			cache.Set(obj.ID, obj)
+			if obj != nil {
+				cache.Set(obj.ID, obj)
+			}
 		}
 		list = append(list, newList...)
 	}

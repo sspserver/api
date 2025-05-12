@@ -170,7 +170,7 @@ func (r *QueryResolver) cachedOS(ctx context.Context, id uint64, orLoad bool) (*
 	} else {
 		obj = cache.Get(id)
 	}
-	if err != nil {
+	if err != nil || obj == nil {
 		return nil, err
 	}
 	return obj.(*models.OS), nil
@@ -179,7 +179,9 @@ func (r *QueryResolver) cachedOS(ctx context.Context, id uint64, orLoad bool) (*
 func (r *QueryResolver) cacheList(ctx context.Context, list []*models.OS) {
 	cache := r.cacheObj(ctx)
 	for _, obj := range list {
-		cache.Set(obj.ID, obj)
+		if obj != nil {
+			cache.Set(obj.ID, obj)
+		}
 	}
 }
 
