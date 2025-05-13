@@ -120,6 +120,7 @@ func (inp *TrafficRouterCreateInput) FillModel(obj *models.TrafficRouter) {
 	}
 	obj.AccountID = gocast.PtrAsValue(inp.AccountID, obj.AccountID)
 	obj.Percent = inp.Percent
+	obj.Title = inp.Title
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
 	obj.Active = ActiveStatusFrom(inp.Active)
 	obj.RTBSourceIDs = inp.RTBSourceIDs
@@ -146,6 +147,7 @@ func (inp *TrafficRouterUpdateInput) FillModel(obj *models.TrafficRouter) {
 		return
 	}
 	obj.Percent = gocast.PtrAsValue(inp.Percent, obj.Percent)
+	obj.Title = gocast.PtrAsValue(inp.Title, obj.Title)
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
 	obj.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), obj.Active)
 	obj.RTBSourceIDs = gocast.IfThen(inp.RTBSourceIDs != nil, inp.RTBSourceIDs, obj.RTBSourceIDs)
