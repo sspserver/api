@@ -20,6 +20,7 @@ ENV SERVER_PROFILE_MODE=net
 ENV SERVER_PROFILE_LISTEN=:8082
 
 COPY .build/${TARGETPLATFORM}/api /api
+RUN chmod +x /api
 COPY deploy/migrations /data/migrations
 COPY submodules/blaze-api/migrations/initial /data/migrations/initial
 

@@ -12,6 +12,7 @@ PROJECT_WORKSPACE ?= ssp-project
 PROJECT_NAME ?= api
 DOCKER_COMPOSE := docker compose -p $(PROJECT_WORKSPACE) -f deploy/develop/docker-compose.yml
 DOCKER_CONTAINER_IMAGE := ${PROJECT_WORKSPACE}/${PROJECT_NAME}
+DOCKER_BUILDKIT ?= 1
 
 .PHONY: all
 all: lint cover
@@ -59,7 +60,7 @@ build: ## Build API application
 	@$(call do_build,"cmd/api/main.go",api)
 
 .PHONY: build-docker-dev
-build-docker-dev: build ## Build docker image for development
+build-docker-dev: ## Build docker image for development
 	echo "Build develop docker image"
 	DOCKER_BUILDKIT=${DOCKER_BUILDKIT} docker build \
 		--build-arg TARGETPLATFORM=${LOCAL_TARGETPLATFORM} \
@@ -67,7 +68,7 @@ build-docker-dev: build ## Build docker image for development
 		-f deploy/develop/Dockerfile .
 
 .PHONY: run
-run: build-docker-dev ## Run API service by docker-compose
+run: build build-docker-dev ## Run API service by docker-compose
 	@echo "Run API service http://localhost:${DOCKER_SERVER_HTTP_PORT}"
 	$(DOCKER_COMPOSE) up api
 

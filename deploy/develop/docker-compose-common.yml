@@ -4,26 +4,16 @@ volumes:
   clickhouse:
   state:
 
-services:
-  zookeeper:
-    restart: always
-    image: zookeeper:3.7
-    hostname: zookeeper
-    volumes:
-      - "zookeeper:/data"
-    # environment:
-    #   ZOO_MY_ID: 1
-    #   ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
-
-  clickhouse-server:
+x-mixins:
+  clickhouse-image: &clickhouse-image
     image: clickhouse/clickhouse-server:24.5.1.1763
+
+services:
+  clickhouse-server:
+    <<: *clickhouse-image
     user: root
     hostname: clickhouse-server
     restart: on-failure
-    links:
-      - zookeeper
-    depends_on:
-      - zookeeper
     volumes:
       - "./clickhouse/config.xml:/etc/clickhouse-server/config.xml:ro"
       - "./clickhouse/conf.d:/etc/clickhouse-server/conf.d:ro"
@@ -39,13 +29,11 @@ services:
     #     hard: 262144
 
   clickhouse-init:
-    image: clickhouse/clickhouse-server:24.5.1.1763
+    <<: *clickhouse-image
     entrypoint: [ './migrations.sh' ]
     depends_on:
       clickhouse-server:
         condition: service_healthy
-      zookeeper:
-        condition: service_started
     volumes:
       - "./clickhouse/migrations.sh:/migrations.sh:ro"
       - "../migrations/stats:/migrations:ro"
