@@ -110,10 +110,26 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 		return query
 	}
 	if !fl.StartDate.IsZero() {
-		query = query.Where("timemark >= ?", fl.StartDate)
+		query = query.Where("timemark >= ?", time.Date(
+			fl.StartDate.Year(),
+			fl.StartDate.Month(),
+			fl.StartDate.Day(),
+			fl.StartDate.Hour(),
+			fl.StartDate.Minute(),
+			fl.StartDate.Second(),
+			0, time.UTC,
+		))
 	}
 	if !fl.EndDate.IsZero() {
-		query = query.Where("timemark < ?", fl.EndDate)
+		query = query.Where("timemark < ?", time.Date(
+			fl.EndDate.Year(),
+			fl.EndDate.Month(),
+			fl.EndDate.Day(),
+			fl.EndDate.Hour(),
+			fl.EndDate.Minute(),
+			fl.EndDate.Second(),
+			0, time.UTC,
+		))
 	}
 	for _, cond := range fl.Conditions {
 		query = cond.PrepareQuery(query)
