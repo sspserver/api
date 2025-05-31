@@ -1067,6 +1067,7 @@ type TrafficRouter struct {
 	DeletedAt       *time.Time     `json:"deletedAt,omitempty"`
 }
 
+// Input for creating a new traffic router
 type TrafficRouterCreateInput struct {
 	// Account ID owner of the traffic router
 	AccountID *uint64 `json:"accountID,omitempty"`
@@ -1074,8 +1075,6 @@ type TrafficRouterCreateInput struct {
 	Title string `json:"title"`
 	// Description of the traffic router
 	Description *string `json:"description,omitempty"`
-	// Active status of the traffic router
-	Active models.ActiveStatus `json:"active"`
 	// Traffic router percent of the traffic to share between RTB sources
 	Percent float64 `json:"percent"`
 	// RTB sources of the advertising
@@ -1146,13 +1145,12 @@ type TrafficRouterPayload struct {
 	Router *TrafficRouter `json:"router"`
 }
 
+// Input for updating an existing traffic router
 type TrafficRouterUpdateInput struct {
 	// Title of the traffic router
 	Title *string `json:"title,omitempty"`
 	// Description of the traffic router
 	Description *string `json:"description,omitempty"`
-	// Active status of the traffic router
-	Active *models.ActiveStatus `json:"active,omitempty"`
 	// Traffic router percent of the traffic to share between RTB sources
 	Percent *float64 `json:"percent,omitempty"`
 	// RTB sources of the advertising

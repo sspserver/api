@@ -168,6 +168,9 @@ input TrafficRouterListOrder {
   updatedAt: Ordering
 }
 
+"""
+Input for creating a new traffic router
+"""
 input TrafficRouterCreateInput {
   """
   Account ID owner of the traffic router
@@ -183,11 +186,6 @@ input TrafficRouterCreateInput {
   Description of the traffic router
   """
   description: String @notempty(trim: true, ornil: true)
-
-  """
-  Active status of the traffic router
-  """
-  active: ActiveStatus!
 
   """
   Traffic router percent of the traffic to share between RTB sources
@@ -218,6 +216,9 @@ input TrafficRouterCreateInput {
   IP:              AnyIPv4IPv6
 }
 
+"""
+Input for updating an existing traffic router
+"""
 input TrafficRouterUpdateInput {
   """
   Title of the traffic router
@@ -228,11 +229,6 @@ input TrafficRouterUpdateInput {
   Description of the traffic router
   """
   description: String @notempty(trim: true, ornil: true)
-
-  """
-  Active status of the traffic router
-  """
-  active: ActiveStatus
 
   """
   Traffic router percent of the traffic to share between RTB sources

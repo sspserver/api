@@ -11558,6 +11558,9 @@ input TrafficRouterListOrder {
   updatedAt: Ordering
 }
 
+"""
+Input for creating a new traffic router
+"""
 input TrafficRouterCreateInput {
   """
   Account ID owner of the traffic router
@@ -11573,11 +11576,6 @@ input TrafficRouterCreateInput {
   Description of the traffic router
   """
   description: String @notempty(trim: true, ornil: true)
-
-  """
-  Active status of the traffic router
-  """
-  active: ActiveStatus!
 
   """
   Traffic router percent of the traffic to share between RTB sources
@@ -11608,6 +11606,9 @@ input TrafficRouterCreateInput {
   IP:              AnyIPv4IPv6
 }
 
+"""
+Input for updating an existing traffic router
+"""
 input TrafficRouterUpdateInput {
   """
   Title of the traffic router
@@ -11618,11 +11619,6 @@ input TrafficRouterUpdateInput {
   Description of the traffic router
   """
   description: String @notempty(trim: true, ornil: true)
-
-  """
-  Active status of the traffic router
-  """
-  active: ActiveStatus
 
   """
   Traffic router percent of the traffic to share between RTB sources
@@ -63324,7 +63320,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountID", "title", "description", "active", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"accountID", "title", "description", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -63404,13 +63400,6 @@ func (ec *executionContext) unmarshalInputTrafficRouterCreateInput(ctx context.C
 				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
 				return it, graphql.ErrorOnPath(ctx, err)
 			}
-		case "active":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalNActiveStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Active = data
 		case "percent":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalNFloat2float64(ctx, v) }
@@ -63829,7 +63818,7 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "description", "active", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
+	fieldsInOrder := [...]string{"title", "description", "percent", "RTBSourceIDs", "formatCodes", "deviceTypeIDs", "deviceIDs", "OSIDs", "browserIDs", "carrierIDs", "categoryIDs", "countryCodes", "languageCodes", "applicationIDs", "domains", "zoneIDs", "secure", "adBlock", "privateBrowsing", "IP"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -63904,13 +63893,6 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 				err := fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
 				return it, graphql.ErrorOnPath(ctx, err)
 			}
-		case "active":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
-			data, err := ec.unmarshalOActiveStatus2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐActiveStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Active = data
 		case "percent":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("percent"))
 			directive0 := func(ctx context.Context) (any, error) { return ec.unmarshalOFloat2ᚖfloat64(ctx, v) }

@@ -122,7 +122,6 @@ func (inp *TrafficRouterCreateInput) FillModel(obj *models.TrafficRouter) {
 	obj.Percent = inp.Percent
 	obj.Title = inp.Title
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
-	obj.Active = ActiveStatusFrom(inp.Active)
 	obj.RTBSourceIDs = inp.RTBSourceIDs
 	obj.Formats = inp.FormatCodes
 	obj.DeviceTypes = inp.DeviceTypeIDs
@@ -149,7 +148,6 @@ func (inp *TrafficRouterUpdateInput) FillModel(obj *models.TrafficRouter) {
 	obj.Percent = gocast.PtrAsValue(inp.Percent, obj.Percent)
 	obj.Title = gocast.PtrAsValue(inp.Title, obj.Title)
 	obj.Description = gocast.PtrAsValue(inp.Description, obj.Description)
-	obj.Active = gocast.PtrAsValue(ActiveStatusPtr(inp.Active), obj.Active)
 	obj.RTBSourceIDs = gocast.IfThen(inp.RTBSourceIDs != nil, inp.RTBSourceIDs, obj.RTBSourceIDs)
 	obj.Formats = gocast.IfThen(inp.FormatCodes != nil, inp.FormatCodes, obj.Formats)
 	obj.DeviceTypes = gocast.IfThen(inp.DeviceTypeIDs != nil, inp.DeviceTypeIDs, obj.DeviceTypes)

@@ -74,8 +74,11 @@ func FromRTBRequestType(t models.RTBRequestType) RTBRequestFormatType {
 	return RTBRequestFormatTypeUndefined
 }
 
-func (e RTBRequestFormatType) RequestType() models.RTBRequestType {
-	switch e {
+func (e *RTBRequestFormatType) RequestType() models.RTBRequestType {
+	if e == nil {
+		return models.RTBRequestTypeUndefined
+	}
+	switch *e {
 	case RTBRequestFormatTypeJSON:
 		return models.RTBRequestTypeJSON
 	case RTBRequestFormatTypeXML:
@@ -102,8 +105,11 @@ func FromAuctionType(t models.AuctionType) AuctionType {
 	return AuctionTypeUndefined
 }
 
-func (e AuctionType) AuctionType() models.AuctionType {
-	switch e {
+func (e *AuctionType) AuctionType() models.AuctionType {
+	if e == nil {
+		return models.AuctionTypeUndefined
+	}
+	switch *e {
 	case AuctionTypeFirstPrice:
 		return models.AuctionTypeFirstPrice
 	case AuctionTypeSecondPrice:
@@ -132,8 +138,11 @@ func FromAnyOnlyExclude(status int) AnyOnlyExclude {
 	return AnyOnlyExcludeAny
 }
 
-func (e AnyOnlyExclude) Int() int {
-	switch e {
+func (e *AnyOnlyExclude) Int() int {
+	if e == nil {
+		return 0
+	}
+	switch *e {
 	case AnyOnlyExcludeAny:
 		return 0
 	case AnyOnlyExcludeOnly:
@@ -164,8 +173,11 @@ func FromAnyIPv4IPv6(status int) AnyIPv4IPv6 {
 	return AnyIPv4IPv6Any
 }
 
-func (e AnyIPv4IPv6) Int() int {
-	switch e {
+func (e *AnyIPv4IPv6) Int() int {
+	if e == nil {
+		return 0
+	}
+	switch *e {
 	case AnyIPv4IPv6Any:
 		return 0
 	case AnyIPv4IPv6IPv4:
@@ -227,8 +239,11 @@ func FromApplicationType(tp models.ApplicationType) ApplicationType {
 	return ApplicationTypeUndefined
 }
 
-func (e ApplicationType) ModelType() models.ApplicationType {
-	switch e {
+func (e *ApplicationType) ModelType() models.ApplicationType {
+	if e == nil {
+		return models.ApplicationUndefined
+	}
+	switch *e {
 	case ApplicationTypeSite:
 		return models.ApplicationSite
 	case ApplicationTypeApp:
@@ -267,8 +282,11 @@ func FromPlatformType(tp models.PlatformType) PlatformType {
 	return PlatformTypeUndefined
 }
 
-func (e PlatformType) ModelType() models.PlatformType {
-	switch e {
+func (e *PlatformType) ModelType() models.PlatformType {
+	if e == nil {
+		return models.PlatformUndefined
+	}
+	switch *e {
 	case PlatformTypeWeb:
 		return models.PlatformWeb
 	case PlatformTypeDesktop:
@@ -311,8 +329,11 @@ func PricingModelFrom(pm PricingModel) models.PricingModel {
 	return pm.ModelType()
 }
 
-func (pm PricingModel) ModelType() models.PricingModel {
-	switch pm {
+func (pm *PricingModel) ModelType() models.PricingModel {
+	if pm == nil {
+		return models.PricingModelUndefined
+	}
+	switch *pm {
 	case PricingModelCpm:
 		return models.PricingModelCPM
 	case PricingModelCpc:
