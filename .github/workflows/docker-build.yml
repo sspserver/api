@@ -18,7 +18,7 @@ env:
   DEPLOY_COMMIT_NUMBER: ${{ github.sha }}
   DEPLOY_TAG_VALUE:     ${{ github.event.workflow_run.head_branch }}
   APP_BUILD_TAGS:       nats,kafka,postgres,clickhouse,migrate
-  BUILD_PLATFORMS:      linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/amd64/v4,linux/arm64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
+  BUILD_PLATFORMS:      linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/arm64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
 
 jobs:
   can_continue:
