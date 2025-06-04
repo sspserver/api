@@ -12,6 +12,7 @@ const (
 	KeyAppID        Key = "app_id"
 	KeyZoneID       Key = "zone_id"
 	KeyFormatID     Key = "format_id"
+	KeyFormatCode   Key = "format_code"
 	KeyCarrierID    Key = "carrier_id"
 	KeyCountry      Key = "country"
 	KeyLanguage     Key = "language"

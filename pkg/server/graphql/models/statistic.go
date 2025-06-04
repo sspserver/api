@@ -18,9 +18,7 @@ func FromStatisticAdItemKeyModel(st *models.StatisticAdItemKey) *StatisticItemKe
 	}
 	return &StatisticItemKey{
 		Key: FromRepoStatisticKey(
-			statistic.Key(
-				strings.ToLower(st.Key),
-			),
+			statistic.Key(strings.ToLower(st.Key)),
 		),
 		Value: st.Value,
 		Text:  st.Text,
@@ -113,6 +111,8 @@ func FromRepoStatisticKey(key statistic.Key) StatisticKey {
 		return StatisticKeyZoneID
 	case statistic.KeyFormatID:
 		return StatisticKeyFormatID
+	case statistic.KeyFormatCode:
+		return StatisticKeyFormatCode
 	case statistic.KeyCarrierID:
 		return StatisticKeyCarrierID
 	case statistic.KeyCountry:
@@ -151,6 +151,8 @@ func (key StatisticKey) AsQueryKey() statistic.Key {
 		return statistic.KeyZoneID
 	case StatisticKeyFormatID:
 		return statistic.KeyFormatID
+	case StatisticKeyFormatCode:
+		return statistic.KeyFormatCode
 	case StatisticKeyCarrierID:
 		return statistic.KeyCarrierID
 	case StatisticKeyCountry:

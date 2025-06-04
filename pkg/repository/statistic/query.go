@@ -9,6 +9,10 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/repository"
+
+	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/adformat"
+	adfrepo "github.com/sspserver/api/pkg/repository/adformat/repository"
 )
 
 var counterFields = []string{
@@ -63,6 +67,20 @@ func (cond *Condition) PrepareQuery(query *gorm.DB) *gorm.DB {
 	if strings.ContainsAny(cond.Key.String(), ".-+*$%=<>!\t\n ") {
 		panic("invalid condition key: " + cond.Key)
 	}
+	// Convert KeyFormatCode to KeyFormatID
+	if cond.Key == KeyFormatCode {
+		vals := gocast.AnySlice[string](cond.Value)
+		fmts := adfrepo.New()
+		formats, err := fmts.FetchList(query.Statement.Context, &adformat.Filter{Codename: vals})
+		if err != nil {
+			panic("failed to fetch ad formats for condition: " + err.Error())
+		}
+		cond.Value = xtypes.SliceApply(formats, func(format *models.Format) any {
+			return format.ID
+		})
+		cond.Key = KeyFormatID
+	}
+	// Process conditions
 	switch cond.Op {
 	case ConditionIn:
 		query = query.Where(cond.Key.String()+" IN (?)", cond.Value)
@@ -150,8 +168,14 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 
 func WithGroup(fields ...Key) *repository.GroupOption {
 	return &repository.GroupOption{
-		Groups:        xtypes.SliceApply(fields, func(key Key) string { return key.String() }),
+		Groups: xtypes.SliceApply(fields, func(key Key) string {
+			if key == KeyFormatCode {
+				return KeyFormatID.String()
+			}
+			return key.String()
+		}),
 		SummingFields: counterFields,
+		Ext:           fields,
 	}
 }
 
