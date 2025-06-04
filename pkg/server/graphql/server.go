@@ -18,6 +18,7 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
+	"github.com/sspserver/api/pkg/repository/agreement"
 	"github.com/sspserver/api/pkg/server/graphql/directives"
 	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/resolvers"
@@ -25,6 +26,9 @@ import (
 
 // GraphQL mux handler
 func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler {
+	agreements := agreement.NewUsecase(
+		agreement.NewRepositoryOptions(usecases.Options, resolvers.ListAgreements()),
+	)
 	srv := handler.New(
 		generated.NewExecutableSchema(generated.Config{
 			Resolvers: resolvers.NewResolver(usecases, provider),
@@ -33,6 +37,7 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 				Acl:               blazeDirectives.HasPermissions,
 				HasPermissions:    blazeDirectives.HasPermissions,
 				SkipNoPermissions: blazeDirectives.SkipNoPermissions,
+				RequireAgreements: directives.RequireAgreements(agreements),
 				Length:            directives.ValidateLength,
 				Notempty:          directives.ValidateNotEmpty,
 				Regex:             directives.ValidateRegex,

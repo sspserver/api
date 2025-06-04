@@ -62,6 +62,7 @@ func InitModelPermissions(pm *permissions.Manager) {
 		&RBACStatistic,
 		&models.Format{},
 		&models.TrafficRouter{},
+		&models.Agreement{},
 	)
 
 	// Register user permissions
@@ -145,6 +146,10 @@ func InitModelPermissions(pm *permissions.Manager) {
 	// Register basic permissions for the TrafficRouter model
 	_ = pm.RegisterNewOwningPermissions(&models.TrafficRouter{}, crunPermissionsWithRunnin,
 		rbac.WithDescription("Traffic Router model permissions"))
+
+	// Register basic permissions for the Agreement model
+	_ = pm.RegisterNewOwningPermissions(&models.Agreement{}, []string{acl.PermView, acl.PermList, `accept`},
+		rbac.WithDescription("Agreement model permissions"))
 
 	// =========== Register default roles ===========
 	pm.RegisterRole(context.Background(),

@@ -294,12 +294,12 @@ extend type Mutation {
   """
   Create new traffic router
   """
-  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"])
+  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"]) @requireAgreements
 
   """
   Update traffic router
   """
-  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"])
+  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"]) @requireAgreements
 
   """
   Delete traffic router

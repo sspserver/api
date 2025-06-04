@@ -1,0 +1,93 @@
+directive @requireAgreements on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+
+enum AgreementType {
+  UNKNOWN
+  LICENSE
+  TERMS_OF_USE
+  CONTRACT
+}
+
+type Agreement {
+  """
+  Agreement codename
+  """
+  codename: String!
+
+  """
+  Version of the agreement
+  """
+  version: String!
+
+  """
+  Title of the agreement
+  """
+  title: String!
+
+  """
+  Text of the agreement in Markdown format
+  """
+  textMD: String!
+
+  """
+  Text of the agreement in HTML format
+  """
+  textHTML: String!
+
+  """
+  Type of the agreement
+  """
+  type: AgreementType!
+
+  """
+  Account ID which the agreement is associated with
+  """
+  acceptAccountID: ID64!
+
+  """
+  User ID who accepted the agreement
+  """
+  acceptByUserID: ID64!
+
+  """
+  Signature of the agreement
+  """
+  signature: String
+
+  """
+  Date of acceptance
+  """
+  acceptedAt: DateTime
+
+  """
+  Date of creation
+  """
+  createdAt: DateTime!
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get an agreement by its codename
+  """
+  agreement(codename: String!): Agreement @acl(permissions: ["agreement.view.*"])
+
+  """
+  List agreements with optional filters and ordering
+  """
+  listAgreements(accepted: Boolean = null): [Agreement!]! @acl(permissions: ["agreement.list.*"])
+
+  """
+  Get next agreement to accept
+  """
+  nextAgreement: Agreement @acl(permissions: ["agreement.view.*"])
+}
+
+extend type Mutation {
+  """
+  Accept an agreement by its codename
+  """
+  acceptAgreement(codename: String!, date: DateTime!, signature: String!): Agreement! @acl(permissions: ["agreement.accept.*"])
+}

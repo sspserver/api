@@ -6,7 +6,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 )
 
-func ValidateRange(ctx context.Context, obj any, next graphql.Resolver, min float64, max float64, ornil bool) (res any, err error) {
+func ValidateRange(ctx context.Context, obj any, next graphql.Resolver, min, max float64, ornil bool) (res any, err error) {
 	if res, err = next(ctx); err != nil {
 		return nil, err
 	}

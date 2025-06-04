@@ -61,6 +61,7 @@ type DirectiveRoot struct {
 	Notempty          func(ctx context.Context, obj any, next graphql.Resolver, trim bool, ornil bool) (res any, err error)
 	Range             func(ctx context.Context, obj any, next graphql.Resolver, min float64, max float64, ornil bool) (res any, err error)
 	Regex             func(ctx context.Context, obj any, next graphql.Resolver, pattern string, trim bool, ornil bool) (res any, err error)
+	RequireAgreements func(ctx context.Context, obj any, next graphql.Resolver) (res any, err error)
 	SkipNoPermissions func(ctx context.Context, obj any, next graphql.Resolver, permissions []string) (res any, err error)
 }
 
@@ -137,6 +138,20 @@ type ComplexityRoot struct {
 		ClientMutationID func(childComplexity int) int
 		Format           func(childComplexity int) int
 		FormatID         func(childComplexity int) int
+	}
+
+	Agreement struct {
+		AcceptAccountID func(childComplexity int) int
+		AcceptByUserID  func(childComplexity int) int
+		AcceptedAt      func(childComplexity int) int
+		Codename        func(childComplexity int) int
+		CreatedAt       func(childComplexity int) int
+		Signature       func(childComplexity int) int
+		TextHTML        func(childComplexity int) int
+		TextMd          func(childComplexity int) int
+		Title           func(childComplexity int) int
+		Type            func(childComplexity int) int
+		Version         func(childComplexity int) int
 	}
 
 	Application struct {
@@ -489,6 +504,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
+		AcceptAgreement           func(childComplexity int, codename string, date types.DateTime, signature string) int
 		ActivateZone              func(childComplexity int, id uint64, msg *string) int
 		ApproveAccount            func(childComplexity int, id uint64, msg string) int
 		ApproveAccountMember      func(childComplexity int, memberID uint64, msg string) int
@@ -657,6 +673,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Account                        func(childComplexity int, id uint64) int
+		Agreement                      func(childComplexity int, codename string) int
 		Application                    func(childComplexity int, id uint64) int
 		AuthClient                     func(childComplexity int, id string) int
 		Browser                        func(childComplexity int, id uint64) int
@@ -675,6 +692,7 @@ type ComplexityRoot struct {
 		Languages                      func(childComplexity int, filter *models.LangListFilter) int
 		ListAccountRolesAndPermissions func(childComplexity int, accountID uint64, order *models1.RBACRoleListOrder) int
 		ListAccounts                   func(childComplexity int, filter *models1.AccountListFilter, order *models1.AccountListOrder, page *models1.Page) int
+		ListAgreements                 func(childComplexity int, accepted *bool) int
 		ListApplications               func(childComplexity int, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) int
 		ListAuthClients                func(childComplexity int, filter *models1.AuthClientListFilter, order *models1.AuthClientListOrder, page *models1.Page) int
 		ListBrowsers                   func(childComplexity int, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) int
@@ -696,6 +714,7 @@ type ComplexityRoot struct {
 		ListTrafficRouters             func(childComplexity int, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) int
 		ListUsers                      func(childComplexity int, filter *models1.UserListFilter, order *models1.UserListOrder, page *models1.Page) int
 		ListZones                      func(childComplexity int, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) int
+		NextAgreement                  func(childComplexity int) int
 		Option                         func(childComplexity int, name string, typeArg models1.OptionType, targetID uint64) int
 		Os                             func(childComplexity int, id uint64) int
 		RTBSource                      func(childComplexity int, id uint64) int
@@ -1084,6 +1103,7 @@ type MutationResolver interface {
 	CreateFormat(ctx context.Context, input models.AdFormatInput) (*models.AdFormatPayload, error)
 	UpdateFormat(ctx context.Context, id uint64, input models.AdFormatInput) (*models.AdFormatPayload, error)
 	DeleteFormat(ctx context.Context, id uint64, codename string, msg *string) (*models.AdFormatPayload, error)
+	AcceptAgreement(ctx context.Context, codename string, date types.DateTime, signature string) (*models.Agreement, error)
 	CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error)
 	UpdateApplication(ctx context.Context, id uint64, input models.ApplicationUpdateInput) (*models.ApplicationPayload, error)
 	DeleteApplication(ctx context.Context, id uint64, msg *string) (*models.ApplicationPayload, error)
@@ -1157,6 +1177,9 @@ type QueryResolver interface {
 	ListMyPermissions(ctx context.Context, patterns []string) ([]*models1.RBACPermission, error)
 	Format(ctx context.Context, id uint64, codename string) (*models.AdFormatPayload, error)
 	ListFormats(ctx context.Context, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) (*connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge], error)
+	Agreement(ctx context.Context, codename string) (*models.Agreement, error)
+	ListAgreements(ctx context.Context, accepted *bool) ([]*models.Agreement, error)
+	NextAgreement(ctx context.Context) (*models.Agreement, error)
 	Application(ctx context.Context, id uint64) (*models.ApplicationPayload, error)
 	ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Application, models.ApplicationEdge], error)
 	Browser(ctx context.Context, id uint64) (*models.BrowserPayload, error)
@@ -1580,6 +1603,83 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.AdFormatPayload.FormatID(childComplexity), true
+
+	case "Agreement.acceptAccountID":
+		if e.complexity.Agreement.AcceptAccountID == nil {
+			break
+		}
+
+		return e.complexity.Agreement.AcceptAccountID(childComplexity), true
+
+	case "Agreement.acceptByUserID":
+		if e.complexity.Agreement.AcceptByUserID == nil {
+			break
+		}
+
+		return e.complexity.Agreement.AcceptByUserID(childComplexity), true
+
+	case "Agreement.acceptedAt":
+		if e.complexity.Agreement.AcceptedAt == nil {
+			break
+		}
+
+		return e.complexity.Agreement.AcceptedAt(childComplexity), true
+
+	case "Agreement.codename":
+		if e.complexity.Agreement.Codename == nil {
+			break
+		}
+
+		return e.complexity.Agreement.Codename(childComplexity), true
+
+	case "Agreement.createdAt":
+		if e.complexity.Agreement.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Agreement.CreatedAt(childComplexity), true
+
+	case "Agreement.signature":
+		if e.complexity.Agreement.Signature == nil {
+			break
+		}
+
+		return e.complexity.Agreement.Signature(childComplexity), true
+
+	case "Agreement.textHTML":
+		if e.complexity.Agreement.TextHTML == nil {
+			break
+		}
+
+		return e.complexity.Agreement.TextHTML(childComplexity), true
+
+	case "Agreement.textMD":
+		if e.complexity.Agreement.TextMd == nil {
+			break
+		}
+
+		return e.complexity.Agreement.TextMd(childComplexity), true
+
+	case "Agreement.title":
+		if e.complexity.Agreement.Title == nil {
+			break
+		}
+
+		return e.complexity.Agreement.Title(childComplexity), true
+
+	case "Agreement.type":
+		if e.complexity.Agreement.Type == nil {
+			break
+		}
+
+		return e.complexity.Agreement.Type(childComplexity), true
+
+	case "Agreement.version":
+		if e.complexity.Agreement.Version == nil {
+			break
+		}
+
+		return e.complexity.Agreement.Version(childComplexity), true
 
 	case "Application.accountID":
 		if e.complexity.Application.AccountID == nil {
@@ -3168,6 +3268,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.complexity.MemberPayload.MemberID(childComplexity), true
 
+	case "Mutation.acceptAgreement":
+		if e.complexity.Mutation.AcceptAgreement == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_acceptAgreement_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.AcceptAgreement(childComplexity, args["codename"].(string), args["date"].(types.DateTime), args["signature"].(string)), true
+
 	case "Mutation.activateZone":
 		if e.complexity.Mutation.ActivateZone == nil {
 			break
@@ -4452,6 +4564,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.complexity.Query.Account(childComplexity, args["id"].(uint64)), true
 
+	case "Query.agreement":
+		if e.complexity.Query.Agreement == nil {
+			break
+		}
+
+		args, err := ec.field_Query_agreement_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Agreement(childComplexity, args["codename"].(string)), true
+
 	case "Query.application":
 		if e.complexity.Query.Application == nil {
 			break
@@ -4642,6 +4766,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Query.ListAccounts(childComplexity, args["filter"].(*models1.AccountListFilter), args["order"].(*models1.AccountListOrder), args["page"].(*models1.Page)), true
+
+	case "Query.listAgreements":
+		if e.complexity.Query.ListAgreements == nil {
+			break
+		}
+
+		args, err := ec.field_Query_listAgreements_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ListAgreements(childComplexity, args["accepted"].(*bool)), true
 
 	case "Query.listApplications":
 		if e.complexity.Query.ListApplications == nil {
@@ -4889,6 +5025,13 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Query.ListZones(childComplexity, args["filter"].(*models.ZoneListFilter), args["order"].(*models.ZoneListOrder), args["page"].(*models1.Page)), true
+
+	case "Query.nextAgreement":
+		if e.complexity.Query.NextAgreement == nil {
+			break
+		}
+
+		return e.complexity.Query.NextAgreement(childComplexity), true
 
 	case "Query.option":
 		if e.complexity.Query.Option == nil {
@@ -8981,6 +9124,99 @@ extend type Mutation {
 }
 
 `, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/agreement.graphql", Input: `directive @requireAgreements on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | SCALAR
+
+enum AgreementType {
+  UNKNOWN
+  LICENSE
+  TERMS_OF_USE
+  CONTRACT
+}
+
+type Agreement {
+  """
+  Agreement codename
+  """
+  codename: String!
+
+  """
+  Version of the agreement
+  """
+  version: String!
+
+  """
+  Title of the agreement
+  """
+  title: String!
+
+  """
+  Text of the agreement in Markdown format
+  """
+  textMD: String!
+
+  """
+  Text of the agreement in HTML format
+  """
+  textHTML: String!
+
+  """
+  Type of the agreement
+  """
+  type: AgreementType!
+
+  """
+  Account ID which the agreement is associated with
+  """
+  acceptAccountID: ID64!
+
+  """
+  User ID who accepted the agreement
+  """
+  acceptByUserID: ID64!
+
+  """
+  Signature of the agreement
+  """
+  signature: String
+
+  """
+  Date of acceptance
+  """
+  acceptedAt: DateTime
+
+  """
+  Date of creation
+  """
+  createdAt: DateTime!
+}
+
+###############################################################################
+# Query & Mutation
+###############################################################################
+
+extend type Query {
+  """
+  Get an agreement by its codename
+  """
+  agreement(codename: String!): Agreement @acl(permissions: ["agreement.view.*"])
+
+  """
+  List agreements with optional filters and ordering
+  """
+  listAgreements(accepted: Boolean = null): [Agreement!]! @acl(permissions: ["agreement.list.*"])
+
+  """
+  Get next agreement to accept
+  """
+  nextAgreement: Agreement @acl(permissions: ["agreement.view.*"])
+}
+
+extend type Mutation {
+  """
+  Accept an agreement by its codename
+  """
+  acceptAgreement(codename: String!, date: DateTime!, signature: String!): Agreement! @acl(permissions: ["agreement.accept.*"])
+}`, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/application.graphql", Input: `enum ApplicationType {
   UNDEFINED
   SITE
@@ -11198,12 +11434,12 @@ extend type Mutation {
   """
   Create a new RTBSource.
   """
-  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"])
+  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"]) @requireAgreements
 
   """
   Update an existing RTBSource by its ID.
   """
-  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"]) @requireAgreements
 
   """
   Delete an RTBSource by its ID.
@@ -12405,6 +12641,80 @@ func (ec *executionContext) field_DeviceModel_versions_argsOrder(
 	}
 
 	var zeroVal []*models.DeviceModelListOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_acceptAgreement_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_acceptAgreement_argsCodename(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["codename"] = arg0
+	arg1, err := ec.field_Mutation_acceptAgreement_argsDate(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["date"] = arg1
+	arg2, err := ec.field_Mutation_acceptAgreement_argsSignature(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["signature"] = arg2
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_acceptAgreement_argsCodename(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["codename"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+	if tmp, ok := rawArgs["codename"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_acceptAgreement_argsDate(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (types.DateTime, error) {
+	if _, ok := rawArgs["date"]; !ok {
+		var zeroVal types.DateTime
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+	if tmp, ok := rawArgs["date"]; ok {
+		return ec.unmarshalNDateTime2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐDateTime(ctx, tmp)
+	}
+
+	var zeroVal types.DateTime
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_acceptAgreement_argsSignature(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["signature"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("signature"))
+	if tmp, ok := rawArgs["signature"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -15750,6 +16060,34 @@ func (ec *executionContext) field_Query_account_argsID(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_agreement_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_agreement_argsCodename(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["codename"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_agreement_argsCodename(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (string, error) {
+	if _, ok := rawArgs["codename"]; !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("codename"))
+	if tmp, ok := rawArgs["codename"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_application_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -16341,6 +16679,34 @@ func (ec *executionContext) field_Query_listAccounts_argsPage(
 	}
 
 	var zeroVal *models1.Page
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_listAgreements_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Query_listAgreements_argsAccepted(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["accepted"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_listAgreements_argsAccepted(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (*bool, error) {
+	if _, ok := rawArgs["accepted"]; !ok {
+		var zeroVal *bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("accepted"))
+	if tmp, ok := rawArgs["accepted"]; ok {
+		return ec.unmarshalOBoolean2ᚖbool(ctx, tmp)
+	}
+
+	var zeroVal *bool
 	return zeroVal, nil
 }
 
@@ -20403,6 +20769,451 @@ func (ec *executionContext) fieldContext_AdFormatPayload_format(_ context.Contex
 				return ec.fieldContext_AdFormat_deletedAt(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AdFormat", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_codename(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_codename(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Codename, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_codename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_version(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_version(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Version, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_version(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_title(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_textMD(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_textMD(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TextMd, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_textMD(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_textHTML(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_textHTML(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TextHTML, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_textHTML(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_type(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_type(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Type, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.AgreementType)
+	fc.Result = res
+	return ec.marshalNAgreementType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreementType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_type(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type AgreementType does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_acceptAccountID(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_acceptAccountID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AcceptAccountID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_acceptAccountID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_acceptByUserID(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_acceptByUserID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AcceptByUserID, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(uint64)
+	fc.Result = res
+	return ec.marshalNID642uint64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_acceptByUserID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID64 does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_signature(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_signature(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Signature, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_signature(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_acceptedAt(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_acceptedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AcceptedAt, nil
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*types.DateTime)
+	fc.Result = res
+	return ec.marshalODateTime2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐDateTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_acceptedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type DateTime does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Agreement_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Agreement) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Agreement_createdAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(types.DateTime)
+	fc.Result = res
+	return ec.marshalNDateTime2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐDateTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Agreement_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Agreement",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type DateTime does not have child fields")
 		},
 	}
 	return fc, nil
@@ -33518,6 +34329,109 @@ func (ec *executionContext) fieldContext_Mutation_deleteFormat(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_acceptAgreement(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_acceptAgreement(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().AcceptAgreement(rctx, fc.Args["codename"].(string), fc.Args["date"].(types.DateTime), fc.Args["signature"].(string))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"agreement.accept.*"})
+			if err != nil {
+				var zeroVal *models.Agreement
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.Agreement
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.Agreement); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/pkg/server/graphql/models.Agreement`, tmp)
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Agreement)
+	fc.Result = res
+	return ec.marshalNAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_acceptAgreement(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "codename":
+				return ec.fieldContext_Agreement_codename(ctx, field)
+			case "version":
+				return ec.fieldContext_Agreement_version(ctx, field)
+			case "title":
+				return ec.fieldContext_Agreement_title(ctx, field)
+			case "textMD":
+				return ec.fieldContext_Agreement_textMD(ctx, field)
+			case "textHTML":
+				return ec.fieldContext_Agreement_textHTML(ctx, field)
+			case "type":
+				return ec.fieldContext_Agreement_type(ctx, field)
+			case "acceptAccountID":
+				return ec.fieldContext_Agreement_acceptAccountID(ctx, field)
+			case "acceptByUserID":
+				return ec.fieldContext_Agreement_acceptByUserID(ctx, field)
+			case "signature":
+				return ec.fieldContext_Agreement_signature(ctx, field)
+			case "acceptedAt":
+				return ec.fieldContext_Agreement_acceptedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Agreement_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Agreement", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_acceptAgreement_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_createApplication(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_createApplication(ctx, field)
 	if err != nil {
@@ -35414,8 +36328,15 @@ func (ec *executionContext) _Mutation_createRTBSource(ctx context.Context, field
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.RTBSourcePayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -35501,8 +36422,15 @@ func (ec *executionContext) _Mutation_updateRTBSource(ctx context.Context, field
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.RTBSourcePayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -41889,6 +42817,298 @@ func (ec *executionContext) fieldContext_Query_listFormats(ctx context.Context, 
 	if fc.Args, err = ec.field_Query_listFormats_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_agreement(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_agreement(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().Agreement(rctx, fc.Args["codename"].(string))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"agreement.view.*"})
+			if err != nil {
+				var zeroVal *models.Agreement
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.Agreement
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.Agreement); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/pkg/server/graphql/models.Agreement`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Agreement)
+	fc.Result = res
+	return ec.marshalOAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_agreement(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "codename":
+				return ec.fieldContext_Agreement_codename(ctx, field)
+			case "version":
+				return ec.fieldContext_Agreement_version(ctx, field)
+			case "title":
+				return ec.fieldContext_Agreement_title(ctx, field)
+			case "textMD":
+				return ec.fieldContext_Agreement_textMD(ctx, field)
+			case "textHTML":
+				return ec.fieldContext_Agreement_textHTML(ctx, field)
+			case "type":
+				return ec.fieldContext_Agreement_type(ctx, field)
+			case "acceptAccountID":
+				return ec.fieldContext_Agreement_acceptAccountID(ctx, field)
+			case "acceptByUserID":
+				return ec.fieldContext_Agreement_acceptByUserID(ctx, field)
+			case "signature":
+				return ec.fieldContext_Agreement_signature(ctx, field)
+			case "acceptedAt":
+				return ec.fieldContext_Agreement_acceptedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Agreement_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Agreement", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_agreement_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_listAgreements(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_listAgreements(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().ListAgreements(rctx, fc.Args["accepted"].(*bool))
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"agreement.list.*"})
+			if err != nil {
+				var zeroVal []*models.Agreement
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal []*models.Agreement
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]*models.Agreement); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []*github.com/sspserver/api/pkg/server/graphql/models.Agreement`, tmp)
+	})
+
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Agreement)
+	fc.Result = res
+	return ec.marshalNAgreement2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreementᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_listAgreements(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "codename":
+				return ec.fieldContext_Agreement_codename(ctx, field)
+			case "version":
+				return ec.fieldContext_Agreement_version(ctx, field)
+			case "title":
+				return ec.fieldContext_Agreement_title(ctx, field)
+			case "textMD":
+				return ec.fieldContext_Agreement_textMD(ctx, field)
+			case "textHTML":
+				return ec.fieldContext_Agreement_textHTML(ctx, field)
+			case "type":
+				return ec.fieldContext_Agreement_type(ctx, field)
+			case "acceptAccountID":
+				return ec.fieldContext_Agreement_acceptAccountID(ctx, field)
+			case "acceptByUserID":
+				return ec.fieldContext_Agreement_acceptByUserID(ctx, field)
+			case "signature":
+				return ec.fieldContext_Agreement_signature(ctx, field)
+			case "acceptedAt":
+				return ec.fieldContext_Agreement_acceptedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Agreement_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Agreement", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_listAgreements_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_nextAgreement(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_nextAgreement(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp := ec._fieldMiddleware(ctx, nil, func(rctx context.Context) (any, error) {
+		directive0 := func(rctx context.Context) (any, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Query().NextAgreement(rctx)
+		}
+
+		directive1 := func(ctx context.Context) (any, error) {
+			permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"agreement.view.*"})
+			if err != nil {
+				var zeroVal *models.Agreement
+				return zeroVal, err
+			}
+			if ec.directives.Acl == nil {
+				var zeroVal *models.Agreement
+				return zeroVal, errors.New("directive acl is not implemented")
+			}
+			return ec.directives.Acl(ctx, nil, directive0, permissions)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*models.Agreement); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sspserver/api/pkg/server/graphql/models.Agreement`, tmp)
+	})
+
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Agreement)
+	fc.Result = res
+	return ec.marshalOAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_nextAgreement(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "codename":
+				return ec.fieldContext_Agreement_codename(ctx, field)
+			case "version":
+				return ec.fieldContext_Agreement_version(ctx, field)
+			case "title":
+				return ec.fieldContext_Agreement_title(ctx, field)
+			case "textMD":
+				return ec.fieldContext_Agreement_textMD(ctx, field)
+			case "textHTML":
+				return ec.fieldContext_Agreement_textHTML(ctx, field)
+			case "type":
+				return ec.fieldContext_Agreement_type(ctx, field)
+			case "acceptAccountID":
+				return ec.fieldContext_Agreement_acceptAccountID(ctx, field)
+			case "acceptByUserID":
+				return ec.fieldContext_Agreement_acceptByUserID(ctx, field)
+			case "signature":
+				return ec.fieldContext_Agreement_signature(ctx, field)
+			case "acceptedAt":
+				return ec.fieldContext_Agreement_acceptedAt(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Agreement_createdAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Agreement", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -65284,6 +66504,89 @@ func (ec *executionContext) _AdFormatPayload(ctx context.Context, sel ast.Select
 	return out
 }
 
+var agreementImplementors = []string{"Agreement"}
+
+func (ec *executionContext) _Agreement(ctx context.Context, sel ast.SelectionSet, obj *models.Agreement) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, agreementImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Agreement")
+		case "codename":
+			out.Values[i] = ec._Agreement_codename(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "version":
+			out.Values[i] = ec._Agreement_version(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "title":
+			out.Values[i] = ec._Agreement_title(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "textMD":
+			out.Values[i] = ec._Agreement_textMD(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "textHTML":
+			out.Values[i] = ec._Agreement_textHTML(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "type":
+			out.Values[i] = ec._Agreement_type(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "acceptAccountID":
+			out.Values[i] = ec._Agreement_acceptAccountID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "acceptByUserID":
+			out.Values[i] = ec._Agreement_acceptByUserID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "signature":
+			out.Values[i] = ec._Agreement_signature(ctx, field, obj)
+		case "acceptedAt":
+			out.Values[i] = ec._Agreement_acceptedAt(ctx, field, obj)
+		case "createdAt":
+			out.Values[i] = ec._Agreement_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var applicationImplementors = []string{"Application"}
 
 func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionSet, obj *models.Application) graphql.Marshaler {
@@ -67960,6 +69263,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteFormat(ctx, field)
 			})
+		case "acceptAgreement":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_acceptAgreement(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "createApplication":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createApplication(ctx, field)
@@ -69431,6 +70741,66 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_listFormats(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "agreement":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_agreement(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "listAgreements":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_listAgreements(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "nextAgreement":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_nextAgreement(ctx, field)
 				return res
 			}
 
@@ -73206,6 +74576,74 @@ func (ec *executionContext) unmarshalNAdFormatInput2githubᚗcomᚋsspserverᚋa
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNAgreement2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx context.Context, sel ast.SelectionSet, v models.Agreement) graphql.Marshaler {
+	return ec._Agreement(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNAgreement2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreementᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Agreement) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx context.Context, sel ast.SelectionSet, v *models.Agreement) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Agreement(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNAgreementType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreementType(ctx context.Context, v any) (models.AgreementType, error) {
+	var res models.AgreementType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNAgreementType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreementType(ctx context.Context, sel ast.SelectionSet, v models.AgreementType) graphql.Marshaler {
+	return v
+}
+
 func (ec *executionContext) unmarshalNAny2interface(ctx context.Context, v any) (any, error) {
 	res, err := graphql.UnmarshalAny(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -73757,6 +75195,16 @@ func (ec *executionContext) marshalNCountry2ᚖgithubᚗcomᚋsspserverᚋapiᚋ
 		return graphql.Null
 	}
 	return ec._Country(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNDateTime2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐDateTime(ctx context.Context, v any) (types.DateTime, error) {
+	var res types.DateTime
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNDateTime2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐDateTime(ctx context.Context, sel ast.SelectionSet, v types.DateTime) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalNDeviceMaker2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐDeviceMakerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DeviceMaker) graphql.Marshaler {
@@ -75566,6 +77014,13 @@ func (ec *executionContext) marshalOAdFormatPayload2ᚖgithubᚗcomᚋsspserver�
 		return graphql.Null
 	}
 	return ec._AdFormatPayload(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOAgreement2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAgreement(ctx context.Context, sel ast.SelectionSet, v *models.Agreement) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Agreement(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOAnyIPv4IPv62ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAnyIPv4IPv6(ctx context.Context, v any) (*models.AnyIPv4IPv6, error) {

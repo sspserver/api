@@ -9,14 +9,14 @@ import (
 	"github.com/demdxx/gocast/v2"
 )
 
-func ValidateLength(ctx context.Context, obj any, next graphql.Resolver, min int, max int, trim, ornil bool) (res any, err error) {
+func ValidateLength(ctx context.Context, obj any, next graphql.Resolver, min, max int, trim, ornil bool) (res any, err error) {
 	if res, err = next(ctx); err != nil {
 		return nil, err
 	}
 	return _validateLength(res, min, max, trim, ornil)
 }
 
-func _validateLength(val any, min int, max int, trim, ornil bool) (any, error) {
+func _validateLength(val any, min, max int, trim, ornil bool) (any, error) {
 	var (
 		res      = val
 		str      string
