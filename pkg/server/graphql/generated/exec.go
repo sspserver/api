@@ -11494,6 +11494,7 @@ enum StatisticOrderingKey {
   APP_ID
   ZONE_ID
   FORMAT_ID
+  FORMAT_CODE
   CARRIER_ID
   COUNTRY
   LANGUAGE
@@ -11530,6 +11531,7 @@ enum StatisticKey {
   APP_ID
   ZONE_ID
   FORMAT_ID
+  FORMAT_CODE
   CARRIER_ID
   COUNTRY
   LANGUAGE
@@ -11920,12 +11922,12 @@ extend type Mutation {
   """
   Create new traffic router
   """
-  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"])
+  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"]) @requireAgreements
 
   """
   Update traffic router
   """
-  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"])
+  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"]) @requireAgreements
 
   """
   Delete traffic router
@@ -12174,12 +12176,12 @@ extend type Mutation {
   """
   Create a new Zone
   """
-  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"])
+  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"]) @requireAgreements
 
   """
   Update Zone information
   """
-  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"]) @requireAgreements
 
   """
   Delete Zone
@@ -36948,8 +36950,15 @@ func (ec *executionContext) _Mutation_createTrafficRouter(ctx context.Context, f
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -37032,8 +37041,15 @@ func (ec *executionContext) _Mutation_updateTrafficRouter(ctx context.Context, f
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.TrafficRouterPayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -37368,8 +37384,15 @@ func (ec *executionContext) _Mutation_createZone(ctx context.Context, field grap
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.ZonePayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -37455,8 +37478,15 @@ func (ec *executionContext) _Mutation_updateZone(ctx context.Context, field grap
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.ZonePayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}

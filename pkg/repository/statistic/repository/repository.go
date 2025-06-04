@@ -2,12 +2,14 @@ package repository
 
 import (
 	"context"
+	"slices"
 
 	"github.com/demdxx/xtypes"
 	"gorm.io/gorm"
 
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
+	adfrepo "github.com/sspserver/api/pkg/repository/adformat/repository"
 	"github.com/sspserver/api/pkg/repository/statistic"
 )
 
@@ -28,8 +30,32 @@ func (r *Repository) Statistic(ctx context.Context, opts ...statistic.Option) ([
 		return nil, err
 	}
 
+	hasFormatCode := false
+	hasFormatID := false
+	for _, opt := range opts {
+		if gopt, ok := opt.(*repository.GroupOption); ok {
+			if keys, _ := gopt.Ext.([]statistic.Key); len(keys) > 0 {
+				if slices.Contains(keys, statistic.KeyFormatCode) {
+					hasFormatCode = true
+				}
+				if slices.Contains(keys, statistic.KeyFormatID) {
+					hasFormatID = true
+				}
+				if hasFormatCode && hasFormatID {
+					break
+				}
+			}
+		}
+	}
+
+	formats := ([]*models.Format)(nil)
+	if hasFormatCode {
+		fmts := adfrepo.New()
+		formats, _ = fmts.FetchList(ctx)
+	}
+
 	return xtypes.SliceApply(items, func(it *AggregatedCountersLocal) *models.StatisticAdItem {
-		return it.AsStatisticItem()
+		return it.AsStatisticItem(ctx, hasFormatID, formats)
 	}), nil
 }
 

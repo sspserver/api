@@ -2,6 +2,8 @@ package repository
 
 import (
 	"bytes"
+	"context"
+	"slices"
 	"strings"
 	"time"
 
@@ -75,7 +77,7 @@ func (m *AggregatedCountersLocal) TableName() string {
 	return "stats.aggregated_counters_local"
 }
 
-func (m *AggregatedCountersLocal) AsStatisticItem() *models.StatisticAdItem {
+func (m *AggregatedCountersLocal) AsStatisticItem(ctx context.Context, hasFormatID bool, formats []*models.Format) *models.StatisticAdItem {
 	allKeys := []models.StatisticAdItemKey{
 		{Key: "datemark", Value: m.Datemark},
 		{Key: "timemark", Value: m.Timemark},
@@ -84,7 +86,6 @@ func (m *AggregatedCountersLocal) AsStatisticItem() *models.StatisticAdItem {
 		{Key: "domain", Value: m.Domain},
 		{Key: "app_id", Value: m.AppID},
 		{Key: "zone_id", Value: m.ZoneID},
-		{Key: "format_id", Value: m.FormatID},
 		{Key: "carrier_id", Value: m.CarrierID},
 		{Key: "country", Value: m.Country},
 		{Key: "language", Value: m.Language},
@@ -92,6 +93,33 @@ func (m *AggregatedCountersLocal) AsStatisticItem() *models.StatisticAdItem {
 		{Key: "device_id", Value: m.DeviceID},
 		{Key: "os_id", Value: m.OSID},
 		{Key: "browser_id", Value: m.BrowserID},
+	}
+	if len(formats) > 0 {
+		formatIdx := slices.IndexFunc(formats, func(f *models.Format) bool {
+			return f.ID == uint64(m.FormatID)
+		})
+		if formatIdx >= 0 {
+			format := formats[formatIdx]
+			allKeys = append(allKeys, models.StatisticAdItemKey{
+				Key:   "format_code",
+				Text:  format.Title,
+				Value: format.Codename,
+			})
+			if hasFormatID {
+				allKeys = append(allKeys, models.StatisticAdItemKey{
+					Key:   "format_id",
+					Text:  format.Title,
+					Value: format.ID,
+				})
+				hasFormatID = false // Avoid duplication
+			}
+		}
+	}
+	if hasFormatID {
+		allKeys = append(allKeys, models.StatisticAdItemKey{
+			Key:   "format_id",
+			Value: m.FormatID,
+		})
 	}
 	return &models.StatisticAdItem{
 		Keys: xtypes.Slice[models.StatisticAdItemKey](allKeys).

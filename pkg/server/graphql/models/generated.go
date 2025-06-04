@@ -1932,6 +1932,7 @@ const (
 	StatisticKeyAppID        StatisticKey = "APP_ID"
 	StatisticKeyZoneID       StatisticKey = "ZONE_ID"
 	StatisticKeyFormatID     StatisticKey = "FORMAT_ID"
+	StatisticKeyFormatCode   StatisticKey = "FORMAT_CODE"
 	StatisticKeyCarrierID    StatisticKey = "CARRIER_ID"
 	StatisticKeyCountry      StatisticKey = "COUNTRY"
 	StatisticKeyLanguage     StatisticKey = "LANGUAGE"
@@ -1952,6 +1953,7 @@ var AllStatisticKey = []StatisticKey{
 	StatisticKeyAppID,
 	StatisticKeyZoneID,
 	StatisticKeyFormatID,
+	StatisticKeyFormatCode,
 	StatisticKeyCarrierID,
 	StatisticKeyCountry,
 	StatisticKeyLanguage,
@@ -1964,7 +1966,7 @@ var AllStatisticKey = []StatisticKey{
 
 func (e StatisticKey) IsValid() bool {
 	switch e {
-	case StatisticKeyUndefined, StatisticKeyDatemark, StatisticKeyTimemark, StatisticKeySourceID, StatisticKeyPlatformType, StatisticKeyDomain, StatisticKeyAppID, StatisticKeyZoneID, StatisticKeyFormatID, StatisticKeyCarrierID, StatisticKeyCountry, StatisticKeyLanguage, StatisticKeyIP, StatisticKeyDeviceID, StatisticKeyDeviceType, StatisticKeyOsID, StatisticKeyBrowserID:
+	case StatisticKeyUndefined, StatisticKeyDatemark, StatisticKeyTimemark, StatisticKeySourceID, StatisticKeyPlatformType, StatisticKeyDomain, StatisticKeyAppID, StatisticKeyZoneID, StatisticKeyFormatID, StatisticKeyFormatCode, StatisticKeyCarrierID, StatisticKeyCountry, StatisticKeyLanguage, StatisticKeyIP, StatisticKeyDeviceID, StatisticKeyDeviceType, StatisticKeyOsID, StatisticKeyBrowserID:
 		return true
 	}
 	return false
@@ -2017,6 +2019,7 @@ const (
 	StatisticOrderingKeyAppID        StatisticOrderingKey = "APP_ID"
 	StatisticOrderingKeyZoneID       StatisticOrderingKey = "ZONE_ID"
 	StatisticOrderingKeyFormatID     StatisticOrderingKey = "FORMAT_ID"
+	StatisticOrderingKeyFormatCode   StatisticOrderingKey = "FORMAT_CODE"
 	StatisticOrderingKeyCarrierID    StatisticOrderingKey = "CARRIER_ID"
 	StatisticOrderingKeyCountry      StatisticOrderingKey = "COUNTRY"
 	StatisticOrderingKeyLanguage     StatisticOrderingKey = "LANGUAGE"
@@ -2053,6 +2056,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyAppID,
 	StatisticOrderingKeyZoneID,
 	StatisticOrderingKeyFormatID,
+	StatisticOrderingKeyFormatCode,
 	StatisticOrderingKeyCarrierID,
 	StatisticOrderingKeyCountry,
 	StatisticOrderingKeyLanguage,
@@ -2081,7 +2085,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 
 func (e StatisticOrderingKey) IsValid() bool {
 	switch e {
-	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyProfit, StatisticOrderingKeyBidPrice, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc, StatisticOrderingKeyEcpa:
+	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyFormatCode, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyProfit, StatisticOrderingKeyBidPrice, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc, StatisticOrderingKeyEcpa:
 		return true
 	}
 	return false
