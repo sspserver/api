@@ -347,12 +347,12 @@ extend type Mutation {
   """
   Create a new RTBSource.
   """
-  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"])
+  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"]) @requireAgreements
 
   """
   Update an existing RTBSource by its ID.
   """
-  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"]) @requireAgreements
 
   """
   Delete an RTBSource by its ID.

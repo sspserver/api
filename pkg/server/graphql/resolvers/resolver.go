@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
 	account_graphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 	authclient_graphql "github.com/geniusrabbit/blaze-api/repository/authclient/delivery/graphql"
@@ -13,7 +14,10 @@ import (
 	socialaccount_graphql "github.com/geniusrabbit/blaze-api/repository/socialaccount/delivery/graphql"
 	user_graphql "github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql"
 
+	"github.com/sspserver/api/pkg/models"
 	adformat_graphql "github.com/sspserver/api/pkg/repository/adformat/delivery/graphql"
+	"github.com/sspserver/api/pkg/repository/agreement"
+	agreement_graphql "github.com/sspserver/api/pkg/repository/agreement/delivery/graphql"
 	application_graphql "github.com/sspserver/api/pkg/repository/application/delivery/graphql"
 	browser_graphql "github.com/sspserver/api/pkg/repository/browser/delivery/graphql"
 	category_graphql "github.com/sspserver/api/pkg/repository/category/delivery/graphql"
@@ -29,6 +33,7 @@ import (
 	statistic_graphql "github.com/sspserver/api/pkg/repository/statistic/delivery/graphql"
 	trafficrouter_graphql "github.com/sspserver/api/pkg/repository/trafficrouter/delivery/graphql"
 	zone_graphql "github.com/sspserver/api/pkg/repository/zone/delivery/graphql"
+	"github.com/sspserver/api/private/agreements"
 )
 
 // This file will not be regenerated automatically.
@@ -63,6 +68,7 @@ type Resolver struct {
 	zone          *zone_graphql.QueryResolver
 	statistic     *statistic_graphql.QueryResolver
 	trafficrouter *trafficrouter_graphql.Resolver
+	agreements    *agreement_graphql.QueryResolver
 }
 
 type Usecases struct {
@@ -98,7 +104,32 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		zone:          zone_graphql.NewQueryResolver(),
 		statistic:     statistic_graphql.NewQueryResolver(usecases.Stats),
 		trafficrouter: trafficrouter_graphql.NewResolver(),
+		agreements: agreement_graphql.NewQueryResolver(
+			agreement.NewRepositoryOptions(usecases.Options, ListAgreements()),
+		),
 	}
 	res.general = &generalResolver{res}
 	return res
+}
+
+func ListAgreements() []*models.Agreement {
+	return xtypes.SliceApply(agreements.Agreements(),
+		func(a *agreements.Agreement) *models.Agreement {
+			return &models.Agreement{
+				Codename:        a.Meta.Codename,
+				Title:           a.Meta.Title,
+				Description:     a.Meta.Description,
+				Version:         a.Meta.Version,
+				Type:            a.Meta.Type,
+				IssuedBy:        a.Meta.IssuedBy,
+				BodyMarkdown:    a.BodyMarkdown,
+				BodyHTML:        a.BodyHTML,
+				AcceptAccountID: 0,   // Will be filled later
+				AcceptByUserID:  0,   // Will be filled later
+				Signature:       "",  // Optional, will be filled later
+				AcceptedAt:      nil, // Will be filled later
+				CreatedAt:       a.Meta.CreatedAt,
+			}
+		},
+	)
 }

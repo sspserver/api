@@ -99,6 +99,31 @@ type AdFormatPayload struct {
 	Format *AdFormat `json:"format"`
 }
 
+type Agreement struct {
+	// Agreement codename
+	Codename string `json:"codename"`
+	// Version of the agreement
+	Version string `json:"version"`
+	// Title of the agreement
+	Title string `json:"title"`
+	// Text of the agreement in Markdown format
+	TextMd string `json:"textMD"`
+	// Text of the agreement in HTML format
+	TextHTML string `json:"textHTML"`
+	// Type of the agreement
+	Type AgreementType `json:"type"`
+	// Account ID which the agreement is associated with
+	AcceptAccountID uint64 `json:"acceptAccountID"`
+	// User ID who accepted the agreement
+	AcceptByUserID uint64 `json:"acceptByUserID"`
+	// Signature of the agreement
+	Signature *string `json:"signature,omitempty"`
+	// Date of acceptance
+	AcceptedAt *types.DateTime `json:"acceptedAt,omitempty"`
+	// Date of creation
+	CreatedAt types.DateTime `json:"createdAt"`
+}
+
 // Application object represents a site or mobile/desktop application.
 type Application struct {
 	ID          uint64 `json:"ID"`
@@ -1279,6 +1304,65 @@ type ZoneUpdateInput struct {
 	AllowedSources     []uint64    `json:"allowedSources,omitempty"`
 	DisallowedSources  []uint64    `json:"disallowedSources,omitempty"`
 	Campaigns          []uint64    `json:"campaigns,omitempty"`
+}
+
+type AgreementType string
+
+const (
+	AgreementTypeUnknown    AgreementType = "UNKNOWN"
+	AgreementTypeLicense    AgreementType = "LICENSE"
+	AgreementTypeTermsOfUse AgreementType = "TERMS_OF_USE"
+	AgreementTypeContract   AgreementType = "CONTRACT"
+)
+
+var AllAgreementType = []AgreementType{
+	AgreementTypeUnknown,
+	AgreementTypeLicense,
+	AgreementTypeTermsOfUse,
+	AgreementTypeContract,
+}
+
+func (e AgreementType) IsValid() bool {
+	switch e {
+	case AgreementTypeUnknown, AgreementTypeLicense, AgreementTypeTermsOfUse, AgreementTypeContract:
+		return true
+	}
+	return false
+}
+
+func (e AgreementType) String() string {
+	return string(e)
+}
+
+func (e *AgreementType) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = AgreementType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid AgreementType", str)
+	}
+	return nil
+}
+
+func (e AgreementType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *AgreementType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e AgreementType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type AnyIPv4IPv6 string

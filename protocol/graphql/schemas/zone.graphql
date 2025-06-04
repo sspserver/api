@@ -229,12 +229,12 @@ extend type Mutation {
   """
   Create a new Zone
   """
-  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"])
+  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"]) @requireAgreements
 
   """
   Update Zone information
   """
-  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"]) @requireAgreements
 
   """
   Delete Zone
