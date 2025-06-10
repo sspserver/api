@@ -995,7 +995,7 @@ type RTBSourceUpdateInput struct {
 
 type StatisticAdItem struct {
 	Keys        []*StatisticItemKey `json:"keys,omitempty"`
-	Profit      float64             `json:"profit"`
+	Revenue     float64             `json:"revenue"`
 	BidPrice    float64             `json:"bidPrice"`
 	Requests    uint64              `json:"requests"`
 	Impressions uint64              `json:"impressions"`
@@ -2028,9 +2028,7 @@ const (
 	StatisticOrderingKeyDeviceType   StatisticOrderingKey = "DEVICE_TYPE"
 	StatisticOrderingKeyOsID         StatisticOrderingKey = "OS_ID"
 	StatisticOrderingKeyBrowserID    StatisticOrderingKey = "BROWSER_ID"
-	StatisticOrderingKeyProfit       StatisticOrderingKey = "PROFIT"
-	StatisticOrderingKeyBidPrice     StatisticOrderingKey = "BID_PRICE"
-	StatisticOrderingKeyRequests     StatisticOrderingKey = "REQUESTS"
+	StatisticOrderingKeyRevenue      StatisticOrderingKey = "REVENUE"
 	StatisticOrderingKeyImpressions  StatisticOrderingKey = "IMPRESSIONS"
 	StatisticOrderingKeyViews        StatisticOrderingKey = "VIEWS"
 	StatisticOrderingKeyDirects      StatisticOrderingKey = "DIRECTS"
@@ -2043,7 +2041,6 @@ const (
 	StatisticOrderingKeyCtr          StatisticOrderingKey = "CTR"
 	StatisticOrderingKeyEcpm         StatisticOrderingKey = "ECPM"
 	StatisticOrderingKeyEcpc         StatisticOrderingKey = "ECPC"
-	StatisticOrderingKeyEcpa         StatisticOrderingKey = "ECPA"
 )
 
 var AllStatisticOrderingKey = []StatisticOrderingKey{
@@ -2065,9 +2062,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyDeviceType,
 	StatisticOrderingKeyOsID,
 	StatisticOrderingKeyBrowserID,
-	StatisticOrderingKeyProfit,
-	StatisticOrderingKeyBidPrice,
-	StatisticOrderingKeyRequests,
+	StatisticOrderingKeyRevenue,
 	StatisticOrderingKeyImpressions,
 	StatisticOrderingKeyViews,
 	StatisticOrderingKeyDirects,
@@ -2080,12 +2075,11 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyCtr,
 	StatisticOrderingKeyEcpm,
 	StatisticOrderingKeyEcpc,
-	StatisticOrderingKeyEcpa,
 }
 
 func (e StatisticOrderingKey) IsValid() bool {
 	switch e {
-	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyFormatCode, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyProfit, StatisticOrderingKeyBidPrice, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc, StatisticOrderingKeyEcpa:
+	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyFormatCode, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyRevenue, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc:
 		return true
 	}
 	return false

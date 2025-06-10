@@ -19,9 +19,9 @@ enum StatisticOrderingKey {
   DEVICE_TYPE
   OS_ID
   BROWSER_ID
-  PROFIT
-  BID_PRICE
-  REQUESTS
+  REVENUE
+  # BID_PRICE
+  # REQUESTS
   IMPRESSIONS
   VIEWS
   DIRECTS
@@ -34,7 +34,7 @@ enum StatisticOrderingKey {
   CTR
   ECPM
   ECPC
-  ECPA
+  # ECPA
 }
 
 enum StatisticKey {
@@ -68,7 +68,7 @@ type StatisticAdItem {
   keys: [StatisticItemKey!]
 
   # Money counters
-  profit:       Float!
+  revenue:      Float!
   bidPrice:     Float!
 
   # Counters

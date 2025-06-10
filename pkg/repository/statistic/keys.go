@@ -26,3 +26,45 @@ const (
 func (key Key) String() string {
 	return string(key)
 }
+
+type OrderingKey string
+
+const (
+	OrderingUndefined       OrderingKey = "undefined"
+	OrderingKeyDatemark     OrderingKey = "datemark"
+	OrderingKeyTimemark     OrderingKey = "timemark"
+	OrderingKeySourceID     OrderingKey = "source_id"
+	OrderingKeyPlatformType OrderingKey = "platform_type"
+	OrderingKeyDomain       OrderingKey = "domain"
+	OrderingKeyAppID        OrderingKey = "app_id"
+	OrderingKeyZoneID       OrderingKey = "zone_id"
+	OrderingKeyFormatID     OrderingKey = "format_id"
+	OrderingKeyFormatCode   OrderingKey = "format_code"
+	OrderingKeyCarrierID    OrderingKey = "carrier_id"
+	OrderingKeyCountry      OrderingKey = "country"
+	OrderingKeyLanguage     OrderingKey = "language"
+	OrderingKeyIP           OrderingKey = "ip"
+	OrderingKeyDeviceID     OrderingKey = "device_id"
+	OrderingKeyDeviceType   OrderingKey = "device_type"
+	OrderingKeyOsID         OrderingKey = "os_id"
+	OrderingKeyBrowserID    OrderingKey = "browser_id"
+	// Counters
+	OrderingKeyImps     OrderingKey = "imps"
+	OrderingKeyViews    OrderingKey = "views"
+	OrderingKeyDirects  OrderingKey = "directs"
+	OrderingKeyClicks   OrderingKey = "clicks"
+	OrderingKeyBids     OrderingKey = "bid_requests"
+	OrderingKeyWins     OrderingKey = "bid_wins"
+	OrderingKeySkips    OrderingKey = "bid_skips"
+	OrderingKeyNobids   OrderingKey = "bid_nobids"
+	OrderingKeyErrors   OrderingKey = "bid_errors"
+	OrderingKeyRevenue  OrderingKey = "revenue"
+	OrderingKeyBidPrice OrderingKey = "bid_price"
+	OrderingKeyCTR      OrderingKey = "IF(imps > 0, (clicks / imps) * 100, 0)"
+	OrderingKeyECPM     OrderingKey = "IF(imps > 0, (revenue / imps) * 1000, 0)"
+	OrderingKeyECPC     OrderingKey = "IF(clicks > 0, (revenue / clicks), 0)"
+)
+
+func (key OrderingKey) String() string {
+	return string(key)
+}

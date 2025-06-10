@@ -139,7 +139,7 @@ func (m *AggregatedCountersLocal) AsStatisticItem(ctx context.Context, hasFormat
 			Filter(func(g models.StatisticAdItemKey) bool {
 				return !gocast.IsEmpty(g.Value)
 			}),
-		Profit:      m.Revenue.Float64(),
+		Revenue:     m.Revenue.Float64(),
 		BidPrice:    m.PotentialRevenue.Float64(),
 		Requests:    m.Imps + m.Views + m.Directs + m.Clicks,
 		Impressions: m.Imps,

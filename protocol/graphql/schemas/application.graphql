@@ -232,12 +232,12 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"]) @requireAgreements
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"]) @requireAgreements
 
   """
   Delete Application

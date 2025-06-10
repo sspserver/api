@@ -10,7 +10,7 @@ type StatisticAdItem struct {
 	Keys []StatisticAdItemKey `json:"keys"`
 
 	// Money counters
-	Profit   float64 `json:"profit"`
+	Revenue  float64 `json:"revenue"`
 	BidPrice float64 `json:"bid_price"`
 
 	// Counters
@@ -37,12 +37,12 @@ func (it *StatisticAdItem) ECPM() float64 {
 	if it.Impressions == 0 {
 		return 0
 	}
-	return it.Profit / float64(it.Impressions) * 1000
+	return it.Revenue / float64(it.Impressions) * 1000
 }
 
 func (it *StatisticAdItem) ECPC() float64 {
 	if it.Clicks == 0 {
 		return 0
 	}
-	return it.Profit / float64(it.Clicks)
+	return it.Revenue / float64(it.Clicks)
 }

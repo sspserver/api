@@ -907,8 +907,8 @@ type ComplexityRoot struct {
 		Impressions func(childComplexity int) int
 		Keys        func(childComplexity int) int
 		Nobids      func(childComplexity int) int
-		Profit      func(childComplexity int) int
 		Requests    func(childComplexity int) int
+		Revenue     func(childComplexity int) int
 		Skips       func(childComplexity int) int
 		Views       func(childComplexity int) int
 		Wins        func(childComplexity int) int
@@ -6086,19 +6086,19 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.complexity.StatisticAdItem.Nobids(childComplexity), true
 
-	case "StatisticAdItem.profit":
-		if e.complexity.StatisticAdItem.Profit == nil {
-			break
-		}
-
-		return e.complexity.StatisticAdItem.Profit(childComplexity), true
-
 	case "StatisticAdItem.requests":
 		if e.complexity.StatisticAdItem.Requests == nil {
 			break
 		}
 
 		return e.complexity.StatisticAdItem.Requests(childComplexity), true
+
+	case "StatisticAdItem.revenue":
+		if e.complexity.StatisticAdItem.Revenue == nil {
+			break
+		}
+
+		return e.complexity.StatisticAdItem.Revenue(childComplexity), true
 
 	case "StatisticAdItem.skips":
 		if e.complexity.StatisticAdItem.Skips == nil {
@@ -9451,12 +9451,12 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"])
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"]) @requireAgreements
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"]) @requireAgreements
 
   """
   Delete Application
@@ -11503,9 +11503,9 @@ enum StatisticOrderingKey {
   DEVICE_TYPE
   OS_ID
   BROWSER_ID
-  PROFIT
-  BID_PRICE
-  REQUESTS
+  REVENUE
+  # BID_PRICE
+  # REQUESTS
   IMPRESSIONS
   VIEWS
   DIRECTS
@@ -11518,7 +11518,7 @@ enum StatisticOrderingKey {
   CTR
   ECPM
   ECPC
-  ECPA
+  # ECPA
 }
 
 enum StatisticKey {
@@ -11552,7 +11552,7 @@ type StatisticAdItem {
   keys: [StatisticItemKey!]
 
   # Money counters
-  profit:       Float!
+  revenue:      Float!
   bidPrice:     Float!
 
   # Counters
@@ -34464,8 +34464,15 @@ func (ec *executionContext) _Mutation_createApplication(ctx context.Context, fie
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.ApplicationPayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -34551,8 +34558,15 @@ func (ec *executionContext) _Mutation_updateApplication(ctx context.Context, fie
 			}
 			return ec.directives.Acl(ctx, nil, directive0, permissions)
 		}
+		directive2 := func(ctx context.Context) (any, error) {
+			if ec.directives.RequireAgreements == nil {
+				var zeroVal *models.ApplicationPayload
+				return zeroVal, errors.New("directive requireAgreements is not implemented")
+			}
+			return ec.directives.RequireAgreements(ctx, nil, directive1)
+		}
 
-		tmp, err := directive1(rctx)
+		tmp, err := directive2(rctx)
 		if err != nil {
 			return nil, graphql.ErrorOnPath(ctx, err)
 		}
@@ -51020,8 +51034,8 @@ func (ec *executionContext) fieldContext_StatisticAdItem_keys(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _StatisticAdItem_profit(ctx context.Context, field graphql.CollectedField, obj *models.StatisticAdItem) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_StatisticAdItem_profit(ctx, field)
+func (ec *executionContext) _StatisticAdItem_revenue(ctx context.Context, field graphql.CollectedField, obj *models.StatisticAdItem) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_StatisticAdItem_revenue(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -51034,7 +51048,7 @@ func (ec *executionContext) _StatisticAdItem_profit(ctx context.Context, field g
 	}()
 	resTmp := ec._fieldMiddleware(ctx, obj, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Profit, nil
+		return obj.Revenue, nil
 	})
 
 	if resTmp == nil {
@@ -51048,7 +51062,7 @@ func (ec *executionContext) _StatisticAdItem_profit(ctx context.Context, field g
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_StatisticAdItem_profit(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_StatisticAdItem_revenue(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "StatisticAdItem",
 		Field:      field,
@@ -51711,8 +51725,8 @@ func (ec *executionContext) fieldContext_StatisticAdItemConnection_list(_ contex
 			switch field.Name {
 			case "keys":
 				return ec.fieldContext_StatisticAdItem_keys(ctx, field)
-			case "profit":
-				return ec.fieldContext_StatisticAdItem_profit(ctx, field)
+			case "revenue":
+				return ec.fieldContext_StatisticAdItem_revenue(ctx, field)
 			case "bidPrice":
 				return ec.fieldContext_StatisticAdItem_bidPrice(ctx, field)
 			case "requests":
@@ -72664,8 +72678,8 @@ func (ec *executionContext) _StatisticAdItem(ctx context.Context, sel ast.Select
 			out.Values[i] = graphql.MarshalString("StatisticAdItem")
 		case "keys":
 			out.Values[i] = ec._StatisticAdItem_keys(ctx, field, obj)
-		case "profit":
-			out.Values[i] = ec._StatisticAdItem_profit(ctx, field, obj)
+		case "revenue":
+			out.Values[i] = ec._StatisticAdItem_revenue(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

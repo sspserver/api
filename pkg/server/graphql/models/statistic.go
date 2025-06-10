@@ -34,7 +34,7 @@ func FromStatisticAdItemModel(st *models.StatisticAdItem) *StatisticAdItem {
 			return FromStatisticAdItemKeyModel(&k)
 		}),
 		// Money counters
-		Profit:   st.Profit,
+		Revenue:  st.Revenue,
 		BidPrice: st.BidPrice, // Sum of all bids prices
 		// Counters
 		Requests:    st.Requests,
@@ -90,7 +90,11 @@ func StatisticAdListOrder(ord []*StatisticAdKeyOrder) *statistic.ListOrder {
 	if len(ord) == 0 {
 		return nil
 	}
-	return &statistic.ListOrder{}
+	nord := &statistic.ListOrder{}
+	for _, o := range ord {
+		nord.SetOrder(o.Key.AsQueryOrderKey(), o.Order.AsOrder())
+	}
+	return nord
 }
 
 func FromRepoStatisticKey(key statistic.Key) StatisticKey {
@@ -205,4 +209,71 @@ func (op StatisticCondition) AsQueryOp() statistic.Operation {
 		return statistic.ConditionIsNotNull
 	}
 	return statistic.ConditionUndefined
+}
+
+func (ord StatisticOrderingKey) AsQueryOrderKey() statistic.OrderingKey {
+	switch ord {
+	case StatisticOrderingKeyDatemark:
+		return statistic.OrderingKeyDatemark
+	case StatisticOrderingKeyTimemark:
+		return statistic.OrderingKeyTimemark
+	case StatisticOrderingKeySourceID:
+		return statistic.OrderingKeySourceID
+	case StatisticOrderingKeyPlatformType:
+		return statistic.OrderingKeyPlatformType
+	case StatisticOrderingKeyDomain:
+		return statistic.OrderingKeyDomain
+	case StatisticOrderingKeyAppID:
+		return statistic.OrderingKeyAppID
+	case StatisticOrderingKeyZoneID:
+		return statistic.OrderingKeyZoneID
+	case StatisticOrderingKeyFormatID:
+		return statistic.OrderingKeyFormatID
+	case StatisticOrderingKeyFormatCode:
+		return statistic.OrderingKeyFormatCode
+	case StatisticOrderingKeyCarrierID:
+		return statistic.OrderingKeyCarrierID
+	case StatisticOrderingKeyCountry:
+		return statistic.OrderingKeyCountry
+	case StatisticOrderingKeyLanguage:
+		return statistic.OrderingKeyLanguage
+	case StatisticOrderingKeyIP:
+		return statistic.OrderingKeyIP
+	case StatisticOrderingKeyDeviceID:
+		return statistic.OrderingKeyDeviceID
+	case StatisticOrderingKeyDeviceType:
+		return statistic.OrderingKeyDeviceType
+	case StatisticOrderingKeyOsID:
+		return statistic.OrderingKeyOsID
+	case StatisticOrderingKeyBrowserID:
+		return statistic.OrderingKeyBrowserID
+		// Counters
+	case StatisticOrderingKeyImpressions:
+		return statistic.OrderingKeyImps
+	case StatisticOrderingKeyViews:
+		return statistic.OrderingKeyViews
+	case StatisticOrderingKeyDirects:
+		return statistic.OrderingKeyDirects
+	case StatisticOrderingKeyClicks:
+		return statistic.OrderingKeyClicks
+	case StatisticOrderingKeyBids:
+		return statistic.OrderingKeyBids
+	case StatisticOrderingKeyWins:
+		return statistic.OrderingKeyWins
+	case StatisticOrderingKeySkips:
+		return statistic.OrderingKeySkips
+	case StatisticOrderingKeyNobids:
+		return statistic.OrderingKeyNobids
+	case StatisticOrderingKeyErrors:
+		return statistic.OrderingKeyErrors
+	case StatisticOrderingKeyRevenue:
+		return statistic.OrderingKeyRevenue
+	case StatisticOrderingKeyCtr:
+		return statistic.OrderingKeyCTR
+	case StatisticOrderingKeyEcpm:
+		return statistic.OrderingKeyECPM
+	case StatisticOrderingKeyEcpc:
+		return statistic.OrderingKeyECPC
+	}
+	return statistic.OrderingUndefined
 }
