@@ -185,7 +185,7 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 		}
 		// query = order.PrepareQuery(query, key.String())
 		query = query.Order(clause.OrderByColumn{
-			Column: clause.Column{Name: key.String(), Raw: strings.ContainsAny(key.String(), " \t\n\r()<>=!@#$%^&*|`~{}[]'\"")},
+			Column: clause.Column{Name: key.String(), Raw: strings.ContainsAny(key.String(), " \t\n\r()<>=!@#$%^&*|`~{}[]'\"+-*/\\")},
 			Desc:   order == model.OrderDesc,
 		})
 	}

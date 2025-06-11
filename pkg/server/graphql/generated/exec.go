@@ -11504,8 +11504,7 @@ enum StatisticOrderingKey {
   OS_ID
   BROWSER_ID
   REVENUE
-  # BID_PRICE
-  # REQUESTS
+  REQUESTS
   IMPRESSIONS
   VIEWS
   DIRECTS
@@ -11515,10 +11514,10 @@ enum StatisticOrderingKey {
   SKIPS
   NOBIDS
   ERRORS
+  BID_PRICE
   CTR
   ECPM
   ECPC
-  # ECPA
 }
 
 enum StatisticKey {

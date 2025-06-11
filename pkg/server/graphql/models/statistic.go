@@ -248,6 +248,8 @@ func (ord StatisticOrderingKey) AsQueryOrderKey() statistic.OrderingKey {
 	case StatisticOrderingKeyBrowserID:
 		return statistic.OrderingKeyBrowserID
 		// Counters
+	case StatisticOrderingKeyRequests:
+		return statistic.OrderingKeyRequests
 	case StatisticOrderingKeyImpressions:
 		return statistic.OrderingKeyImps
 	case StatisticOrderingKeyViews:
@@ -268,6 +270,8 @@ func (ord StatisticOrderingKey) AsQueryOrderKey() statistic.OrderingKey {
 		return statistic.OrderingKeyErrors
 	case StatisticOrderingKeyRevenue:
 		return statistic.OrderingKeyRevenue
+	case StatisticOrderingKeyBidPrice:
+		return statistic.OrderingKeyBidPrice
 	case StatisticOrderingKeyCtr:
 		return statistic.OrderingKeyCTR
 	case StatisticOrderingKeyEcpm:

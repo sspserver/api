@@ -49,6 +49,7 @@ const (
 	OrderingKeyOsID         OrderingKey = "os_id"
 	OrderingKeyBrowserID    OrderingKey = "browser_id"
 	// Counters
+	OrderingKeyRequests OrderingKey = "imps+views+directs+clicks"
 	OrderingKeyImps     OrderingKey = "imps"
 	OrderingKeyViews    OrderingKey = "views"
 	OrderingKeyDirects  OrderingKey = "directs"
@@ -59,7 +60,7 @@ const (
 	OrderingKeyNobids   OrderingKey = "bid_nobids"
 	OrderingKeyErrors   OrderingKey = "bid_errors"
 	OrderingKeyRevenue  OrderingKey = "revenue"
-	OrderingKeyBidPrice OrderingKey = "bid_price"
+	OrderingKeyBidPrice OrderingKey = "potential_revenue"
 	OrderingKeyCTR      OrderingKey = "IF(imps > 0, (clicks / imps) * 100, 0)"
 	OrderingKeyECPM     OrderingKey = "IF(imps > 0, (revenue / imps) * 1000, 0)"
 	OrderingKeyECPC     OrderingKey = "IF(clicks > 0, (revenue / clicks), 0)"

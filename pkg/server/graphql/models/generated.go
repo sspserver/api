@@ -2029,6 +2029,7 @@ const (
 	StatisticOrderingKeyOsID         StatisticOrderingKey = "OS_ID"
 	StatisticOrderingKeyBrowserID    StatisticOrderingKey = "BROWSER_ID"
 	StatisticOrderingKeyRevenue      StatisticOrderingKey = "REVENUE"
+	StatisticOrderingKeyRequests     StatisticOrderingKey = "REQUESTS"
 	StatisticOrderingKeyImpressions  StatisticOrderingKey = "IMPRESSIONS"
 	StatisticOrderingKeyViews        StatisticOrderingKey = "VIEWS"
 	StatisticOrderingKeyDirects      StatisticOrderingKey = "DIRECTS"
@@ -2038,6 +2039,7 @@ const (
 	StatisticOrderingKeySkips        StatisticOrderingKey = "SKIPS"
 	StatisticOrderingKeyNobids       StatisticOrderingKey = "NOBIDS"
 	StatisticOrderingKeyErrors       StatisticOrderingKey = "ERRORS"
+	StatisticOrderingKeyBidPrice     StatisticOrderingKey = "BID_PRICE"
 	StatisticOrderingKeyCtr          StatisticOrderingKey = "CTR"
 	StatisticOrderingKeyEcpm         StatisticOrderingKey = "ECPM"
 	StatisticOrderingKeyEcpc         StatisticOrderingKey = "ECPC"
@@ -2063,6 +2065,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeyOsID,
 	StatisticOrderingKeyBrowserID,
 	StatisticOrderingKeyRevenue,
+	StatisticOrderingKeyRequests,
 	StatisticOrderingKeyImpressions,
 	StatisticOrderingKeyViews,
 	StatisticOrderingKeyDirects,
@@ -2072,6 +2075,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 	StatisticOrderingKeySkips,
 	StatisticOrderingKeyNobids,
 	StatisticOrderingKeyErrors,
+	StatisticOrderingKeyBidPrice,
 	StatisticOrderingKeyCtr,
 	StatisticOrderingKeyEcpm,
 	StatisticOrderingKeyEcpc,
@@ -2079,7 +2083,7 @@ var AllStatisticOrderingKey = []StatisticOrderingKey{
 
 func (e StatisticOrderingKey) IsValid() bool {
 	switch e {
-	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyFormatCode, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyRevenue, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc:
+	case StatisticOrderingKeyUndefined, StatisticOrderingKeyDatemark, StatisticOrderingKeyTimemark, StatisticOrderingKeySourceID, StatisticOrderingKeyPlatformType, StatisticOrderingKeyDomain, StatisticOrderingKeyAppID, StatisticOrderingKeyZoneID, StatisticOrderingKeyFormatID, StatisticOrderingKeyFormatCode, StatisticOrderingKeyCarrierID, StatisticOrderingKeyCountry, StatisticOrderingKeyLanguage, StatisticOrderingKeyIP, StatisticOrderingKeyDeviceID, StatisticOrderingKeyDeviceType, StatisticOrderingKeyOsID, StatisticOrderingKeyBrowserID, StatisticOrderingKeyRevenue, StatisticOrderingKeyRequests, StatisticOrderingKeyImpressions, StatisticOrderingKeyViews, StatisticOrderingKeyDirects, StatisticOrderingKeyClicks, StatisticOrderingKeyBids, StatisticOrderingKeyWins, StatisticOrderingKeySkips, StatisticOrderingKeyNobids, StatisticOrderingKeyErrors, StatisticOrderingKeyBidPrice, StatisticOrderingKeyCtr, StatisticOrderingKeyEcpm, StatisticOrderingKeyEcpc:
 		return true
 	}
 	return false
