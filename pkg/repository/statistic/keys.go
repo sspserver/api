@@ -27,6 +27,18 @@ func (key Key) String() string {
 	return string(key)
 }
 
+// IsAggregationKey checks if the key is an aggregation key.
+// Aggregation keys are used for grouping and aggregating statistics.
+func IsAggregationKey(key string) bool {
+	switch Key(key) {
+	case KeyDatemark, KeyTimemark, KeySourceID, KeyPlatformType, KeyDomain, KeyAppID, KeyZoneID,
+		KeyFormatID, KeyFormatCode, KeyCarrierID, KeyCountry, KeyLanguage, KeyIP, KeyDeviceID,
+		KeyDeviceType, KeyOsID, KeyBrowserID:
+		return true
+	}
+	return false
+}
+
 type OrderingKey string
 
 const (

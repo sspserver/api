@@ -1,6 +1,7 @@
 package models
 
 import (
+	"slices"
 	"strings"
 	"time"
 
@@ -86,13 +87,20 @@ func StatisticGroup(group []StatisticKey) *repository.GroupOption {
 	)
 }
 
-func StatisticAdListOrder(ord []*StatisticAdKeyOrder) *statistic.ListOrder {
+func StatisticAdListOrder(ord []*StatisticAdKeyOrder, group []StatisticKey) *statistic.ListOrder {
 	if len(ord) == 0 {
 		return nil
 	}
 	nord := &statistic.ListOrder{}
+	groupKeys := xtypes.SliceApply(group, func(k StatisticKey) string {
+		return k.AsQueryKey().String()
+	})
 	for _, o := range ord {
-		nord.SetOrder(o.Key.AsQueryOrderKey(), o.Order.AsOrder())
+		oKey := o.Key.AsQueryOrderKey()
+		if !statistic.IsAggregationKey(oKey.String()) ||
+			slices.Contains(groupKeys, oKey.String()) {
+			nord.SetOrder(oKey, o.Order.AsOrder())
+		}
 	}
 	return nord
 }

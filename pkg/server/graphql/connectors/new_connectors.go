@@ -264,7 +264,7 @@ func NewStatisticAdItemConnection(ctx context.Context, statisticAccessor statist
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.StatisticAdItem, error) {
 			list, err := statisticAccessor.Statistic(ctx,
 				filter.Filter(), gqlmodels.StatisticGroup(group),
-				gqlmodels.StatisticAdListOrder(order), page.Pagination())
+				gqlmodels.StatisticAdListOrder(order, group), page.Pagination())
 			return gqlmodels.FromStatisticAdItemModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
