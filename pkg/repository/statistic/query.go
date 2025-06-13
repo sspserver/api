@@ -85,9 +85,13 @@ func (cond *Condition) PrepareQuery(query *gorm.DB) *gorm.DB {
 	// Process conditions
 	switch cond.Op {
 	case ConditionIn:
-		query = query.Where(cond.Key.String()+" IN (?)", cond.Value)
+		if len(cond.Value) > 0 {
+			query = query.Where(cond.Key.String()+" IN (?)", cond.Value)
+		}
 	case ConditionNotIn:
-		query = query.Where(cond.Key.String()+" NOT IN (?)", cond.Value)
+		if len(cond.Value) > 0 {
+			query = query.Where(cond.Key.String()+" NOT IN (?)", cond.Value)
+		}
 	case ConditionLike:
 		query = query.Where(cond.Key.String()+" LIKE ?", cond.Value[0])
 	case ConditionNotLike:
