@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/demdxx/gocast/v2"
@@ -192,10 +193,13 @@ func main() {
 
 	// Init Options usecase
 	optionsUsecase := optionuc.NewUsecase(optionrp.New(map[string]any{
-		"ad.rtb.domain":    conf.Options.RTBServerDomain,
-		"ad.template.code": conf.Options.AdTemplateCode,
-		"ad.direct.url":    conf.Options.AdDirectTemplateURL,
-		"ad.direct.code":   conf.Options.AdDirectTemplateCode,
+		"ad.rtb.domain": conf.Options.RTBServerDomain,
+		"ad.template.code": prepareAdCode(conf.Options.AdTemplateCode,
+			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
+		"ad.direct.url": prepareAdCode(conf.Options.AdDirectTemplateURL,
+			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
+		"ad.direct.code": prepareAdCode(conf.Options.AdDirectTemplateCode,
+			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
 	}))
 
 	// Init system options
@@ -268,4 +272,12 @@ func messangerWrapper(m sendmsg.Messanger) messanger.Messanger {
 			sendmsg.WithRecipients(recipients, nil, nil),
 			sendmsg.WithVars(vars))
 	})
+}
+
+func prepareAdCode(templateCode, jssdkDomain, adServerDomain string) string {
+	return strings.NewReplacer(
+		"\\n", "\n",
+		"{JSSDK_DOMAIN}", jssdkDomain,
+		"{ADSERVER_DOMAIN}", adServerDomain,
+	).Replace(templateCode)
 }

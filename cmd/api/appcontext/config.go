@@ -193,6 +193,7 @@ type messangerConfig struct {
 
 type optionsConfig struct {
 	RTBServerDomain      string `json:"rtb_server_domain" yaml:"rtb_server_domain" env:"OPTION_RTB_SERVER_DOMAIN"`
+	JSSDKDomain          string `json:"jssdk_domain" yaml:"jssdk_domain" env:"OPTION_AD_JSSDK_DOMAIN"`
 	AdTemplateCode       string `json:"ad_template_code" yaml:"ad_template_code" env:"OPTION_AD_TEMPLATE_CODE"`
 	AdDirectTemplateURL  string `json:"ad_direct_template_url" yaml:"ad_direct_template_url" env:"OPTION_AD_DIRECT_TEMPLATE_URL"`
 	AdDirectTemplateCode string `json:"ad_direct_template_code" yaml:"ad_direct_template_code" env:"OPTION_AD_DIRECT_TEMPLATE_CODE"`
