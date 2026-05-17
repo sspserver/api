@@ -183,6 +183,16 @@ VALUES
     (23, 'banner_160x600', 'banner', 'Wide Skyscraper', 'active', 160, 600, NULL, NULL, '{}'::jsonb),
     (24, 'banner_300x600', 'banner', 'Half-Page Ad', 'active', 300, 600, NULL, NULL, '{}'::jsonb),
     (25, 'banner_970x90', 'banner', 'Large Leaderboard', 'active', 970, 90, NULL, NULL, '{}'::jsonb),
-    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'active', 320, 50, NULL, NULL, '{}'::jsonb);
+    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'active', 320, 50, NULL, NULL, '{}'::jsonb)
+ON CONFLICT (codename) DO UPDATE
+SET
+    type = EXCLUDED.type,
+    title = EXCLUDED.title,
+    active = EXCLUDED.active,
+    width = EXCLUDED.width,
+    height = EXCLUDED.height,
+    min_width = EXCLUDED.min_width,
+    min_height = EXCLUDED.min_height,
+    config = EXCLUDED.config;
 
 COMMIT;
