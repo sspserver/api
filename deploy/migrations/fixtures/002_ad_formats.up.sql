@@ -23,7 +23,7 @@ VALUES
               "animated": true,
               "sound": true,
               "thumbs": ["300x", "500x"],
-              "allowed_types": ["video"]
+              "allowed_types": ["video/mp4", "video/webm"]
             },
             {
               "id": 2,
@@ -34,7 +34,7 @@ VALUES
               "min_width": 150,
               "min_height": 150,
               "animated": false,
-              "allowed_types": ["image"]
+              "allowed_types": ["image/jpeg", "image/png"]
             },
             {
               "id": 3,
@@ -46,7 +46,7 @@ VALUES
               "min_height": 50,
               "animated": false,
               "sound": false,
-              "allowed_types": ["image"]
+              "allowed_types": ["image/jpeg", "image/png"]
             }
           ],
           "fields": [
@@ -101,7 +101,7 @@ VALUES
               "animated": false,
               "sound": false,
               "thumbs": ["250x", "350x", "500x"],
-              "allowed_types": ["image", "video"]
+              "allowed_types": ["image/jpeg", "image/png", "video/mp4", "video/webm"]
             },
             {
               "id": 2,
@@ -113,7 +113,7 @@ VALUES
               "min_height": 50,
               "animated": false,
               "sound": false,
-              "allowed_types": ["image"]
+              "allowed_types": ["image/jpeg", "image/png"]
             }
           ],
           "fields": [

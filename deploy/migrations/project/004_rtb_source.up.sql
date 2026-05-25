@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS rtb_source
 
 -- Targeting filters
 , formats                TEXT[]
+, interstitial_formats   TEXT[]
 , device_types           BIGINT[]
 , devices                BIGINT[]
 , os                     BIGINT[]
