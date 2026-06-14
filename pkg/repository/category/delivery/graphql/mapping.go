@@ -4,7 +4,7 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/category/models"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 

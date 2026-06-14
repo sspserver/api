@@ -3,7 +3,7 @@ package graphql
 import (
 	"github.com/demdxx/xtypes"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/os/models"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 

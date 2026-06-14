@@ -4,7 +4,7 @@ import (
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/types"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/rtbsource/models"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 

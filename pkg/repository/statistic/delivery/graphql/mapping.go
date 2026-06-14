@@ -7,8 +7,8 @@ import (
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/repository"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/statistic"
+	"github.com/sspserver/api/pkg/repository/statistic/models"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
