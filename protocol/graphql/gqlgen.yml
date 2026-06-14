@@ -6,6 +6,7 @@ schema:
   - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
   - ../../submodules/blaze-api/repository/**/*.graphql
   - ./schemas/*.graphql
+  - ../../pkg/repository/**/*.graphql
 
 skip_mod_tidy: true
 
@@ -100,27 +101,27 @@ models:
     model: github.com/geniusrabbit/blaze-api/repository/directaccesstoken/delivery/graphql.DirectAccessTokenConnection
   # Project connectors
   RTBSourceConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.RTBSourceConnection
+    model: github.com/sspserver/api/pkg/repository/rtbsource/delivery/graphql.RTBSourceConnection
   AdFormatConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.AdFormatConnection
+    model: github.com/sspserver/api/pkg/repository/adformat/delivery/graphql.AdFormatConnection
   CategoryConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.CategoryConnection
+    model: github.com/sspserver/api/pkg/repository/category/delivery/graphql.CategoryConnection
   OSConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.OSConnection
+    model: github.com/sspserver/api/pkg/repository/os/delivery/graphql.OSConnection
   BrowserConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.BrowserConnection
+    model: github.com/sspserver/api/pkg/repository/browser/delivery/graphql.BrowserConnection
   DeviceMakerConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.DeviceMakerConnection
+    model: github.com/sspserver/api/pkg/repository/devicemaker/delivery/graphql.DeviceMakerConnection
   DeviceModelConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.DeviceModelConnection
+    model: github.com/sspserver/api/pkg/repository/devicemodel/delivery/graphql.DeviceModelConnection
   ApplicationConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.ApplicationConnection
+    model: github.com/sspserver/api/pkg/repository/application/delivery/graphql.ApplicationConnection
   ZoneConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.ZoneConnection
+    model: github.com/sspserver/api/pkg/repository/zone/delivery/graphql.ZoneConnection
   StatisticAdItemConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.StatisticAdItemConnection
+    model: github.com/sspserver/api/pkg/repository/statistic/delivery/graphql.StatisticAdItemConnection
   TrafficRouterConnection:
-    model: github.com/sspserver/api/pkg/server/graphql/connectors.TrafficRouterConnection
+    model: github.com/sspserver/api/pkg/repository/trafficrouter/delivery/graphql.TrafficRouterConnection
   # Extensions
   Category:
     fields:

@@ -9,7 +9,8 @@ import (
 
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/trafficrouter"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
+	trafficrouterrepo "github.com/sspserver/api/pkg/repository/trafficrouter/repository"
+	trafficrouteruc "github.com/sspserver/api/pkg/repository/trafficrouter/usecase"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -19,8 +20,8 @@ type Resolver struct {
 
 func NewResolver() *Resolver {
 	return &Resolver{
-		uc: trafficrouter.NewUsecaseImpl(
-			trafficrouter.NewRepositoryImpl(),
+		uc: trafficrouteruc.New(
+			trafficrouterrepo.New(),
 		),
 	}
 }
@@ -34,13 +35,13 @@ func (r *Resolver) Get(ctx context.Context, id uint64) (*gqlmodels.TrafficRouter
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         tr.ID,
-		Router:           gqlmodels.FromTrafficRouterModel(tr),
+		Router:           FromTrafficRouterModel(tr),
 	}, nil
 }
 
 // List is the resolver for the trafficRouters field.
-func (r *Resolver) List(ctx context.Context, filter *gqlmodels.TrafficRouterListFilter, order []*gqlmodels.TrafficRouterListOrder, page *gqlmodels.Page) (*connectors.TrafficRouterConnection, error) {
-	return connectors.NewTrafficRouterConnection(ctx, r.uc, filter, order, page), nil
+func (r *Resolver) List(ctx context.Context, filter *gqlmodels.TrafficRouterListFilter, order []*gqlmodels.TrafficRouterListOrder, page *gqlmodels.Page) (*TrafficRouterConnection, error) {
+	return NewTrafficRouterConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // Create TrafficRouter is the resolver for the createTrafficRouter field.
@@ -56,7 +57,7 @@ func (r *Resolver) Create(ctx context.Context, input gqlmodels.TrafficRouterCrea
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         id,
-		Router:           gqlmodels.FromTrafficRouterModel(&object),
+		Router:           FromTrafficRouterModel(&object),
 	}, nil
 }
 
@@ -79,7 +80,7 @@ func (r *Resolver) Update(ctx context.Context, id uint64, input gqlmodels.Traffi
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Router:           gqlmodels.FromTrafficRouterModel(object),
+		Router:           FromTrafficRouterModel(object),
 	}, nil
 }
 
@@ -98,7 +99,7 @@ func (r *Resolver) Delete(ctx context.Context, id uint64) (*gqlmodels.TrafficRou
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         object.ID,
-		Router:           gqlmodels.FromTrafficRouterModel(object),
+		Router:           FromTrafficRouterModel(object),
 	}, nil
 }
 
@@ -111,7 +112,7 @@ func (r *Resolver) Run(ctx context.Context, id uint64, message string) (*gqlmode
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         id,
-		Router:           gqlmodels.FromTrafficRouterModel(router),
+		Router:           FromTrafficRouterModel(router),
 	}, nil
 }
 
@@ -124,6 +125,6 @@ func (r *Resolver) Pause(ctx context.Context, id uint64, message string) (*gqlmo
 	return &gqlmodels.TrafficRouterPayload{
 		ClientMutationID: requestid.Get(ctx),
 		RouterID:         id,
-		Router:           gqlmodels.FromTrafficRouterModel(router),
+		Router:           FromTrafficRouterModel(router),
 	}, nil
 }
