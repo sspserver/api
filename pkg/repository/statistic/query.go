@@ -9,7 +9,6 @@ import (
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
-	"github.com/geniusrabbit/blaze-api/model"
 	"github.com/geniusrabbit/blaze-api/repository"
 
 	"github.com/sspserver/api/pkg/models"
@@ -190,7 +189,7 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 		// query = order.PrepareQuery(query, key.String())
 		query = query.Order(clause.OrderByColumn{
 			Column: clause.Column{Name: key.String(), Raw: strings.ContainsAny(key.String(), " \t\n\r()<>=!@#$%^&*|`~{}[]'\"+-*/\\")},
-			Desc:   order == model.OrderDesc,
+			Desc:   order == models.OrderDesc,
 		})
 	}
 	return query

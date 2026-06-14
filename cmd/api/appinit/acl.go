@@ -6,7 +6,6 @@ import (
 
 	"github.com/demdxx/rbac"
 
-	"github.com/geniusrabbit/blaze-api/model"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 	"github.com/geniusrabbit/blaze-api/pkg/permissions"
 	"github.com/geniusrabbit/blaze-api/repository/account/repository"
@@ -184,17 +183,17 @@ func accountCustomCheck(ctx context.Context, resource any, perm rbac.Permission)
 	if strings.HasSuffix(perm.Name(), `.system`) || strings.HasSuffix(perm.Name(), `.all`) {
 		return true
 	}
-	account, _ := resource.(*model.Account)
+	account, _ := resource.(*models.Account)
 	user := session.User(ctx)
 	if account.IsOwnerUser(user.ID) {
 		return true
 	}
 	if account.ID > 0 {
-		repo := repository.New()
+		members := repository.NewMemberRepository()
 		if perm.MatchPermissionPattern(`*.{view|list|count}.*`) {
-			return repo.IsMember(ctx, user.ID, account.ID)
+			return members.IsMember(ctx, user.ID, account.ID)
 		}
-		return repo.IsAdmin(ctx, user.ID, account.ID)
+		return members.IsAdmin(ctx, user.ID, account.ID)
 	}
 	return false
 }

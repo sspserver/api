@@ -1,66 +1,74 @@
 package models
 
 import (
-	blzmodel "github.com/geniusrabbit/blaze-api/model"
+	accountmodels "github.com/geniusrabbit/blaze-api/repository/account/models"
+	authclientmodels "github.com/geniusrabbit/blaze-api/repository/authclient/models"
+	datmodels "github.com/geniusrabbit/blaze-api/repository/directaccesstoken/models"
+	historymodels "github.com/geniusrabbit/blaze-api/repository/historylog/models"
+	optionmodels "github.com/geniusrabbit/blaze-api/repository/option/models"
+	rbacmodels "github.com/geniusrabbit/blaze-api/repository/rbac/models"
+	socialmodels "github.com/geniusrabbit/blaze-api/repository/socialaccount/models"
+	usermodels "github.com/geniusrabbit/blaze-api/repository/user/models"
+	coremodels "github.com/geniusrabbit/blaze-api/pkg/models"
 )
 
 // API basic types
 type (
-	Account              = blzmodel.Account
-	M2MAccountMemberRole = blzmodel.M2MAccountMemberRole
-	AccountMember        = blzmodel.AccountMember
-	User                 = blzmodel.User
-	AccountSocial        = blzmodel.AccountSocial
-	AccountSocialSession = blzmodel.AccountSocialSession
-	Role                 = blzmodel.Role
-	M2MRole              = blzmodel.M2MRole
-	AuthClient           = blzmodel.AuthClient
-	AuthSession          = blzmodel.AuthSession
-	HistoryAction        = blzmodel.HistoryAction
-	Option               = blzmodel.Option
-	DirectAccessToken    = blzmodel.DirectAccessToken
-	UserPasswordReset    = blzmodel.UserPasswordReset
+	Account              = accountmodels.Account
+	M2MAccountMemberRole = accountmodels.M2MAccountMemberRole
+	AccountMember        = accountmodels.AccountMember
+	User                 = usermodels.User
+	AccountSocial        = socialmodels.AccountSocial
+	AccountSocialSession = socialmodels.AccountSocialSession
+	Role                 = rbacmodels.Role
+	M2MRole              = rbacmodels.M2MRole
+	AuthClient           = authclientmodels.AuthClient
+	AuthSession          = authclientmodels.AuthSession
+	HistoryAction        = historymodels.HistoryAction
+	Option               = optionmodels.Option
+	DirectAccessToken    = datmodels.DirectAccessToken
+	UserPasswordReset    = usermodels.UserPasswordReset
 )
 
 // OptionType type casting
-type OptionType = blzmodel.OptionType
+type OptionType = optionmodels.OptionType
 
 const (
-	UndefinedOptionType = blzmodel.UndefinedOptionType
-	UserOptionType      = blzmodel.UserOptionType
-	AccountOptionType   = blzmodel.AccountOptionType
-	SystemOptionType    = blzmodel.SystemOptionType
+	UndefinedOptionType = optionmodels.UndefinedOptionType
+	UserOptionType      = optionmodels.UserOptionType
+	AccountOptionType   = optionmodels.AccountOptionType
+	SystemOptionType    = optionmodels.SystemOptionType
 )
 
 // Order type casting
-type Order = blzmodel.Order
+type Order = coremodels.Order
 
 const (
-	OrderUndefined = blzmodel.OrderUndefined
-	OrderAsc       = blzmodel.OrderAsc
-	OrderDesc      = blzmodel.OrderDesc
+	OrderUndefined = coremodels.OrderUndefined
+	OrderAsc       = coremodels.OrderAsc
+	OrderDesc      = coremodels.OrderDesc
 )
 
 // PrepareQuery returns the query with applied order
-func OrderFromStr(s string) Order { return blzmodel.OrderFromStr(s) }
+func OrderFromStr(s string) Order { return coremodels.OrderFromStr(s) }
 
 // AvailableStatus type
-type AvailableStatus = blzmodel.AvailableStatus
+type AvailableStatus = coremodels.AvailableStatus
 
 // AvailableStatus option constants...
 const (
-	UndefinedAvailableStatus   = blzmodel.UndefinedAvailableStatus
-	AvailableAvailableStatus   = blzmodel.AvailableAvailableStatus
-	UnavailableAvailableStatus = blzmodel.UnavailableAvailableStatus
+	UndefinedAvailableStatus   = coremodels.UndefinedAvailableStatus
+	AvailableAvailableStatus   = coremodels.AvailableAvailableStatus
+	UnavailableAvailableStatus = coremodels.UnavailableAvailableStatus
 )
 
 // BlazeApproveStatus of the model
-type BlazeApproveStatus = blzmodel.ApproveStatus
+type BlazeApproveStatus = coremodels.ApproveStatus
 
 // ApproveStatus option constants...
 const (
-	UndefinedApproveStatus   = blzmodel.UndefinedApproveStatus
-	ApprovedApproveStatus    = blzmodel.ApprovedApproveStatus
-	DisapprovedApproveStatus = blzmodel.DisapprovedApproveStatus
-	BannedApproveStatus      = blzmodel.BannedApproveStatus
+	UndefinedApproveStatus   = coremodels.UndefinedApproveStatus
+	ApprovedApproveStatus    = coremodels.ApprovedApproveStatus
+	DisapprovedApproveStatus = coremodels.DisapprovedApproveStatus
+	BannedApproveStatus      = coremodels.BannedApproveStatus
 )

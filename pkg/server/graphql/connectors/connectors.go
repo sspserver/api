@@ -14,7 +14,7 @@ type AccountConnection = connectors.AccountConnection
 type RBACRoleConnection = connectors.RBACRoleConnection
 
 // AuthClientConnection implements collection accessor interface with pagination.
-type AuthClientConnection = connectors.AuthClientConnection
+type AuthClientConnection = connectors.CollectionConnection[blazegqlmodels.AuthClient, blazegqlmodels.AuthClientEdge]
 
 // UserConnection implements collection accessor interface with pagination.
 type UserConnection = connectors.UserConnection

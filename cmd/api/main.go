@@ -18,8 +18,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 
-	"github.com/geniusrabbit/blaze-api/pkg/auth"
-	"github.com/geniusrabbit/blaze-api/pkg/auth/devtoken"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/elogin/facebook"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/oauth2"
@@ -32,6 +30,8 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/permissions"
 	"github.com/geniusrabbit/blaze-api/pkg/profiler"
 	"github.com/geniusrabbit/blaze-api/pkg/zlogger"
+	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
+	accountauth "github.com/geniusrabbit/blaze-api/repository/account/authorizer"
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
 	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
 	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
@@ -80,7 +80,7 @@ func init() {
 	// Migrate database schemas
 	if *runMigrations {
 		fmt.Println("Run database migrations")
-		fatalError(migratedb.Migrate(conf.System.Storage.MasterConnect, []migratedb.MigrateSource{
+		fatalError(migratedb.Migrate(context.Background(), conf.System.Storage.MasterConnect, []migratedb.MigrateSource{
 			{
 				URI:                   []string{"file:///data/migrations/initial"},
 				SchemaMigrationsTable: "schema_migrations_initial",
@@ -136,12 +136,12 @@ func main() {
 	// Establish connect to the database
 	fmt.Println("Connect to master database")
 	masterDatabase, err := database.Connect(ctx,
-		conf.System.Storage.MasterConnect, conf.IsDebug())
+		conf.System.Storage.MasterConnect)
 	fatalError(err, "connect to master database")
 
 	fmt.Println("Connect to slave database")
 	slaveDatabase, err := database.Connect(ctx,
-		conf.System.Storage.SlaveConnect, conf.IsDebug())
+		conf.System.Storage.SlaveConnect)
 	fatalError(err, "connect to slave database")
 
 	// Register callback for history log
@@ -181,7 +181,7 @@ func main() {
 	messangerWrap := messangerWrapper(messangerObj)
 
 	// Establish connection to Statistic
-	statDatabase, err := database.Connect(ctx, conf.System.Statistic.Connect, conf.IsDebug())
+	statDatabase, err := database.Connect(ctx, conf.System.Statistic.Connect)
 	fatalError(err, "connect to statistic")
 
 	// Init statistic usecase
@@ -192,7 +192,7 @@ func main() {
 	rtbSourceUsecase := rtbsourceuc.New()
 
 	// Init Options usecase
-	optionsUsecase := optionuc.NewUsecase(optionrp.New(map[string]any{
+	optionsUsecase := optionuc.NewUsecase(optionrp.NewOptionRepository(map[string]any{
 		"ad.rtb.domain": conf.Options.RTBServerDomain,
 		"ad.template.code": prepareAdCode(conf.Options.AdTemplateCode,
 			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
@@ -219,10 +219,10 @@ func main() {
 	// Init HTTP server with GraphQL API
 	httpServer := server.HTTPServer{
 		SessionManager: appinit.SessionManager(conf.Session.CookieName, conf.Session.Lifetime),
-		Authorizers: []auth.Authorizer{
+		Authorizers: []accAuth.Authorizer{
 			jwt.NewAuthorizer(jwtProvider),
 			oauth2.NewAuthorizer(oauth2provider),
-			devtoken.NewAuthorizer(gocast.IfThen(conf.IsDebug(), &devtoken.AuthOption{
+			accountauth.NewDevTokenAuthorizer(gocast.IfThen(conf.IsDebug(), &accountauth.AuthOption{
 				DevToken:     conf.Session.DevToken,
 				DevUserID:    conf.Session.DevUserID,
 				DevAccountID: conf.Session.DevAccountID,
