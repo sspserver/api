@@ -10,13 +10,13 @@ require (
 	github.com/demdxx/rbac v0.1.8
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
-	github.com/geniusrabbit/adcorelib v0.0.0-20260525191550-8072309133bd
+	github.com/geniusrabbit/adcorelib v0.0.0-20260604171022-6146965dc8ab
 	github.com/geniusrabbit/blaze-api v0.4.0
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
 	github.com/geniusrabbit/gosql/v2 v2.3.2
 	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-faster/errors v0.7.1
-	github.com/go-playground/validator/v10 v10.30.2
+	github.com/go-playground/validator/v10 v10.30.3
 	github.com/google/uuid v1.6.0
 	github.com/opentracing-contrib/go-stdlib v1.1.1
 	github.com/opentracing/opentracing-go v1.2.0
@@ -33,7 +33,6 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.115.0 // indirect; pin to version where compute/metadata was extracted as standalone module
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/BurntSushi/toml v1.6.0 // indirect
@@ -147,7 +146,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	github.com/urfave/cli/v3 v3.9.1 // indirect
+	github.com/urfave/cli/v3 v3.10.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.71.0 // indirect
 	github.com/ydb-platform/gorm-driver v0.2.0 // indirect
@@ -199,3 +198,10 @@ require (
 	gorm.io/driver/sqlserver v1.6.3 // indirect
 	howett.net/plist v1.0.1 // indirect
 )
+
+// cloud.google.com/go v0.34.0 is pulled in transitively via:
+// ydb-go-genproto (go 1.16, eager loading) → grpc@v1.47.0 → oauth2@old → cloud@v0.34.0
+// v0.34.0 still embeds compute/metadata, conflicting with the standalone
+// cloud.google.com/go/compute/metadata module. Replace it with a version
+// where compute/metadata was already extracted as its own module.
+replace cloud.google.com/go v0.34.0 => cloud.google.com/go v0.115.0
