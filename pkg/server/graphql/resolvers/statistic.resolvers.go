@@ -32,7 +32,7 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 
 	switch obj.Key {
 	case models2.StatisticKeySourceID:
-		src, err := r.Resolver.rtbsource.Get(ctx, gocast.Uint64(obj.Value))
+		src, err := r.rtbsource.Get(ctx, gocast.Uint64(obj.Value))
 		if err != nil {
 			return "", err
 		}
@@ -41,7 +41,7 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 		}
 		return src.Source.Title, nil
 	case models2.StatisticKeyAppID:
-		app, err := r.Resolver.app.Get(ctx, gocast.Uint64(obj.Value))
+		app, err := r.app.Get(ctx, gocast.Uint64(obj.Value))
 		if err != nil {
 			return "", err
 		}
@@ -50,7 +50,7 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 		}
 		return app.Application.Title, nil
 	case models2.StatisticKeyZoneID:
-		zone, err := r.Resolver.zone.Get(ctx, gocast.Uint64(obj.Value))
+		zone, err := r.zone.Get(ctx, gocast.Uint64(obj.Value))
 		if err != nil {
 			return "", err
 		}
@@ -59,7 +59,7 @@ func (r *statisticItemKeyResolver) Text(ctx context.Context, obj *models2.Statis
 		}
 		return zone.Zone.Title, nil
 	case models2.StatisticKeyFormatID:
-		format, err := r.Resolver.adformat.Get(ctx, gocast.Uint64(obj.Value), "")
+		format, err := r.adformat.Get(ctx, gocast.Uint64(obj.Value), "")
 		if err != nil {
 			return "", err
 		}

@@ -60,7 +60,7 @@ func (r *trafficRouterResolver) RTBSources(ctx context.Context, obj *models.Traf
 	if obj.RTBSources != nil {
 		return obj.RTBSources, nil
 	}
-	list, err := r.Resolver.rtbsource.List(ctx, &models.RTBSourceListFilter{ID: obj.RTBSourceIDs}, nil, nil)
+	list, err := r.rtbsource.List(ctx, &models.RTBSourceListFilter{ID: obj.RTBSourceIDs}, nil, nil)
 	if err != nil {
 		return nil, err
 	}
