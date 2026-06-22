@@ -8,16 +8,17 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/geniusrabbit/blaze-api/pkg/auth"
-	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
-	"github.com/geniusrabbit/blaze-api/pkg/middleware"
-	"github.com/geniusrabbit/blaze-api/pkg/profiler"
-	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 	"github.com/go-chi/chi/v5"
 	"github.com/opentracing-contrib/go-stdlib/nethttp"
 	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
+
+	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
+	"github.com/geniusrabbit/blaze-api/pkg/middleware"
+	"github.com/geniusrabbit/blaze-api/pkg/profiler"
+	"github.com/geniusrabbit/blaze-api/pkg/requestid"
+	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 )
 
 type (
@@ -30,7 +31,7 @@ type HTTPServer struct {
 	RequestTimeout time.Duration
 	ContextWrap    contextWrapper
 	InitWrap       muxInitWrapper
-	Authorizers    []auth.Authorizer
+	Authorizers    []accAuth.Authorizer
 	SessionManager *scs.SessionManager
 }
 
@@ -50,7 +51,7 @@ func (s *HTTPServer) Run(ctx context.Context, address string) (err error) {
 	h := http.Handler(mux)
 
 	// Add middleware's
-	h = auth.Middelware(h, s.Authorizers...)
+	h = accAuth.Middleware(h, s.Authorizers...)
 	h = middleware.HTTPContextWrapper(h, s.ContextWrap)
 	h = middleware.HTTPSession(h, s.SessionManager)
 	h = middleware.RealIP(h)

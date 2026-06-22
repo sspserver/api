@@ -1,4 +1,4 @@
-package trafficrouter
+package repository
 
 import (
 	"context"
@@ -6,26 +6,28 @@ import (
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
-	"github.com/sspserver/api/pkg/models"
-	"github.com/sspserver/api/pkg/repository"
 	"gorm.io/gorm"
+
+	"github.com/sspserver/api/pkg/models"
+	pkgrepo "github.com/sspserver/api/pkg/repository"
+	"github.com/sspserver/api/pkg/repository/trafficrouter"
 )
 
 var (
 	ErrInvalidTrafficRouter = errors.New(`invalid traffic router`)
 )
 
-type RepositoryImpl struct {
-	repository.Repository
+type Repository struct {
+	pkgrepo.Repository
 }
 
-// NewRepositoryImpl creates a new instance of RepositoryImpl.
-func NewRepositoryImpl() *RepositoryImpl {
-	return &RepositoryImpl{}
+// New creates a new instance of Repository.
+func New() *Repository {
+	return &Repository{}
 }
 
 // Get returns the object by id
-func (rep *RepositoryImpl) Get(ctx context.Context, id uint64) (*models.TrafficRouter, error) {
+func (rep *Repository) Get(ctx context.Context, id uint64) (*models.TrafficRouter, error) {
 	obj := &models.TrafficRouter{}
 	if err := rep.Slave(ctx).First(obj, id).Error; err != nil {
 		return nil, err
@@ -34,10 +36,10 @@ func (rep *RepositoryImpl) Get(ctx context.Context, id uint64) (*models.TrafficR
 }
 
 // FetchList retrieves a list of TrafficRouter objects.
-func (rep *RepositoryImpl) FetchList(ctx context.Context, qops ...Option) ([]*models.TrafficRouter, error) {
+func (rep *Repository) FetchList(ctx context.Context, qops ...trafficrouter.Option) ([]*models.TrafficRouter, error) {
 	var list []*models.TrafficRouter
 	query := rep.Slave(ctx).Model((*models.TrafficRouter)(nil))
-	query = Options(qops).PrepareQuery(query)
+	query = trafficrouter.Options(qops).PrepareQuery(query)
 	err := query.Find(&list).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = nil
@@ -46,10 +48,10 @@ func (rep *RepositoryImpl) FetchList(ctx context.Context, qops ...Option) ([]*mo
 }
 
 // Count returns the total number of TrafficRouter objects.
-func (rep *RepositoryImpl) Count(ctx context.Context, qops ...Option) (int64, error) {
+func (rep *Repository) Count(ctx context.Context, qops ...trafficrouter.Option) (int64, error) {
 	var count int64
 	query := rep.Slave(ctx).Model((*models.TrafficRouter)(nil))
-	query = Options(qops).PrepareQuery(query)
+	query = trafficrouter.Options(qops).PrepareQuery(query)
 	err := query.Count(&count).Error
 	if err != nil {
 		return 0, err
@@ -58,7 +60,7 @@ func (rep *RepositoryImpl) Count(ctx context.Context, qops ...Option) (int64, er
 }
 
 // Create creates a new TrafficRouter object.
-func (rep *RepositoryImpl) Create(ctx context.Context, router *models.TrafficRouter) (uint64, error) {
+func (rep *Repository) Create(ctx context.Context, router *models.TrafficRouter) (uint64, error) {
 	if router == nil {
 		return 0, ErrInvalidTrafficRouter
 	}
@@ -70,7 +72,7 @@ func (rep *RepositoryImpl) Create(ctx context.Context, router *models.TrafficRou
 }
 
 // Update updates an existing TrafficRouter object.
-func (rep *RepositoryImpl) Update(ctx context.Context, id uint64, router *models.TrafficRouter) error {
+func (rep *Repository) Update(ctx context.Context, id uint64, router *models.TrafficRouter) error {
 	if router == nil {
 		return ErrInvalidTrafficRouter
 	}
@@ -82,14 +84,14 @@ func (rep *RepositoryImpl) Update(ctx context.Context, id uint64, router *models
 }
 
 // Delete deletes a TrafficRouter object by ID.
-func (rep *RepositoryImpl) Delete(ctx context.Context, id uint64) error {
+func (rep *Repository) Delete(ctx context.Context, id uint64) error {
 	return rep.Master(
 		historylog.WithPK(ctx, id),
 	).Model((*models.TrafficRouter)(nil)).Delete(`id=?`, id).Error
 }
 
 // Run sets the TrafficRouter object to active status.
-func (rep *RepositoryImpl) Run(ctx context.Context, id uint64, message string) error {
+func (rep *Repository) Run(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
 		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).
@@ -97,7 +99,7 @@ func (rep *RepositoryImpl) Run(ctx context.Context, id uint64, message string) e
 }
 
 // Pause sets the TrafficRouter object to pause status.
-func (rep *RepositoryImpl) Pause(ctx context.Context, id uint64, message string) error {
+func (rep *Repository) Pause(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
 		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).
@@ -105,7 +107,7 @@ func (rep *RepositoryImpl) Pause(ctx context.Context, id uint64, message string)
 }
 
 // Approve sets the TrafficRouter object to approved status.
-func (rep *RepositoryImpl) Approve(ctx context.Context, id uint64, message string) error {
+func (rep *Repository) Approve(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
 		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).
@@ -113,7 +115,7 @@ func (rep *RepositoryImpl) Approve(ctx context.Context, id uint64, message strin
 }
 
 // Reject sets the TrafficRouter object to rejected status.
-func (rep *RepositoryImpl) Reject(ctx context.Context, id uint64, message string) error {
+func (rep *Repository) Reject(ctx context.Context, id uint64, message string) error {
 	return rep.Master(
 		historylog.WithMessageAndPK(ctx, message, id),
 	).Model((*models.TrafficRouter)(nil)).

@@ -21,6 +21,6 @@ ENV SERVER_PROFILE_LISTEN=:8082
 
 COPY .build/${TARGETPLATFORM}/api /api
 COPY deploy/migrations /data/migrations
-COPY submodules/blaze-api/migrations/initial /data/migrations/initial
+COPY submodules/blaze-api/deploy/migrations/initial /data/migrations/initial
 
-ENTRYPOINT [ "/api"]
+ENTRYPOINT [ "/api", "server" ]

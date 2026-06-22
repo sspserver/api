@@ -3,25 +3,34 @@ package models
 import (
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/adcorelib/adtype"
-	"github.com/geniusrabbit/adcorelib/models"
+
+	adformatmodels "github.com/sspserver/api/pkg/repository/adformat/models"
+	applicationmodels "github.com/sspserver/api/pkg/repository/application/models"
+	browsermodels "github.com/sspserver/api/pkg/repository/browser/models"
+	categorymodels "github.com/sspserver/api/pkg/repository/category/models"
+	devicemodelmodels "github.com/sspserver/api/pkg/repository/devicemodel/models"
+	osmodels "github.com/sspserver/api/pkg/repository/os/models"
+	rtbsourcemodels "github.com/sspserver/api/pkg/repository/rtbsource/models"
+	trafficroutermodels "github.com/sspserver/api/pkg/repository/trafficrouter/models"
+	zonemodels "github.com/sspserver/api/pkg/repository/zone/models"
 )
 
 // Models set of types
 type (
-	Format        = models.Format
-	Application   = models.Application
-	Zone          = models.Zone
-	RTBSource     = models.RTBSource
-	TrafficRouter = models.TrafficRouter
-	Category      = models.Category
-	OS            = models.OS
-	Browser       = models.Browser
-	DeviceType    = models.DeviceType
-	DeviceMaker   = models.DeviceMaker
-	DeviceModel   = models.DeviceModel
+	Format        = adformatmodels.Format
+	Application   = applicationmodels.Application
+	Zone          = zonemodels.Zone
+	RTBSource     = rtbsourcemodels.RTBSource
+	TrafficRouter = trafficroutermodels.TrafficRouter
+	Category      = categorymodels.Category
+	OS            = osmodels.OS
+	Browser       = browsermodels.Browser
+	DeviceType    = devicemodelmodels.DeviceType
+	DeviceMaker   = devicemodelmodels.DeviceMaker
+	DeviceModel   = devicemodelmodels.DeviceModel
 )
 
-var DeviceTypeList = models.DeviceTypeList
+var DeviceTypeList = devicemodelmodels.DeviceTypeList
 
 // AdType set of types
 type (
@@ -38,7 +47,7 @@ type (
 )
 
 type (
-	RTBSourceFlags = models.RTBSourceFlags
+	RTBSourceFlags = rtbsourcemodels.RTBSourceFlags
 )
 
 // PricingModel set of types

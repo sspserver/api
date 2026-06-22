@@ -1,0 +1,103 @@
+package models
+
+import (
+	"time"
+
+	"github.com/geniusrabbit/adcorelib/admodels/types"
+	"github.com/geniusrabbit/gosql/v2"
+	"gorm.io/gorm"
+)
+
+// RTB price type
+const (
+	RTBPricePerMille = iota
+	RTBPricePerOne
+)
+
+// RTBSourceFlags holds feature flags for an RTB source
+type RTBSourceFlags struct {
+	Trace        int8 `json:"trace,omitempty"`
+	TestMode     int8 `json:"test_mode,omitempty"`
+	ErrorsIgnore int8 `json:"errors_ignore,omitempty"`
+}
+
+// RTBSource for SSP connect
+type RTBSource struct {
+	ID        uint64 `json:"id" gorm:"primaryKey"`
+	AccountID uint64 `json:"account_id,omitempty"`
+
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
+
+	Status types.ApproveStatus                `gorm:"type:ApproveStatus" json:"status,omitempty"`
+	Active types.ActiveStatus                 `gorm:"type:ActiveStatus" json:"active,omitempty"`
+	Flags  gosql.NullableJSON[RTBSourceFlags] `gorm:"type:JSONB" json:"flags,omitempty"`
+
+	Protocol      string                                `json:"protocol"`                                // rtb as default
+	MinimalWeight float64                               `json:"minimal_weight"`                          //
+	URL           string                                `json:"url"`                                     // RTB client request URL
+	Method        string                                `json:"method"`                                  // HTTP method GET, POST, etc; Default POST
+	RequestType   types.RTBRequestType                  `gorm:"type:RTBRequestType" json:"request_type"` // 1 - json, 2 - xml, 3 - ProtoBUFF, 4 - PLAINTEXT
+	Headers       gosql.NullableJSON[map[string]string] `gorm:"type:JSONB" json:"headers,omitempty"`     //
+	RPS           int                                   `json:"rps"`                                     // 0 – unlimit
+	Timeout       int                                   `json:"timeout"`                                 // In milliseconds
+
+	// Money configs
+	Accuracy              float64           `json:"accuracy,omitempty"`                             // Price accuracy for auction in percentages
+	PriceCorrectionReduce float64           `json:"price_correction_reduce,omitempty"`              // % 100_00, 10000 -> 100%, 6550 -> 65.5%
+	AuctionType           types.AuctionType `gorm:"type:AuctionType" json:"auction_type,omitempty"` // default: 0 – first price type, 1 – second price type
+
+	// Price limits
+	MinBid float64 `json:"min_bid,omitempty"` // Minimal bid value
+	MaxBid float64 `json:"max_bid,omitempty"` // Maximal bid value
+
+	// Targeting filters
+	Formats             gosql.NullableStringArray                `gorm:"type:TEXT[]" json:"formats,omitempty"`
+	InterstitialFormats gosql.NullableStringArray                `gorm:"type:TEXT[]" json:"interstitial_formats,omitempty"`
+	DeviceTypes         gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"device_types,omitempty"`
+	Devices             gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"devices,omitempty"`
+	OS                  gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"os,omitempty"`
+	Browsers            gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"browsers,omitempty"`
+	Carriers            gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"carriers,omitempty"`
+	Categories          gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"categories,omitempty"`
+	Countries           gosql.NullableStringArray                `gorm:"type:TEXT[]" json:"countries,omitempty"`
+	Languages           gosql.NullableStringArray                `gorm:"type:TEXT[]" json:"languages,omitempty"`
+	Domains             gosql.NullableStringArray                `gorm:"type:TEXT[]" json:"domains,omitempty"`
+	Applications        gosql.NullableOrderedNumberArray[uint64] `gorm:"column:apps;type:BIGINT[]" json:"apps,omitempty"`
+	Zones               gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"zones,omitempty"`
+	ExternalZones       gosql.NullableOrderedNumberArray[uint64] `gorm:"type:BIGINT[]" json:"external_zones,omitempty"`
+	Secure              int                                      `json:"secure,omitempty"`                        // 0 - any, 1 - only, 2 - exclude
+	AdBlock             int                                      `json:"adblock,omitempty" gorm:"column:adblock"` // 0 - any, 1 - only, 2 - exclude
+	PrivateBrowsing     int                                      `json:"private_browsing,omitempty"`              // 0 - any, 1 - only, 2 - exclude
+	IP                  int                                      `json:"ip,omitempty"`                            // 0 - any, 1 - IPv4, 2 - IPv6
+
+	Config gosql.NullableJSON[any] `gorm:"type:JSONB" json:"config,omitempty"`
+
+	// Time marks
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at"`
+}
+
+// TableName in database
+func (c *RTBSource) TableName() string {
+	return "rtb_source"
+}
+
+// ProtocolCode name
+func (c *RTBSource) ProtocolCode() string {
+	if len(c.Protocol) < 1 {
+		c.Protocol = "rtb"
+	}
+	return c.Protocol
+}
+
+// PriceCorrectionReduceFactor returns percent from 0 to 1 for reducing of the value
+func (c *RTBSource) PriceCorrectionReduceFactor() float64 {
+	return c.PriceCorrectionReduce / 100.
+}
+
+// RBACResourceName returns the name of the resource for the RBAC
+func (c *RTBSource) RBACResourceName() string {
+	return "rtb_source"
+}

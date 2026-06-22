@@ -1,27 +1,29 @@
-package trafficrouter
+package usecase
 
 import (
 	"context"
 
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
+
 	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/trafficrouter"
 	"github.com/sspserver/api/pkg/sysops"
 )
 
-type UsecaseImpl struct {
-	repo Repository
+type Usecase struct {
+	repo trafficrouter.Repository
 }
 
-// NewUsecaseImpl creates a new instance of UsecaseImpl.
-func NewUsecaseImpl(repo Repository) *UsecaseImpl {
-	return &UsecaseImpl{
+// New creates a new instance of Usecase.
+func New(repo trafficrouter.Repository) *Usecase {
+	return &Usecase{
 		repo: repo,
 	}
 }
 
 // Get returns the object by id
-func (uc *UsecaseImpl) Get(ctx context.Context, id uint64) (*models.TrafficRouter, error) {
+func (uc *Usecase) Get(ctx context.Context, id uint64) (*models.TrafficRouter, error) {
 	src, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return nil, err
@@ -33,11 +35,11 @@ func (uc *UsecaseImpl) Get(ctx context.Context, id uint64) (*models.TrafficRoute
 }
 
 // FetchList retrieves a list of TrafficRouter objects.
-func (uc *UsecaseImpl) FetchList(ctx context.Context, qops ...Option) ([]*models.TrafficRouter, error) {
+func (uc *Usecase) FetchList(ctx context.Context, qops ...trafficrouter.Option) ([]*models.TrafficRouter, error) {
 	if !acl.HaveAccessList(ctx, &models.TrafficRouter{}) {
 		accountID := session.Account(ctx).ID
 		if acl.HaveAccessList(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = Options(qops).With(&Filter{AccountID: accountID})
+			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
 		} else {
 			return nil, acl.ErrNoPermissions.WithMessage("fetch list")
 		}
@@ -46,11 +48,11 @@ func (uc *UsecaseImpl) FetchList(ctx context.Context, qops ...Option) ([]*models
 }
 
 // Count returns the total number of TrafficRouter objects.
-func (uc *UsecaseImpl) Count(ctx context.Context, qops ...Option) (int64, error) {
+func (uc *Usecase) Count(ctx context.Context, qops ...trafficrouter.Option) (int64, error) {
 	if !acl.HaveAccessCount(ctx, &models.TrafficRouter{}) {
 		accountID := session.Account(ctx).ID
 		if acl.HaveAccessCount(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = Options(qops).With(&Filter{AccountID: accountID})
+			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
 		} else {
 			return 0, acl.ErrNoPermissions.WithMessage("count")
 		}
@@ -59,7 +61,7 @@ func (uc *UsecaseImpl) Count(ctx context.Context, qops ...Option) (int64, error)
 }
 
 // Create creates a new TrafficRouter object.
-func (uc *UsecaseImpl) Create(ctx context.Context, router *models.TrafficRouter) (uint64, error) {
+func (uc *Usecase) Create(ctx context.Context, router *models.TrafficRouter) (uint64, error) {
 	if router.AccountID == 0 {
 		router.AccountID = session.Account(ctx).ID
 	}
@@ -73,7 +75,7 @@ func (uc *UsecaseImpl) Create(ctx context.Context, router *models.TrafficRouter)
 }
 
 // Update updates an existing TrafficRouter object.
-func (uc *UsecaseImpl) Update(ctx context.Context, id uint64, router *models.TrafficRouter) error {
+func (uc *Usecase) Update(ctx context.Context, id uint64, router *models.TrafficRouter) error {
 	routerObj := *router
 	routerObj.ID = id
 	if !acl.HaveAccessUpdate(ctx, routerObj) {
@@ -83,7 +85,7 @@ func (uc *UsecaseImpl) Update(ctx context.Context, id uint64, router *models.Tra
 }
 
 // Delete removes the object by id
-func (uc *UsecaseImpl) Delete(ctx context.Context, id uint64) error {
+func (uc *Usecase) Delete(ctx context.Context, id uint64) error {
 	router, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return err
@@ -95,7 +97,7 @@ func (uc *UsecaseImpl) Delete(ctx context.Context, id uint64) error {
 }
 
 // Run starts the router by id
-func (uc *UsecaseImpl) Run(ctx context.Context, id uint64, message string) error {
+func (uc *Usecase) Run(ctx context.Context, id uint64, message string) error {
 	router, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return err
@@ -107,7 +109,7 @@ func (uc *UsecaseImpl) Run(ctx context.Context, id uint64, message string) error
 }
 
 // Pause stops the router by id
-func (uc *UsecaseImpl) Pause(ctx context.Context, id uint64, message string) error {
+func (uc *Usecase) Pause(ctx context.Context, id uint64, message string) error {
 	router, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return err
@@ -119,7 +121,7 @@ func (uc *UsecaseImpl) Pause(ctx context.Context, id uint64, message string) err
 }
 
 // Approve approves the router by id
-func (uc *UsecaseImpl) Approve(ctx context.Context, id uint64, message string) error {
+func (uc *Usecase) Approve(ctx context.Context, id uint64, message string) error {
 	router, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return err
@@ -131,7 +133,7 @@ func (uc *UsecaseImpl) Approve(ctx context.Context, id uint64, message string) e
 }
 
 // Reject rejects the router by id
-func (uc *UsecaseImpl) Reject(ctx context.Context, id uint64, message string) error {
+func (uc *Usecase) Reject(ctx context.Context, id uint64, message string) error {
 	router, err := uc.repo.Get(ctx, id)
 	if err != nil {
 		return err

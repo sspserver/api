@@ -4,49 +4,21 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
-	"strings"
 
-	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/goconfig"
-	"github.com/demdxx/sendmsg"
-	"github.com/demdxx/sendmsg/sender/email"
-	"github.com/demdxx/sendmsg/sender/wrapper"
-	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 
-	"github.com/geniusrabbit/blaze-api/pkg/auth"
-	"github.com/geniusrabbit/blaze-api/pkg/auth/devtoken"
-	"github.com/geniusrabbit/blaze-api/pkg/auth/elogin/facebook"
-	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
-	"github.com/geniusrabbit/blaze-api/pkg/auth/oauth2"
-	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
+	"github.com/geniusrabbit/blaze-api/pkg/appcmd"
 	"github.com/geniusrabbit/blaze-api/pkg/context/version"
-	"github.com/geniusrabbit/blaze-api/pkg/database"
 	_ "github.com/geniusrabbit/blaze-api/pkg/gopentracing"
-	"github.com/geniusrabbit/blaze-api/pkg/messanger"
 	"github.com/geniusrabbit/blaze-api/pkg/migratedb"
-	"github.com/geniusrabbit/blaze-api/pkg/permissions"
-	"github.com/geniusrabbit/blaze-api/pkg/profiler"
 	"github.com/geniusrabbit/blaze-api/pkg/zlogger"
-	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
-	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
-	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
-	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
 
 	"github.com/sspserver/api/cmd/api/appcontext"
-	"github.com/sspserver/api/cmd/api/appinit"
-	"github.com/sspserver/api/cmd/api/server"
-	rtbsourceuc "github.com/sspserver/api/pkg/repository/rtbsource/usecase"
-	statisticrc "github.com/sspserver/api/pkg/repository/statistic/repository"
-	statisticuc "github.com/sspserver/api/pkg/repository/statistic/usecase"
-	"github.com/sspserver/api/pkg/server/graphql"
-	"github.com/sspserver/api/pkg/server/graphql/resolvers"
+	"github.com/sspserver/api/cmd/api/commands"
 	"github.com/sspserver/api/pkg/sysops"
-	"github.com/sspserver/api/private/emails"
 )
 
 var (
@@ -80,7 +52,7 @@ func init() {
 	// Migrate database schemas
 	if *runMigrations {
 		fmt.Println("Run database migrations")
-		fatalError(migratedb.Migrate(conf.System.Storage.MasterConnect, []migratedb.MigrateSource{
+		fatalError(migratedb.Migrate(context.Background(), conf.System.Storage.MasterConnect, []migratedb.MigrateSource{
 			{
 				URI:                   []string{"file:///data/migrations/initial"},
 				SchemaMigrationsTable: "schema_migrations_initial",
@@ -97,22 +69,6 @@ func init() {
 	}
 }
 
-func initZapLogger() *zap.Logger {
-	conf := &appcontext.Config
-	loggerObj, err := zlogger.New(conf.ServiceName, conf.LogEncoder,
-		conf.LogLevel, conf.LogAddr, zap.Fields(
-			zap.String("commit", buildCommit),
-			zap.String("version", buildVersion),
-			zap.String("build_date", buildDate),
-		))
-	fatalError(err, "init logger")
-
-	// Register global logger
-	zap.ReplaceGlobals(loggerObj)
-
-	return loggerObj
-}
-
 func main() {
 	conf := &appcontext.Config
 
@@ -120,164 +76,52 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
-	ctx = version.WithContext(ctx, &version.Version{
-		Version: buildVersion,
-		Commit:  buildCommit,
-		Date:    buildDate,
-	})
+	// Init logger for startup
+	loggerObj, err := zlogger.New(conf.ServiceName, conf.LogEncoder,
+		conf.LogLevel, conf.LogAddr, zap.Fields(
+			zap.String("commit", buildCommit),
+			zap.String("version", buildVersion),
+			zap.String("build_date", buildDate),
+		))
+	fatalError(err, "init logger")
+	zap.ReplaceGlobals(loggerObj)
 
-	// Init logger object
-	loggerObj := initZapLogger()
-
-	// Profiling server of collector
-	profiler.Run(conf.Server.Profile.Mode,
-		conf.Server.Profile.Listen, loggerObj, true)
-
-	// Establish connect to the database
-	fmt.Println("Connect to master database")
-	masterDatabase, err := database.Connect(ctx,
-		conf.System.Storage.MasterConnect, conf.IsDebug())
-	fatalError(err, "connect to master database")
-
-	fmt.Println("Connect to slave database")
-	slaveDatabase, err := database.Connect(ctx,
-		conf.System.Storage.SlaveConnect, conf.IsDebug())
-	fatalError(err, "connect to slave database")
-
-	// Register callback for history log
-	fatalError(gormlog.Register(masterDatabase), "register history log callback")
-
-	// Init permission manager
-	permissionManager := permissions.NewManager(masterDatabase, conf.Permissions.RoleCacheLifetime)
-	appinit.InitModelPermissions(permissionManager)
-
-	// Init OAuth2 provider
-	oauth2provider, jwtProvider := appinit.Auth(ctx, conf, masterDatabase)
-
-	// Init messanger
-	messangerObj := sendmsg.NewDefaultMessanger(emails.Templates())
-	messangerObj.RegisterSender("log", wrapper.Sender(func(ctx context.Context, message sendmsg.Message) error {
-		loggerObj.Info("Send message", zap.Any("message", message))
-		return nil
-	}))
-
-	// Init email messanger if enabled
-	if emCnf := &conf.Messanger.Email; emCnf.URL != "" && emCnf.APIKey != "" && emCnf.FromAddress != "" {
-		email, err := email.New(email.WithConfig(emCnf.Mailer, &email.Config{
-			URL:         emCnf.URL,
-			APIKey:      emCnf.APIKey,
-			Domain:      emCnf.Domain,
-			FromAddress: emCnf.FromAddress,
-			FromName:    emCnf.FromName,
-			Password:    emCnf.Password,
-			Port:        emCnf.Port,
-		}), email.WithVars(map[string]any{
-			"org": &conf.Messanger.EmailDefaults,
-		}))
-		fatalError(err, "init email messanger")
-		messangerObj.RegisterSender("email", email)
-	}
-
-	messangerWrap := messangerWrapper(messangerObj)
-
-	// Establish connection to Statistic
-	statDatabase, err := database.Connect(ctx, conf.System.Statistic.Connect, conf.IsDebug())
-	fatalError(err, "connect to statistic")
-
-	// Init statistic usecase
-	statisticUsecase := statisticuc.NewUsecase(
-		statisticrc.NewRepository(statDatabase))
-
-	// Init RTB Source usecase
-	rtbSourceUsecase := rtbsourceuc.New()
-
-	// Init Options usecase
-	optionsUsecase := optionuc.NewUsecase(optionrp.New(map[string]any{
-		"ad.rtb.domain": conf.Options.RTBServerDomain,
-		"ad.template.code": prepareAdCode(conf.Options.AdTemplateCode,
-			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
-		"ad.direct.url": prepareAdCode(conf.Options.AdDirectTemplateURL,
-			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
-		"ad.direct.code": prepareAdCode(conf.Options.AdDirectTemplateCode,
-			conf.Options.JSSDKDomain, conf.Options.RTBServerDomain),
-	}))
-
-	// Init system options
+	// Set build-time system options
 	sysops.Set(`system.version`, buildVersion)
 	sysops.Set(`system.commit`, buildCommit)
 	sysops.Set(`system.build_date`, buildDate)
-	sysops.Set(`system.hostname`, conf.Hostname)
-	sysops.Set(`system.datacenter`, conf.DatacenterName)
-	sysops.Set(`logic.crud.default.approval`, true)
 
-	// Prepare context
-	ctx = ctxlogger.WithLogger(ctx, loggerObj)
-	ctx = database.WithDatabase(ctx, masterDatabase, slaveDatabase)
-	ctx = permissions.WithManager(ctx, permissionManager)
-	ctx = messanger.WithMessanger(ctx, messangerWrap)
-
-	// Init HTTP server with GraphQL API
-	httpServer := server.HTTPServer{
-		SessionManager: appinit.SessionManager(conf.Session.CookieName, conf.Session.Lifetime),
-		Authorizers: []auth.Authorizer{
-			jwt.NewAuthorizer(jwtProvider),
-			oauth2.NewAuthorizer(oauth2provider),
-			devtoken.NewAuthorizer(gocast.IfThen(conf.IsDebug(), &devtoken.AuthOption{
-				DevToken:     conf.Session.DevToken,
-				DevUserID:    conf.Session.DevUserID,
-				DevAccountID: conf.Session.DevAccountID,
-			}, nil)),
+	// Application with command list
+	app := &appcmd.App{
+		Name:        "api",
+		Description: "SSP API - Supply Side Platform API Server",
+		Version:     buildVersion,
+		BuildCommit: buildCommit,
+		BuildDate:   buildDate,
+		CmdList: appcmd.ICommands{
+			commands.APICommand,
 		},
-		ContextWrap: func(ctx context.Context) context.Context {
-			ctx = ctxlogger.WithLogger(ctx, loggerObj)
-			ctx = database.WithDatabase(ctx, masterDatabase, slaveDatabase)
-			ctx = permissions.WithManager(ctx, permissionManager)
-			ctx = messanger.WithMessanger(ctx, messangerWrap)
-			return ctx
-		},
-		InitWrap: func(mux *chi.Mux) {
-			// Register graphql playground with basic auth
-			mux.Handle("/playground", playground.Handler("Query console", "/graphql"))
+		BeforeCommandRun: func(ctx context.Context, cmd appcmd.ICommand) (context.Context, error) {
+			fmt.Println()
+			fmt.Println("░█ Log Level:\x1b[32m", conf.LogLevel, "\x1b[0m")
+			fmt.Println("░█ Run command:\x1b[31m", cmd.Cmd(), "\x1b[0m")
 
-			// Init GraphQL API
-			mux.Handle("/graphql", graphql.GraphQL(&resolvers.Usecases{
-				Stats:     statisticUsecase,
-				RTBSource: rtbSourceUsecase,
-				Options:   optionsUsecase,
-			}, jwtProvider))
+			// Register version information
+			ctx = version.WithContext(ctx, &version.Version{
+				Version: buildVersion,
+				Commit:  buildCommit,
+				Date:    buildDate,
+			})
 
-			// Register OAuth2 providers
-			if conf.SocialAuth.Facebook.IsValid() {
-				oa2conf := conf.SocialAuth.Facebook.OAuth2Config("facebook")
-				mux.Handle("/auth/facebook/*",
-					rest.NewWrapper(facebook.NewFacebookConfig(oa2conf), rest.WithSessionProvider(jwtProvider)).
-						HandleWrapper("/auth/facebook"),
-				)
-			}
+			return ctx, nil
 		},
 	}
-	fatalError(httpServer.Run(ctx, conf.Server.HTTP.Listen), "HTTP server")
+
+	fatalError(app.Run(ctx, os.Args), "application run")
 }
 
 func fatalError(err error, msgs ...any) {
 	if err != nil {
-		log.Fatalln(append(msgs, err)...)
+		zap.L().Fatal(fmt.Sprint(msgs...), zap.Error(err))
 	}
-}
-
-func messangerWrapper(m sendmsg.Messanger) messanger.Messanger {
-	return messanger.MessangerFunc(func(ctx context.Context, name string, recipients []string, vars map[string]any) error {
-		return m.Send(ctx,
-			sendmsg.WithTemplate(name),
-			sendmsg.WithRecipients(recipients, nil, nil),
-			sendmsg.WithVars(vars))
-	})
-}
-
-func prepareAdCode(templateCode, jssdkDomain, adServerDomain string) string {
-	return strings.NewReplacer(
-		"\\n", "\n",
-		"{JSSDK_DOMAIN}", jssdkDomain,
-		"{ADSERVER_DOMAIN}", adServerDomain,
-	).Replace(templateCode)
 }
