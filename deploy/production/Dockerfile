@@ -23,4 +23,4 @@ COPY .build/${TARGETPLATFORM}/api /api
 COPY deploy/migrations /data/migrations
 COPY submodules/blaze-api/deploy/migrations/initial /data/migrations/initial
 
-ENTRYPOINT [ "/api"]
+ENTRYPOINT [ "/api", "server" ]

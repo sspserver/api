@@ -8,16 +8,17 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
-	"github.com/geniusrabbit/blaze-api/pkg/middleware"
-	"github.com/geniusrabbit/blaze-api/pkg/profiler"
-	"github.com/geniusrabbit/blaze-api/pkg/requestid"
-	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 	"github.com/go-chi/chi/v5"
 	"github.com/opentracing-contrib/go-stdlib/nethttp"
 	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
+
+	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
+	"github.com/geniusrabbit/blaze-api/pkg/middleware"
+	"github.com/geniusrabbit/blaze-api/pkg/profiler"
+	"github.com/geniusrabbit/blaze-api/pkg/requestid"
+	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 )
 
 type (
