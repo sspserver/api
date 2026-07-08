@@ -7,11 +7,18 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
+
+// Edges is the resolver for the edges field.
+func (r *applicationConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
 
 // CreateApplication is the resolver for the createApplication field.
 func (r *mutationResolver) CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error) {
@@ -54,6 +61,13 @@ func (r *queryResolver) Application(ctx context.Context, id uint64) (*models.App
 }
 
 // ListApplications is the resolver for the listApplications field.
-func (r *queryResolver) ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Application, models.ApplicationEdge], error) {
+func (r *queryResolver) ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Application], error) {
 	return r.app.List(ctx, filter, order, page)
 }
+
+// ApplicationConnection returns generated.ApplicationConnectionResolver implementation.
+func (r *Resolver) ApplicationConnection() generated.ApplicationConnectionResolver {
+	return &applicationConnectionResolver{r}
+}
+
+type applicationConnectionResolver struct{ *Resolver }

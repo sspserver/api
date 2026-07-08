@@ -38,7 +38,7 @@ func (u *Usecase) Get(ctx context.Context, id uint64) (*models.RTBSource, error)
 
 func (u *Usecase) FetchList(ctx context.Context, qops ...rtbsource.Option) ([]*models.RTBSource, error) {
 	if !acl.HaveAccessList(ctx, &models.RTBSource{}) {
-		accountID := session.Account(ctx).ID
+		accountID := session.AccountID(ctx)
 		if acl.HaveAccessList(ctx, &models.RTBSource{AccountID: accountID}) {
 			qops = rtbsource.Options(qops).With(&rtbsource.Filter{
 				AccountID: accountID,
@@ -52,7 +52,7 @@ func (u *Usecase) FetchList(ctx context.Context, qops ...rtbsource.Option) ([]*m
 
 func (u *Usecase) Count(ctx context.Context, qops ...rtbsource.Option) (int64, error) {
 	if !acl.HaveAccessCount(ctx, &models.RTBSource{}) {
-		accountID := session.Account(ctx).ID
+		accountID := session.AccountID(ctx)
 		if acl.HaveAccessCount(ctx, &models.RTBSource{AccountID: accountID}) {
 			qops = rtbsource.Options(qops).With(&rtbsource.Filter{
 				AccountID: accountID,
@@ -66,7 +66,7 @@ func (u *Usecase) Count(ctx context.Context, qops ...rtbsource.Option) (int64, e
 
 func (u *Usecase) Create(ctx context.Context, source *models.RTBSource) (uint64, error) {
 	if source.AccountID == 0 {
-		source.AccountID = session.Account(ctx).ID
+		source.AccountID = session.AccountID(ctx)
 	}
 	if !acl.HaveAccessCreate(ctx, source) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")

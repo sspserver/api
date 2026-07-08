@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 
@@ -12,7 +11,7 @@ import (
 )
 
 // ApplicationConnection implements collection accessor interface with pagination.
-type ApplicationConnection = connectors.CollectionConnection[gqlmodels.Application, gqlmodels.ApplicationEdge]
+type ApplicationConnection = connectors.CollectionConnection[*gqlmodels.Application]
 
 // NewApplicationConnection based on query object
 func NewApplicationConnection(
@@ -22,19 +21,13 @@ func NewApplicationConnection(
 	order *gqlmodels.ApplicationListOrder,
 	page *models.Page,
 ) *ApplicationConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Application, gqlmodels.ApplicationEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Application]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Application, error) {
 			list, err := applicationAccessor.FetchList(ctx, filter.Filter(), order.Order(), page.Pagination())
 			return FromApplicationModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return applicationAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.Application) *gqlmodels.ApplicationEdge {
-			return &gqlmodels.ApplicationEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

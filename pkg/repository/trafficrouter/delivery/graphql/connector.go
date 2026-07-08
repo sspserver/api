@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -13,7 +12,7 @@ import (
 )
 
 // TrafficRouterConnection implements collection accessor interface with pagination.
-type TrafficRouterConnection = connectors.CollectionConnection[gqlmodels.TrafficRouter, gqlmodels.TrafficRouterEdge]
+type TrafficRouterConnection = connectors.CollectionConnection[*gqlmodels.TrafficRouter]
 
 // NewTrafficRouterConnection based on query object
 func NewTrafficRouterConnection(
@@ -23,7 +22,7 @@ func NewTrafficRouterConnection(
 	order []*gqlmodels.TrafficRouterListOrder,
 	page *models.Page,
 ) *TrafficRouterConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.TrafficRouter, gqlmodels.TrafficRouterEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.TrafficRouter]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.TrafficRouter, error) {
 			newOrder := xtypes.SliceReduce(order,
 				func(val *gqlmodels.TrafficRouterListOrder, res *trafficrouter.ListOrder) { val.Fill(res) })
@@ -32,12 +31,6 @@ func NewTrafficRouterConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return trafficRouterAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.TrafficRouter) *gqlmodels.TrafficRouterEdge {
-			return &gqlmodels.TrafficRouterEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

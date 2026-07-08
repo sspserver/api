@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 
@@ -12,7 +11,7 @@ import (
 )
 
 // ZoneConnection implements collection accessor interface with pagination.
-type ZoneConnection = connectors.CollectionConnection[gqlmodels.Zone, gqlmodels.ZoneEdge]
+type ZoneConnection = connectors.CollectionConnection[*gqlmodels.Zone]
 
 // NewZoneConnection based on query object
 func NewZoneConnection(
@@ -22,19 +21,13 @@ func NewZoneConnection(
 	order *gqlmodels.ZoneListOrder,
 	page *models.Page,
 ) *ZoneConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Zone, gqlmodels.ZoneEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Zone]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Zone, error) {
 			list, err := zoneAccessor.FetchList(ctx, filter.Filter(), order.Order(), page.Pagination())
 			return FromZoneModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return zoneAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.Zone) *gqlmodels.ZoneEdge {
-			return &gqlmodels.ZoneEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

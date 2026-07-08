@@ -11,7 +11,7 @@ import (
 )
 
 // StatisticAdItemConnection implements collection accessor interface with pagination.
-type StatisticAdItemConnection = connectors.CollectionConnection[gqlmodels.StatisticAdItem, struct{}]
+type StatisticAdItemConnection = connectors.CollectionConnection[*gqlmodels.StatisticAdItem]
 
 // NewStatisticAdItemConnection based on query object
 func NewStatisticAdItemConnection(
@@ -22,7 +22,7 @@ func NewStatisticAdItemConnection(
 	order []*gqlmodels.StatisticAdKeyOrder,
 	page *models.Page,
 ) *StatisticAdItemConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.StatisticAdItem, struct{}]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.StatisticAdItem]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.StatisticAdItem, error) {
 			list, err := statisticAccessor.Statistic(ctx,
 				filter.Filter(), StatisticGroup(group),
@@ -31,10 +31,6 @@ func NewStatisticAdItemConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return statisticAccessor.Count(ctx, filter.Filter(), StatisticGroup(group))
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.StatisticAdItem) *struct{} {
-			var edge struct{}
-			return &edge
 		},
 	}, page)
 }

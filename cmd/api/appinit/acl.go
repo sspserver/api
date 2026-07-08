@@ -183,17 +183,19 @@ func accountCustomCheck(ctx context.Context, resource any, perm rbac.Permission)
 	if strings.HasSuffix(perm.Name(), `.system`) || strings.HasSuffix(perm.Name(), `.all`) {
 		return true
 	}
-	account, _ := resource.(*models.Account)
+	accountObj, _ := resource.(*models.Account)
 	user := session.User(ctx)
-	if account.IsOwnerUser(user.ID) {
+	if accountObj.IsOwnerUser(user.GetID()) {
 		return true
 	}
-	if account.ID > 0 {
-		members := repository.NewMemberRepository()
+	if accountObj.ID > 0 {
+		members := repository.NewMemberRepositoryFor(func() *models.AccountMember {
+			return &models.AccountMember{}
+		})
 		if perm.MatchPermissionPattern(`*.{view|list|count}.*`) {
-			return members.IsMember(ctx, user.ID, account.ID)
+			return members.IsMember(ctx, user.GetID(), accountObj.ID)
 		}
-		return members.IsAdmin(ctx, user.ID, account.ID)
+		return members.IsAdmin(ctx, user.GetID(), accountObj.ID)
 	}
 	return false
 }

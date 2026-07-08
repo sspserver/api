@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -13,7 +12,7 @@ import (
 )
 
 // RTBSourceConnection implements collection accessor interface with pagination.
-type RTBSourceConnection = connectors.CollectionConnection[gqlmodels.RTBSource, gqlmodels.RTBSourceEdge]
+type RTBSourceConnection = connectors.CollectionConnection[*gqlmodels.RTBSource]
 
 // NewRTBSourceConnection based on query object
 func NewRTBSourceConnection(
@@ -23,7 +22,7 @@ func NewRTBSourceConnection(
 	order []*gqlmodels.RTBSourceListOrder,
 	page *models.Page,
 ) *RTBSourceConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.RTBSource, gqlmodels.RTBSourceEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.RTBSource]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.RTBSource, error) {
 			newOrder := xtypes.SliceReduce(order,
 				func(val *gqlmodels.RTBSourceListOrder, res *rtbsource.ListOrder) { val.Fill(res) })
@@ -32,12 +31,6 @@ func NewRTBSourceConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return rtbSourceAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.RTBSource) *gqlmodels.RTBSourceEdge {
-			return &gqlmodels.RTBSourceEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

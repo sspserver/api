@@ -1,6 +1,7 @@
 package models
 
 import (
+	coremodels "github.com/geniusrabbit/blaze-api/pkg/models"
 	accountmodels "github.com/geniusrabbit/blaze-api/repository/account/models"
 	authclientmodels "github.com/geniusrabbit/blaze-api/repository/authclient/models"
 	datmodels "github.com/geniusrabbit/blaze-api/repository/directaccesstoken/models"
@@ -9,15 +10,11 @@ import (
 	rbacmodels "github.com/geniusrabbit/blaze-api/repository/rbac/models"
 	socialmodels "github.com/geniusrabbit/blaze-api/repository/socialaccount/models"
 	usermodels "github.com/geniusrabbit/blaze-api/repository/user/models"
-	coremodels "github.com/geniusrabbit/blaze-api/pkg/models"
 )
 
 // API basic types
 type (
-	Account              = accountmodels.Account
 	M2MAccountMemberRole = accountmodels.M2MAccountMemberRole
-	AccountMember        = accountmodels.AccountMember
-	User                 = usermodels.User
 	AccountSocial        = socialmodels.AccountSocial
 	AccountSocialSession = socialmodels.AccountSocialSession
 	Role                 = rbacmodels.Role

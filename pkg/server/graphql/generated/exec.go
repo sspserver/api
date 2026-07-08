@@ -33,14 +33,35 @@ func NewExecutableSchema(cfg Config) graphql.ExecutableSchema {
 type Config = graphql.Config[ResolverRoot, DirectiveRoot, ComplexityRoot]
 
 type ResolverRoot interface {
+	AccountConnection() AccountConnectionResolver
+	AdFormatConnection() AdFormatConnectionResolver
+	ApplicationConnection() ApplicationConnectionResolver
+	AuthClientConnection() AuthClientConnectionResolver
+	BrowserConnection() BrowserConnectionResolver
 	Category() CategoryResolver
+	CategoryConnection() CategoryConnectionResolver
+	DeviceMakerConnection() DeviceMakerConnectionResolver
 	DeviceModel() DeviceModelResolver
+	DeviceModelConnection() DeviceModelConnectionResolver
+	DirectAccessTokenConnection() DirectAccessTokenConnectionResolver
+	HistoryActionConnection() HistoryActionConnectionResolver
+	Member() MemberResolver
+	MemberConnection() MemberConnectionResolver
 	Mutation() MutationResolver
 	OS() OSResolver
+	OSConnection() OSConnectionResolver
+	OptionConnection() OptionConnectionResolver
 	Query() QueryResolver
+	RBACRoleConnection() RBACRoleConnectionResolver
 	RTBSource() RTBSourceResolver
+	RTBSourceConnection() RTBSourceConnectionResolver
+	SocialAccountConnection() SocialAccountConnectionResolver
 	StatisticItemKey() StatisticItemKeyResolver
 	TrafficRouter() TrafficRouterResolver
+	TrafficRouterConnection() TrafficRouterConnectionResolver
+	UserConnection() UserConnectionResolver
+	ZoneConnection() ZoneConnectionResolver
+	InviteMemberInput() InviteMemberInputResolver
 }
 
 type DirectiveRoot struct {
@@ -514,7 +535,7 @@ type ComplexityRoot struct {
 		CreateRTBSource           func(childComplexity int, input models.RTBSourceCreateInput) int
 		CreateRole                func(childComplexity int, input models1.RBACRoleInput) int
 		CreateTrafficRouter       func(childComplexity int, input models.TrafficRouterCreateInput) int
-		CreateUser                func(childComplexity int, input models1.UserInput) int
+		CreateUser                func(childComplexity int, input models.UserInput) int
 		CreateZone                func(childComplexity int, input models.ZoneCreateInput) int
 		DeactivateZone            func(childComplexity int, id uint64, msg *string) int
 		DeleteApplication         func(childComplexity int, id uint64, msg *string) int
@@ -538,7 +559,7 @@ type ComplexityRoot struct {
 		PauseRTBSource            func(childComplexity int, id uint64) int
 		PauseTrafficRouter        func(childComplexity int, id uint64, msg string) int
 		Poke                      func(childComplexity int) int
-		RegisterAccount           func(childComplexity int, input models1.AccountCreateInput) int
+		RegisterAccount           func(childComplexity int, input models.AccountCreateInput) int
 		RejectAccount             func(childComplexity int, id uint64, msg string) int
 		RejectAccountMember       func(childComplexity int, memberID uint64, msg string) int
 		RejectApplication         func(childComplexity int, id uint64, msg *string) int
@@ -553,7 +574,7 @@ type ComplexityRoot struct {
 		RunTrafficRouter          func(childComplexity int, id uint64, msg string) int
 		SetOption                 func(childComplexity int, name string, value *types.NullableJSON, typeArg models1.OptionType, targetID uint64) int
 		SwitchAccount             func(childComplexity int, id uint64) int
-		UpdateAccount             func(childComplexity int, id uint64, input models1.AccountInput) int
+		UpdateAccount             func(childComplexity int, id uint64, input models.AccountInput) int
 		UpdateAccountMember       func(childComplexity int, memberID uint64, member models1.MemberInput) int
 		UpdateApplication         func(childComplexity int, id uint64, input models.ApplicationUpdateInput) int
 		UpdateAuthClient          func(childComplexity int, id string, input models1.AuthClientUpdateInput) int
@@ -566,7 +587,7 @@ type ComplexityRoot struct {
 		UpdateRTBSource           func(childComplexity int, id uint64, input models.RTBSourceUpdateInput) int
 		UpdateRole                func(childComplexity int, id uint64, input models1.RBACRoleInput) int
 		UpdateTrafficRouter       func(childComplexity int, id uint64, input models.TrafficRouterUpdateInput) int
-		UpdateUser                func(childComplexity int, id uint64, input models1.UserInput) int
+		UpdateUser                func(childComplexity int, id uint64, input models.UserInput) int
 		UpdateUserPassword        func(childComplexity int, token string, email string, password string) int
 		UpdateZone                func(childComplexity int, id uint64, input models.ZoneUpdateInput) int
 	}
@@ -682,7 +703,7 @@ type ComplexityRoot struct {
 		GetDirectAccessToken           func(childComplexity int, id uint64) int
 		Languages                      func(childComplexity int, filter *models.LangListFilter) int
 		ListAccountRolesAndPermissions func(childComplexity int, accountID uint64, order []*models1.RBACRoleListOrder) int
-		ListAccounts                   func(childComplexity int, filter *models1.AccountListFilter, order []*models1.AccountListOrder, page *models1.Page) int
+		ListAccounts                   func(childComplexity int, filter *models.AccountListFilter, order []*models.AccountListOrder, page *models1.Page) int
 		ListAgreements                 func(childComplexity int, accepted *bool) int
 		ListApplications               func(childComplexity int, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) int
 		ListAuthClients                func(childComplexity int, filter *models1.AuthClientListFilter, order []*models1.AuthClientListOrder, page *models1.Page) int
@@ -703,7 +724,7 @@ type ComplexityRoot struct {
 		ListRoles                      func(childComplexity int, filter *models1.RBACRoleListFilter, order []*models1.RBACRoleListOrder, page *models1.Page) int
 		ListSocialAccounts             func(childComplexity int, filter *models1.SocialAccountListFilter, order []*models1.SocialAccountListOrder, page *models1.Page) int
 		ListTrafficRouters             func(childComplexity int, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) int
-		ListUsers                      func(childComplexity int, filter *models1.UserListFilter, order []*models1.UserListOrder, page *models1.Page) int
+		ListUsers                      func(childComplexity int, filter *models.UserListFilter, order []*models.UserListOrder, page *models1.Page) int
 		ListZones                      func(childComplexity int, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) int
 		NextAgreement                  func(childComplexity int) int
 		Option                         func(childComplexity int, name string, typeArg models1.OptionType, targetID uint64) int
@@ -1059,21 +1080,59 @@ type ComplexityRoot struct {
 
 // region    ************************** generated!.gotpl **************************
 
+type AccountConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[TGQLAccount]) ([]*models.AccountEdge, error)
+	List(ctx context.Context, obj *connectors.CollectionConnection[TGQLAccount]) ([]*models.Account, error)
+}
+type AdFormatConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.AdFormat]) ([]*models.AdFormatEdge, error)
+}
+type ApplicationConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error)
+}
+type AuthClientConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.AuthClient]) ([]*models1.AuthClientEdge, error)
+}
+type BrowserConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Browser]) ([]*models.BrowserEdge, error)
+}
 type CategoryResolver interface {
 	Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error)
 }
+type CategoryConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Category]) ([]*models.CategoryEdge, error)
+}
+type DeviceMakerConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.DeviceMaker]) ([]*models.DeviceMakerEdge, error)
+}
 type DeviceModelResolver interface {
 	Versions(ctx context.Context, obj *models.DeviceModel, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder) ([]*models.DeviceModel, error)
+}
+type DeviceModelConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.DeviceModel]) ([]*models.DeviceModelEdge, error)
+}
+type DirectAccessTokenConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) ([]*models1.DirectAccessTokenEdge, error)
+}
+type HistoryActionConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.HistoryAction]) ([]*models1.HistoryActionEdge, error)
+}
+type MemberResolver interface {
+	User(ctx context.Context, obj *models1.Member) (*models.User, error)
+	Account(ctx context.Context, obj *models1.Member) (*models.Account, error)
+}
+type MemberConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.Member]) ([]*models1.MemberEdge, error)
 }
 type MutationResolver interface {
 	Poke(ctx context.Context) (string, error)
 	Login(ctx context.Context, login string, password string) (*models1.SessionToken, error)
 	Logout(ctx context.Context) (bool, error)
 	SwitchAccount(ctx context.Context, id uint64) (*models1.SessionToken, error)
-	RegisterAccount(ctx context.Context, input models1.AccountCreateInput) (*models1.AccountCreatePayload, error)
-	UpdateAccount(ctx context.Context, id uint64, input models1.AccountInput) (*models1.AccountPayload, error)
-	ApproveAccount(ctx context.Context, id uint64, msg string) (*models1.AccountPayload, error)
-	RejectAccount(ctx context.Context, id uint64, msg string) (*models1.AccountPayload, error)
+	RegisterAccount(ctx context.Context, input models.AccountCreateInput) (*models.AccountCreatePayload, error)
+	UpdateAccount(ctx context.Context, id uint64, input models.AccountInput) (*models.AccountPayload, error)
+	ApproveAccount(ctx context.Context, id uint64, msg string) (*models.AccountPayload, error)
+	RejectAccount(ctx context.Context, id uint64, msg string) (*models.AccountPayload, error)
 	InviteAccountMember(ctx context.Context, accountID uint64, member models1.InviteMemberInput) (*models1.MemberPayload, error)
 	UpdateAccountMember(ctx context.Context, memberID uint64, member models1.MemberInput) (*models1.MemberPayload, error)
 	RemoveAccountMember(ctx context.Context, memberID uint64) (*models1.MemberPayload, error)
@@ -1089,10 +1148,10 @@ type MutationResolver interface {
 	UpdateRole(ctx context.Context, id uint64, input models1.RBACRoleInput) (*models1.RBACRolePayload, error)
 	DeleteRole(ctx context.Context, id uint64, msg *string) (*models1.RBACRolePayload, error)
 	DisconnectSocialAccount(ctx context.Context, id uint64) (*models1.SocialAccountPayload, error)
-	CreateUser(ctx context.Context, input models1.UserInput) (*models1.UserPayload, error)
-	UpdateUser(ctx context.Context, id uint64, input models1.UserInput) (*models1.UserPayload, error)
-	ApproveUser(ctx context.Context, id uint64, msg *string) (*models1.UserPayload, error)
-	RejectUser(ctx context.Context, id uint64, msg *string) (*models1.UserPayload, error)
+	CreateUser(ctx context.Context, input models.UserInput) (*models.UserPayload, error)
+	UpdateUser(ctx context.Context, id uint64, input models.UserInput) (*models.UserPayload, error)
+	ApproveUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error)
+	RejectUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error)
 	ResetUserPassword(ctx context.Context, email string) (*models1.StatusResponse, error)
 	UpdateUserPassword(ctx context.Context, token string, email string, password string) (*models1.StatusResponse, error)
 	CreateFormat(ctx context.Context, input models.AdFormatInput) (*models.AdFormatPayload, error)
@@ -1144,63 +1203,72 @@ type MutationResolver interface {
 type OSResolver interface {
 	Versions(ctx context.Context, obj *models.Os) ([]*models.Os, error)
 }
+type OSConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Os]) ([]*models.OSEdge, error)
+}
+type OptionConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.Option]) ([]*models1.OptionEdge, error)
+}
 type QueryResolver interface {
 	ServiceVersion(ctx context.Context) (string, error)
 	CurrentSession(ctx context.Context) (*models1.SessionToken, error)
-	CurrentAccount(ctx context.Context) (*models1.AccountPayload, error)
-	Account(ctx context.Context, id uint64) (*models1.AccountPayload, error)
-	ListAccounts(ctx context.Context, filter *models1.AccountListFilter, order []*models1.AccountListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.Account, models1.AccountEdge], error)
-	ListAccountRolesAndPermissions(ctx context.Context, accountID uint64, order []*models1.RBACRoleListOrder) (*connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge], error)
-	ListMembers(ctx context.Context, filter *models1.MemberListFilter, order []*models1.MemberListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.Member, models1.MemberEdge], error)
+	CurrentAccount(ctx context.Context) (*models.AccountPayload, error)
+	Account(ctx context.Context, id uint64) (*models.AccountPayload, error)
+	ListAccounts(ctx context.Context, filter *models.AccountListFilter, order []*models.AccountListOrder, page *models1.Page) (*connectors.CollectionConnection[TGQLAccount], error)
+	ListAccountRolesAndPermissions(ctx context.Context, accountID uint64, order []*models1.RBACRoleListOrder) (*connectors.CollectionConnection[*models1.RBACRole], error)
+	ListMembers(ctx context.Context, filter *models1.MemberListFilter, order []*models1.MemberListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.Member], error)
 	AuthClient(ctx context.Context, id string) (*models1.AuthClientPayload, error)
-	ListAuthClients(ctx context.Context, filter *models1.AuthClientListFilter, order []*models1.AuthClientListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge], error)
+	ListAuthClients(ctx context.Context, filter *models1.AuthClientListFilter, order []*models1.AuthClientListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.AuthClient], error)
 	GetDirectAccessToken(ctx context.Context, id uint64) (*models1.DirectAccessTokenPayload, error)
-	ListDirectAccessTokens(ctx context.Context, filter *models1.DirectAccessTokenListFilter, order []*models1.DirectAccessTokenListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge], error)
-	ListHistory(ctx context.Context, filter *models1.HistoryActionListFilter, order []*models1.HistoryActionListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge], error)
+	ListDirectAccessTokens(ctx context.Context, filter *models1.DirectAccessTokenListFilter, order []*models1.DirectAccessTokenListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.DirectAccessToken], error)
+	ListHistory(ctx context.Context, filter *models1.HistoryActionListFilter, order []*models1.HistoryActionListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.HistoryAction], error)
 	Option(ctx context.Context, name string, typeArg models1.OptionType, targetID uint64) (*models1.OptionPayload, error)
-	ListOptions(ctx context.Context, filter *models1.OptionListFilter, order []*models1.OptionListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.Option, models1.OptionEdge], error)
+	ListOptions(ctx context.Context, filter *models1.OptionListFilter, order []*models1.OptionListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.Option], error)
 	Role(ctx context.Context, id uint64) (*models1.RBACRolePayload, error)
 	CheckPermission(ctx context.Context, name string, key *string, targetID *string, idKey *string) (*string, error)
-	ListRoles(ctx context.Context, filter *models1.RBACRoleListFilter, order []*models1.RBACRoleListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge], error)
+	ListRoles(ctx context.Context, filter *models1.RBACRoleListFilter, order []*models1.RBACRoleListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.RBACRole], error)
 	ListPermissions(ctx context.Context, patterns []string) ([]*models1.RBACPermission, error)
 	ListMyPermissions(ctx context.Context, patterns []string) ([]*models1.RBACPermission, error)
 	SocialAccount(ctx context.Context, id uint64) (*models1.SocialAccountPayload, error)
-	CurrentSocialAccounts(ctx context.Context, filter *models1.SocialAccountListFilter, order []*models1.SocialAccountListOrder) (*connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge], error)
-	ListSocialAccounts(ctx context.Context, filter *models1.SocialAccountListFilter, order []*models1.SocialAccountListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge], error)
-	CurrentUser(ctx context.Context) (*models1.UserPayload, error)
-	User(ctx context.Context, id uint64, username string) (*models1.UserPayload, error)
-	ListUsers(ctx context.Context, filter *models1.UserListFilter, order []*models1.UserListOrder, page *models1.Page) (*connectors.CollectionConnection[models1.User, models1.UserEdge], error)
+	CurrentSocialAccounts(ctx context.Context, filter *models1.SocialAccountListFilter, order []*models1.SocialAccountListOrder) (*connectors.CollectionConnection[*models1.SocialAccount], error)
+	ListSocialAccounts(ctx context.Context, filter *models1.SocialAccountListFilter, order []*models1.SocialAccountListOrder, page *models1.Page) (*connectors.CollectionConnection[*models1.SocialAccount], error)
+	CurrentUser(ctx context.Context) (*models.UserPayload, error)
+	User(ctx context.Context, id uint64, username string) (*models.UserPayload, error)
+	ListUsers(ctx context.Context, filter *models.UserListFilter, order []*models.UserListOrder, page *models1.Page) (*connectors.CollectionConnection[TGQLUser], error)
 	Format(ctx context.Context, id uint64, codename string) (*models.AdFormatPayload, error)
-	ListFormats(ctx context.Context, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) (*connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge], error)
+	ListFormats(ctx context.Context, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.AdFormat], error)
 	Agreement(ctx context.Context, codename string) (*models.Agreement, error)
 	ListAgreements(ctx context.Context, accepted *bool) ([]*models.Agreement, error)
 	NextAgreement(ctx context.Context) (*models.Agreement, error)
 	Application(ctx context.Context, id uint64) (*models.ApplicationPayload, error)
-	ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Application, models.ApplicationEdge], error)
+	ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Application], error)
 	Browser(ctx context.Context, id uint64) (*models.BrowserPayload, error)
-	ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Browser, models.BrowserEdge], error)
+	ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Browser], error)
 	Category(ctx context.Context, id uint64) (*models.CategoryPayload, error)
-	ListCategories(ctx context.Context, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Category, models.CategoryEdge], error)
+	ListCategories(ctx context.Context, filter *models.CategoryListFilter, order *models.CategoryListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Category], error)
 	DeviceMaker(ctx context.Context, id uint64, codename string) (*models.DeviceMakerPayload, error)
-	ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge], error)
+	ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.DeviceMaker], error)
 	DeviceModel(ctx context.Context, id uint64, codename string) (*models.DeviceModelPayload, error)
-	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error)
+	ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.DeviceModel], error)
 	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
 	Continents(ctx context.Context) ([]*models.Continent, error)
 	Countries(ctx context.Context) ([]*models.Country, error)
 	Languages(ctx context.Context, filter *models.LangListFilter) ([]*models.Lang, error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
-	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Os, models.OSEdge], error)
+	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Os], error)
 	RTBSource(ctx context.Context, id uint64) (*models.RTBSourcePayload, error)
-	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error)
-	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models.StatisticAdItem, struct{}], error)
+	ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.RTBSource], error)
+	StatisticAdList(ctx context.Context, filter *models.StatisticAdListFilter, group []models.StatisticKey, order []*models.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[*models.StatisticAdItem], error)
 	TrafficRouter(ctx context.Context, id uint64) (*models.TrafficRouterPayload, error)
-	ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge], error)
+	ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.TrafficRouter], error)
 	Zone(ctx context.Context, id uint64) (*models.ZonePayload, error)
-	ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[models.Zone, models.ZoneEdge], error)
+	ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Zone], error)
+}
+type RBACRoleConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.RBACRole]) ([]*models1.RBACRoleEdge, error)
 }
 type RTBSourceResolver interface {
-	Account(ctx context.Context, obj *models.RTBSource) (*models1.Account, error)
+	Account(ctx context.Context, obj *models.RTBSource) (*models.Account, error)
 
 	Formats(ctx context.Context, obj *models.RTBSource) ([]*models.AdFormat, error)
 
@@ -1222,11 +1290,17 @@ type RTBSourceResolver interface {
 
 	Zones(ctx context.Context, obj *models.RTBSource) ([]*models.Zone, error)
 }
+type RTBSourceConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.RTBSource]) ([]*models.RTBSourceEdge, error)
+}
+type SocialAccountConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.SocialAccount]) ([]*models1.SocialAccountEdge, error)
+}
 type StatisticItemKeyResolver interface {
 	Text(ctx context.Context, obj *models.StatisticItemKey) (string, error)
 }
 type TrafficRouterResolver interface {
-	Account(ctx context.Context, obj *models.TrafficRouter) (*models1.Account, error)
+	Account(ctx context.Context, obj *models.TrafficRouter) (*models.Account, error)
 
 	RTBSources(ctx context.Context, obj *models.TrafficRouter) ([]*models.RTBSource, error)
 
@@ -1249,6 +1323,20 @@ type TrafficRouterResolver interface {
 	Applications(ctx context.Context, obj *models.TrafficRouter) ([]*models.Application, error)
 
 	Zones(ctx context.Context, obj *models.TrafficRouter) ([]*models.Zone, error)
+}
+type TrafficRouterConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.TrafficRouter]) ([]*models.TrafficRouterEdge, error)
+}
+type UserConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[TGQLUser]) ([]*models.UserEdge, error)
+	List(ctx context.Context, obj *connectors.CollectionConnection[TGQLUser]) ([]*models.User, error)
+}
+type ZoneConnectionResolver interface {
+	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Zone]) ([]*models.ZoneEdge, error)
+}
+
+type InviteMemberInputResolver interface {
+	Email(ctx context.Context, obj *models1.InviteMemberInput, data string) error
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -3248,7 +3336,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Mutation.CreateUser(childComplexity, args["input"].(models1.UserInput)), true
+		return e.ComplexityRoot.Mutation.CreateUser(childComplexity, args["input"].(models.UserInput)), true
 	case "Mutation.createZone":
 		if e.ComplexityRoot.Mutation.CreateZone == nil {
 			break
@@ -3502,7 +3590,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Mutation.RegisterAccount(childComplexity, args["input"].(models1.AccountCreateInput)), true
+		return e.ComplexityRoot.Mutation.RegisterAccount(childComplexity, args["input"].(models.AccountCreateInput)), true
 	case "Mutation.rejectAccount":
 		if e.ComplexityRoot.Mutation.RejectAccount == nil {
 			break
@@ -3667,7 +3755,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Mutation.UpdateAccount(childComplexity, args["id"].(uint64), args["input"].(models1.AccountInput)), true
+		return e.ComplexityRoot.Mutation.UpdateAccount(childComplexity, args["id"].(uint64), args["input"].(models.AccountInput)), true
 	case "Mutation.updateAccountMember":
 		if e.ComplexityRoot.Mutation.UpdateAccountMember == nil {
 			break
@@ -3810,7 +3898,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Mutation.UpdateUser(childComplexity, args["id"].(uint64), args["input"].(models1.UserInput)), true
+		return e.ComplexityRoot.Mutation.UpdateUser(childComplexity, args["id"].(uint64), args["input"].(models.UserInput)), true
 	case "Mutation.updateUserPassword":
 		if e.ComplexityRoot.Mutation.UpdateUserPassword == nil {
 			break
@@ -4388,7 +4476,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Query.ListAccounts(childComplexity, args["filter"].(*models1.AccountListFilter), args["order"].([]*models1.AccountListOrder), args["page"].(*models1.Page)), true
+		return e.ComplexityRoot.Query.ListAccounts(childComplexity, args["filter"].(*models.AccountListFilter), args["order"].([]*models.AccountListOrder), args["page"].(*models1.Page)), true
 	case "Query.listAgreements":
 		if e.ComplexityRoot.Query.ListAgreements == nil {
 			break
@@ -4614,7 +4702,7 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 			return 0, false
 		}
 
-		return e.ComplexityRoot.Query.ListUsers(childComplexity, args["filter"].(*models1.UserListFilter), args["order"].([]*models1.UserListOrder), args["page"].(*models1.Page)), true
+		return e.ComplexityRoot.Query.ListUsers(childComplexity, args["filter"].(*models.UserListFilter), args["order"].([]*models.UserListOrder), args["page"].(*models1.Page)), true
 	case "Query.listZones":
 		if e.ComplexityRoot.Query.ListZones == nil {
 			break
@@ -14207,8 +14295,8 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	var err error
 	args := map[string]any{}
 	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input",
-		func(ctx context.Context, v any) (models1.UserInput, error) {
-			return ec.unmarshalNUserInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
+		func(ctx context.Context, v any) (models.UserInput, error) {
+			return ec.unmarshalNUserInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -14667,8 +14755,8 @@ func (ec *executionContext) field_Mutation_registerAccount_args(ctx context.Cont
 	var err error
 	args := map[string]any{}
 	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input",
-		func(ctx context.Context, v any) (models1.AccountCreateInput, error) {
-			return ec.unmarshalNAccountCreateInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountCreateInput(ctx, v)
+		func(ctx context.Context, v any) (models.AccountCreateInput, error) {
+			return ec.unmarshalNAccountCreateInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountCreateInput(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -14995,8 +15083,8 @@ func (ec *executionContext) field_Mutation_updateAccount_args(ctx context.Contex
 	}
 	args["id"] = arg0
 	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input",
-		func(ctx context.Context, v any) (models1.AccountInput, error) {
-			return ec.unmarshalNAccountInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx, v)
+		func(ctx context.Context, v any) (models.AccountInput, error) {
+			return ec.unmarshalNAccountInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -15289,8 +15377,8 @@ func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, 
 	}
 	args["id"] = arg0
 	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input",
-		func(ctx context.Context, v any) (models1.UserInput, error) {
-			return ec.unmarshalNUserInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
+		func(ctx context.Context, v any) (models.UserInput, error) {
+			return ec.unmarshalNUserInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -15627,16 +15715,16 @@ func (ec *executionContext) field_Query_listAccounts_args(ctx context.Context, r
 	var err error
 	args := map[string]any{}
 	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "filter",
-		func(ctx context.Context, v any) (*models1.AccountListFilter, error) {
-			return ec.unmarshalOAccountListFilter2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListFilter(ctx, v)
+		func(ctx context.Context, v any) (*models.AccountListFilter, error) {
+			return ec.unmarshalOAccountListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListFilter(ctx, v)
 		})
 	if err != nil {
 		return nil, err
 	}
 	args["filter"] = arg0
 	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "order",
-		func(ctx context.Context, v any) ([]*models1.AccountListOrder, error) {
-			return ec.unmarshalOAccountListOrder2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListOrderᚄ(ctx, v)
+		func(ctx context.Context, v any) ([]*models.AccountListOrder, error) {
+			return ec.unmarshalOAccountListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListOrderᚄ(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -16179,16 +16267,16 @@ func (ec *executionContext) field_Query_listUsers_args(ctx context.Context, rawA
 	var err error
 	args := map[string]any{}
 	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "filter",
-		func(ctx context.Context, v any) (*models1.UserListFilter, error) {
-			return ec.unmarshalOUserListFilter2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListFilter(ctx, v)
+		func(ctx context.Context, v any) (*models.UserListFilter, error) {
+			return ec.unmarshalOUserListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListFilter(ctx, v)
 		})
 	if err != nil {
 		return nil, err
 	}
 	args["filter"] = arg0
 	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "order",
-		func(ctx context.Context, v any) ([]*models1.UserListOrder, error) {
-			return ec.unmarshalOUserListOrder2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListOrderᚄ(ctx, v)
+		func(ctx context.Context, v any) ([]*models.UserListOrder, error) {
+			return ec.unmarshalOUserListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListOrderᚄ(ctx, v)
 		})
 	if err != nil {
 		return nil, err
@@ -16441,7 +16529,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Account_ID(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_ID(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16466,7 +16554,7 @@ func (ec *executionContext) fieldContext_Account_ID(_ context.Context, field gra
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type ID64 does not have child fields"))
 }
 
-func (ec *executionContext) _Account_status(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_status(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16491,7 +16579,7 @@ func (ec *executionContext) fieldContext_Account_status(_ context.Context, field
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type ApproveStatus does not have child fields"))
 }
 
-func (ec *executionContext) _Account_statusMessage(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_statusMessage(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16516,7 +16604,7 @@ func (ec *executionContext) fieldContext_Account_statusMessage(_ context.Context
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_title(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_title(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16541,7 +16629,7 @@ func (ec *executionContext) fieldContext_Account_title(_ context.Context, field 
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_description(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_description(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16566,7 +16654,7 @@ func (ec *executionContext) fieldContext_Account_description(_ context.Context, 
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_logoURI(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_logoURI(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16591,7 +16679,7 @@ func (ec *executionContext) fieldContext_Account_logoURI(_ context.Context, fiel
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_policyURI(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_policyURI(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16616,7 +16704,7 @@ func (ec *executionContext) fieldContext_Account_policyURI(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_termsOfServiceURI(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_termsOfServiceURI(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16641,7 +16729,7 @@ func (ec *executionContext) fieldContext_Account_termsOfServiceURI(_ context.Con
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_clientURI(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_clientURI(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16666,7 +16754,7 @@ func (ec *executionContext) fieldContext_Account_clientURI(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_contacts(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_contacts(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16691,7 +16779,7 @@ func (ec *executionContext) fieldContext_Account_contacts(_ context.Context, fie
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Account_createdAt(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16716,7 +16804,7 @@ func (ec *executionContext) fieldContext_Account_createdAt(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _Account_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models1.Account) (ret graphql.Marshaler) {
+func (ec *executionContext) _Account_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Account) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16741,7 +16829,7 @@ func (ec *executionContext) fieldContext_Account_updatedAt(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Account", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _AccountConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16766,7 +16854,7 @@ func (ec *executionContext) fieldContext_AccountConnection_totalCount(_ context.
 	return graphql.NewScalarFieldContext("AccountConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _AccountConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16775,13 +16863,13 @@ func (ec *executionContext) _AccountConnection_edges(ctx context.Context, field 
 			return ec.fieldContext_AccountConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.AccountConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models1.AccountEdge) graphql.Marshaler {
-			return ec.marshalOAccountEdge2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountEdgeᚄ(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.AccountEdge) graphql.Marshaler {
+			return ec.marshalOAccountEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountEdgeᚄ(ctx, selections, v)
 		},
 		true,
 		false,
@@ -16792,7 +16880,7 @@ func (ec *executionContext) fieldContext_AccountConnection_edges(_ context.Conte
 		Object:     "AccountConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_AccountEdge(ctx, field)
 		},
@@ -16800,7 +16888,7 @@ func (ec *executionContext) fieldContext_AccountConnection_edges(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16809,13 +16897,13 @@ func (ec *executionContext) _AccountConnection_list(ctx context.Context, field g
 			return ec.fieldContext_AccountConnection_list(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.List(), nil
+			return ec.Resolvers.AccountConnection().List(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models1.Account) graphql.Marshaler {
-			return ec.marshalOAccount2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountᚄ(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.Account) graphql.Marshaler {
+			return ec.marshalOAccount2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountᚄ(ctx, selections, v)
 		},
 		true,
 		false,
@@ -16826,7 +16914,7 @@ func (ec *executionContext) fieldContext_AccountConnection_list(_ context.Contex
 		Object:     "AccountConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_Account(ctx, field)
 		},
@@ -16834,7 +16922,7 @@ func (ec *executionContext) fieldContext_AccountConnection_list(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16868,7 +16956,7 @@ func (ec *executionContext) fieldContext_AccountConnection_pageInfo(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountCreatePayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models1.AccountCreatePayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountCreatePayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models.AccountCreatePayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16893,7 +16981,7 @@ func (ec *executionContext) fieldContext_AccountCreatePayload_clientMutationID(_
 	return graphql.NewScalarFieldContext("AccountCreatePayload", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _AccountCreatePayload_account(ctx context.Context, field graphql.CollectedField, obj *models1.AccountCreatePayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountCreatePayload_account(ctx context.Context, field graphql.CollectedField, obj *models.AccountCreatePayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16907,8 +16995,8 @@ func (ec *executionContext) _AccountCreatePayload_account(ctx context.Context, f
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalNAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalNAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		true,
@@ -16927,7 +17015,7 @@ func (ec *executionContext) fieldContext_AccountCreatePayload_account(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountCreatePayload_owner(ctx context.Context, field graphql.CollectedField, obj *models1.AccountCreatePayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountCreatePayload_owner(ctx context.Context, field graphql.CollectedField, obj *models.AccountCreatePayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16941,8 +17029,8 @@ func (ec *executionContext) _AccountCreatePayload_owner(ctx context.Context, fie
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.User) graphql.Marshaler {
-			return ec.marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.User) graphql.Marshaler {
+			return ec.marshalNUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
 		},
 		true,
 		true,
@@ -16961,7 +17049,7 @@ func (ec *executionContext) fieldContext_AccountCreatePayload_owner(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models1.AccountEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models.AccountEdge) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -16986,7 +17074,7 @@ func (ec *executionContext) fieldContext_AccountEdge_cursor(_ context.Context, f
 	return graphql.NewScalarFieldContext("AccountEdge", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _AccountEdge_node(ctx context.Context, field graphql.CollectedField, obj *models1.AccountEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountEdge_node(ctx context.Context, field graphql.CollectedField, obj *models.AccountEdge) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17000,8 +17088,8 @@ func (ec *executionContext) _AccountEdge_node(ctx context.Context, field graphql
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalOAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		false,
@@ -17020,7 +17108,7 @@ func (ec *executionContext) fieldContext_AccountEdge_node(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models1.AccountPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models.AccountPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17045,7 +17133,7 @@ func (ec *executionContext) fieldContext_AccountPayload_clientMutationID(_ conte
 	return graphql.NewScalarFieldContext("AccountPayload", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _AccountPayload_accountID(ctx context.Context, field graphql.CollectedField, obj *models1.AccountPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountPayload_accountID(ctx context.Context, field graphql.CollectedField, obj *models.AccountPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17070,7 +17158,7 @@ func (ec *executionContext) fieldContext_AccountPayload_accountID(_ context.Cont
 	return graphql.NewScalarFieldContext("AccountPayload", field, false, false, errors.New("field of type ID64 does not have child fields"))
 }
 
-func (ec *executionContext) _AccountPayload_account(ctx context.Context, field graphql.CollectedField, obj *models1.AccountPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountPayload_account(ctx context.Context, field graphql.CollectedField, obj *models.AccountPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17084,8 +17172,8 @@ func (ec *executionContext) _AccountPayload_account(ctx context.Context, field g
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalOAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		false,
@@ -17454,7 +17542,7 @@ func (ec *executionContext) fieldContext_AdFormat_deletedAt(_ context.Context, f
 	return graphql.NewScalarFieldContext("AdFormat", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _AdFormatConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AdFormatConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.AdFormat]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17479,7 +17567,7 @@ func (ec *executionContext) fieldContext_AdFormatConnection_totalCount(_ context
 	return graphql.NewScalarFieldContext("AdFormatConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _AdFormatConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AdFormatConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.AdFormat]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17488,7 +17576,7 @@ func (ec *executionContext) _AdFormatConnection_edges(ctx context.Context, field
 			return ec.fieldContext_AdFormatConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.AdFormatConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -17505,7 +17593,7 @@ func (ec *executionContext) fieldContext_AdFormatConnection_edges(_ context.Cont
 		Object:     "AdFormatConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_AdFormatEdge(ctx, field)
 		},
@@ -17513,7 +17601,7 @@ func (ec *executionContext) fieldContext_AdFormatConnection_edges(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _AdFormatConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AdFormatConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.AdFormat]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -17547,7 +17635,7 @@ func (ec *executionContext) fieldContext_AdFormatConnection_list(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AdFormatConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AdFormatConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.AdFormat]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -18424,7 +18512,7 @@ func (ec *executionContext) fieldContext_Application_deletedAt(_ context.Context
 	return graphql.NewScalarFieldContext("Application", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _ApplicationConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ApplicationConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -18449,7 +18537,7 @@ func (ec *executionContext) fieldContext_ApplicationConnection_totalCount(_ cont
 	return graphql.NewScalarFieldContext("ApplicationConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _ApplicationConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ApplicationConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -18458,7 +18546,7 @@ func (ec *executionContext) _ApplicationConnection_edges(ctx context.Context, fi
 			return ec.fieldContext_ApplicationConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.ApplicationConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -18475,7 +18563,7 @@ func (ec *executionContext) fieldContext_ApplicationConnection_edges(_ context.C
 		Object:     "ApplicationConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_ApplicationEdge(ctx, field)
 		},
@@ -18483,7 +18571,7 @@ func (ec *executionContext) fieldContext_ApplicationConnection_edges(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _ApplicationConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ApplicationConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -18517,7 +18605,7 @@ func (ec *executionContext) fieldContext_ApplicationConnection_list(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _ApplicationConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ApplicationConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19119,7 +19207,7 @@ func (ec *executionContext) fieldContext_AuthClient_deletedAt(_ context.Context,
 	return graphql.NewScalarFieldContext("AuthClient", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _AuthClientConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthClientConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.AuthClient]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19144,7 +19232,7 @@ func (ec *executionContext) fieldContext_AuthClientConnection_totalCount(_ conte
 	return graphql.NewScalarFieldContext("AuthClientConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _AuthClientConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthClientConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.AuthClient]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19153,7 +19241,7 @@ func (ec *executionContext) _AuthClientConnection_edges(ctx context.Context, fie
 			return ec.fieldContext_AuthClientConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.AuthClientConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -19170,7 +19258,7 @@ func (ec *executionContext) fieldContext_AuthClientConnection_edges(_ context.Co
 		Object:     "AuthClientConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_AuthClientEdge(ctx, field)
 		},
@@ -19178,7 +19266,7 @@ func (ec *executionContext) fieldContext_AuthClientConnection_edges(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _AuthClientConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthClientConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.AuthClient]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19212,7 +19300,7 @@ func (ec *executionContext) fieldContext_AuthClientConnection_list(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _AuthClientConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _AuthClientConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.AuthClient]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19832,7 +19920,7 @@ func (ec *executionContext) fieldContext_Browser_deletedAt(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Browser", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _BrowserConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _BrowserConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Browser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19857,7 +19945,7 @@ func (ec *executionContext) fieldContext_BrowserConnection_totalCount(_ context.
 	return graphql.NewScalarFieldContext("BrowserConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _BrowserConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _BrowserConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Browser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19866,7 +19954,7 @@ func (ec *executionContext) _BrowserConnection_edges(ctx context.Context, field 
 			return ec.fieldContext_BrowserConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.BrowserConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -19883,7 +19971,7 @@ func (ec *executionContext) fieldContext_BrowserConnection_edges(_ context.Conte
 		Object:     "BrowserConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_BrowserEdge(ctx, field)
 		},
@@ -19891,7 +19979,7 @@ func (ec *executionContext) fieldContext_BrowserConnection_edges(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _BrowserConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _BrowserConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Browser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -19925,7 +20013,7 @@ func (ec *executionContext) fieldContext_BrowserConnection_list(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _BrowserConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _BrowserConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Browser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -20420,7 +20508,7 @@ func (ec *executionContext) fieldContext_Category_deletedAt(_ context.Context, f
 	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _CategoryConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Category, models.CategoryEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _CategoryConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Category]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -20445,7 +20533,7 @@ func (ec *executionContext) fieldContext_CategoryConnection_totalCount(_ context
 	return graphql.NewScalarFieldContext("CategoryConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _CategoryConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Category, models.CategoryEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _CategoryConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Category]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -20454,7 +20542,7 @@ func (ec *executionContext) _CategoryConnection_edges(ctx context.Context, field
 			return ec.fieldContext_CategoryConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.CategoryConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -20471,7 +20559,7 @@ func (ec *executionContext) fieldContext_CategoryConnection_edges(_ context.Cont
 		Object:     "CategoryConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_CategoryEdge(ctx, field)
 		},
@@ -20479,7 +20567,7 @@ func (ec *executionContext) fieldContext_CategoryConnection_edges(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _CategoryConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Category, models.CategoryEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _CategoryConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Category]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -20513,7 +20601,7 @@ func (ec *executionContext) fieldContext_CategoryConnection_list(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _CategoryConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Category, models.CategoryEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _CategoryConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Category]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -21460,7 +21548,7 @@ func (ec *executionContext) fieldContext_DeviceMaker_deletedAt(_ context.Context
 	return graphql.NewScalarFieldContext("DeviceMaker", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _DeviceMakerConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceMakerConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceMaker]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -21485,7 +21573,7 @@ func (ec *executionContext) fieldContext_DeviceMakerConnection_totalCount(_ cont
 	return graphql.NewScalarFieldContext("DeviceMakerConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _DeviceMakerConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceMakerConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceMaker]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -21494,7 +21582,7 @@ func (ec *executionContext) _DeviceMakerConnection_edges(ctx context.Context, fi
 			return ec.fieldContext_DeviceMakerConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.DeviceMakerConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -21511,7 +21599,7 @@ func (ec *executionContext) fieldContext_DeviceMakerConnection_edges(_ context.C
 		Object:     "DeviceMakerConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_DeviceMakerEdge(ctx, field)
 		},
@@ -21519,7 +21607,7 @@ func (ec *executionContext) fieldContext_DeviceMakerConnection_edges(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceMakerConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceMakerConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceMaker]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -21553,7 +21641,7 @@ func (ec *executionContext) fieldContext_DeviceMakerConnection_list(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceMakerConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceMakerConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceMaker]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22228,7 +22316,7 @@ func (ec *executionContext) fieldContext_DeviceModel_deletedAt(_ context.Context
 	return graphql.NewScalarFieldContext("DeviceModel", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _DeviceModelConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceModelConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceModel]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22253,7 +22341,7 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_totalCount(_ cont
 	return graphql.NewScalarFieldContext("DeviceModelConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _DeviceModelConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceModelConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceModel]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22262,7 +22350,7 @@ func (ec *executionContext) _DeviceModelConnection_edges(ctx context.Context, fi
 			return ec.fieldContext_DeviceModelConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.DeviceModelConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -22279,7 +22367,7 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_edges(_ context.C
 		Object:     "DeviceModelConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_DeviceModelEdge(ctx, field)
 		},
@@ -22287,7 +22375,7 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_edges(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceModelConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceModelConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceModel]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22321,7 +22409,7 @@ func (ec *executionContext) fieldContext_DeviceModelConnection_list(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _DeviceModelConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DeviceModelConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.DeviceModel]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22798,7 +22886,7 @@ func (ec *executionContext) fieldContext_DirectAccessToken_expiresAt(_ context.C
 	return graphql.NewScalarFieldContext("DirectAccessToken", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _DirectAccessTokenConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DirectAccessTokenConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22823,7 +22911,7 @@ func (ec *executionContext) fieldContext_DirectAccessTokenConnection_totalCount(
 	return graphql.NewScalarFieldContext("DirectAccessTokenConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _DirectAccessTokenConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DirectAccessTokenConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22832,7 +22920,7 @@ func (ec *executionContext) _DirectAccessTokenConnection_edges(ctx context.Conte
 			return ec.fieldContext_DirectAccessTokenConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.DirectAccessTokenConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -22849,7 +22937,7 @@ func (ec *executionContext) fieldContext_DirectAccessTokenConnection_edges(_ con
 		Object:     "DirectAccessTokenConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_DirectAccessTokenEdge(ctx, field)
 		},
@@ -22857,7 +22945,7 @@ func (ec *executionContext) fieldContext_DirectAccessTokenConnection_edges(_ con
 	return fc, nil
 }
 
-func (ec *executionContext) _DirectAccessTokenConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DirectAccessTokenConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -22891,7 +22979,7 @@ func (ec *executionContext) fieldContext_DirectAccessTokenConnection_list(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _DirectAccessTokenConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _DirectAccessTokenConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23318,7 +23406,7 @@ func (ec *executionContext) fieldContext_HistoryAction_actionAt(_ context.Contex
 	return graphql.NewScalarFieldContext("HistoryAction", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _HistoryActionConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _HistoryActionConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.HistoryAction]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23343,7 +23431,7 @@ func (ec *executionContext) fieldContext_HistoryActionConnection_totalCount(_ co
 	return graphql.NewScalarFieldContext("HistoryActionConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _HistoryActionConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _HistoryActionConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.HistoryAction]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23352,7 +23440,7 @@ func (ec *executionContext) _HistoryActionConnection_edges(ctx context.Context, 
 			return ec.fieldContext_HistoryActionConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.HistoryActionConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -23369,7 +23457,7 @@ func (ec *executionContext) fieldContext_HistoryActionConnection_edges(_ context
 		Object:     "HistoryActionConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_HistoryActionEdge(ctx, field)
 		},
@@ -23377,7 +23465,7 @@ func (ec *executionContext) fieldContext_HistoryActionConnection_edges(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _HistoryActionConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _HistoryActionConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.HistoryAction]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23411,7 +23499,7 @@ func (ec *executionContext) fieldContext_HistoryActionConnection_list(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _HistoryActionConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _HistoryActionConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.HistoryAction]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23747,13 +23835,13 @@ func (ec *executionContext) _Member_user(ctx context.Context, field graphql.Coll
 			return ec.fieldContext_Member_user(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.User, nil
+			return ec.Resolvers.Member().User(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.User) graphql.Marshaler {
-			return ec.marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.User) graphql.Marshaler {
+			return ec.marshalNUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
 		},
 		true,
 		true,
@@ -23763,8 +23851,8 @@ func (ec *executionContext) fieldContext_Member_user(_ context.Context, field gr
 	fc = &graphql.FieldContext{
 		Object:     "Member",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_User(ctx, field)
 		},
@@ -23781,13 +23869,13 @@ func (ec *executionContext) _Member_account(ctx context.Context, field graphql.C
 			return ec.fieldContext_Member_account(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Account, nil
+			return ec.Resolvers.Member().Account(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalNAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalNAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		true,
@@ -23797,8 +23885,8 @@ func (ec *executionContext) fieldContext_Member_account(_ context.Context, field
 	fc = &graphql.FieldContext{
 		Object:     "Member",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_Account(ctx, field)
 		},
@@ -23940,7 +24028,7 @@ func (ec *executionContext) fieldContext_Member_deletedAt(_ context.Context, fie
 	return graphql.NewScalarFieldContext("Member", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _MemberConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _MemberConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Member]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23965,7 +24053,7 @@ func (ec *executionContext) fieldContext_MemberConnection_totalCount(_ context.C
 	return graphql.NewScalarFieldContext("MemberConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _MemberConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _MemberConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Member]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -23974,7 +24062,7 @@ func (ec *executionContext) _MemberConnection_edges(ctx context.Context, field g
 			return ec.fieldContext_MemberConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.MemberConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -23991,7 +24079,7 @@ func (ec *executionContext) fieldContext_MemberConnection_edges(_ context.Contex
 		Object:     "MemberConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_MemberEdge(ctx, field)
 		},
@@ -23999,7 +24087,7 @@ func (ec *executionContext) fieldContext_MemberConnection_edges(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _MemberConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _MemberConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Member]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -24033,7 +24121,7 @@ func (ec *executionContext) fieldContext_MemberConnection_list(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _MemberConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _MemberConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Member]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -24362,7 +24450,7 @@ func (ec *executionContext) _Mutation_registerAccount(ctx context.Context, field
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Mutation().RegisterAccount(ctx, fc.Args["input"].(models1.AccountCreateInput))
+			return ec.Resolvers.Mutation().RegisterAccount(ctx, fc.Args["input"].(models.AccountCreateInput))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -24370,11 +24458,11 @@ func (ec *executionContext) _Mutation_registerAccount(ctx context.Context, field
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.register"})
 				if err != nil {
-					var zeroVal *models1.AccountCreatePayload
+					var zeroVal *models.AccountCreatePayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountCreatePayload
+					var zeroVal *models.AccountCreatePayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -24383,8 +24471,8 @@ func (ec *executionContext) _Mutation_registerAccount(ctx context.Context, field
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountCreatePayload) graphql.Marshaler {
-			return ec.marshalNAccountCreatePayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountCreatePayload) graphql.Marshaler {
+			return ec.marshalNAccountCreatePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -24424,7 +24512,7 @@ func (ec *executionContext) _Mutation_updateAccount(ctx context.Context, field g
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Mutation().UpdateAccount(ctx, fc.Args["id"].(uint64), fc.Args["input"].(models1.AccountInput))
+			return ec.Resolvers.Mutation().UpdateAccount(ctx, fc.Args["id"].(uint64), fc.Args["input"].(models.AccountInput))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -24432,11 +24520,11 @@ func (ec *executionContext) _Mutation_updateAccount(ctx context.Context, field g
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.update.*"})
 				if err != nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -24445,8 +24533,8 @@ func (ec *executionContext) _Mutation_updateAccount(ctx context.Context, field g
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
-			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
+			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -24494,11 +24582,11 @@ func (ec *executionContext) _Mutation_approveAccount(ctx context.Context, field 
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.approve.*"})
 				if err != nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -24507,8 +24595,8 @@ func (ec *executionContext) _Mutation_approveAccount(ctx context.Context, field 
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
-			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
+			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -24556,11 +24644,11 @@ func (ec *executionContext) _Mutation_rejectAccount(ctx context.Context, field g
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.reject.*"})
 				if err != nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -24569,8 +24657,8 @@ func (ec *executionContext) _Mutation_rejectAccount(ctx context.Context, field g
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
-			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
+			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -25540,7 +25628,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Mutation().CreateUser(ctx, fc.Args["input"].(models1.UserInput))
+			return ec.Resolvers.Mutation().CreateUser(ctx, fc.Args["input"].(models.UserInput))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -25548,11 +25636,11 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.create.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -25561,8 +25649,8 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -25602,7 +25690,7 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Mutation().UpdateUser(ctx, fc.Args["id"].(uint64), fc.Args["input"].(models1.UserInput))
+			return ec.Resolvers.Mutation().UpdateUser(ctx, fc.Args["id"].(uint64), fc.Args["input"].(models.UserInput))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -25610,11 +25698,11 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.update.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -25623,8 +25711,8 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -25672,11 +25760,11 @@ func (ec *executionContext) _Mutation_approveUser(ctx context.Context, field gra
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.approve.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -25685,8 +25773,8 @@ func (ec *executionContext) _Mutation_approveUser(ctx context.Context, field gra
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -25734,11 +25822,11 @@ func (ec *executionContext) _Mutation_rejectUser(ctx context.Context, field grap
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.reject.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -25747,8 +25835,8 @@ func (ec *executionContext) _Mutation_rejectUser(ctx context.Context, field grap
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -29191,7 +29279,7 @@ func (ec *executionContext) fieldContext_OS_deletedAt(_ context.Context, field g
 	return graphql.NewScalarFieldContext("OS", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _OSConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Os, models.OSEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OSConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Os]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29216,7 +29304,7 @@ func (ec *executionContext) fieldContext_OSConnection_totalCount(_ context.Conte
 	return graphql.NewScalarFieldContext("OSConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _OSConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Os, models.OSEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OSConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Os]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29225,7 +29313,7 @@ func (ec *executionContext) _OSConnection_edges(ctx context.Context, field graph
 			return ec.fieldContext_OSConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.OSConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -29242,7 +29330,7 @@ func (ec *executionContext) fieldContext_OSConnection_edges(_ context.Context, f
 		Object:     "OSConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_OSEdge(ctx, field)
 		},
@@ -29250,7 +29338,7 @@ func (ec *executionContext) fieldContext_OSConnection_edges(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _OSConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Os, models.OSEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OSConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Os]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29284,7 +29372,7 @@ func (ec *executionContext) fieldContext_OSConnection_list(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _OSConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Os, models.OSEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OSConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Os]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29561,7 +29649,7 @@ func (ec *executionContext) fieldContext_Option_value(_ context.Context, field g
 	return graphql.NewScalarFieldContext("Option", field, false, false, errors.New("field of type NullableJSON does not have child fields"))
 }
 
-func (ec *executionContext) _OptionConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OptionConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Option]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29586,7 +29674,7 @@ func (ec *executionContext) fieldContext_OptionConnection_totalCount(_ context.C
 	return graphql.NewScalarFieldContext("OptionConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _OptionConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OptionConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Option]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29595,7 +29683,7 @@ func (ec *executionContext) _OptionConnection_edges(ctx context.Context, field g
 			return ec.fieldContext_OptionConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.OptionConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -29612,7 +29700,7 @@ func (ec *executionContext) fieldContext_OptionConnection_edges(_ context.Contex
 		Object:     "OptionConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_OptionEdge(ctx, field)
 		},
@@ -29620,7 +29708,7 @@ func (ec *executionContext) fieldContext_OptionConnection_edges(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _OptionConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OptionConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Option]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -29654,7 +29742,7 @@ func (ec *executionContext) fieldContext_OptionConnection_list(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _OptionConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _OptionConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.Option]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30006,7 +30094,7 @@ func (ec *executionContext) fieldContext_PageInfo_count(_ context.Context, field
 	return graphql.NewScalarFieldContext("PageInfo", field, false, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_ID(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_ID(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30031,7 +30119,7 @@ func (ec *executionContext) fieldContext_Profile_ID(_ context.Context, field gra
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type ID64 does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_user(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_user(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30045,8 +30133,8 @@ func (ec *executionContext) _Profile_user(ctx context.Context, field graphql.Col
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.User) graphql.Marshaler {
-			return ec.marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.User) graphql.Marshaler {
+			return ec.marshalNUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
 		},
 		true,
 		true,
@@ -30065,7 +30153,7 @@ func (ec *executionContext) fieldContext_Profile_user(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Profile_firstName(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_firstName(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30090,7 +30178,7 @@ func (ec *executionContext) fieldContext_Profile_firstName(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_lastName(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_lastName(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30115,7 +30203,7 @@ func (ec *executionContext) fieldContext_Profile_lastName(_ context.Context, fie
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_companyName(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_companyName(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30140,7 +30228,7 @@ func (ec *executionContext) fieldContext_Profile_companyName(_ context.Context, 
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_about(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_about(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30165,7 +30253,7 @@ func (ec *executionContext) fieldContext_Profile_about(_ context.Context, field 
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_email(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_email(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30190,7 +30278,7 @@ func (ec *executionContext) fieldContext_Profile_email(_ context.Context, field 
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_messgangers(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_messgangers(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30204,8 +30292,8 @@ func (ec *executionContext) _Profile_messgangers(ctx context.Context, field grap
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models1.ProfileMessanger) graphql.Marshaler {
-			return ec.marshalOProfileMessanger2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐProfileMessangerᚄ(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.ProfileMessanger) graphql.Marshaler {
+			return ec.marshalOProfileMessanger2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐProfileMessangerᚄ(ctx, selections, v)
 		},
 		true,
 		false,
@@ -30224,7 +30312,7 @@ func (ec *executionContext) fieldContext_Profile_messgangers(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Profile_createdAt(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30249,7 +30337,7 @@ func (ec *executionContext) fieldContext_Profile_createdAt(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _Profile_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models1.Profile) (ret graphql.Marshaler) {
+func (ec *executionContext) _Profile_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Profile) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30274,7 +30362,7 @@ func (ec *executionContext) fieldContext_Profile_updatedAt(_ context.Context, fi
 	return graphql.NewScalarFieldContext("Profile", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _ProfileMessanger_mtype(ctx context.Context, field graphql.CollectedField, obj *models1.ProfileMessanger) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProfileMessanger_mtype(ctx context.Context, field graphql.CollectedField, obj *models.ProfileMessanger) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30288,8 +30376,8 @@ func (ec *executionContext) _ProfileMessanger_mtype(ctx context.Context, field g
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v models1.MessangerType) graphql.Marshaler {
-			return ec.marshalNMessangerType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v models.MessangerType) graphql.Marshaler {
+			return ec.marshalNMessangerType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx, selections, v)
 		},
 		true,
 		true,
@@ -30299,7 +30387,7 @@ func (ec *executionContext) fieldContext_ProfileMessanger_mtype(_ context.Contex
 	return graphql.NewScalarFieldContext("ProfileMessanger", field, false, false, errors.New("field of type MessangerType does not have child fields"))
 }
 
-func (ec *executionContext) _ProfileMessanger_address(ctx context.Context, field graphql.CollectedField, obj *models1.ProfileMessanger) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProfileMessanger_address(ctx context.Context, field graphql.CollectedField, obj *models.ProfileMessanger) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -30416,11 +30504,11 @@ func (ec *executionContext) _Query_currentAccount(ctx context.Context, field gra
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.view.*"})
 				if err != nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30429,8 +30517,8 @@ func (ec *executionContext) _Query_currentAccount(ctx context.Context, field gra
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
-			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
+			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -30467,11 +30555,11 @@ func (ec *executionContext) _Query_account(ctx context.Context, field graphql.Co
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.view.*"})
 				if err != nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.AccountPayload
+					var zeroVal *models.AccountPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30480,8 +30568,8 @@ func (ec *executionContext) _Query_account(ctx context.Context, field graphql.Co
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
-			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
+			return ec.marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -30521,7 +30609,7 @@ func (ec *executionContext) _Query_listAccounts(ctx context.Context, field graph
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Query().ListAccounts(ctx, fc.Args["filter"].(*models1.AccountListFilter), fc.Args["order"].([]*models1.AccountListOrder), fc.Args["page"].(*models1.Page))
+			return ec.Resolvers.Query().ListAccounts(ctx, fc.Args["filter"].(*models.AccountListFilter), fc.Args["order"].([]*models.AccountListOrder), fc.Args["page"].(*models1.Page))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -30529,11 +30617,11 @@ func (ec *executionContext) _Query_listAccounts(ctx context.Context, field graph
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.Account, models1.AccountEdge]
+					var zeroVal *connectors.CollectionConnection[TGQLAccount]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.Account, models1.AccountEdge]
+					var zeroVal *connectors.CollectionConnection[TGQLAccount]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30542,7 +30630,7 @@ func (ec *executionContext) _Query_listAccounts(ctx context.Context, field graph
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[TGQLAccount]) graphql.Marshaler {
 			return ec.marshalOAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -30591,11 +30679,11 @@ func (ec *executionContext) _Query_listAccountRolesAndPermissions(ctx context.Co
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.view.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.RBACRole]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.RBACRole]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30604,7 +30692,7 @@ func (ec *executionContext) _Query_listAccountRolesAndPermissions(ctx context.Co
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.RBACRole]) graphql.Marshaler {
 			return ec.marshalORBACRoleConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -30653,11 +30741,11 @@ func (ec *executionContext) _Query_listMembers(ctx context.Context, field graphq
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account.member.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.Member, models1.MemberEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.Member]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models1.Member, models1.MemberEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.Member]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -30666,7 +30754,7 @@ func (ec *executionContext) _Query_listMembers(ctx context.Context, field graphq
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.Member]) graphql.Marshaler {
 			return ec.marshalOMemberConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -30777,11 +30865,11 @@ func (ec *executionContext) _Query_listAuthClients(ctx context.Context, field gr
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"auth_client.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.AuthClient]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.AuthClient]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30790,7 +30878,7 @@ func (ec *executionContext) _Query_listAuthClients(ctx context.Context, field gr
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.AuthClient]) graphql.Marshaler {
 			return ec.marshalOAuthClientConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -30901,11 +30989,11 @@ func (ec *executionContext) _Query_listDirectAccessTokens(ctx context.Context, f
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"directaccesstoken.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.DirectAccessToken]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.DirectAccessToken]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30914,7 +31002,7 @@ func (ec *executionContext) _Query_listDirectAccessTokens(ctx context.Context, f
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.DirectAccessToken]) graphql.Marshaler {
 			return ec.marshalODirectAccessTokenConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -30963,11 +31051,11 @@ func (ec *executionContext) _Query_listHistory(ctx context.Context, field graphq
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"history_log.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.HistoryAction]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.HistoryAction]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -30976,7 +31064,7 @@ func (ec *executionContext) _Query_listHistory(ctx context.Context, field graphq
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.HistoryAction]) graphql.Marshaler {
 			return ec.marshalOHistoryActionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31087,11 +31175,11 @@ func (ec *executionContext) _Query_listOptions(ctx context.Context, field graphq
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"option.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.Option, models1.OptionEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.Option]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.Option, models1.OptionEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.Option]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31100,7 +31188,7 @@ func (ec *executionContext) _Query_listOptions(ctx context.Context, field graphq
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.Option]) graphql.Marshaler {
 			return ec.marshalOOptionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31273,11 +31361,11 @@ func (ec *executionContext) _Query_listRoles(ctx context.Context, field graphql.
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"role.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.RBACRole]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.RBACRole]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31286,7 +31374,7 @@ func (ec *executionContext) _Query_listRoles(ctx context.Context, field graphql.
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.RBACRole]) graphql.Marshaler {
 			return ec.marshalORBACRoleConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31521,11 +31609,11 @@ func (ec *executionContext) _Query_currentSocialAccounts(ctx context.Context, fi
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account_social.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.SocialAccount]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.SocialAccount]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31534,7 +31622,7 @@ func (ec *executionContext) _Query_currentSocialAccounts(ctx context.Context, fi
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.SocialAccount]) graphql.Marshaler {
 			return ec.marshalNSocialAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31583,11 +31671,11 @@ func (ec *executionContext) _Query_listSocialAccounts(ctx context.Context, field
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"account_social.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.SocialAccount]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]
+					var zeroVal *connectors.CollectionConnection[*models1.SocialAccount]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31596,7 +31684,7 @@ func (ec *executionContext) _Query_listSocialAccounts(ctx context.Context, field
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models1.SocialAccount]) graphql.Marshaler {
 			return ec.marshalNSocialAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31644,11 +31732,11 @@ func (ec *executionContext) _Query_currentUser(ctx context.Context, field graphq
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.view.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31657,8 +31745,8 @@ func (ec *executionContext) _Query_currentUser(ctx context.Context, field graphq
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -31695,11 +31783,11 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.view.*"})
 				if err != nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *models1.UserPayload
+					var zeroVal *models.UserPayload
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31708,8 +31796,8 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
-			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
+			return ec.marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx, selections, v)
 		},
 		true,
 		true,
@@ -31749,7 +31837,7 @@ func (ec *executionContext) _Query_listUsers(ctx context.Context, field graphql.
 		},
 		func(ctx context.Context) (any, error) {
 			fc := graphql.GetFieldContext(ctx)
-			return ec.Resolvers.Query().ListUsers(ctx, fc.Args["filter"].(*models1.UserListFilter), fc.Args["order"].([]*models1.UserListOrder), fc.Args["page"].(*models1.Page))
+			return ec.Resolvers.Query().ListUsers(ctx, fc.Args["filter"].(*models.UserListFilter), fc.Args["order"].([]*models.UserListOrder), fc.Args["page"].(*models1.Page))
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			directive0 := next
@@ -31757,11 +31845,11 @@ func (ec *executionContext) _Query_listUsers(ctx context.Context, field graphql.
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"user.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models1.User, models1.UserEdge]
+					var zeroVal *connectors.CollectionConnection[TGQLUser]
 					return zeroVal, err
 				}
 				if ec.Directives.HasPermissions == nil {
-					var zeroVal *connectors.CollectionConnection[models1.User, models1.UserEdge]
+					var zeroVal *connectors.CollectionConnection[TGQLUser]
 					return zeroVal, errors.New("directive hasPermissions is not implemented")
 				}
 				return ec.Directives.HasPermissions(ctx, nil, directive0, permissions)
@@ -31770,7 +31858,7 @@ func (ec *executionContext) _Query_listUsers(ctx context.Context, field graphql.
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models1.User, models1.UserEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[TGQLUser]) graphql.Marshaler {
 			return ec.marshalOUserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -31881,11 +31969,11 @@ func (ec *executionContext) _Query_listFormats(ctx context.Context, field graphq
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_format.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]
+					var zeroVal *connectors.CollectionConnection[*models.AdFormat]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]
+					var zeroVal *connectors.CollectionConnection[*models.AdFormat]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -31894,7 +31982,7 @@ func (ec *executionContext) _Query_listFormats(ctx context.Context, field graphq
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.AdFormat]) graphql.Marshaler {
 			return ec.marshalOAdFormatConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32179,11 +32267,11 @@ func (ec *executionContext) _Query_listApplications(ctx context.Context, field g
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_application.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.Application, models.ApplicationEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Application]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.Application, models.ApplicationEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Application]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32192,7 +32280,7 @@ func (ec *executionContext) _Query_listApplications(ctx context.Context, field g
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.Application]) graphql.Marshaler {
 			return ec.marshalOApplicationConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32303,11 +32391,11 @@ func (ec *executionContext) _Query_listBrowsers(ctx context.Context, field graph
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"type_browser.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.Browser, models.BrowserEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Browser]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.Browser, models.BrowserEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Browser]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32316,7 +32404,7 @@ func (ec *executionContext) _Query_listBrowsers(ctx context.Context, field graph
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.Browser]) graphql.Marshaler {
 			return ec.marshalOBrowserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32427,11 +32515,11 @@ func (ec *executionContext) _Query_listCategories(ctx context.Context, field gra
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_category.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.Category, models.CategoryEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Category]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.Category, models.CategoryEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Category]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32440,7 +32528,7 @@ func (ec *executionContext) _Query_listCategories(ctx context.Context, field gra
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.Category, models.CategoryEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.Category]) graphql.Marshaler {
 			return ec.marshalOCategoryConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32551,11 +32639,11 @@ func (ec *executionContext) _Query_listDeviceMakers(ctx context.Context, field g
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"device_maker.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]
+					var zeroVal *connectors.CollectionConnection[*models.DeviceMaker]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]
+					var zeroVal *connectors.CollectionConnection[*models.DeviceMaker]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32564,7 +32652,7 @@ func (ec *executionContext) _Query_listDeviceMakers(ctx context.Context, field g
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.DeviceMaker]) graphql.Marshaler {
 			return ec.marshalODeviceMakerConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32675,11 +32763,11 @@ func (ec *executionContext) _Query_listDeviceModels(ctx context.Context, field g
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"device_model.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]
+					var zeroVal *connectors.CollectionConnection[*models.DeviceModel]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]
+					var zeroVal *connectors.CollectionConnection[*models.DeviceModel]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32688,7 +32776,7 @@ func (ec *executionContext) _Query_listDeviceModels(ctx context.Context, field g
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.DeviceModel]) graphql.Marshaler {
 			return ec.marshalODeviceModelConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -32963,11 +33051,11 @@ func (ec *executionContext) _Query_listOS(ctx context.Context, field graphql.Col
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"type_os.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.Os, models.OSEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Os]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.Os, models.OSEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Os]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -32976,7 +33064,7 @@ func (ec *executionContext) _Query_listOS(ctx context.Context, field graphql.Col
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.Os, models.OSEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.Os]) graphql.Marshaler {
 			return ec.marshalOOSConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -33087,11 +33175,11 @@ func (ec *executionContext) _Query_listRTBSources(ctx context.Context, field gra
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"rtb_source.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]
+					var zeroVal *connectors.CollectionConnection[*models.RTBSource]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]
+					var zeroVal *connectors.CollectionConnection[*models.RTBSource]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -33100,7 +33188,7 @@ func (ec *executionContext) _Query_listRTBSources(ctx context.Context, field gra
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.RTBSource]) graphql.Marshaler {
 			return ec.marshalORTBSourceConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -33149,11 +33237,11 @@ func (ec *executionContext) _Query_statisticAdList(ctx context.Context, field gr
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"statistic.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.StatisticAdItem, struct{}]
+					var zeroVal *connectors.CollectionConnection[*models.StatisticAdItem]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.StatisticAdItem, struct{}]
+					var zeroVal *connectors.CollectionConnection[*models.StatisticAdItem]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -33162,7 +33250,7 @@ func (ec *executionContext) _Query_statisticAdList(ctx context.Context, field gr
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.StatisticAdItem]) graphql.Marshaler {
 			return ec.marshalNStatisticAdItemConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -33273,11 +33361,11 @@ func (ec *executionContext) _Query_listTrafficRouters(ctx context.Context, field
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"traffic_router.view.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]
+					var zeroVal *connectors.CollectionConnection[*models.TrafficRouter]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]
+					var zeroVal *connectors.CollectionConnection[*models.TrafficRouter]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -33286,7 +33374,7 @@ func (ec *executionContext) _Query_listTrafficRouters(ctx context.Context, field
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.TrafficRouter]) graphql.Marshaler {
 			return ec.marshalOTrafficRouterConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -33397,11 +33485,11 @@ func (ec *executionContext) _Query_listZones(ctx context.Context, field graphql.
 			directive1 := func(ctx context.Context) (any, error) {
 				permissions, err := ec.unmarshalNString2ᚕstringᚄ(ctx, []any{"adv_zone.list.*"})
 				if err != nil {
-					var zeroVal *connectors.CollectionConnection[models.Zone, models.ZoneEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Zone]
 					return zeroVal, err
 				}
 				if ec.Directives.Acl == nil {
-					var zeroVal *connectors.CollectionConnection[models.Zone, models.ZoneEdge]
+					var zeroVal *connectors.CollectionConnection[*models.Zone]
 					return zeroVal, errors.New("directive acl is not implemented")
 				}
 				return ec.Directives.Acl(ctx, nil, directive0, permissions)
@@ -33410,7 +33498,7 @@ func (ec *executionContext) _Query_listZones(ctx context.Context, field graphql.
 			next = directive1
 			return ec._fieldMiddleware(ctx, nil, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) graphql.Marshaler {
+		func(ctx context.Context, selections ast.SelectionSet, v *connectors.CollectionConnection[*models.Zone]) graphql.Marshaler {
 			return ec.marshalOZoneConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx, selections, v)
 		},
 		true,
@@ -33939,7 +34027,7 @@ func (ec *executionContext) fieldContext_RBACRole_deletedAt(_ context.Context, f
 	return graphql.NewScalarFieldContext("RBACRole", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _RBACRoleConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RBACRoleConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.RBACRole]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -33964,7 +34052,7 @@ func (ec *executionContext) fieldContext_RBACRoleConnection_totalCount(_ context
 	return graphql.NewScalarFieldContext("RBACRoleConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _RBACRoleConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RBACRoleConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.RBACRole]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -33973,7 +34061,7 @@ func (ec *executionContext) _RBACRoleConnection_edges(ctx context.Context, field
 			return ec.fieldContext_RBACRoleConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.RBACRoleConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -33990,7 +34078,7 @@ func (ec *executionContext) fieldContext_RBACRoleConnection_edges(_ context.Cont
 		Object:     "RBACRoleConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_RBACRoleEdge(ctx, field)
 		},
@@ -33998,7 +34086,7 @@ func (ec *executionContext) fieldContext_RBACRoleConnection_edges(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _RBACRoleConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RBACRoleConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.RBACRole]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -34032,7 +34120,7 @@ func (ec *executionContext) fieldContext_RBACRoleConnection_list(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _RBACRoleConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RBACRoleConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.RBACRole]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -34273,8 +34361,8 @@ func (ec *executionContext) _RTBSource_account(ctx context.Context, field graphq
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalOAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		false,
@@ -35583,7 +35671,7 @@ func (ec *executionContext) fieldContext_RTBSource_deletedAt(_ context.Context, 
 	return graphql.NewScalarFieldContext("RTBSource", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _RTBSourceConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RTBSourceConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.RTBSource]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -35608,7 +35696,7 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_totalCount(_ contex
 	return graphql.NewScalarFieldContext("RTBSourceConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _RTBSourceConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RTBSourceConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.RTBSource]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -35617,7 +35705,7 @@ func (ec *executionContext) _RTBSourceConnection_edges(ctx context.Context, fiel
 			return ec.fieldContext_RTBSourceConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.RTBSourceConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -35634,7 +35722,7 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_edges(_ context.Con
 		Object:     "RTBSourceConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_RTBSourceEdge(ctx, field)
 		},
@@ -35642,7 +35730,7 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_edges(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _RTBSourceConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RTBSourceConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.RTBSource]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -35676,7 +35764,7 @@ func (ec *executionContext) fieldContext_RTBSourceConnection_list(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _RTBSourceConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _RTBSourceConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.RTBSource]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -36337,7 +36425,7 @@ func (ec *executionContext) fieldContext_SocialAccount_deletedAt(_ context.Conte
 	return graphql.NewScalarFieldContext("SocialAccount", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _SocialAccountConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _SocialAccountConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.SocialAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -36362,7 +36450,7 @@ func (ec *executionContext) fieldContext_SocialAccountConnection_totalCount(_ co
 	return graphql.NewScalarFieldContext("SocialAccountConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _SocialAccountConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _SocialAccountConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.SocialAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -36371,7 +36459,7 @@ func (ec *executionContext) _SocialAccountConnection_edges(ctx context.Context, 
 			return ec.fieldContext_SocialAccountConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.SocialAccountConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -36388,7 +36476,7 @@ func (ec *executionContext) fieldContext_SocialAccountConnection_edges(_ context
 		Object:     "SocialAccountConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_SocialAccountEdge(ctx, field)
 		},
@@ -36396,7 +36484,7 @@ func (ec *executionContext) fieldContext_SocialAccountConnection_edges(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _SocialAccountConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _SocialAccountConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.SocialAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -36430,7 +36518,7 @@ func (ec *executionContext) fieldContext_SocialAccountConnection_list(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _SocialAccountConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _SocialAccountConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models1.SocialAccount]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -37266,7 +37354,7 @@ func (ec *executionContext) fieldContext_StatisticAdItem_eCPC(_ context.Context,
 	return graphql.NewScalarFieldContext("StatisticAdItem", field, false, false, errors.New("field of type Float does not have child fields"))
 }
 
-func (ec *executionContext) _StatisticAdItemConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) (ret graphql.Marshaler) {
+func (ec *executionContext) _StatisticAdItemConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.StatisticAdItem]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -37291,7 +37379,7 @@ func (ec *executionContext) fieldContext_StatisticAdItemConnection_totalCount(_ 
 	return graphql.NewScalarFieldContext("StatisticAdItemConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _StatisticAdItemConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) (ret graphql.Marshaler) {
+func (ec *executionContext) _StatisticAdItemConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.StatisticAdItem]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -37325,7 +37413,7 @@ func (ec *executionContext) fieldContext_StatisticAdItemConnection_list(_ contex
 	return fc, nil
 }
 
-func (ec *executionContext) _StatisticAdItemConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) (ret graphql.Marshaler) {
+func (ec *executionContext) _StatisticAdItemConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.StatisticAdItem]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -37648,8 +37736,8 @@ func (ec *executionContext) _TrafficRouter_account(ctx context.Context, field gr
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.Account) graphql.Marshaler {
-			return ec.marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Account) graphql.Marshaler {
+			return ec.marshalOAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, selections, v)
 		},
 		true,
 		false,
@@ -38617,7 +38705,7 @@ func (ec *executionContext) fieldContext_TrafficRouter_deletedAt(_ context.Conte
 	return graphql.NewScalarFieldContext("TrafficRouter", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _TrafficRouterConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _TrafficRouterConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.TrafficRouter]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38642,7 +38730,7 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_totalCount(_ co
 	return graphql.NewScalarFieldContext("TrafficRouterConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _TrafficRouterConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _TrafficRouterConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.TrafficRouter]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38651,7 +38739,7 @@ func (ec *executionContext) _TrafficRouterConnection_edges(ctx context.Context, 
 			return ec.fieldContext_TrafficRouterConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.TrafficRouterConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -38668,7 +38756,7 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_edges(_ context
 		Object:     "TrafficRouterConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_TrafficRouterEdge(ctx, field)
 		},
@@ -38676,7 +38764,7 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_edges(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _TrafficRouterConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _TrafficRouterConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.TrafficRouter]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38710,7 +38798,7 @@ func (ec *executionContext) fieldContext_TrafficRouterConnection_list(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _TrafficRouterConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _TrafficRouterConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.TrafficRouter]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38887,7 +38975,7 @@ func (ec *executionContext) fieldContext_TrafficRouterPayload_router(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _User_ID(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_ID(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38912,7 +39000,7 @@ func (ec *executionContext) fieldContext_User_ID(_ context.Context, field graphq
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type ID64 does not have child fields"))
 }
 
-func (ec *executionContext) _User_username(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_username(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38937,7 +39025,7 @@ func (ec *executionContext) fieldContext_User_username(_ context.Context, field 
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _User_status(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_status(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38962,7 +39050,7 @@ func (ec *executionContext) fieldContext_User_status(_ context.Context, field gr
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type ApproveStatus does not have child fields"))
 }
 
-func (ec *executionContext) _User_statusMessage(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_statusMessage(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -38987,7 +39075,7 @@ func (ec *executionContext) fieldContext_User_statusMessage(_ context.Context, f
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39012,7 +39100,7 @@ func (ec *executionContext) fieldContext_User_createdAt(_ context.Context, field
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _User_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models1.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39037,7 +39125,7 @@ func (ec *executionContext) fieldContext_User_updatedAt(_ context.Context, field
 	return graphql.NewScalarFieldContext("User", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _UserConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.User, models1.UserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLUser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39062,7 +39150,7 @@ func (ec *executionContext) fieldContext_UserConnection_totalCount(_ context.Con
 	return graphql.NewScalarFieldContext("UserConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _UserConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.User, models1.UserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLUser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39071,13 +39159,13 @@ func (ec *executionContext) _UserConnection_edges(ctx context.Context, field gra
 			return ec.fieldContext_UserConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.UserConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models1.UserEdge) graphql.Marshaler {
-			return ec.marshalOUserEdge2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserEdgeᚄ(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.UserEdge) graphql.Marshaler {
+			return ec.marshalOUserEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserEdgeᚄ(ctx, selections, v)
 		},
 		true,
 		false,
@@ -39088,7 +39176,7 @@ func (ec *executionContext) fieldContext_UserConnection_edges(_ context.Context,
 		Object:     "UserConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_UserEdge(ctx, field)
 		},
@@ -39096,7 +39184,7 @@ func (ec *executionContext) fieldContext_UserConnection_edges(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _UserConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.User, models1.UserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLUser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39105,13 +39193,13 @@ func (ec *executionContext) _UserConnection_list(ctx context.Context, field grap
 			return ec.fieldContext_UserConnection_list(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.List(), nil
+			return ec.Resolvers.UserConnection().List(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models1.User) graphql.Marshaler {
-			return ec.marshalOUser2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserᚄ(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.User) graphql.Marshaler {
+			return ec.marshalOUser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserᚄ(ctx, selections, v)
 		},
 		true,
 		false,
@@ -39122,7 +39210,7 @@ func (ec *executionContext) fieldContext_UserConnection_list(_ context.Context, 
 		Object:     "UserConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_User(ctx, field)
 		},
@@ -39130,7 +39218,7 @@ func (ec *executionContext) fieldContext_UserConnection_list(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _UserConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models1.User, models1.UserEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[TGQLUser]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39164,7 +39252,7 @@ func (ec *executionContext) fieldContext_UserConnection_pageInfo(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _UserEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models1.UserEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models.UserEdge) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39189,7 +39277,7 @@ func (ec *executionContext) fieldContext_UserEdge_cursor(_ context.Context, fiel
 	return graphql.NewScalarFieldContext("UserEdge", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _UserEdge_node(ctx context.Context, field graphql.CollectedField, obj *models1.UserEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserEdge_node(ctx context.Context, field graphql.CollectedField, obj *models.UserEdge) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39203,8 +39291,8 @@ func (ec *executionContext) _UserEdge_node(ctx context.Context, field graphql.Co
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.User) graphql.Marshaler {
-			return ec.marshalOUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.User) graphql.Marshaler {
+			return ec.marshalOUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
 		},
 		true,
 		false,
@@ -39223,7 +39311,7 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _UserPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models1.UserPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models.UserPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39248,7 +39336,7 @@ func (ec *executionContext) fieldContext_UserPayload_clientMutationID(_ context.
 	return graphql.NewScalarFieldContext("UserPayload", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
-func (ec *executionContext) _UserPayload_userID(ctx context.Context, field graphql.CollectedField, obj *models1.UserPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserPayload_userID(ctx context.Context, field graphql.CollectedField, obj *models.UserPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39273,7 +39361,7 @@ func (ec *executionContext) fieldContext_UserPayload_userID(_ context.Context, f
 	return graphql.NewScalarFieldContext("UserPayload", field, false, false, errors.New("field of type ID64 does not have child fields"))
 }
 
-func (ec *executionContext) _UserPayload_user(ctx context.Context, field graphql.CollectedField, obj *models1.UserPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserPayload_user(ctx context.Context, field graphql.CollectedField, obj *models.UserPayload) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39287,8 +39375,8 @@ func (ec *executionContext) _UserPayload_user(ctx context.Context, field graphql
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models1.User) graphql.Marshaler {
-			return ec.marshalOUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.User) graphql.Marshaler {
+			return ec.marshalOUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, selections, v)
 		},
 		true,
 		false,
@@ -39782,7 +39870,7 @@ func (ec *executionContext) fieldContext_Zone_deletedAt(_ context.Context, field
 	return graphql.NewScalarFieldContext("Zone", field, false, false, errors.New("field of type Time does not have child fields"))
 }
 
-func (ec *executionContext) _ZoneConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ZoneConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Zone]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39807,7 +39895,7 @@ func (ec *executionContext) fieldContext_ZoneConnection_totalCount(_ context.Con
 	return graphql.NewScalarFieldContext("ZoneConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _ZoneConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ZoneConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Zone]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39816,7 +39904,7 @@ func (ec *executionContext) _ZoneConnection_edges(ctx context.Context, field gra
 			return ec.fieldContext_ZoneConnection_edges(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Edges(), nil
+			return ec.Resolvers.ZoneConnection().Edges(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -39833,7 +39921,7 @@ func (ec *executionContext) fieldContext_ZoneConnection_edges(_ context.Context,
 		Object:     "ZoneConnection",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: false,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_ZoneEdge(ctx, field)
 		},
@@ -39841,7 +39929,7 @@ func (ec *executionContext) fieldContext_ZoneConnection_edges(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _ZoneConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ZoneConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Zone]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -39875,7 +39963,7 @@ func (ec *executionContext) fieldContext_ZoneConnection_list(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _ZoneConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) (ret graphql.Marshaler) {
+func (ec *executionContext) _ZoneConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Zone]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
@@ -41187,8 +41275,8 @@ func (ec *executionContext) fieldContext___Type_isOneOf(_ context.Context, field
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputAccountCreateInput(ctx context.Context, obj any) (models1.AccountCreateInput, error) {
-	var it models1.AccountCreateInput
+func (ec *executionContext) unmarshalInputAccountCreateInput(ctx context.Context, obj any) (models.AccountCreateInput, error) {
+	var it models.AccountCreateInput
 	if obj == nil {
 		return it, nil
 	}
@@ -41214,14 +41302,14 @@ func (ec *executionContext) unmarshalInputAccountCreateInput(ctx context.Context
 			it.OwnerID = data
 		case "owner":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("owner"))
-			data, err := ec.unmarshalOUserInput2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
+			data, err := ec.unmarshalOUserInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Owner = data
 		case "account":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("account"))
-			data, err := ec.unmarshalNAccountInput2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx, v)
+			data, err := ec.unmarshalNAccountInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41238,8 +41326,8 @@ func (ec *executionContext) unmarshalInputAccountCreateInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputAccountInput(ctx context.Context, obj any) (models1.AccountInput, error) {
-	var it models1.AccountInput
+func (ec *executionContext) unmarshalInputAccountInput(ctx context.Context, obj any) (models.AccountInput, error) {
+	var it models.AccountInput
 	if obj == nil {
 		return it, nil
 	}
@@ -41317,8 +41405,8 @@ func (ec *executionContext) unmarshalInputAccountInput(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputAccountListFilter(ctx context.Context, obj any) (models1.AccountListFilter, error) {
-	var it models1.AccountListFilter
+func (ec *executionContext) unmarshalInputAccountListFilter(ctx context.Context, obj any) (models.AccountListFilter, error) {
+	var it models.AccountListFilter
 	if obj == nil {
 		return it, nil
 	}
@@ -41368,8 +41456,8 @@ func (ec *executionContext) unmarshalInputAccountListFilter(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputAccountListOrder(ctx context.Context, obj any) (models1.AccountListOrder, error) {
-	var it models1.AccountListOrder
+func (ec *executionContext) unmarshalInputAccountListOrder(ctx context.Context, obj any) (models.AccountListOrder, error) {
+	var it models.AccountListOrder
 	if obj == nil {
 		return it, nil
 	}
@@ -45532,7 +45620,9 @@ func (ec *executionContext) unmarshalInputInviteMemberInput(ctx context.Context,
 			if err != nil {
 				return it, err
 			}
-			it.Email = data
+			if err = ec.Resolvers.InviteMemberInput().Email(ctx, &it, data); err != nil {
+				return it, err
+			}
 		case "roles":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roles"))
 			data, err := ec.unmarshalNString2ᚕstringᚄ(ctx, v)
@@ -48832,8 +48922,8 @@ func (ec *executionContext) unmarshalInputTrafficRouterUpdateInput(ctx context.C
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj any) (models1.UserInput, error) {
-	var it models1.UserInput
+func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj any) (models.UserInput, error) {
+	var it models.UserInput
 	if obj == nil {
 		return it, nil
 	}
@@ -48869,8 +48959,8 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj any
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserListFilter(ctx context.Context, obj any) (models1.UserListFilter, error) {
-	var it models1.UserListFilter
+func (ec *executionContext) unmarshalInputUserListFilter(ctx context.Context, obj any) (models.UserListFilter, error) {
+	var it models.UserListFilter
 	if obj == nil {
 		return it, nil
 	}
@@ -48920,8 +49010,8 @@ func (ec *executionContext) unmarshalInputUserListFilter(ctx context.Context, ob
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserListOrder(ctx context.Context, obj any) (models1.UserListOrder, error) {
-	var it models1.UserListOrder
+func (ec *executionContext) unmarshalInputUserListOrder(ctx context.Context, obj any) (models.UserListOrder, error) {
+	var it models.UserListOrder
 	if obj == nil {
 		return it, nil
 	}
@@ -49535,7 +49625,7 @@ func (ec *executionContext) unmarshalInputZoneUpdateInput(ctx context.Context, o
 
 var accountImplementors = []string{"Account"}
 
-func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, obj *models1.Account) graphql.Marshaler {
+func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, obj *models.Account) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49628,7 +49718,7 @@ func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, 
 
 var accountConnectionImplementors = []string{"AccountConnection"}
 
-func (ec *executionContext) _AccountConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) graphql.Marshaler {
+func (ec *executionContext) _AccountConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[TGQLAccount]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49641,22 +49731,88 @@ func (ec *executionContext) _AccountConnection(ctx context.Context, sel ast.Sele
 		case "totalCount":
 			out.Values[i] = ec._AccountConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._AccountConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AccountConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
-			out.Values[i] = ec._AccountConnection_list(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AccountConnection_list(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "pageInfo":
 			out.Values[i] = ec._AccountConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -49681,7 +49837,7 @@ func (ec *executionContext) _AccountConnection(ctx context.Context, sel ast.Sele
 
 var accountCreatePayloadImplementors = []string{"AccountCreatePayload"}
 
-func (ec *executionContext) _AccountCreatePayload(ctx context.Context, sel ast.SelectionSet, obj *models1.AccountCreatePayload) graphql.Marshaler {
+func (ec *executionContext) _AccountCreatePayload(ctx context.Context, sel ast.SelectionSet, obj *models.AccountCreatePayload) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountCreatePayloadImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49729,7 +49885,7 @@ func (ec *executionContext) _AccountCreatePayload(ctx context.Context, sel ast.S
 
 var accountEdgeImplementors = []string{"AccountEdge"}
 
-func (ec *executionContext) _AccountEdge(ctx context.Context, sel ast.SelectionSet, obj *models1.AccountEdge) graphql.Marshaler {
+func (ec *executionContext) _AccountEdge(ctx context.Context, sel ast.SelectionSet, obj *models.AccountEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49772,7 +49928,7 @@ func (ec *executionContext) _AccountEdge(ctx context.Context, sel ast.SelectionS
 
 var accountPayloadImplementors = []string{"AccountPayload"}
 
-func (ec *executionContext) _AccountPayload(ctx context.Context, sel ast.SelectionSet, obj *models1.AccountPayload) graphql.Marshaler {
+func (ec *executionContext) _AccountPayload(ctx context.Context, sel ast.SelectionSet, obj *models.AccountPayload) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountPayloadImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49923,7 +50079,7 @@ func (ec *executionContext) _AdFormat(ctx context.Context, sel ast.SelectionSet,
 
 var adFormatConnectionImplementors = []string{"AdFormatConnection"}
 
-func (ec *executionContext) _AdFormatConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) graphql.Marshaler {
+func (ec *executionContext) _AdFormatConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.AdFormat]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, adFormatConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49936,22 +50092,55 @@ func (ec *executionContext) _AdFormatConnection(ctx context.Context, sel ast.Sel
 		case "totalCount":
 			out.Values[i] = ec._AdFormatConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._AdFormatConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AdFormatConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._AdFormatConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._AdFormatConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -50273,7 +50462,7 @@ func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionS
 
 var applicationConnectionImplementors = []string{"ApplicationConnection"}
 
-func (ec *executionContext) _ApplicationConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) graphql.Marshaler {
+func (ec *executionContext) _ApplicationConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.Application]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, applicationConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50286,22 +50475,55 @@ func (ec *executionContext) _ApplicationConnection(ctx context.Context, sel ast.
 		case "totalCount":
 			out.Values[i] = ec._ApplicationConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._ApplicationConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ApplicationConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._ApplicationConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._ApplicationConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -50535,7 +50757,7 @@ func (ec *executionContext) _AuthClient(ctx context.Context, sel ast.SelectionSe
 
 var authClientConnectionImplementors = []string{"AuthClientConnection"}
 
-func (ec *executionContext) _AuthClientConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) graphql.Marshaler {
+func (ec *executionContext) _AuthClientConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.AuthClient]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, authClientConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50548,22 +50770,55 @@ func (ec *executionContext) _AuthClientConnection(ctx context.Context, sel ast.S
 		case "totalCount":
 			out.Values[i] = ec._AuthClientConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._AuthClientConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AuthClientConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._AuthClientConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._AuthClientConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -50797,7 +51052,7 @@ func (ec *executionContext) _Browser(ctx context.Context, sel ast.SelectionSet, 
 
 var browserConnectionImplementors = []string{"BrowserConnection"}
 
-func (ec *executionContext) _BrowserConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) graphql.Marshaler {
+func (ec *executionContext) _BrowserConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.Browser]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, browserConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50810,22 +51065,55 @@ func (ec *executionContext) _BrowserConnection(ctx context.Context, sel ast.Sele
 		case "totalCount":
 			out.Values[i] = ec._BrowserConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._BrowserConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._BrowserConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._BrowserConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._BrowserConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -51067,7 +51355,7 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 
 var categoryConnectionImplementors = []string{"CategoryConnection"}
 
-func (ec *executionContext) _CategoryConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.Category, models.CategoryEdge]) graphql.Marshaler {
+func (ec *executionContext) _CategoryConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.Category]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, categoryConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51080,22 +51368,55 @@ func (ec *executionContext) _CategoryConnection(ctx context.Context, sel ast.Sel
 		case "totalCount":
 			out.Values[i] = ec._CategoryConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._CategoryConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._CategoryConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._CategoryConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._CategoryConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -51488,7 +51809,7 @@ func (ec *executionContext) _DeviceMaker(ctx context.Context, sel ast.SelectionS
 
 var deviceMakerConnectionImplementors = []string{"DeviceMakerConnection"}
 
-func (ec *executionContext) _DeviceMakerConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) graphql.Marshaler {
+func (ec *executionContext) _DeviceMakerConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.DeviceMaker]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, deviceMakerConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51501,22 +51822,55 @@ func (ec *executionContext) _DeviceMakerConnection(ctx context.Context, sel ast.
 		case "totalCount":
 			out.Values[i] = ec._DeviceMakerConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._DeviceMakerConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._DeviceMakerConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._DeviceMakerConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._DeviceMakerConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -51788,7 +52142,7 @@ func (ec *executionContext) _DeviceModel(ctx context.Context, sel ast.SelectionS
 
 var deviceModelConnectionImplementors = []string{"DeviceModelConnection"}
 
-func (ec *executionContext) _DeviceModelConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) graphql.Marshaler {
+func (ec *executionContext) _DeviceModelConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.DeviceModel]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, deviceModelConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51801,22 +52155,55 @@ func (ec *executionContext) _DeviceModelConnection(ctx context.Context, sel ast.
 		case "totalCount":
 			out.Values[i] = ec._DeviceModelConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._DeviceModelConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._DeviceModelConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._DeviceModelConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._DeviceModelConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -52058,7 +52445,7 @@ func (ec *executionContext) _DirectAccessToken(ctx context.Context, sel ast.Sele
 
 var directAccessTokenConnectionImplementors = []string{"DirectAccessTokenConnection"}
 
-func (ec *executionContext) _DirectAccessTokenConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) graphql.Marshaler {
+func (ec *executionContext) _DirectAccessTokenConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.DirectAccessToken]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, directAccessTokenConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52071,22 +52458,55 @@ func (ec *executionContext) _DirectAccessTokenConnection(ctx context.Context, se
 		case "totalCount":
 			out.Values[i] = ec._DirectAccessTokenConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._DirectAccessTokenConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._DirectAccessTokenConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._DirectAccessTokenConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._DirectAccessTokenConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -52285,7 +52705,7 @@ func (ec *executionContext) _HistoryAction(ctx context.Context, sel ast.Selectio
 
 var historyActionConnectionImplementors = []string{"HistoryActionConnection"}
 
-func (ec *executionContext) _HistoryActionConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) graphql.Marshaler {
+func (ec *executionContext) _HistoryActionConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.HistoryAction]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, historyActionConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52298,22 +52718,55 @@ func (ec *executionContext) _HistoryActionConnection(ctx context.Context, sel as
 		case "totalCount":
 			out.Values[i] = ec._HistoryActionConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._HistoryActionConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._HistoryActionConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._HistoryActionConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._HistoryActionConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -52495,47 +52948,113 @@ func (ec *executionContext) _Member(ctx context.Context, sel ast.SelectionSet, o
 		case "ID":
 			out.Values[i] = ec._Member_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "status":
 			out.Values[i] = ec._Member_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "user":
-			out.Values[i] = ec._Member_user(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Member_user(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "account":
-			out.Values[i] = ec._Member_account(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Member_account(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "isAdmin":
 			out.Values[i] = ec._Member_isAdmin(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "roles":
 			out.Values[i] = ec._Member_roles(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._Member_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._Member_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "deletedAt":
 			out.Values[i] = ec._Member_deletedAt(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -52560,7 +53079,7 @@ func (ec *executionContext) _Member(ctx context.Context, sel ast.SelectionSet, o
 
 var memberConnectionImplementors = []string{"MemberConnection"}
 
-func (ec *executionContext) _MemberConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) graphql.Marshaler {
+func (ec *executionContext) _MemberConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.Member]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, memberConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52573,22 +53092,55 @@ func (ec *executionContext) _MemberConnection(ctx context.Context, sel ast.Selec
 		case "totalCount":
 			out.Values[i] = ec._MemberConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._MemberConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._MemberConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._MemberConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._MemberConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -53414,7 +53966,7 @@ func (ec *executionContext) _OS(ctx context.Context, sel ast.SelectionSet, obj *
 
 var oSConnectionImplementors = []string{"OSConnection"}
 
-func (ec *executionContext) _OSConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.Os, models.OSEdge]) graphql.Marshaler {
+func (ec *executionContext) _OSConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.Os]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, oSConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -53427,22 +53979,55 @@ func (ec *executionContext) _OSConnection(ctx context.Context, sel ast.Selection
 		case "totalCount":
 			out.Values[i] = ec._OSConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._OSConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._OSConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._OSConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._OSConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -53611,7 +54196,7 @@ func (ec *executionContext) _Option(ctx context.Context, sel ast.SelectionSet, o
 
 var optionConnectionImplementors = []string{"OptionConnection"}
 
-func (ec *executionContext) _OptionConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) graphql.Marshaler {
+func (ec *executionContext) _OptionConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.Option]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, optionConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -53624,22 +54209,55 @@ func (ec *executionContext) _OptionConnection(ctx context.Context, sel ast.Selec
 		case "totalCount":
 			out.Values[i] = ec._OptionConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._OptionConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._OptionConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._OptionConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._OptionConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -53823,7 +54441,7 @@ func (ec *executionContext) _PageInfo(ctx context.Context, sel ast.SelectionSet,
 
 var profileImplementors = []string{"Profile"}
 
-func (ec *executionContext) _Profile(ctx context.Context, sel ast.SelectionSet, obj *models1.Profile) graphql.Marshaler {
+func (ec *executionContext) _Profile(ctx context.Context, sel ast.SelectionSet, obj *models.Profile) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, profileImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -53906,7 +54524,7 @@ func (ec *executionContext) _Profile(ctx context.Context, sel ast.SelectionSet, 
 
 var profileMessangerImplementors = []string{"ProfileMessanger"}
 
-func (ec *executionContext) _ProfileMessanger(ctx context.Context, sel ast.SelectionSet, obj *models1.ProfileMessanger) graphql.Marshaler {
+func (ec *executionContext) _ProfileMessanger(ctx context.Context, sel ast.SelectionSet, obj *models.ProfileMessanger) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, profileMessangerImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -55316,7 +55934,7 @@ func (ec *executionContext) _RBACRole(ctx context.Context, sel ast.SelectionSet,
 
 var rBACRoleConnectionImplementors = []string{"RBACRoleConnection"}
 
-func (ec *executionContext) _RBACRoleConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) graphql.Marshaler {
+func (ec *executionContext) _RBACRoleConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.RBACRole]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, rBACRoleConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -55329,22 +55947,55 @@ func (ec *executionContext) _RBACRoleConnection(ctx context.Context, sel ast.Sel
 		case "totalCount":
 			out.Values[i] = ec._RBACRoleConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._RBACRoleConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RBACRoleConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._RBACRoleConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._RBACRoleConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -56111,7 +56762,7 @@ func (ec *executionContext) _RTBSource(ctx context.Context, sel ast.SelectionSet
 
 var rTBSourceConnectionImplementors = []string{"RTBSourceConnection"}
 
-func (ec *executionContext) _RTBSourceConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) graphql.Marshaler {
+func (ec *executionContext) _RTBSourceConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.RTBSource]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, rTBSourceConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -56124,22 +56775,55 @@ func (ec *executionContext) _RTBSourceConnection(ctx context.Context, sel ast.Se
 		case "totalCount":
 			out.Values[i] = ec._RTBSourceConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._RTBSourceConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._RTBSourceConnection_edges(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._RTBSourceConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._RTBSourceConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -56416,7 +57100,7 @@ func (ec *executionContext) _SocialAccount(ctx context.Context, sel ast.Selectio
 
 var socialAccountConnectionImplementors = []string{"SocialAccountConnection"}
 
-func (ec *executionContext) _SocialAccountConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) graphql.Marshaler {
+func (ec *executionContext) _SocialAccountConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models1.SocialAccount]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, socialAccountConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -56429,22 +57113,55 @@ func (ec *executionContext) _SocialAccountConnection(ctx context.Context, sel as
 		case "totalCount":
 			out.Values[i] = ec._SocialAccountConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._SocialAccountConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._SocialAccountConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._SocialAccountConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._SocialAccountConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -56756,7 +57473,7 @@ func (ec *executionContext) _StatisticAdItem(ctx context.Context, sel ast.Select
 
 var statisticAdItemConnectionImplementors = []string{"StatisticAdItemConnection"}
 
-func (ec *executionContext) _StatisticAdItemConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) graphql.Marshaler {
+func (ec *executionContext) _StatisticAdItemConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.StatisticAdItem]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, statisticAdItemConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -57595,7 +58312,7 @@ func (ec *executionContext) _TrafficRouter(ctx context.Context, sel ast.Selectio
 
 var trafficRouterConnectionImplementors = []string{"TrafficRouterConnection"}
 
-func (ec *executionContext) _TrafficRouterConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) graphql.Marshaler {
+func (ec *executionContext) _TrafficRouterConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.TrafficRouter]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, trafficRouterConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -57608,22 +58325,55 @@ func (ec *executionContext) _TrafficRouterConnection(ctx context.Context, sel as
 		case "totalCount":
 			out.Values[i] = ec._TrafficRouterConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._TrafficRouterConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TrafficRouterConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._TrafficRouterConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._TrafficRouterConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -57739,7 +58489,7 @@ func (ec *executionContext) _TrafficRouterPayload(ctx context.Context, sel ast.S
 
 var userImplementors = []string{"User"}
 
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *models1.User) graphql.Marshaler {
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *models.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -57802,7 +58552,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 
 var userConnectionImplementors = []string{"UserConnection"}
 
-func (ec *executionContext) _UserConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models1.User, models1.UserEdge]) graphql.Marshaler {
+func (ec *executionContext) _UserConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[TGQLUser]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -57815,22 +58565,88 @@ func (ec *executionContext) _UserConnection(ctx context.Context, sel ast.Selecti
 		case "totalCount":
 			out.Values[i] = ec._UserConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._UserConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._UserConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
-			out.Values[i] = ec._UserConnection_list(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._UserConnection_list(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "pageInfo":
 			out.Values[i] = ec._UserConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -57855,7 +58671,7 @@ func (ec *executionContext) _UserConnection(ctx context.Context, sel ast.Selecti
 
 var userEdgeImplementors = []string{"UserEdge"}
 
-func (ec *executionContext) _UserEdge(ctx context.Context, sel ast.SelectionSet, obj *models1.UserEdge) graphql.Marshaler {
+func (ec *executionContext) _UserEdge(ctx context.Context, sel ast.SelectionSet, obj *models.UserEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -57898,7 +58714,7 @@ func (ec *executionContext) _UserEdge(ctx context.Context, sel ast.SelectionSet,
 
 var userPayloadImplementors = []string{"UserPayload"}
 
-func (ec *executionContext) _UserPayload(ctx context.Context, sel ast.SelectionSet, obj *models1.UserPayload) graphql.Marshaler {
+func (ec *executionContext) _UserPayload(ctx context.Context, sel ast.SelectionSet, obj *models.UserPayload) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userPayloadImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -58074,7 +58890,7 @@ func (ec *executionContext) _Zone(ctx context.Context, sel ast.SelectionSet, obj
 
 var zoneConnectionImplementors = []string{"ZoneConnection"}
 
-func (ec *executionContext) _ZoneConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) graphql.Marshaler {
+func (ec *executionContext) _ZoneConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.Zone]) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, zoneConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -58087,22 +58903,55 @@ func (ec *executionContext) _ZoneConnection(ctx context.Context, sel ast.Selecti
 		case "totalCount":
 			out.Values[i] = ec._ZoneConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "edges":
-			out.Values[i] = ec._ZoneConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ZoneConnection_edges(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._ZoneConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "pageInfo":
 			out.Values[i] = ec._ZoneConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -58608,7 +59457,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx context.Context, sel ast.SelectionSet, v *models1.Account) graphql.Marshaler {
+func (ec *executionContext) marshalNAccount2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx context.Context, sel ast.SelectionSet, v models.Account) graphql.Marshaler {
+	return ec._Account(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx context.Context, sel ast.SelectionSet, v *models.Account) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -58618,16 +59471,16 @@ func (ec *executionContext) marshalNAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋbla
 	return ec._Account(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNAccountCreateInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountCreateInput(ctx context.Context, v any) (models1.AccountCreateInput, error) {
+func (ec *executionContext) unmarshalNAccountCreateInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountCreateInput(ctx context.Context, v any) (models.AccountCreateInput, error) {
 	res, err := ec.unmarshalInputAccountCreateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNAccountCreatePayload2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx context.Context, sel ast.SelectionSet, v models1.AccountCreatePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountCreatePayload2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx context.Context, sel ast.SelectionSet, v models.AccountCreatePayload) graphql.Marshaler {
 	return ec._AccountCreatePayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAccountCreatePayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx context.Context, sel ast.SelectionSet, v *models1.AccountCreatePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountCreatePayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountCreatePayload(ctx context.Context, sel ast.SelectionSet, v *models.AccountCreatePayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -58637,7 +59490,7 @@ func (ec *executionContext) marshalNAccountCreatePayload2ᚖgithubᚗcomᚋgeniu
 	return ec._AccountCreatePayload(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNAccountEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountEdge(ctx context.Context, sel ast.SelectionSet, v *models1.AccountEdge) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountEdge(ctx context.Context, sel ast.SelectionSet, v *models.AccountEdge) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -58647,26 +59500,26 @@ func (ec *executionContext) marshalNAccountEdge2ᚖgithubᚗcomᚋgeniusrabbit�
 	return ec._AccountEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNAccountInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx context.Context, v any) (models1.AccountInput, error) {
+func (ec *executionContext) unmarshalNAccountInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx context.Context, v any) (models.AccountInput, error) {
 	res, err := ec.unmarshalInputAccountInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNAccountInput2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx context.Context, v any) (*models1.AccountInput, error) {
+func (ec *executionContext) unmarshalNAccountInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountInput(ctx context.Context, v any) (*models.AccountInput, error) {
 	res, err := ec.unmarshalInputAccountInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNAccountListOrder2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListOrder(ctx context.Context, v any) (*models1.AccountListOrder, error) {
+func (ec *executionContext) unmarshalNAccountListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListOrder(ctx context.Context, v any) (*models.AccountListOrder, error) {
 	res, err := ec.unmarshalInputAccountListOrder(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNAccountPayload2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx context.Context, sel ast.SelectionSet, v models1.AccountPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountPayload2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx context.Context, sel ast.SelectionSet, v models.AccountPayload) graphql.Marshaler {
 	return ec._AccountPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAccountPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx context.Context, sel ast.SelectionSet, v *models1.AccountPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountPayload(ctx context.Context, sel ast.SelectionSet, v *models.AccountPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -59537,13 +60390,13 @@ func (ec *executionContext) marshalNMemberPayload2ᚖgithubᚗcomᚋgeniusrabbit
 	return ec._MemberPayload(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNMessangerType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx context.Context, v any) (models1.MessangerType, error) {
-	var res models1.MessangerType
+func (ec *executionContext) unmarshalNMessangerType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx context.Context, v any) (models.MessangerType, error) {
+	var res models.MessangerType
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNMessangerType2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx context.Context, sel ast.SelectionSet, v models1.MessangerType) graphql.Marshaler {
+func (ec *executionContext) marshalNMessangerType2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐMessangerType(ctx context.Context, sel ast.SelectionSet, v models.MessangerType) graphql.Marshaler {
 	return v
 }
 
@@ -59728,7 +60581,7 @@ func (ec *executionContext) marshalNPrivateStatus2githubᚗcomᚋsspserverᚋapi
 	return v
 }
 
-func (ec *executionContext) marshalNProfileMessanger2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐProfileMessanger(ctx context.Context, sel ast.SelectionSet, v *models1.ProfileMessanger) graphql.Marshaler {
+func (ec *executionContext) marshalNProfileMessanger2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐProfileMessanger(ctx context.Context, sel ast.SelectionSet, v *models.ProfileMessanger) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -59912,11 +60765,11 @@ func (ec *executionContext) marshalNSocialAccount2ᚖgithubᚗcomᚋgeniusrabbit
 	return ec._SocialAccount(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNSocialAccountConnection2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalNSocialAccountConnection2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v connectors.CollectionConnection[*models1.SocialAccount]) graphql.Marshaler {
 	return ec._SocialAccountConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNSocialAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.SocialAccount, models1.SocialAccountEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalNSocialAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.SocialAccount]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -59975,11 +60828,11 @@ func (ec *executionContext) marshalNStatisticAdItem2ᚖgithubᚗcomᚋsspserver�
 	return ec._StatisticAdItem(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNStatisticAdItemConnection2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v connectors.CollectionConnection[models.StatisticAdItem, struct{}]) graphql.Marshaler {
+func (ec *executionContext) marshalNStatisticAdItemConnection2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v connectors.CollectionConnection[*models.StatisticAdItem]) graphql.Marshaler {
 	return ec._StatisticAdItemConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNStatisticAdItemConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.StatisticAdItem, struct{}]) graphql.Marshaler {
+func (ec *executionContext) marshalNStatisticAdItemConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.StatisticAdItem]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -60192,7 +61045,11 @@ func (ec *executionContext) marshalNUint642uint64(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models1.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
+	return ec._User(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -60202,7 +61059,7 @@ func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblaze�
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNUserEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserEdge(ctx context.Context, sel ast.SelectionSet, v *models1.UserEdge) graphql.Marshaler {
+func (ec *executionContext) marshalNUserEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserEdge(ctx context.Context, sel ast.SelectionSet, v *models.UserEdge) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -60212,21 +61069,21 @@ func (ec *executionContext) marshalNUserEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋbl
 	return ec._UserEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUserInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx context.Context, v any) (models1.UserInput, error) {
+func (ec *executionContext) unmarshalNUserInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx context.Context, v any) (models.UserInput, error) {
 	res, err := ec.unmarshalInputUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUserListOrder2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListOrder(ctx context.Context, v any) (*models1.UserListOrder, error) {
+func (ec *executionContext) unmarshalNUserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListOrder(ctx context.Context, v any) (*models.UserListOrder, error) {
 	res, err := ec.unmarshalInputUserListOrder(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUserPayload2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx context.Context, sel ast.SelectionSet, v models1.UserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNUserPayload2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx context.Context, sel ast.SelectionSet, v models.UserPayload) graphql.Marshaler {
 	return ec._UserPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUserPayload2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx context.Context, sel ast.SelectionSet, v *models1.UserPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNUserPayload2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserPayload(ctx context.Context, sel ast.SelectionSet, v *models.UserPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -60421,14 +61278,14 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) marshalOAccount2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.Account) graphql.Marshaler {
+func (ec *executionContext) marshalOAccount2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Account) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
 		fc := graphql.GetFieldContext(ctx)
 		fc.Result = &v[i]
-		return ec.marshalNAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, sel, v[i])
+		return ec.marshalNAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx, sel, v[i])
 	})
 
 	for _, e := range ret {
@@ -60440,28 +61297,28 @@ func (ec *executionContext) marshalOAccount2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalOAccount2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx context.Context, sel ast.SelectionSet, v *models1.Account) graphql.Marshaler {
+func (ec *executionContext) marshalOAccount2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccount(ctx context.Context, sel ast.SelectionSet, v *models.Account) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Account(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.Account, models1.AccountEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[TGQLAccount]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._AccountConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOAccountEdge2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.AccountEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.AccountEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
 		fc := graphql.GetFieldContext(ctx)
 		fc.Result = &v[i]
-		return ec.marshalNAccountEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountEdge(ctx, sel, v[i])
+		return ec.marshalNAccountEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountEdge(ctx, sel, v[i])
 	})
 
 	for _, e := range ret {
@@ -60473,7 +61330,7 @@ func (ec *executionContext) marshalOAccountEdge2ᚕᚖgithubᚗcomᚋgeniusrabbi
 	return ret
 }
 
-func (ec *executionContext) unmarshalOAccountListFilter2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListFilter(ctx context.Context, v any) (*models1.AccountListFilter, error) {
+func (ec *executionContext) unmarshalOAccountListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListFilter(ctx context.Context, v any) (*models.AccountListFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -60481,17 +61338,17 @@ func (ec *executionContext) unmarshalOAccountListFilter2ᚖgithubᚗcomᚋgenius
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOAccountListOrder2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListOrderᚄ(ctx context.Context, v any) ([]*models1.AccountListOrder, error) {
+func (ec *executionContext) unmarshalOAccountListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListOrderᚄ(ctx context.Context, v any) ([]*models.AccountListOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
 	var vSlice []any
 	vSlice = graphql.CoerceList(v)
 	var err error
-	res := make([]*models1.AccountListOrder, len(vSlice))
+	res := make([]*models.AccountListOrder, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNAccountListOrder2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐAccountListOrder(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNAccountListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAccountListOrder(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -60571,7 +61428,7 @@ func (ec *executionContext) marshalOAdFormat2ᚕᚖgithubᚗcomᚋsspserverᚋap
 	return ret
 }
 
-func (ec *executionContext) marshalOAdFormatConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOAdFormatConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.AdFormat]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -60659,7 +61516,7 @@ func (ec *executionContext) marshalOApplication2ᚕᚖgithubᚗcomᚋsspserver�
 	return ret
 }
 
-func (ec *executionContext) marshalOApplicationConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Application, models.ApplicationEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOApplicationConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.Application]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -60874,7 +61731,7 @@ func (ec *executionContext) marshalOAuthClient2ᚖgithubᚗcomᚋgeniusrabbitᚋ
 	return ec._AuthClient(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOAuthClientConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.AuthClient, models1.AuthClientEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOAuthClientConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.AuthClient]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -60990,7 +61847,7 @@ func (ec *executionContext) marshalOBrowser2ᚖgithubᚗcomᚋsspserverᚋapiᚋ
 	return ec._Browser(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOBrowserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Browser, models.BrowserEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOBrowserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.Browser]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61056,7 +61913,7 @@ func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋsspserverᚋapi�
 	return ec._Category(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOCategoryConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Category, models.CategoryEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOCategoryConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.Category]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61147,7 +62004,7 @@ func (ec *executionContext) marshalODeviceMaker2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._DeviceMaker(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalODeviceMakerConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.DeviceMaker, models.DeviceMakerEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalODeviceMakerConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.DeviceMaker]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61213,7 +62070,7 @@ func (ec *executionContext) marshalODeviceModel2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._DeviceModel(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalODeviceModelConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalODeviceModelConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.DeviceModel]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61305,7 +62162,7 @@ func (ec *executionContext) marshalODirectAccessToken2ᚖgithubᚗcomᚋgeniusra
 	return ec._DirectAccessToken(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalODirectAccessTokenConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.DirectAccessToken, models1.DirectAccessTokenEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalODirectAccessTokenConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.DirectAccessToken]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61400,7 +62257,7 @@ func (ec *executionContext) marshalOHistoryAction2ᚕᚖgithubᚗcomᚋgeniusrab
 	return ret
 }
 
-func (ec *executionContext) marshalOHistoryActionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.HistoryAction, models1.HistoryActionEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOHistoryActionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.HistoryAction]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61629,7 +62486,7 @@ func (ec *executionContext) marshalOMember2ᚖgithubᚗcomᚋgeniusrabbitᚋblaz
 	return ec._Member(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOMemberConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.Member, models1.MemberEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOMemberConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.Member]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61723,7 +62580,7 @@ func (ec *executionContext) marshalOOS2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkg�
 	return ec._OS(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOOSConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Os, models.OSEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOOSConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.Os]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61771,7 +62628,7 @@ func (ec *executionContext) marshalOOption2ᚖgithubᚗcomᚋgeniusrabbitᚋblaz
 	return ec._Option(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOOptionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.Option, models1.OptionEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOOptionConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.Option]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -61934,14 +62791,14 @@ func (ec *executionContext) marshalOPrivateStatus2ᚖgithubᚗcomᚋsspserverᚋ
 	return v
 }
 
-func (ec *executionContext) marshalOProfileMessanger2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐProfileMessangerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.ProfileMessanger) graphql.Marshaler {
+func (ec *executionContext) marshalOProfileMessanger2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐProfileMessangerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.ProfileMessanger) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
 		fc := graphql.GetFieldContext(ctx)
 		fc.Result = &v[i]
-		return ec.marshalNProfileMessanger2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐProfileMessanger(ctx, sel, v[i])
+		return ec.marshalNProfileMessanger2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐProfileMessanger(ctx, sel, v[i])
 	})
 
 	for _, e := range ret {
@@ -61998,7 +62855,7 @@ func (ec *executionContext) marshalORBACRole2ᚖgithubᚗcomᚋgeniusrabbitᚋbl
 	return ec._RBACRole(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalORBACRoleConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.RBACRole, models1.RBACRoleEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalORBACRoleConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models1.RBACRole]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -62122,7 +62979,7 @@ func (ec *executionContext) marshalORTBSource2ᚕᚖgithubᚗcomᚋsspserverᚋa
 	return ret
 }
 
-func (ec *executionContext) marshalORTBSourceConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalORTBSourceConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.RTBSource]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -62496,7 +63353,7 @@ func (ec *executionContext) marshalOTrafficRouter2ᚕᚖgithubᚗcomᚋsspserver
 	return ret
 }
 
-func (ec *executionContext) marshalOTrafficRouterConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOTrafficRouterConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.TrafficRouter]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -62591,14 +63448,14 @@ func (ec *executionContext) marshalOUUID2ᚕgithubᚗcomᚋgoogleᚋuuidᚐUUID�
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
 		fc := graphql.GetFieldContext(ctx)
 		fc.Result = &v[i]
-		return ec.marshalNUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, sel, v[i])
+		return ec.marshalNUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx, sel, v[i])
 	})
 
 	for _, e := range ret {
@@ -62610,28 +63467,28 @@ func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋbla
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models1.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOUserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models1.User, models1.UserEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOUserConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[TGQLUser]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._UserConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOUserEdge2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.UserEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOUserEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.UserEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
 		fc := graphql.GetFieldContext(ctx)
 		fc.Result = &v[i]
-		return ec.marshalNUserEdge2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserEdge(ctx, sel, v[i])
+		return ec.marshalNUserEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserEdge(ctx, sel, v[i])
 	})
 
 	for _, e := range ret {
@@ -62643,7 +63500,7 @@ func (ec *executionContext) marshalOUserEdge2ᚕᚖgithubᚗcomᚋgeniusrabbit�
 	return ret
 }
 
-func (ec *executionContext) unmarshalOUserInput2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx context.Context, v any) (*models1.UserInput, error) {
+func (ec *executionContext) unmarshalOUserInput2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserInput(ctx context.Context, v any) (*models.UserInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -62651,7 +63508,7 @@ func (ec *executionContext) unmarshalOUserInput2ᚖgithubᚗcomᚋgeniusrabbit�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOUserListFilter2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListFilter(ctx context.Context, v any) (*models1.UserListFilter, error) {
+func (ec *executionContext) unmarshalOUserListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListFilter(ctx context.Context, v any) (*models.UserListFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -62659,17 +63516,17 @@ func (ec *executionContext) unmarshalOUserListFilter2ᚖgithubᚗcomᚋgeniusrab
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOUserListOrder2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListOrderᚄ(ctx context.Context, v any) ([]*models1.UserListOrder, error) {
+func (ec *executionContext) unmarshalOUserListOrder2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListOrderᚄ(ctx context.Context, v any) ([]*models.UserListOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
 	var vSlice []any
 	vSlice = graphql.CoerceList(v)
 	var err error
-	res := make([]*models1.UserListOrder, len(vSlice))
+	res := make([]*models.UserListOrder, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNUserListOrder2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐUserListOrder(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNUserListOrder2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐUserListOrder(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -62696,7 +63553,7 @@ func (ec *executionContext) marshalOZone2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalOZoneConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[models.Zone, models.ZoneEdge]) graphql.Marshaler {
+func (ec *executionContext) marshalOZoneConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.Zone]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

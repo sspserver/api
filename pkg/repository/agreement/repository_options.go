@@ -78,8 +78,8 @@ func (r *RepositoryOptionsImpl) Accept(ctx context.Context, codename string, sig
 
 	// Create acceptance record
 	accept := acceptance{
-		AccountID:  session.Account(ctx).ID,
-		UserID:     session.User(ctx).ID,
+		AccountID:  session.AccountID(ctx),
+		UserID:     session.UserID(ctx),
 		AcceptedAt: time.Now(),
 		Signature:  signature,
 	}
@@ -87,7 +87,7 @@ func (r *RepositoryOptionsImpl) Accept(ctx context.Context, codename string, sig
 	err = r.opts.SetOption(ctx,
 		"agreement_"+agreement.Codename,
 		models.AccountOptionType,
-		session.Account(ctx).ID,
+		session.AccountID(ctx),
 		accept,
 	)
 	if err != nil {
@@ -104,7 +104,7 @@ func (r *RepositoryOptionsImpl) Accept(ctx context.Context, codename string, sig
 }
 
 func (r *RepositoryOptionsImpl) fillAgreementAcceptance(ctx context.Context, agreement *models.Agreement) bool {
-	sessAccountID := session.Account(ctx).ID
+	sessAccountID := session.AccountID(ctx)
 	opt, err := r.opts.Get(ctx, "agreement_"+agreement.Codename, models.AccountOptionType, sessAccountID)
 	if err != nil || opt == nil || opt.Value.Data == nil {
 		return false

@@ -18,6 +18,7 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
+	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/agreement"
 	"github.com/sspserver/api/pkg/server/graphql/directives"
 	"github.com/sspserver/api/pkg/server/graphql/generated"
@@ -34,8 +35,8 @@ func GraphQL(usecases *resolvers.Usecases, provider *jwt.Provider) http.Handler 
 			Resolvers: resolvers.NewResolver(usecases, provider),
 			Directives: generated.DirectiveRoot{
 				Auth:              blazeDirectives.Auth,
-				Acl:               blazeDirectives.HasPermissions,
-				HasPermissions:    blazeDirectives.HasPermissions,
+				Acl:               blazeDirectives.HasPermissions[*models.User, *models.Account],
+				HasPermissions:    blazeDirectives.HasPermissions[*models.User, *models.Account],
 				SkipNoPermissions: blazeDirectives.SkipNoPermissions,
 				RequireAgreements: directives.RequireAgreements(agreements),
 				Length:            directives.ValidateLength,

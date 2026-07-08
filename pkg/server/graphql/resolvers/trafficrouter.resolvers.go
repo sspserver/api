@@ -7,6 +7,7 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -45,12 +46,12 @@ func (r *queryResolver) TrafficRouter(ctx context.Context, id uint64) (*models.T
 }
 
 // ListTrafficRouters is the resolver for the listTrafficRouters field.
-func (r *queryResolver) ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[models.TrafficRouter, models.TrafficRouterEdge], error) {
+func (r *queryResolver) ListTrafficRouters(ctx context.Context, filter *models.TrafficRouterListFilter, order []*models.TrafficRouterListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.TrafficRouter], error) {
 	return r.trafficrouter.List(ctx, filter, order, page)
 }
 
 // Account is the resolver for the account field.
-func (r *trafficRouterResolver) Account(ctx context.Context, obj *models.TrafficRouter) (_ *models1.Account, err error) {
+func (r *trafficRouterResolver) Account(ctx context.Context, obj *models.TrafficRouter) (_ *models.Account, err error) {
 	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
 	return obj.Account, err
 }
@@ -128,7 +129,18 @@ func (r *trafficRouterResolver) Zones(ctx context.Context, obj *models.TrafficRo
 	return obj.Zones, err
 }
 
+// Edges is the resolver for the edges field.
+func (r *trafficRouterConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.TrafficRouter]) ([]*models.TrafficRouterEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
+
 // TrafficRouter returns generated.TrafficRouterResolver implementation.
 func (r *Resolver) TrafficRouter() generated.TrafficRouterResolver { return &trafficRouterResolver{r} }
 
+// TrafficRouterConnection returns generated.TrafficRouterConnectionResolver implementation.
+func (r *Resolver) TrafficRouterConnection() generated.TrafficRouterConnectionResolver {
+	return &trafficRouterConnectionResolver{r}
+}
+
 type trafficRouterResolver struct{ *Resolver }
+type trafficRouterConnectionResolver struct{ *Resolver }

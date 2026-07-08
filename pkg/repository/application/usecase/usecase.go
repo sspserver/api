@@ -38,11 +38,11 @@ func (u *Usecase) Get(ctx context.Context, id uint64) (*models.Application, erro
 // FetchList application objects
 func (u *Usecase) FetchList(ctx context.Context, qops ...application.Option) ([]*models.Application, error) {
 	if !acl.HaveAccessList(ctx, &models.Application{}) {
-		if !acl.HaveAccessList(ctx, &models.Application{AccountID: session.Account(ctx).ID}) {
+		if !acl.HaveAccessList(ctx, &models.Application{AccountID: session.AccountID(ctx)}) {
 			return nil, acl.ErrNoPermissions.WithMessage("list::account")
 		}
 		qops = append(qops, &application.Filter{
-			AccountID: []uint64{session.Account(ctx).ID},
+			AccountID: []uint64{session.AccountID(ctx)},
 		})
 	}
 	return u.repo.FetchList(ctx, qops...)
@@ -51,11 +51,11 @@ func (u *Usecase) FetchList(ctx context.Context, qops ...application.Option) ([]
 // Count application objects
 func (u *Usecase) Count(ctx context.Context, qops ...application.Option) (int64, error) {
 	if !acl.HaveAccessCount(ctx, &models.Application{}) {
-		if !acl.HaveAccessCount(ctx, &models.Application{AccountID: session.Account(ctx).ID}) {
+		if !acl.HaveAccessCount(ctx, &models.Application{AccountID: session.AccountID(ctx)}) {
 			return 0, acl.ErrNoPermissions.WithMessage("count::account")
 		}
 		qops = append(qops, &application.Filter{
-			AccountID: []uint64{session.Account(ctx).ID},
+			AccountID: []uint64{session.AccountID(ctx)},
 		})
 	}
 	return u.repo.Count(ctx, qops...)
@@ -64,10 +64,10 @@ func (u *Usecase) Count(ctx context.Context, qops ...application.Option) (int64,
 // Create application object by id
 func (u *Usecase) Create(ctx context.Context, object *models.Application) (uint64, error) {
 	if object.AccountID == 0 {
-		object.AccountID = session.Account(ctx).ID
+		object.AccountID = session.AccountID(ctx)
 	}
 	if object.CreatorID == 0 {
-		object.CreatorID = session.User(ctx).ID
+		object.CreatorID = session.UserID(ctx)
 	}
 	if !acl.HaveAccessCreate(ctx, object) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")

@@ -14,11 +14,13 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 
+	blazeauth "github.com/geniusrabbit/blaze-api/pkg/auth"
 	"github.com/geniusrabbit/blaze-api/pkg/context/ctxlogger"
 	"github.com/geniusrabbit/blaze-api/pkg/middleware"
 	"github.com/geniusrabbit/blaze-api/pkg/profiler"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
+	"github.com/sspserver/api/pkg/models"
 )
 
 type (
@@ -31,13 +33,14 @@ type HTTPServer struct {
 	RequestTimeout time.Duration
 	ContextWrap    contextWrapper
 	InitWrap       muxInitWrapper
-	Authorizers    []accAuth.Authorizer
+	AuthLoader     *accAuth.Loader[*models.User, *models.Account]
+	Authorizers    []blazeauth.Authorizer[*models.User, *models.Account]
 	SessionManager *scs.SessionManager
 }
 
 // Run starts a HTTP server and blocks while running if successful.
 // The server will be shutdown when "ctx" is canceled.
-func (s *HTTPServer) Run(ctx context.Context, address string) (err error) {
+func (s *HTTPServer) Run(ctx context.Context, address string) error {
 	ctxlogger.Get(ctx).Info("Start server HTTP API: " + address)
 
 	mux := chi.NewRouter()
@@ -51,7 +54,7 @@ func (s *HTTPServer) Run(ctx context.Context, address string) (err error) {
 	h := http.Handler(mux)
 
 	// Add middleware's
-	h = accAuth.Middleware(h, s.Authorizers...)
+	h = accAuth.Middleware(h, s.AuthLoader, s.Authorizers...)
 	h = middleware.HTTPContextWrapper(h, s.ContextWrap)
 	h = middleware.HTTPSession(h, s.SessionManager)
 	h = middleware.RealIP(h)

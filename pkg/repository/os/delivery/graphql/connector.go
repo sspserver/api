@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/repository"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
@@ -14,7 +13,7 @@ import (
 )
 
 // OSConnection implements collection accessor interface with pagination.
-type OSConnection = connectors.CollectionConnection[gqlmodels.Os, gqlmodels.OSEdge]
+type OSConnection = connectors.CollectionConnection[*gqlmodels.Os]
 
 // NewOSConnection based on query object
 func NewOSConnection(
@@ -24,7 +23,7 @@ func NewOSConnection(
 	order []*gqlmodels.OSListOrder,
 	page *models.Page,
 ) *OSConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Os, gqlmodels.OSEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Os]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Os, error) {
 			newOrder := xtypes.SliceReduce(order,
 				func(val *gqlmodels.OSListOrder, res *osrepo.ListOrder) { val.Fill(res) })
@@ -38,12 +37,6 @@ func NewOSConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return osAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.Os) *gqlmodels.OSEdge {
-			return &gqlmodels.OSEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 
@@ -12,7 +11,7 @@ import (
 )
 
 // AdFormatConnection implements collection accessor interface with pagination.
-type AdFormatConnection = connectors.CollectionConnection[gqlmodels.AdFormat, gqlmodels.AdFormatEdge]
+type AdFormatConnection = connectors.CollectionConnection[*gqlmodels.AdFormat]
 
 // NewAdFormatConnection based on query object
 func NewAdFormatConnection(
@@ -22,19 +21,14 @@ func NewAdFormatConnection(
 	order *gqlmodels.AdFormatListOrder,
 	page *models.Page,
 ) *AdFormatConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.AdFormat, gqlmodels.AdFormatEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.AdFormat]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.AdFormat, error) {
-			list, err := adFormatAccessor.FetchList(ctx, filter.Filter(), order.Order(), page.Pagination())
+			list, err := adFormatAccessor.FetchList(ctx,
+				filter.Filter(), order.Order(), page.Pagination())
 			return FromAdFormatModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return adFormatAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.AdFormat) *gqlmodels.AdFormatEdge {
-			return &gqlmodels.AdFormatEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

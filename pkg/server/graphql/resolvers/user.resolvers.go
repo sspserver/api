@@ -7,28 +7,31 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
+	models1 "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input models.UserInput) (*models.UserPayload, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input models1.UserInput) (*models1.UserPayload, error) {
 	return r.users.CreateUser(ctx, &input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
-func (r *mutationResolver) UpdateUser(ctx context.Context, id uint64, input models.UserInput) (*models.UserPayload, error) {
+func (r *mutationResolver) UpdateUser(ctx context.Context, id uint64, input models1.UserInput) (*models1.UserPayload, error) {
 	return r.users.UpdateUser(ctx, id, &input)
 }
 
 // ApproveUser is the resolver for the approveUser field.
-func (r *mutationResolver) ApproveUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error) {
+func (r *mutationResolver) ApproveUser(ctx context.Context, id uint64, msg *string) (*models1.UserPayload, error) {
 	return r.users.ApproveUser(ctx, id, msg)
 }
 
 // RejectUser is the resolver for the rejectUser field.
-func (r *mutationResolver) RejectUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error) {
+func (r *mutationResolver) RejectUser(ctx context.Context, id uint64, msg *string) (*models1.UserPayload, error) {
 	return r.users.RejectUser(ctx, id, msg)
 }
 
@@ -43,16 +46,33 @@ func (r *mutationResolver) UpdateUserPassword(ctx context.Context, token string,
 }
 
 // CurrentUser is the resolver for the currentUser field.
-func (r *queryResolver) CurrentUser(ctx context.Context) (*models.UserPayload, error) {
+func (r *queryResolver) CurrentUser(ctx context.Context) (*models1.UserPayload, error) {
 	return r.users.CurrentUser(ctx)
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, id uint64, username string) (*models.UserPayload, error) {
+func (r *queryResolver) User(ctx context.Context, id uint64, username string) (*models1.UserPayload, error) {
 	return r.users.User(ctx, id, username)
 }
 
 // ListUsers is the resolver for the listUsers field.
-func (r *queryResolver) ListUsers(ctx context.Context, filter *models.UserListFilter, order []*models.UserListOrder, page *models.Page) (*connectors.CollectionConnection[models.User, models.UserEdge], error) {
+func (r *queryResolver) ListUsers(ctx context.Context, filter *models1.UserListFilter, order []*models1.UserListOrder, page *models.Page) (*connectors.CollectionConnection[*models1.User], error) {
 	return r.users.ListUsers(ctx, filter, order, page)
 }
+
+// Edges is the resolver for the edges field.
+func (r *userConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.User]) ([]*models1.UserEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
+
+// List is the resolver for the list field.
+func (r *userConnectionResolver) List(ctx context.Context, obj *connectors.CollectionConnection[*models1.User]) ([]*models1.User, error) {
+	panic(fmt.Errorf("not implemented: List - list"))
+}
+
+// UserConnection returns generated.UserConnectionResolver implementation.
+func (r *Resolver) UserConnection() generated.UserConnectionResolver {
+	return &userConnectionResolver{r}
+}
+
+type userConnectionResolver struct{ *Resolver }
