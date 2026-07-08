@@ -30,7 +30,6 @@ require (
 	github.com/yuin/goldmark v1.8.2
 	go.abhg.dev/goldmark/frontmatter v0.3.0
 	go.uber.org/zap v1.28.0
-	golang.org/x/exp v0.0.0-20260611194520-c48552f49976
 	golang.org/x/oauth2 v0.36.0
 	gorm.io/gorm v1.31.2
 )
@@ -172,6 +171,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
+	golang.org/x/exp v0.0.0-20260611194520-c48552f49976 // indirect
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067 // indirect
 	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
