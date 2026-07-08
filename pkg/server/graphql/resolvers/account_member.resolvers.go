@@ -7,10 +7,28 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
+	models1 "github.com/sspserver/api/pkg/server/graphql/models"
 )
+
+// User is the resolver for the user field.
+func (r *memberResolver) User(ctx context.Context, obj *models.Member) (*models1.User, error) {
+	panic(fmt.Errorf("not implemented: User - user"))
+}
+
+// Account is the resolver for the account field.
+func (r *memberResolver) Account(ctx context.Context, obj *models.Member) (*models1.Account, error) {
+	panic(fmt.Errorf("not implemented: Account - account"))
+}
+
+// Edges is the resolver for the edges field.
+func (r *memberConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Member]) ([]*models.MemberEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
 
 // InviteAccountMember is the resolver for the inviteAccountMember field.
 func (r *mutationResolver) InviteAccountMember(ctx context.Context, accountID uint64, member models.InviteMemberInput) (*models.MemberPayload, error) {
@@ -38,6 +56,28 @@ func (r *mutationResolver) RejectAccountMember(ctx context.Context, memberID uin
 }
 
 // ListMembers is the resolver for the listMembers field.
-func (r *queryResolver) ListMembers(ctx context.Context, filter *models.MemberListFilter, order []*models.MemberListOrder, page *models.Page) (*connectors.CollectionConnection[models.Member, models.MemberEdge], error) {
+func (r *queryResolver) ListMembers(ctx context.Context, filter *models.MemberListFilter, order []*models.MemberListOrder, page *models.Page) (*connectors.CollectionConnection[*models.Member], error) {
 	return r.members.List(ctx, filter, order, page)
 }
+
+// Email is the resolver for the email field.
+func (r *inviteMemberInputResolver) Email(ctx context.Context, obj *models.InviteMemberInput, data string) error {
+	panic(fmt.Errorf("not implemented: Email - email"))
+}
+
+// Member returns generated.MemberResolver implementation.
+func (r *Resolver) Member() generated.MemberResolver { return &memberResolver{r} }
+
+// MemberConnection returns generated.MemberConnectionResolver implementation.
+func (r *Resolver) MemberConnection() generated.MemberConnectionResolver {
+	return &memberConnectionResolver{r}
+}
+
+// InviteMemberInput returns generated.InviteMemberInputResolver implementation.
+func (r *Resolver) InviteMemberInput() generated.InviteMemberInputResolver {
+	return &inviteMemberInputResolver{r}
+}
+
+type memberResolver struct{ *Resolver }
+type memberConnectionResolver struct{ *Resolver }
+type inviteMemberInputResolver struct{ *Resolver }

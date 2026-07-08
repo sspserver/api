@@ -9,9 +9,7 @@ import (
 
 type (
 	Page           = bzgqlmodel.Page
-	Account        = bzgqlmodel.Account
 	SocialAccount  = bzgqlmodel.SocialAccount
-	User           = bzgqlmodel.User
 	RBACRole       = bzgqlmodel.RBACRole
 	AuthClient     = bzgqlmodel.AuthClient
 	Option         = bzgqlmodel.Option

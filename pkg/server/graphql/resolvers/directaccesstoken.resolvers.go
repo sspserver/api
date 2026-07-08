@@ -7,11 +7,18 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
+
+// Edges is the resolver for the edges field.
+func (r *directAccessTokenConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.DirectAccessToken]) ([]*models.DirectAccessTokenEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
 
 // GenerateDirectAccessToken is the resolver for the generateDirectAccessToken field.
 func (r *mutationResolver) GenerateDirectAccessToken(ctx context.Context, userID *uint64, description string, expiresAt *time.Time) (*models.DirectAccessTokenPayload, error) {
@@ -29,6 +36,13 @@ func (r *queryResolver) GetDirectAccessToken(ctx context.Context, id uint64) (*m
 }
 
 // ListDirectAccessTokens is the resolver for the listDirectAccessTokens field.
-func (r *queryResolver) ListDirectAccessTokens(ctx context.Context, filter *models.DirectAccessTokenListFilter, order []*models.DirectAccessTokenListOrder, page *models.Page) (*connectors.CollectionConnection[models.DirectAccessToken, models.DirectAccessTokenEdge], error) {
+func (r *queryResolver) ListDirectAccessTokens(ctx context.Context, filter *models.DirectAccessTokenListFilter, order []*models.DirectAccessTokenListOrder, page *models.Page) (*connectors.CollectionConnection[*models.DirectAccessToken], error) {
 	return r.directaccesstoken.List(ctx, filter, order, page)
 }
+
+// DirectAccessTokenConnection returns generated.DirectAccessTokenConnectionResolver implementation.
+func (r *Resolver) DirectAccessTokenConnection() generated.DirectAccessTokenConnectionResolver {
+	return &directAccessTokenConnectionResolver{r}
+}
+
+type directAccessTokenConnectionResolver struct{ *Resolver }

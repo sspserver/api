@@ -37,7 +37,7 @@ func (uc *Usecase) Get(ctx context.Context, id uint64) (*models.TrafficRouter, e
 // FetchList retrieves a list of TrafficRouter objects.
 func (uc *Usecase) FetchList(ctx context.Context, qops ...trafficrouter.Option) ([]*models.TrafficRouter, error) {
 	if !acl.HaveAccessList(ctx, &models.TrafficRouter{}) {
-		accountID := session.Account(ctx).ID
+		accountID := session.AccountID(ctx)
 		if acl.HaveAccessList(ctx, &models.TrafficRouter{AccountID: accountID}) {
 			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
 		} else {
@@ -50,7 +50,7 @@ func (uc *Usecase) FetchList(ctx context.Context, qops ...trafficrouter.Option) 
 // Count returns the total number of TrafficRouter objects.
 func (uc *Usecase) Count(ctx context.Context, qops ...trafficrouter.Option) (int64, error) {
 	if !acl.HaveAccessCount(ctx, &models.TrafficRouter{}) {
-		accountID := session.Account(ctx).ID
+		accountID := session.AccountID(ctx)
 		if acl.HaveAccessCount(ctx, &models.TrafficRouter{AccountID: accountID}) {
 			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
 		} else {
@@ -63,7 +63,7 @@ func (uc *Usecase) Count(ctx context.Context, qops ...trafficrouter.Option) (int
 // Create creates a new TrafficRouter object.
 func (uc *Usecase) Create(ctx context.Context, router *models.TrafficRouter) (uint64, error) {
 	if router.AccountID == 0 {
-		router.AccountID = session.Account(ctx).ID
+		router.AccountID = session.AccountID(ctx)
 	}
 	if !acl.HaveAccessCreate(ctx, router) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")

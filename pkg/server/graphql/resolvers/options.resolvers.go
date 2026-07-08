@@ -7,15 +7,22 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 	"github.com/geniusrabbit/blaze-api/server/graphql/types"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
 
 // SetOption is the resolver for the setOption field.
 func (r *mutationResolver) SetOption(ctx context.Context, name string, value *types.NullableJSON, typeArg models.OptionType, targetID uint64) (*models.OptionPayload, error) {
 	return r.options.Set(ctx, name, value, typeArg, targetID)
+}
+
+// Edges is the resolver for the edges field.
+func (r *optionConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Option]) ([]*models.OptionEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
 }
 
 // Option is the resolver for the option field.
@@ -24,6 +31,13 @@ func (r *queryResolver) Option(ctx context.Context, name string, typeArg models.
 }
 
 // ListOptions is the resolver for the listOptions field.
-func (r *queryResolver) ListOptions(ctx context.Context, filter *models.OptionListFilter, order []*models.OptionListOrder, page *models.Page) (*connectors.CollectionConnection[models.Option, models.OptionEdge], error) {
+func (r *queryResolver) ListOptions(ctx context.Context, filter *models.OptionListFilter, order []*models.OptionListOrder, page *models.Page) (*connectors.CollectionConnection[*models.Option], error) {
 	return r.options.List(ctx, filter, order, page)
 }
+
+// OptionConnection returns generated.OptionConnectionResolver implementation.
+func (r *Resolver) OptionConnection() generated.OptionConnectionResolver {
+	return &optionConnectionResolver{r}
+}
+
+type optionConnectionResolver struct{ *Resolver }

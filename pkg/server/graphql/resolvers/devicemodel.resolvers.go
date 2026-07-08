@@ -7,6 +7,7 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -27,6 +28,11 @@ func (r *deviceModelResolver) Versions(ctx context.Context, obj *models.DeviceMo
 		return nil, err
 	}
 	return coll.List(), nil
+}
+
+// Edges is the resolver for the edges field.
+func (r *deviceModelConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.DeviceModel]) ([]*models.DeviceModelEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
 }
 
 // CreateDeviceModel is the resolver for the createDeviceModel field.
@@ -50,11 +56,17 @@ func (r *queryResolver) DeviceModel(ctx context.Context, id uint64, codename str
 }
 
 // ListDeviceModels is the resolver for the listDeviceModels field.
-func (r *queryResolver) ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[models.DeviceModel, models.DeviceModelEdge], error) {
+func (r *queryResolver) ListDeviceModels(ctx context.Context, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.DeviceModel], error) {
 	return r.device_models.List(ctx, filter, order, page)
 }
 
 // DeviceModel returns generated.DeviceModelResolver implementation.
 func (r *Resolver) DeviceModel() generated.DeviceModelResolver { return &deviceModelResolver{r} }
 
+// DeviceModelConnection returns generated.DeviceModelConnectionResolver implementation.
+func (r *Resolver) DeviceModelConnection() generated.DeviceModelConnectionResolver {
+	return &deviceModelConnectionResolver{r}
+}
+
 type deviceModelResolver struct{ *Resolver }
+type deviceModelConnectionResolver struct{ *Resolver }

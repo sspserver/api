@@ -61,7 +61,7 @@ func (u *Usecase) Count(ctx context.Context, qops ...zone.Option) (int64, error)
 
 func (u *Usecase) Create(ctx context.Context, object *models.Zone) (uint64, error) {
 	if object.AccountID == 0 {
-		object.AccountID = session.Account(ctx).ID
+		object.AccountID = session.AccountID(ctx)
 	}
 	if !acl.HaveAccessCreate(ctx, object) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")

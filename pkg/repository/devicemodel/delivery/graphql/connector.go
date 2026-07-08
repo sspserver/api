@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -13,7 +12,7 @@ import (
 )
 
 // DeviceModelConnection implements collection accessor interface with pagination.
-type DeviceModelConnection = connectors.CollectionConnection[gqlmodels.DeviceModel, gqlmodels.DeviceModelEdge]
+type DeviceModelConnection = connectors.CollectionConnection[*gqlmodels.DeviceModel]
 
 // NewDeviceModelConnection based on query object
 func NewDeviceModelConnection(
@@ -23,7 +22,7 @@ func NewDeviceModelConnection(
 	order []*gqlmodels.DeviceModelListOrder,
 	page *models.Page,
 ) *DeviceModelConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.DeviceModel, gqlmodels.DeviceModelEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.DeviceModel]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.DeviceModel, error) {
 			newOrder := xtypes.SliceReduce(order,
 				func(val *gqlmodels.DeviceModelListOrder, res *devicemodel.ListOrder) { val.Fill(res) })
@@ -32,12 +31,6 @@ func NewDeviceModelConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return deviceModelAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.DeviceModel) *gqlmodels.DeviceModelEdge {
-			return &gqlmodels.DeviceModelEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

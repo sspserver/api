@@ -7,9 +7,11 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
 
 // DisconnectSocialAccount is the resolver for the disconnectSocialAccount field.
@@ -23,11 +25,23 @@ func (r *queryResolver) SocialAccount(ctx context.Context, id uint64) (*models.S
 }
 
 // CurrentSocialAccounts is the resolver for the currentSocialAccounts field.
-func (r *queryResolver) CurrentSocialAccounts(ctx context.Context, filter *models.SocialAccountListFilter, order []*models.SocialAccountListOrder) (*connectors.CollectionConnection[models.SocialAccount, models.SocialAccountEdge], error) {
+func (r *queryResolver) CurrentSocialAccounts(ctx context.Context, filter *models.SocialAccountListFilter, order []*models.SocialAccountListOrder) (*connectors.CollectionConnection[*models.SocialAccount], error) {
 	return r.socAccounts.ListCurrent(ctx, filter, order)
 }
 
 // ListSocialAccounts is the resolver for the listSocialAccounts field.
-func (r *queryResolver) ListSocialAccounts(ctx context.Context, filter *models.SocialAccountListFilter, order []*models.SocialAccountListOrder, page *models.Page) (*connectors.CollectionConnection[models.SocialAccount, models.SocialAccountEdge], error) {
+func (r *queryResolver) ListSocialAccounts(ctx context.Context, filter *models.SocialAccountListFilter, order []*models.SocialAccountListOrder, page *models.Page) (*connectors.CollectionConnection[*models.SocialAccount], error) {
 	return r.socAccounts.List(ctx, filter, order, page)
 }
+
+// Edges is the resolver for the edges field.
+func (r *socialAccountConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.SocialAccount]) ([]*models.SocialAccountEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
+
+// SocialAccountConnection returns generated.SocialAccountConnectionResolver implementation.
+func (r *Resolver) SocialAccountConnection() generated.SocialAccountConnectionResolver {
+	return &socialAccountConnectionResolver{r}
+}
+
+type socialAccountConnectionResolver struct{ *Resolver }

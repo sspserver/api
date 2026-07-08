@@ -17,7 +17,7 @@ import (
 )
 
 // StatisticAdList is the resolver for the statisticAdList field.
-func (r *queryResolver) StatisticAdList(ctx context.Context, filter *models2.StatisticAdListFilter, group []models2.StatisticKey, order []*models2.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[models2.StatisticAdItem, struct{}], error) {
+func (r *queryResolver) StatisticAdList(ctx context.Context, filter *models2.StatisticAdListFilter, group []models2.StatisticKey, order []*models2.StatisticAdKeyOrder, page *models1.Page) (*connectors.CollectionConnection[*models2.StatisticAdItem], error) {
 	return r.statistic.Statistic(ctx, filter, group, order, page)
 }
 

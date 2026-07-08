@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/geniusrabbit/blaze-api/pkg/appcmd"
+	blazeauth "github.com/geniusrabbit/blaze-api/pkg/auth"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/elogin/facebook"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
 	"github.com/geniusrabbit/blaze-api/pkg/auth/oauth2"
@@ -21,16 +22,20 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/messanger"
 	"github.com/geniusrabbit/blaze-api/pkg/permissions"
 	"github.com/geniusrabbit/blaze-api/pkg/profiler"
+	"github.com/geniusrabbit/blaze-api/repository/account"
 	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 	accountauth "github.com/geniusrabbit/blaze-api/repository/account/authorizer"
+	accountrepo "github.com/geniusrabbit/blaze-api/repository/account/repository"
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
 	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
 	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
 	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
+	userrepo "github.com/geniusrabbit/blaze-api/repository/user/repository"
 
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/appinit"
 	"github.com/sspserver/api/cmd/api/server"
+	"github.com/sspserver/api/pkg/models"
 	rtbsourceuc "github.com/sspserver/api/pkg/repository/rtbsource/usecase"
 	statisticrc "github.com/sspserver/api/pkg/repository/statistic/repository"
 	statisticuc "github.com/sspserver/api/pkg/repository/statistic/usecase"
@@ -140,17 +145,33 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 	ctx = permissions.WithManager(ctx, permissionManager)
 	ctx = messanger.WithMessanger(ctx, messangerWrap)
 
+	userRepoInst := userrepo.NewRepository(func() *models.User { return &models.User{} })
+	accountRepoInst := accountrepo.NewSessionRepository(
+		func() *models.User { return &models.User{} },
+		func() *models.Account { return &models.Account{} },
+		func() *account.Member[*models.User, *models.Account] {
+			return &account.Member[*models.User, *models.Account]{}
+		},
+	)
+	memberRepoInst := accountrepo.NewMemberRepositoryFor(
+		func() *account.Member[*models.User, *models.Account] {
+			return &account.Member[*models.User, *models.Account]{}
+		},
+	)
+	authLoader := accAuth.NewLoader(userRepoInst, accountRepoInst, memberRepoInst)
+
 	// Init HTTP server with GraphQL API
 	httpServer := server.HTTPServer{
 		SessionManager: appinit.SessionManager(conf.Session.CookieName, conf.Session.Lifetime),
-		Authorizers: []accAuth.Authorizer{
-			jwt.NewAuthorizer(jwtProvider),
-			oauth2.NewAuthorizer(oauth2provider),
+		AuthLoader:     authLoader,
+		Authorizers: []blazeauth.Authorizer[*models.User, *models.Account]{
+			jwt.NewAuthorizer(jwtProvider, authLoader),
+			oauth2.NewAuthorizer(oauth2provider, accountRepoInst),
 			accountauth.NewDevTokenAuthorizer(gocast.IfThen(conf.IsDebug(), &accountauth.AuthOption{
 				DevToken:     conf.Session.DevToken,
 				DevUserID:    conf.Session.DevUserID,
 				DevAccountID: conf.Session.DevAccountID,
-			}, nil)),
+			}, nil), authLoader),
 		},
 		ContextWrap: func(ctx context.Context) context.Context {
 			ctx = ctxlogger.WithLogger(ctx, loggerObj)

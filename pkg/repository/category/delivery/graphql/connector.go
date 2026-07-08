@@ -13,7 +13,7 @@ import (
 )
 
 // CategoryConnection implements collection accessor interface with pagination.
-type CategoryConnection = connectors.CollectionConnection[gqlmodels.Category, gqlmodels.CategoryEdge]
+type CategoryConnection = connectors.CollectionConnection[*gqlmodels.Category]
 
 // NewCategoryConnection based on query object
 func NewCategoryConnection(
@@ -23,7 +23,7 @@ func NewCategoryConnection(
 	order *gqlmodels.CategoryListOrder,
 	page *models.Page,
 ) *CategoryConnection {
-	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[gqlmodels.Category, gqlmodels.CategoryEdge]{
+	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Category]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Category, error) {
 			newFilter := filter.Filter()
 			list, err := categoryAccessor.FetchList(ctx,
@@ -36,12 +36,6 @@ func NewCategoryConnection(
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
 			return categoryAccessor.Count(ctx, filter.Filter())
-		},
-		ConvertToEdgeFunc: func(obj *gqlmodels.Category) *gqlmodels.CategoryEdge {
-			return &gqlmodels.CategoryEdge{
-				Cursor: gocast.Str(obj.ID),
-				Node:   obj,
-			}
 		},
 	}, page)
 }

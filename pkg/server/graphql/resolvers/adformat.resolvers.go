@@ -7,11 +7,18 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
+
+// Edges is the resolver for the edges field.
+func (r *adFormatConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.AdFormat]) ([]*models.AdFormatEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
 
 // CreateFormat is the resolver for the createFormat field.
 func (r *mutationResolver) CreateFormat(ctx context.Context, input models.AdFormatInput) (*models.AdFormatPayload, error) {
@@ -34,6 +41,13 @@ func (r *queryResolver) Format(ctx context.Context, id uint64, codename string) 
 }
 
 // ListFormats is the resolver for the listFormats field.
-func (r *queryResolver) ListFormats(ctx context.Context, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) (*connectors.CollectionConnection[models.AdFormat, models.AdFormatEdge], error) {
+func (r *queryResolver) ListFormats(ctx context.Context, filter *models.AdFormatListFilter, order *models.AdFormatListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.AdFormat], error) {
 	return r.adformat.List(ctx, filter, order, page)
 }
+
+// AdFormatConnection returns generated.AdFormatConnectionResolver implementation.
+func (r *Resolver) AdFormatConnection() generated.AdFormatConnectionResolver {
+	return &adFormatConnectionResolver{r}
+}
+
+type adFormatConnectionResolver struct{ *Resolver }

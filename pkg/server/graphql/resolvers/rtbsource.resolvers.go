@@ -7,6 +7,7 @@ package resolvers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -55,12 +56,12 @@ func (r *queryResolver) RTBSource(ctx context.Context, id uint64) (*models.RTBSo
 }
 
 // ListRTBSources is the resolver for the listRTBSources field.
-func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[models.RTBSource, models.RTBSourceEdge], error) {
+func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSourceListFilter, order []*models.RTBSourceListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.RTBSource], error) {
 	return r.rtbsource.List(ctx, filter, order, page)
 }
 
 // Account is the resolver for the account field.
-func (r *rTBSourceResolver) Account(ctx context.Context, obj *models.RTBSource) (_ *models1.Account, err error) {
+func (r *rTBSourceResolver) Account(ctx context.Context, obj *models.RTBSource) (_ *models.Account, err error) {
 	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
 	return obj.Account, err
 }
@@ -125,7 +126,18 @@ func (r *rTBSourceResolver) Zones(ctx context.Context, obj *models.RTBSource) (_
 	return obj.Zones, err
 }
 
+// Edges is the resolver for the edges field.
+func (r *rTBSourceConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.RTBSource]) ([]*models.RTBSourceEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
+
 // RTBSource returns generated.RTBSourceResolver implementation.
 func (r *Resolver) RTBSource() generated.RTBSourceResolver { return &rTBSourceResolver{r} }
 
+// RTBSourceConnection returns generated.RTBSourceConnectionResolver implementation.
+func (r *Resolver) RTBSourceConnection() generated.RTBSourceConnectionResolver {
+	return &rTBSourceConnectionResolver{r}
+}
+
 type rTBSourceResolver struct{ *Resolver }
+type rTBSourceConnectionResolver struct{ *Resolver }
