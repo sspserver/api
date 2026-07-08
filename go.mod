@@ -11,8 +11,9 @@ require (
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
 	github.com/geniusrabbit/adcorelib v0.0.0-20260621200018-7f3ae258c395
-	github.com/geniusrabbit/blaze-api v0.4.3-0.20260708120655-0ce8d03761ac
+	github.com/geniusrabbit/blaze-api v0.5.1
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
+	github.com/geniusrabbit/gosql/gorm v0.0.0-20251130204711-ecf2071a9960
 	github.com/geniusrabbit/gosql/v2 v2.3.2
 	github.com/geniusrabbit/udetect v0.0.0-20251009164230-11a5e0a2d3b8
 	github.com/go-chi/chi/v5 v5.3.1
@@ -172,12 +173,12 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067 // indirect
-	golang.org/x/mod v0.37.0 // indirect
+	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sync v0.22.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260626140120-b709645a9e92 // indirect
-	golang.org/x/text v0.39.0 // indirect
+	golang.org/x/telemetry v0.0.0-20260708141105-b64b4e8f7863 // indirect
+	golang.org/x/text v0.40.0 // indirect
 	golang.org/x/tools v0.47.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260706201446-f0a921348800 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect

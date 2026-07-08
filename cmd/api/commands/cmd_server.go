@@ -30,6 +30,8 @@ import (
 	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
 	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
 	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
+	socialauthrepo "github.com/geniusrabbit/blaze-api/repository/socialauth/repository"
+	socialauthuc "github.com/geniusrabbit/blaze-api/repository/socialauth/usecase"
 	userrepo "github.com/geniusrabbit/blaze-api/repository/user/repository"
 
 	"github.com/sspserver/api/cmd/api/appcontext"
@@ -158,6 +160,7 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 			return &account.Member[*models.User, *models.Account]{}
 		},
 	)
+	socialAuthUsecase := socialauthuc.New(socialauthrepo.New(), userRepoInst)
 	authLoader := accAuth.NewLoader(userRepoInst, accountRepoInst, memberRepoInst)
 
 	// Init HTTP server with GraphQL API
@@ -195,7 +198,14 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 			if conf.SocialAuth.Facebook.IsValid() {
 				oa2conf := conf.SocialAuth.Facebook.OAuth2Config("facebook")
 				mux.Handle("/auth/facebook/*",
-					rest.NewWrapper(facebook.NewFacebookConfig(oa2conf), rest.WithSessionProvider(jwtProvider)).
+					rest.NewWrapper(
+						facebook.NewFacebookConfig(oa2conf),
+						rest.WithSessionProvider(jwtProvider),
+						rest.WithSocialAuthUsecase(socialAuthUsecase),
+						rest.WithAccountResolver(func(ctx context.Context, filter *account.Filter) ([]*models.Account, error) {
+							return accountRepoInst.FetchList(ctx, filter)
+						}),
+					).
 						HandleWrapper("/auth/facebook"),
 				)
 			}

@@ -1,11 +1,19 @@
 package models
 
 import (
+	gogosql "github.com/geniusrabbit/gosql/gorm"
+
 	"github.com/geniusrabbit/blaze-api/repository/account"
 	accountModels "github.com/geniusrabbit/blaze-api/repository/account/models"
 	"github.com/geniusrabbit/blaze-api/repository/user"
 	userModels "github.com/geniusrabbit/blaze-api/repository/user/models"
 )
+
+type Contact struct {
+	Type      string `json:"type"`
+	Value     string `json:"value"`
+	IsPrimary bool   `json:"is_primary,omitempty"`
+}
 
 // Account is the bundled default for example/api: Base + consumer profile trait.
 type Account struct {
@@ -21,6 +29,8 @@ type Account struct {
 	Phone            string `gorm:"column:phone;type:varchar(20)" json:"phone"`
 	VATNumber        string `gorm:"column:vat_number;type:varchar(50)" json:"vat_number"`
 	CompanyRegNumber string `gorm:"column:company_reg_number;type:varchar(50)" json:"company_reg_number"`
+
+	Contacts gogosql.NullableJSONArray[Contact] `gorm:"column:contacts;type:json" json:"contacts"`
 }
 
 // NewWithIDs returns a new account instance with ID and admin user IDs set.

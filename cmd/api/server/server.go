@@ -40,7 +40,7 @@ type HTTPServer struct {
 
 // Run starts a HTTP server and blocks while running if successful.
 // The server will be shutdown when "ctx" is canceled.
-func (s *HTTPServer) Run(ctx context.Context, address string) (err error) {
+func (s *HTTPServer) Run(ctx context.Context, address string) error {
 	ctxlogger.Get(ctx).Info("Start server HTTP API: " + address)
 
 	mux := chi.NewRouter()
