@@ -12,7 +12,6 @@ import (
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/browser"
 	"github.com/sspserver/api/pkg/repository/browser/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -33,13 +32,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.BrowserPay
 	return &qmodels.BrowserPayload{
 		ClientMutationID: requestid.Get(ctx),
 		BrowserID:        obj.ID,
-		Browser:          qmodels.FromBrowserModel(obj),
+		Browser:          FromBrowserModel(obj),
 	}, nil
 }
 
 // List Browser is the resolver for the listBrowser field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.BrowserListFilter, order []*qmodels.BrowserListOrder, page *qmodels.Page) (*connectors.BrowserConnection, error) {
-	return connectors.NewBrowserConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.BrowserListFilter, order []*qmodels.BrowserListOrder, page *qmodels.Page) (*BrowserConnection, error) {
+	return NewBrowserConnection(ctx, r.uc, filter, order, page), nil
 }
 
 func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels.Browser, error) {
@@ -78,13 +77,13 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 		}
 		list = append(list, newList...)
 	}
-	return qmodels.FromBrowserModelList(list), nil
+	return FromBrowserModelList(list), nil
 }
 
 // Create Browser is the resolver for the createBrowser field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.BrowserCreateInput) (*qmodels.BrowserPayload, error) {
 	var obj models.Browser
-	if err := input.FillModel(&obj); err != nil {
+	if err := FillBrowserCreateInputModel(input, &obj); err != nil {
 		return nil, err
 	}
 
@@ -96,7 +95,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.BrowserCreateI
 	return &qmodels.BrowserPayload{
 		ClientMutationID: requestid.Get(ctx),
 		BrowserID:        id,
-		Browser:          qmodels.FromBrowserModel(&obj),
+		Browser:          FromBrowserModel(&obj),
 	}, nil
 }
 
@@ -109,7 +108,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Bro
 	if obj == nil {
 		return nil, fmt.Errorf("browser not found")
 	}
-	if err = input.FillModel(obj); err != nil {
+	if err = FillBrowserUpdateInputModel(input, obj); err != nil {
 		return nil, err
 	}
 	if err := r.uc.Update(ctx, id, obj); err != nil {
@@ -118,7 +117,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Bro
 	return &qmodels.BrowserPayload{
 		ClientMutationID: requestid.Get(ctx),
 		BrowserID:        id,
-		Browser:          qmodels.FromBrowserModel(obj),
+		Browser:          FromBrowserModel(obj),
 	}, nil
 }
 
@@ -137,7 +136,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.BrowserPayload{
 		ClientMutationID: requestid.Get(ctx),
 		BrowserID:        obj.ID,
-		Browser:          qmodels.FromBrowserModel(obj),
+		Browser:          FromBrowserModel(obj),
 	}, nil
 }
 

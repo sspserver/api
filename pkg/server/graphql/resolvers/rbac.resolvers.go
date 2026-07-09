@@ -7,11 +7,9 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
 
 // CreateRole is the resolver for the createRole field.
@@ -53,15 +51,3 @@ func (r *queryResolver) ListPermissions(ctx context.Context, patterns []string) 
 func (r *queryResolver) ListMyPermissions(ctx context.Context, patterns []string) ([]*models.RBACPermission, error) {
 	return r.roles.ListMyPermissions(ctx, patterns)
 }
-
-// Edges is the resolver for the edges field.
-func (r *rBACRoleConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.RBACRole]) ([]*models.RBACRoleEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
-// RBACRoleConnection returns generated.RBACRoleConnectionResolver implementation.
-func (r *Resolver) RBACRoleConnection() generated.RBACRoleConnectionResolver {
-	return &rBACRoleConnectionResolver{r}
-}
-
-type rBACRoleConnectionResolver struct{ *Resolver }

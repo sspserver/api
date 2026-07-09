@@ -7,8 +7,8 @@ import (
 	"github.com/demdxx/gocast/v2"
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/trafficrouter"
+	"github.com/sspserver/api/pkg/repository/trafficrouter/models"
 	trafficrouterrepo "github.com/sspserver/api/pkg/repository/trafficrouter/repository"
 	trafficrouteruc "github.com/sspserver/api/pkg/repository/trafficrouter/usecase"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
@@ -47,7 +47,7 @@ func (r *Resolver) List(ctx context.Context, filter *gqlmodels.TrafficRouterList
 // Create TrafficRouter is the resolver for the createTrafficRouter field.
 func (r *Resolver) Create(ctx context.Context, input gqlmodels.TrafficRouterCreateInput) (*gqlmodels.TrafficRouterPayload, error) {
 	var object models.TrafficRouter
-	input.FillModel(&object)
+	FillTrafficRouterCreateInputModel(input, &object)
 
 	id, err := r.uc.Create(ctx, &object)
 	if err != nil {
@@ -72,7 +72,7 @@ func (r *Resolver) Update(ctx context.Context, id uint64, input gqlmodels.Traffi
 		return nil, fmt.Errorf("TrafficRouter not found")
 	}
 
-	input.FillModel(object)
+	FillTrafficRouterUpdateInputModel(input, object)
 	if err = r.uc.Update(ctx, id, object); err != nil {
 		return nil, err
 	}

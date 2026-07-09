@@ -7,11 +7,9 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -59,15 +57,3 @@ func (r *queryResolver) Zone(ctx context.Context, id uint64) (*models.ZonePayloa
 func (r *queryResolver) ListZones(ctx context.Context, filter *models.ZoneListFilter, order *models.ZoneListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Zone], error) {
 	return r.zone.List(ctx, filter, order, page)
 }
-
-// Edges is the resolver for the edges field.
-func (r *zoneConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Zone]) ([]*models.ZoneEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
-// ZoneConnection returns generated.ZoneConnectionResolver implementation.
-func (r *Resolver) ZoneConnection() generated.ZoneConnectionResolver {
-	return &zoneConnectionResolver{r}
-}
-
-type zoneConnectionResolver struct{ *Resolver }

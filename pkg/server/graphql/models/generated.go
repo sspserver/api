@@ -14,82 +14,61 @@ import (
 )
 
 // Account is a company account that can be used to login to the system.
+// Core fields only — extend in consumer schema via `extend type Account`.
 type Account struct {
 	// The primary key of the Account
 	ID uint64 `json:"ID"`
 	// Status of Account active
 	Status models.ApproveStatus `json:"status"`
 	// Message which defined during user approve/rejection process
-	StatusMessage *string `json:"statusMessage,omitempty"`
-	Title         string  `json:"title"`
-	Description   string  `json:"description"`
-	// logoURI is an URL string that references a logo for the client.
-	LogoURI string `json:"logoURI"`
-	// policyURI is a URL string that points to a human-readable privacy policy document
-	// that describes how the deployment organization collects, uses,
-	// retains, and discloses personal data.
-	PolicyURI string `json:"policyURI"`
-	// termsOfServiceURI is a URL string that points to a human-readable terms of service
-	// document for the client that describes a contractual relationship
-	// between the end-user and the client that the end-user accepts when
-	// authorizing the client.
-	TermsOfServiceURI string `json:"termsOfServiceURI"`
-	// clientURI is an URL string of a web page providing information about the client.
-	// If present, the server SHOULD display this URL to the end-user in
-	// a clickable fashion.
-	ClientURI string `json:"clientURI"`
-	// contacts is a array of strings representing ways to contact people responsible
-	// for this client, typically email addresses.
-	Contacts  []string  `json:"contacts,omitempty"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	StatusMessage    *string    `json:"statusMessage,omitempty"`
+	CreatedAt        time.Time  `json:"createdAt"`
+	UpdatedAt        time.Time  `json:"updatedAt"`
+	Name             string     `json:"name"`
+	Description      string     `json:"description"`
+	CountryCode      *string    `json:"countryCode,omitempty"`
+	City             *string    `json:"city,omitempty"`
+	ZipCode          *string    `json:"zipCode,omitempty"`
+	Address          *string    `json:"address,omitempty"`
+	Phone            *string    `json:"phone,omitempty"`
+	VatNumber        *string    `json:"vatNumber,omitempty"`
+	CompanyRegNumber *string    `json:"companyRegNumber,omitempty"`
+	Contacts         []*Contact `json:"contacts,omitempty"`
 }
 
 type AccountCreateInput struct {
-	OwnerID  *uint64       `json:"ownerID,omitempty"`
-	Owner    *UserInput    `json:"owner,omitempty"`
-	Account  *AccountInput `json:"account"`
-	Password string        `json:"password"`
-}
-
-type AccountCreatePayload struct {
-	// A unique identifier for the client performing the mutation.
-	ClientMutationID string `json:"clientMutationID"`
-	// The account object
-	Account *Account `json:"account"`
-	// The user object
-	Owner *User `json:"owner"`
-}
-
-type AccountEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The item at the end of the edge.
-	Node *Account `json:"node,omitempty"`
-}
-
-type AccountInput struct {
-	Status            *models.ApproveStatus `json:"status,omitempty"`
-	Title             *string               `json:"title,omitempty"`
-	Description       *string               `json:"description,omitempty"`
-	LogoURI           *string               `json:"logoURI,omitempty"`
-	PolicyURI         *string               `json:"policyURI,omitempty"`
-	TermsOfServiceURI *string               `json:"termsOfServiceURI,omitempty"`
-	ClientURI         *string               `json:"clientURI,omitempty"`
-	Contacts          []string              `json:"contacts,omitempty"`
+	Status           *models.ApproveStatus `json:"status,omitempty"`
+	Name             string                `json:"name"`
+	Description      *string               `json:"description,omitempty"`
+	CountryCode      *string               `json:"countryCode,omitempty"`
+	City             *string               `json:"city,omitempty"`
+	ZipCode          *string               `json:"zipCode,omitempty"`
+	Address          *string               `json:"address,omitempty"`
+	Phone            *string               `json:"phone,omitempty"`
+	VatNumber        *string               `json:"vatNumber,omitempty"`
+	CompanyRegNumber *string               `json:"companyRegNumber,omitempty"`
+	Contacts         []*ContactInput       `json:"contacts,omitempty"`
 }
 
 type AccountListFilter struct {
-	ID     []uint64               `json:"ID,omitempty"`
-	UserID []uint64               `json:"UserID,omitempty"`
-	Title  []string               `json:"title,omitempty"`
-	Status []models.ApproveStatus `json:"status,omitempty"`
+	ID               []uint64               `json:"ID,omitempty"`
+	UserID           []uint64               `json:"UserID,omitempty"`
+	Status           []models.ApproveStatus `json:"status,omitempty"`
+	Name             []string               `json:"name,omitempty"`
+	CountryCode      []string               `json:"countryCode,omitempty"`
+	VatNumber        []string               `json:"vatNumber,omitempty"`
+	CompanyRegNumber []string               `json:"companyRegNumber,omitempty"`
 }
 
 type AccountListOrder struct {
-	ID     *models.Ordering `json:"ID,omitempty"`
-	Title  *models.Ordering `json:"title,omitempty"`
-	Status *models.Ordering `json:"status,omitempty"`
+	ID               *models.Ordering `json:"ID,omitempty"`
+	Status           *models.Ordering `json:"status,omitempty"`
+	CreatedAt        *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt        *models.Ordering `json:"updatedAt,omitempty"`
+	Name             *models.Ordering `json:"name,omitempty"`
+	CountryCode      *models.Ordering `json:"countryCode,omitempty"`
+	VatNumber        *models.Ordering `json:"vatNumber,omitempty"`
+	CompanyRegNumber *models.Ordering `json:"companyRegNumber,omitempty"`
 }
 
 // AccountPayload wrapper to access of Account oprtation results
@@ -100,6 +79,20 @@ type AccountPayload struct {
 	AccountID uint64 `json:"accountID"`
 	// Account object accessor
 	Account *Account `json:"account,omitempty"`
+}
+
+type AccountUpdateInput struct {
+	Status           *models.ApproveStatus `json:"status,omitempty"`
+	Name             *string               `json:"name,omitempty"`
+	Description      *string               `json:"description,omitempty"`
+	CountryCode      *string               `json:"countryCode,omitempty"`
+	City             *string               `json:"city,omitempty"`
+	ZipCode          *string               `json:"zipCode,omitempty"`
+	Address          *string               `json:"address,omitempty"`
+	Phone            *string               `json:"phone,omitempty"`
+	VatNumber        *string               `json:"vatNumber,omitempty"`
+	CompanyRegNumber *string               `json:"companyRegNumber,omitempty"`
+	Contacts         []*ContactInput       `json:"contacts,omitempty"`
 }
 
 type AdFormat struct {
@@ -128,13 +121,6 @@ type AdFormat struct {
 	CreatedAt time.Time          `json:"createdAt"`
 	UpdatedAt time.Time          `json:"updatedAt"`
 	DeletedAt *time.Time         `json:"deletedAt,omitempty"`
-}
-
-type AdFormatEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The AdFormat at the end of the edge
-	Node *AdFormat `json:"node"`
 }
 
 // Input for querying ad formats
@@ -368,13 +354,6 @@ type BrowserCreateInput struct {
 	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
-type BrowserEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The Browser at the end of the edge
-	Node *Browser `json:"node"`
-}
-
 type BrowserListFilter struct {
 	ID       []uint64              `json:"ID,omitempty"`
 	ParentID []uint64              `json:"parentID,omitempty"`
@@ -448,13 +427,6 @@ type Category struct {
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 }
 
-type CategoryEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The Category at the end of the edge
-	Node *Category `json:"node"`
-}
-
 // Input for querying categories
 type CategoryInput struct {
 	// Name of the category
@@ -497,6 +469,18 @@ type CategoryPayload struct {
 	CategoryID uint64 `json:"categoryID"`
 	// The Category object accessible by a client.
 	Category *Category `json:"category"`
+}
+
+type Contact struct {
+	Type      string `json:"type"`
+	Value     string `json:"value"`
+	IsPrimary *bool  `json:"isPrimary,omitempty"`
+}
+
+type ContactInput struct {
+	Type      string `json:"type"`
+	Value     string `json:"value"`
+	IsPrimary *bool  `json:"isPrimary,omitempty"`
 }
 
 type Continent struct {
@@ -581,13 +565,6 @@ type DeviceMakerCreateInput struct {
 	MatchExp *string `json:"matchExp,omitempty"`
 	// Active status of the device maker
 	Active models.ActiveStatus `json:"active"`
-}
-
-type DeviceMakerEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The DeviceMaker at the end of the edge
-	Node *DeviceMaker `json:"node"`
 }
 
 type DeviceMakerListFilter struct {
@@ -689,13 +666,6 @@ type DeviceModelCreateInput struct {
 	MakerCodename string `json:"makerCodename"`
 	// Active status of the device model
 	Active models.ActiveStatus `json:"active"`
-}
-
-type DeviceModelEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The DeviceModel at the end of the edge
-	Node *DeviceModel `json:"node"`
 }
 
 // Input model list filter
@@ -841,13 +811,6 @@ type OSCreateInput struct {
 	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
 }
 
-type OSEdge struct {
-	// A cursor for use in pagination
-	Cursor string `json:"cursor"`
-	// The OS at the end of the edge
-	Node *Os `json:"node"`
-}
-
 type OSListFilter struct {
 	ID       []uint64             `json:"ID,omitempty"`
 	ParentID []uint64             `json:"parentID,omitempty"`
@@ -890,24 +853,6 @@ type OSUpdateInput struct {
 	MatchUserAgentExp  *string `json:"matchUserAgentExp,omitempty"`
 	MatchVersionMinExp *string `json:"matchVersionMinExp,omitempty"`
 	MatchVersionMaxExp *string `json:"matchVersionMaxExp,omitempty"`
-}
-
-type Profile struct {
-	ID          uint64              `json:"ID"`
-	User        *User               `json:"user"`
-	FirstName   string              `json:"firstName"`
-	LastName    string              `json:"lastName"`
-	CompanyName string              `json:"companyName"`
-	About       string              `json:"about"`
-	Email       string              `json:"email"`
-	Messgangers []*ProfileMessanger `json:"messgangers,omitempty"`
-	CreatedAt   time.Time           `json:"createdAt"`
-	UpdatedAt   time.Time           `json:"updatedAt"`
-}
-
-type ProfileMessanger struct {
-	Mtype   MessangerType `json:"mtype"`
-	Address string        `json:"address"`
 }
 
 // RTBSource object represents a source of RTB (Real-Time Bidding) advertising.
@@ -1010,14 +955,6 @@ type RTBSourceCreateInput struct {
 	PrivateBrowsing       *AnyOnlyExclude      `json:"privateBrowsing,omitempty"`
 	IP                    *AnyIPv4IPv6         `json:"IP,omitempty"`
 	Config                *types.NullableJSON  `json:"config,omitempty"`
-}
-
-// RTBSourceEdge wrapper to access RTBSource objects in a paginated list.
-type RTBSourceEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The RTBSource at the end of the RTBSourceEdge.
-	Node *RTBSource `json:"node"`
 }
 
 // Filter options for listing RTBSource objects.
@@ -1229,13 +1166,6 @@ type TrafficRouterCreateInput struct {
 	IP              *AnyIPv4IPv6    `json:"IP,omitempty"`
 }
 
-type TrafficRouterEdge struct {
-	// Cursor for the traffic router
-	Cursor string `json:"cursor"`
-	// Node of the traffic router
-	Node *TrafficRouter `json:"node"`
-}
-
 type TrafficRouterListFilter struct {
 	ID              []uint64             `json:"ID,omitempty"`
 	AccountID       *uint64              `json:"accountID,omitempty"`
@@ -1305,51 +1235,45 @@ type TrafficRouterUpdateInput struct {
 	IP              *AnyIPv4IPv6    `json:"IP,omitempty"`
 }
 
-// User represents a user object of the system
+// User represents a user object of the system.
+// Core fields only — extend in consumer schema via `extend type User`.
 type User struct {
 	// The primary key of the user
 	ID uint64 `json:"ID"`
-	// Unical user name
-	Username string `json:"username"`
 	// Status of user active
 	Status models.ApproveStatus `json:"status"`
 	// Message which defined during user approve/rejection process
 	StatusMessage *string   `json:"statusMessage,omitempty"`
 	CreatedAt     time.Time `json:"createdAt"`
 	UpdatedAt     time.Time `json:"updatedAt"`
+	// Email address (optional trait — present only when user.Email is embedded).
+	Email string  `json:"email"`
+	Notes *string `json:"notes,omitempty"`
 }
 
-type UserEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The item at the end of the edge.
-	Node *User `json:"node,omitempty"`
-}
-
-type UserInput struct {
-	Username *string               `json:"username,omitempty"`
-	Status   *models.ApproveStatus `json:"status,omitempty"`
+type UserCreateInput struct {
+	Status *models.ApproveStatus `json:"status,omitempty"`
+	Email  string                `json:"email"`
 }
 
 // UserListFilter implements filter for user list query
 type UserListFilter struct {
 	ID        []uint64 `json:"ID,omitempty"`
-	AccountID []uint64 `json:"accountID,omitempty"`
 	Emails    []string `json:"emails,omitempty"`
+	AccountID []uint64 `json:"accountID,omitempty"`
 	Roles     []uint64 `json:"roles,omitempty"`
 }
 
 // UserListOrder implements order for user list query
 type UserListOrder struct {
 	ID               *models.Ordering `json:"ID,omitempty"`
-	Email            *models.Ordering `json:"email,omitempty"`
-	Username         *models.Ordering `json:"username,omitempty"`
 	Status           *models.Ordering `json:"status,omitempty"`
+	CreatedAt        *models.Ordering `json:"createdAt,omitempty"`
+	UpdatedAt        *models.Ordering `json:"updatedAt,omitempty"`
+	Email            *models.Ordering `json:"email,omitempty"`
 	RegistrationDate *models.Ordering `json:"registrationDate,omitempty"`
 	Country          *models.Ordering `json:"country,omitempty"`
 	Manager          *models.Ordering `json:"manager,omitempty"`
-	CreatedAt        *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt        *models.Ordering `json:"updatedAt,omitempty"`
 }
 
 // UserPayload wrapper to access of user oprtation results
@@ -1360,6 +1284,11 @@ type UserPayload struct {
 	UserID uint64 `json:"userID"`
 	// User object accessor
 	User *User `json:"user,omitempty"`
+}
+
+type UserUpdateInput struct {
+	Status *models.ApproveStatus `json:"status,omitempty"`
+	Email  *string               `json:"email,omitempty"`
 }
 
 // Zone object represents a specific advertising zone within an account.
@@ -1405,14 +1334,6 @@ type ZoneCreateInput struct {
 	AllowedSources     []uint64    `json:"allowedSources,omitempty"`
 	DisallowedSources  []uint64    `json:"disallowedSources,omitempty"`
 	Campaigns          []uint64    `json:"campaigns,omitempty"`
-}
-
-// ZoneEdge wrapper to access Zone objects
-type ZoneEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The Zone at the end of ZoneEdge.
-	Node *Zone `json:"node"`
 }
 
 // Filter input for listing Zones.
@@ -1754,71 +1675,6 @@ func (e *AuctionType) UnmarshalJSON(b []byte) error {
 }
 
 func (e AuctionType) MarshalJSON() ([]byte, error) {
-	var buf bytes.Buffer
-	e.MarshalGQL(&buf)
-	return buf.Bytes(), nil
-}
-
-type MessangerType string
-
-const (
-	MessangerTypeSkype    MessangerType = "SKYPE"
-	MessangerTypeAim      MessangerType = "AIM"
-	MessangerTypeIcq      MessangerType = "ICQ"
-	MessangerTypeWhatsapp MessangerType = "WHATSAPP"
-	MessangerTypeTelegram MessangerType = "TELEGRAM"
-	MessangerTypeViber    MessangerType = "VIBER"
-	MessangerTypePhone    MessangerType = "PHONE"
-)
-
-var AllMessangerType = []MessangerType{
-	MessangerTypeSkype,
-	MessangerTypeAim,
-	MessangerTypeIcq,
-	MessangerTypeWhatsapp,
-	MessangerTypeTelegram,
-	MessangerTypeViber,
-	MessangerTypePhone,
-}
-
-func (e MessangerType) IsValid() bool {
-	switch e {
-	case MessangerTypeSkype, MessangerTypeAim, MessangerTypeIcq, MessangerTypeWhatsapp, MessangerTypeTelegram, MessangerTypeViber, MessangerTypePhone:
-		return true
-	}
-	return false
-}
-
-func (e MessangerType) String() string {
-	return string(e)
-}
-
-func (e *MessangerType) UnmarshalGQL(v any) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = MessangerType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid MessangerType", str)
-	}
-	return nil
-}
-
-func (e MessangerType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-func (e *MessangerType) UnmarshalJSON(b []byte) error {
-	s, err := strconv.Unquote(string(b))
-	if err != nil {
-		return err
-	}
-	return e.UnmarshalGQL(s)
-}
-
-func (e MessangerType) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	e.MarshalGQL(&buf)
 	return buf.Bytes(), nil

@@ -25,14 +25,17 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/account"
 	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 	accountauth "github.com/geniusrabbit/blaze-api/repository/account/authorizer"
+	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
+	accountlogin "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql/account_login"
 	accountrepo "github.com/geniusrabbit/blaze-api/repository/account/repository"
+	accountuc "github.com/geniusrabbit/blaze-api/repository/account/usecase"
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
 	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
 	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
+	rbacrepo "github.com/geniusrabbit/blaze-api/repository/rbac/repository"
 	"github.com/geniusrabbit/blaze-api/repository/socialauth/delivery/rest"
 	socialauthrepo "github.com/geniusrabbit/blaze-api/repository/socialauth/repository"
 	socialauthuc "github.com/geniusrabbit/blaze-api/repository/socialauth/usecase"
-	userrepo "github.com/geniusrabbit/blaze-api/repository/user/repository"
 
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/appinit"
@@ -42,8 +45,11 @@ import (
 	statisticrc "github.com/sspserver/api/pkg/repository/statistic/repository"
 	statisticuc "github.com/sspserver/api/pkg/repository/statistic/usecase"
 	"github.com/sspserver/api/pkg/server/graphql"
+	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 	"github.com/sspserver/api/pkg/server/graphql/resolvers"
+	"github.com/sspserver/api/pkg/server/graphql/wiring"
 	"github.com/sspserver/api/pkg/sysops"
+	"github.com/sspserver/api/pkg/user"
 	"github.com/sspserver/api/private/emails"
 )
 
@@ -147,7 +153,7 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 	ctx = permissions.WithManager(ctx, permissionManager)
 	ctx = messanger.WithMessanger(ctx, messangerWrap)
 
-	userRepoInst := userrepo.NewRepository(func() *models.User { return &models.User{} })
+	userModule := user.NewModule(func() *models.User { return &models.User{} })
 	accountRepoInst := accountrepo.NewSessionRepository(
 		func() *models.User { return &models.User{} },
 		func() *models.Account { return &models.Account{} },
@@ -160,8 +166,10 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 			return &account.Member[*models.User, *models.Account]{}
 		},
 	)
-	socialAuthUsecase := socialauthuc.New(socialauthrepo.New(), userRepoInst)
-	authLoader := accAuth.NewLoader(userRepoInst, accountRepoInst, memberRepoInst)
+	accountUC := accountuc.NewAccountUsecase(userModule.Repo, accountRepoInst, memberRepoInst)
+	memberUC := accountuc.NewMemberUsecase(userModule.Repo, accountRepoInst, memberRepoInst)
+	socialAuthUsecase := socialauthuc.New(socialauthrepo.New(), userModule.Repo)
+	authLoader := accAuth.NewLoader(userModule.Repo, accountRepoInst, memberRepoInst)
 
 	// Init HTTP server with GraphQL API
 	httpServer := server.HTTPServer{
@@ -182,6 +190,37 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 			ctx = permissions.WithManager(ctx, permissionManager)
 			ctx = messanger.WithMessanger(ctx, messangerWrap)
 			return ctx
+		},
+		GraphqlOptions: graphql.Options{
+			graphql.WithUserAccountResolvers(
+				jwtProvider,
+				wiring.NewUserQueryResolver(userModule.Core, userModule.Email, userModule.Password),
+				accountgraphql.NewAuthResolver(
+					jwtProvider,
+					accountRepoInst,
+					accountUC,
+					rbacrepo.New(),
+				),
+				wiring.NewAccountQueryResolver(
+					wiring.AccountQueryResolverConfig{
+						Users:    userModule.Core,
+						Accounts: accountUC,
+						Members:  memberUC,
+					},
+				),
+				accountgraphql.NewMemberQueryResolver(
+					accountgraphql.MemberQueryResolverConfig[*models.User, *models.Account, *gqlmodels.Account]{
+						Accounts: accountUC,
+						Members:  memberUC,
+						UserRepo: userModule.Repo,
+					},
+				),
+			),
+			graphql.WithUserLoginHandler(
+				jwtProvider,
+				accountlogin.NewEmailPasswordLogin(userModule.Email, userModule.Password.Repo()),
+				accountRepoInst,
+			),
 		},
 		InitWrap: func(mux *chi.Mux) {
 			// Register graphql playground

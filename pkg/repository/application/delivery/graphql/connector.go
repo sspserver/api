@@ -23,11 +23,11 @@ func NewApplicationConnection(
 ) *ApplicationConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Application]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Application, error) {
-			list, err := applicationAccessor.FetchList(ctx, filter.Filter(), order.Order(), page.Pagination())
+			list, err := applicationAccessor.FetchList(ctx, ApplicationFilterFromGraphQL(filter), ApplicationOrderFromGraphQL(order), page.Pagination())
 			return FromApplicationModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return applicationAccessor.Count(ctx, filter.Filter())
+			return applicationAccessor.Count(ctx, ApplicationFilterFromGraphQL(filter))
 		},
 	}, page)
 }

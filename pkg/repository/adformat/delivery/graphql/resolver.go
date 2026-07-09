@@ -12,7 +12,6 @@ import (
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/adformat"
 	"github.com/sspserver/api/pkg/repository/adformat/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -41,13 +40,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64, codename string) (*q
 	return &qmodels.AdFormatPayload{
 		ClientMutationID: requestid.Get(ctx),
 		FormatID:         gocast.IfThenExec(obj != nil, func() uint64 { return obj.ID }, func() uint64 { return 0 }),
-		Format:           qmodels.FromAdFormatModel(obj),
+		Format:           FromAdFormatModel(obj),
 	}, nil
 }
 
 // List RTBAccessPoints is the resolver for the listRTBAccessPoints field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.AdFormatListFilter, order *qmodels.AdFormatListOrder, page *qmodels.Page) (*connectors.AdFormatConnection, error) {
-	return connectors.NewAdFormatConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.AdFormatListFilter, order *qmodels.AdFormatListOrder, page *qmodels.Page) (*AdFormatConnection, error) {
+	return NewAdFormatConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // ListByCodes returns a list of ad formats by their codes.
@@ -88,13 +87,13 @@ func (r *QueryResolver) ListByCodes(ctx context.Context, codes []string) ([]*qmo
 		}
 		list = append(list, newList...)
 	}
-	return qmodels.FromAdFormatModelList(list), nil
+	return FromAdFormatModelList(list), nil
 }
 
 // Create RTBAccessPoint is the resolver for the createRTBAccessPoint field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.AdFormatInput) (*qmodels.AdFormatPayload, error) {
 	var object models.Format
-	input.FillModel(&object)
+	FillModel(&input, &object)
 
 	id, err := r.uc.Create(ctx, &object)
 	if err != nil {
@@ -104,7 +103,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.AdFormatInput)
 	return &qmodels.AdFormatPayload{
 		ClientMutationID: requestid.Get(ctx),
 		FormatID:         id,
-		Format:           qmodels.FromAdFormatModel(&object),
+		Format:           FromAdFormatModel(&object),
 	}, nil
 }
 
@@ -119,7 +118,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.AdF
 		return nil, fmt.Errorf("AdFromat not found")
 	}
 
-	input.FillModel(object)
+	FillModel(&input, object)
 
 	if err = r.uc.Update(ctx, id, object); err != nil {
 		return nil, err
@@ -128,7 +127,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.AdF
 	return &qmodels.AdFormatPayload{
 		ClientMutationID: requestid.Get(ctx),
 		FormatID:         gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Format:           qmodels.FromAdFormatModel(object),
+		Format:           FromAdFormatModel(object),
 	}, nil
 }
 
@@ -160,7 +159,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, codename string, 
 	return &qmodels.AdFormatPayload{
 		ClientMutationID: requestid.Get(ctx),
 		FormatID:         object.ID,
-		Format:           qmodels.FromAdFormatModel(object),
+		Format:           FromAdFormatModel(object),
 	}, nil
 }
 

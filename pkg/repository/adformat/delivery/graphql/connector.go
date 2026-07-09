@@ -24,11 +24,11 @@ func NewAdFormatConnection(
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.AdFormat]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.AdFormat, error) {
 			list, err := adFormatAccessor.FetchList(ctx,
-				filter.Filter(), order.Order(), page.Pagination())
+				FilterFrom(filter), OrderFrom(order), page.Pagination())
 			return FromAdFormatModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return adFormatAccessor.Count(ctx, filter.Filter())
+			return adFormatAccessor.Count(ctx, FilterFrom(filter))
 		},
 	}, page)
 }

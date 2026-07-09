@@ -3,7 +3,7 @@ package trafficrouter
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/trafficrouter/models"
 )
 
 type Usecase interface {

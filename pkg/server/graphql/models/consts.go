@@ -1,33 +1,32 @@
 package models
 
 import (
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 	qmodels "github.com/geniusrabbit/blaze-api/server/graphql/models"
-
-	"github.com/sspserver/api/pkg/models"
 )
 
-func FromApproveStatus(status models.ApproveStatus) qmodels.ApproveStatus {
+func FromApproveStatus(status types.ApproveStatus) qmodels.ApproveStatus {
 	switch status {
-	case models.StatusApproved:
+	case types.StatusApproved:
 		return qmodels.ApproveStatusApproved
-	case models.StatusRejected:
+	case types.StatusRejected:
 		return qmodels.ApproveStatusRejected
 	default:
 		return qmodels.ApproveStatusPending
 	}
 }
 
-func ApproveStatusFrom(status qmodels.ApproveStatus) models.ApproveStatus {
+func ApproveStatusFrom(status qmodels.ApproveStatus) types.ApproveStatus {
 	switch status {
 	case qmodels.ApproveStatusApproved:
-		return models.StatusApproved
+		return types.StatusApproved
 	case qmodels.ApproveStatusRejected:
-		return models.StatusRejected
+		return types.StatusRejected
 	}
-	return models.StatusPending
+	return types.StatusPending
 }
 
-func ApproveStatusPtr(status *qmodels.ApproveStatus) *models.ApproveStatus {
+func ApproveStatusPtr(status *qmodels.ApproveStatus) *types.ApproveStatus {
 	if status == nil {
 		return nil
 	}
@@ -35,28 +34,28 @@ func ApproveStatusPtr(status *qmodels.ApproveStatus) *models.ApproveStatus {
 	return &s
 }
 
-func FromActiveStatus(status models.ActiveStatus) ActiveStatus {
+func FromActiveStatus(status types.ActiveStatus) qmodels.ActiveStatus {
 	switch status {
-	case models.StatusActive:
+	case types.StatusActive:
 		return qmodels.ActiveStatusActive
-	case models.StatusPause:
+	case types.StatusPause:
 		return qmodels.ActiveStatusPaused
 	default:
 		return qmodels.ActiveStatusPaused
 	}
 }
 
-func ActiveStatusFrom(status ActiveStatus) models.ActiveStatus {
+func ActiveStatusFrom(status ActiveStatus) types.ActiveStatus {
 	switch status {
 	case qmodels.ActiveStatusActive:
-		return models.StatusActive
+		return types.StatusActive
 	case qmodels.ActiveStatusPaused:
-		return models.StatusPause
+		return types.StatusPause
 	}
-	return models.StatusPause
+	return types.StatusPause
 }
 
-func ActiveStatusPtr(status *ActiveStatus) *models.ActiveStatus {
+func ActiveStatusPtr(status *ActiveStatus) *types.ActiveStatus {
 	if status == nil {
 		return nil
 	}
@@ -64,30 +63,30 @@ func ActiveStatusPtr(status *ActiveStatus) *models.ActiveStatus {
 	return &s
 }
 
-func FromRTBRequestType(t models.RTBRequestType) RTBRequestFormatType {
+func FromRTBRequestType(t types.RTBRequestType) RTBRequestFormatType {
 	switch t {
-	case models.RTBRequestTypeJSON:
+	case types.RTBRequestTypeJSON:
 		return RTBRequestFormatTypeJSON
-	case models.RTBRequestTypeXML:
+	case types.RTBRequestTypeXML:
 		return RTBRequestFormatTypeXML
 	}
 	return RTBRequestFormatTypeUndefined
 }
 
-func (e *RTBRequestFormatType) RequestType() models.RTBRequestType {
+func (e *RTBRequestFormatType) RequestType() types.RTBRequestType {
 	if e == nil {
-		return models.RTBRequestTypeUndefined
+		return types.RTBRequestTypeUndefined
 	}
 	switch *e {
 	case RTBRequestFormatTypeJSON:
-		return models.RTBRequestTypeJSON
+		return types.RTBRequestTypeJSON
 	case RTBRequestFormatTypeXML:
-		return models.RTBRequestTypeXML
+		return types.RTBRequestTypeXML
 	}
-	return models.RTBRequestTypeUndefined
+	return types.RTBRequestTypeUndefined
 }
 
-func (e *RTBRequestFormatType) RequestTypePtr() *models.RTBRequestType {
+func (e *RTBRequestFormatType) RequestTypePtr() *types.RTBRequestType {
 	if e == nil {
 		return nil
 	}
@@ -95,30 +94,30 @@ func (e *RTBRequestFormatType) RequestTypePtr() *models.RTBRequestType {
 	return &t
 }
 
-func FromAuctionType(t models.AuctionType) AuctionType {
+func FromAuctionType(t types.AuctionType) AuctionType {
 	switch t {
-	case models.AuctionTypeFirstPrice:
+	case types.FirstPriceAuctionType:
 		return AuctionTypeFirstPrice
-	case models.AuctionTypeSecondPrice:
+	case types.SecondPriceAuctionType:
 		return AuctionTypeSecondPrice
 	}
 	return AuctionTypeUndefined
 }
 
-func (e *AuctionType) AuctionType() models.AuctionType {
+func (e *AuctionType) AuctionType() types.AuctionType {
 	if e == nil {
-		return models.AuctionTypeUndefined
+		return types.UndefinedAuctionType
 	}
 	switch *e {
 	case AuctionTypeFirstPrice:
-		return models.AuctionTypeFirstPrice
+		return types.FirstPriceAuctionType
 	case AuctionTypeSecondPrice:
-		return models.AuctionTypeSecondPrice
+		return types.SecondPriceAuctionType
 	}
-	return models.AuctionTypeUndefined
+	return types.UndefinedAuctionType
 }
 
-func (e *AuctionType) AuctionTypePtr() *models.AuctionType {
+func (e *AuctionType) AuctionTypePtr() *types.AuctionType {
 	if e == nil {
 		return nil
 	}
@@ -196,30 +195,30 @@ func (e *AnyIPv4IPv6) IntPtr() *int {
 	return &i
 }
 
-func FromPrivateStatus(status models.PrivateStatus) PrivateStatus {
+func FromPrivateStatus(status types.PrivateStatus) PrivateStatus {
 	switch status {
-	case models.StatusPrivate:
+	case types.StatusPrivate:
 		return PrivateStatusPrivate
-	case models.StatusPublic:
+	case types.StatusPublic:
 		return PrivateStatusPublic
 	}
 	return PrivateStatusPublic
 }
 
-func (e *PrivateStatus) ModelStatus() models.PrivateStatus {
+func (e *PrivateStatus) ModelStatus() types.PrivateStatus {
 	if e == nil {
-		return models.StatusPublic
+		return types.StatusPublic
 	}
 	switch *e {
 	case PrivateStatusPrivate:
-		return models.StatusPrivate
+		return types.StatusPrivate
 	case PrivateStatusPublic:
-		return models.StatusPublic
+		return types.StatusPublic
 	}
-	return models.StatusPublic
+	return types.StatusPublic
 }
 
-func (e *PrivateStatus) ModelStatusPtr() *models.PrivateStatus {
+func (e *PrivateStatus) ModelStatusPtr() *types.PrivateStatus {
 	if e == nil {
 		return nil
 	}
@@ -227,119 +226,119 @@ func (e *PrivateStatus) ModelStatusPtr() *models.PrivateStatus {
 	return &t
 }
 
-func FromApplicationType(tp models.ApplicationType) ApplicationType {
+func FromApplicationType(tp types.ApplicationType) ApplicationType {
 	switch tp {
-	case models.ApplicationSite:
+	case types.ApplicationSite:
 		return ApplicationTypeSite
-	case models.ApplicationApp:
+	case types.ApplicationApp:
 		return ApplicationTypeApp
-	case models.ApplicationGame:
+	case types.ApplicationGame:
 		return ApplicationTypeGame
 	}
 	return ApplicationTypeUndefined
 }
 
-func (e *ApplicationType) ModelType() models.ApplicationType {
+func (e *ApplicationType) ModelType() types.ApplicationType {
 	if e == nil {
-		return models.ApplicationUndefined
+		return types.ApplicationUndefined
 	}
 	switch *e {
 	case ApplicationTypeSite:
-		return models.ApplicationSite
+		return types.ApplicationSite
 	case ApplicationTypeApp:
-		return models.ApplicationApp
+		return types.ApplicationApp
 	case ApplicationTypeGame:
-		return models.ApplicationGame
+		return types.ApplicationGame
 	}
-	return models.ApplicationUndefined
+	return types.ApplicationUndefined
 }
 
-func FromPlatformType(tp models.PlatformType) PlatformType {
+func FromPlatformType(tp types.PlatformType) PlatformType {
 	switch tp {
-	case models.PlatformWeb:
+	case types.PlatformWeb:
 		return PlatformTypeWeb
-	case models.PlatformDesktop:
+	case types.PlatformDesktop:
 		return PlatformTypeDesktop
-	case models.PlatformMobile:
+	case types.PlatformMobile:
 		return PlatformTypeMobile
-	case models.PlatformSmartPhone:
+	case types.PlatformSmartPhone:
 		return PlatformTypeSmartPhone
-	case models.PlatformTablet:
+	case types.PlatformTablet:
 		return PlatformTypeTablet
-	case models.PlatformSmartTV:
+	case types.PlatformSmartTV:
 		return PlatformTypeSmartTv
-	case models.PlatformGameStation:
+	case types.PlatformGameStation:
 		return PlatformTypeGameStation
-	case models.PlatformSmartWatch:
+	case types.PlatformSmartWatch:
 		return PlatformTypeSmartWatch
-	case models.PlatformVR:
+	case types.PlatformVR:
 		return PlatformTypeVr
-	case models.PlatformSmartGlasses:
+	case types.PlatformSmartGlasses:
 		return PlatformTypeSmartGlasses
-	case models.PlatformSmartBillboard:
+	case types.PlatformSmartBillboard:
 		return PlatformTypeSmartBillboard
 	}
 	return PlatformTypeUndefined
 }
 
-func (e *PlatformType) ModelType() models.PlatformType {
+func (e *PlatformType) ModelType() types.PlatformType {
 	if e == nil {
-		return models.PlatformUndefined
+		return types.PlatformUndefined
 	}
 	switch *e {
 	case PlatformTypeWeb:
-		return models.PlatformWeb
+		return types.PlatformWeb
 	case PlatformTypeDesktop:
-		return models.PlatformDesktop
+		return types.PlatformDesktop
 	case PlatformTypeMobile:
-		return models.PlatformMobile
+		return types.PlatformMobile
 	case PlatformTypeSmartPhone:
-		return models.PlatformSmartPhone
+		return types.PlatformSmartPhone
 	case PlatformTypeTablet:
-		return models.PlatformTablet
+		return types.PlatformTablet
 	case PlatformTypeSmartTv:
-		return models.PlatformSmartTV
+		return types.PlatformSmartTV
 	case PlatformTypeGameStation:
-		return models.PlatformGameStation
+		return types.PlatformGameStation
 	case PlatformTypeSmartWatch:
-		return models.PlatformSmartWatch
+		return types.PlatformSmartWatch
 	case PlatformTypeVr:
-		return models.PlatformVR
+		return types.PlatformVR
 	case PlatformTypeSmartGlasses:
-		return models.PlatformSmartGlasses
+		return types.PlatformSmartGlasses
 	case PlatformTypeSmartBillboard:
-		return models.PlatformSmartBillboard
+		return types.PlatformSmartBillboard
 	}
-	return models.PlatformUndefined
+	return types.PlatformUndefined
 }
 
-func FromPricingModel(pm models.PricingModel) PricingModel {
+func FromPricingModel(pm types.PricingModel) PricingModel {
 	switch pm {
-	case models.PricingModelCPM:
+	case types.PricingModelCPM:
 		return PricingModelCpm
-	case models.PricingModelCPC:
+	case types.PricingModelCPC:
 		return PricingModelCpc
-	case models.PricingModelCPA:
+	case types.PricingModelCPA:
 		return PricingModelCpa
 	}
 	return PricingModelUndefined
 }
 
-func PricingModelFrom(pm PricingModel) models.PricingModel {
+func PricingModelFrom(pm PricingModel) types.PricingModel {
 	return pm.ModelType()
 }
 
-func (pm *PricingModel) ModelType() models.PricingModel {
+func (pm *PricingModel) ModelType() types.PricingModel {
 	if pm == nil {
-		return models.PricingModelUndefined
+		return types.PricingModelUndefined
 	}
 	switch *pm {
 	case PricingModelCpm:
-		return models.PricingModelCPM
+		return types.PricingModelCPM
 	case PricingModelCpc:
-		return models.PricingModelCPC
+		return types.PricingModelCPC
 	case PricingModelCpa:
-		return models.PricingModelCPA
+		return types.PricingModelCPA
 	}
-	return models.PricingModelUndefined
+	return types.PricingModelUndefined
 }

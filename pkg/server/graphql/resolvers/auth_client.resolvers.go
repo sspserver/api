@@ -7,17 +7,10 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
-
-// Edges is the resolver for the edges field.
-func (r *authClientConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.AuthClient]) ([]*models.AuthClientEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
 
 // CreateAuthClient is the resolver for the createAuthClient field.
 func (r *mutationResolver) CreateAuthClient(ctx context.Context, input models.AuthClientCreateInput) (*models.AuthClientPayload, error) {
@@ -43,10 +36,3 @@ func (r *queryResolver) AuthClient(ctx context.Context, id string) (*models.Auth
 func (r *queryResolver) ListAuthClients(ctx context.Context, filter *models.AuthClientListFilter, order []*models.AuthClientListOrder, page *models.Page) (*connectors.CollectionConnection[*models.AuthClient], error) {
 	return r.authclients.ListAuthClients(ctx, filter, order, page)
 }
-
-// AuthClientConnection returns generated.AuthClientConnectionResolver implementation.
-func (r *Resolver) AuthClientConnection() generated.AuthClientConnectionResolver {
-	return &authClientConnectionResolver{r}
-}
-
-type authClientConnectionResolver struct{ *Resolver }

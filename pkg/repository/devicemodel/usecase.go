@@ -4,7 +4,7 @@ package devicemodel
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/devicemodel/models"
 )
 
 // usecase of access to the devicemodel

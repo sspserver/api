@@ -3,11 +3,12 @@ package usecase
 import (
 	"context"
 
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/pkg/acl"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/zone"
+	"github.com/sspserver/api/pkg/repository/zone/models"
 	"github.com/sspserver/api/pkg/repository/zone/repository"
 	"github.com/sspserver/api/pkg/sysops"
 )
@@ -46,14 +47,14 @@ func (u *Usecase) GetByCodename(ctx context.Context, codename string) (*models.Z
 }
 
 func (u *Usecase) FetchList(ctx context.Context, qops ...zone.Option) ([]*models.Zone, error) {
-	if !acl.HaveAccessList(ctx, &models.Application{}) {
+	if !acl.HaveAccessList(ctx, &models.Zone{}) {
 		return nil, acl.ErrNoPermissions.WithMessage("fetch list")
 	}
 	return u.repo.FetchList(ctx, qops...)
 }
 
 func (u *Usecase) Count(ctx context.Context, qops ...zone.Option) (int64, error) {
-	if !acl.HaveAccessList(ctx, &models.Application{}) {
+	if !acl.HaveAccessList(ctx, &models.Zone{}) {
 		return 0, acl.ErrNoPermissions.WithMessage("count")
 	}
 	return u.repo.Count(ctx, qops...)
@@ -66,8 +67,8 @@ func (u *Usecase) Create(ctx context.Context, object *models.Zone) (uint64, erro
 	if !acl.HaveAccessCreate(ctx, object) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
-	object.Status = models.ApproveStatus(
-		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
+	object.Status = types.ApproveStatus(
+		sysops.Get(`logic.crud.default.approval`, int(types.StatusPending)).
 			Int())
 	return u.repo.Create(ctx, object)
 }

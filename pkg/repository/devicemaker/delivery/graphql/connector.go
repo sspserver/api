@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/repository"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -25,15 +24,14 @@ func NewDeviceMakerConnection(
 ) *DeviceMakerConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.DeviceMaker]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.DeviceMaker, error) {
-			newOrder := xtypes.SliceReduce(order,
-				func(val *gqlmodels.DeviceMakerListOrder, res *devicemaker.ListOrder) { val.Fill(res) })
+			newOrder := DeviceMakerListOrderFromGraphQL(order)
 			list, err := deviceMakerAccessor.FetchList(ctx,
 				&repository.PreloadOption{Fields: []string{`Models`}},
-				filter.Filter(), &newOrder, page.Pagination())
+				DeviceMakerFilterFromGraphQL(filter), &newOrder, page.Pagination())
 			return FromDeviceMakerModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return deviceMakerAccessor.Count(ctx, filter.Filter())
+			return deviceMakerAccessor.Count(ctx, DeviceMakerFilterFromGraphQL(filter))
 		},
 	}, page)
 }

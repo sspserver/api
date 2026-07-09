@@ -4,7 +4,7 @@ package browser
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/browser/models"
 )
 
 // usecase of access to the browser

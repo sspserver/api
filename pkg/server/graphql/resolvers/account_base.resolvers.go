@@ -7,28 +7,11 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 	models1 "github.com/sspserver/api/pkg/server/graphql/models"
 )
-
-// Edges is the resolver for the edges field.
-func (r *accountConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models1.Account]) ([]*models1.AccountEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
-// List is the resolver for the list field.
-func (r *accountConnectionResolver) List(ctx context.Context, obj *connectors.CollectionConnection[*models1.Account]) ([]*models1.Account, error) {
-	panic(fmt.Errorf("not implemented: List - list"))
-}
-
-// Login is the resolver for the login field.
-func (r *mutationResolver) Login(ctx context.Context, login string, password string) (*models.SessionToken, error) {
-	return r.accAuth.Login(ctx, login, password)
-}
 
 // Logout is the resolver for the logout field.
 func (r *mutationResolver) Logout(ctx context.Context) (bool, error) {
@@ -41,12 +24,12 @@ func (r *mutationResolver) SwitchAccount(ctx context.Context, id uint64) (*model
 }
 
 // RegisterAccount is the resolver for the registerAccount field.
-func (r *mutationResolver) RegisterAccount(ctx context.Context, input models1.AccountCreateInput) (*models1.AccountCreatePayload, error) {
-	return r.accounts.RegisterAccount(ctx, &input)
+func (r *mutationResolver) RegisterAccount(ctx context.Context, ownerID uint64, input models1.AccountCreateInput) (*models1.AccountPayload, error) {
+	return r.accounts.RegisterAccount(ctx, ownerID, &input)
 }
 
 // UpdateAccount is the resolver for the updateAccount field.
-func (r *mutationResolver) UpdateAccount(ctx context.Context, id uint64, input models1.AccountInput) (*models1.AccountPayload, error) {
+func (r *mutationResolver) UpdateAccount(ctx context.Context, id uint64, input models1.AccountUpdateInput) (*models1.AccountPayload, error) {
 	return r.accounts.UpdateAccount(ctx, uint64(id), &input)
 }
 
@@ -84,10 +67,3 @@ func (r *queryResolver) ListAccounts(ctx context.Context, filter *models1.Accoun
 func (r *queryResolver) ListAccountRolesAndPermissions(ctx context.Context, accountID uint64, order []*models.RBACRoleListOrder) (*connectors.CollectionConnection[*models.RBACRole], error) {
 	return r.accAuth.ListRolesAndPermissions(ctx, accountID, order)
 }
-
-// AccountConnection returns generated.AccountConnectionResolver implementation.
-func (r *Resolver) AccountConnection() generated.AccountConnectionResolver {
-	return &accountConnectionResolver{r}
-}
-
-type accountConnectionResolver struct{ *Resolver }

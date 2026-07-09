@@ -4,7 +4,7 @@ package rtbsource
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/rtbsource/models"
 )
 
 // usecase of access to the source

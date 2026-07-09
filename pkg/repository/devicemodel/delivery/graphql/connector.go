@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 
@@ -24,13 +23,12 @@ func NewDeviceModelConnection(
 ) *DeviceModelConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.DeviceModel]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.DeviceModel, error) {
-			newOrder := xtypes.SliceReduce(order,
-				func(val *gqlmodels.DeviceModelListOrder, res *devicemodel.ListOrder) { val.Fill(res) })
-			list, err := deviceModelAccessor.FetchList(ctx, filter.Filter(), &newOrder, page.Pagination())
+			newOrder := DeviceModelListOrderFromGraphQL(order)
+			list, err := deviceModelAccessor.FetchList(ctx, DeviceModelFilterFromGraphQL(filter), &newOrder, page.Pagination())
 			return FromDeviceModelModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return deviceModelAccessor.Count(ctx, filter.Filter())
+			return deviceModelAccessor.Count(ctx, DeviceModelFilterFromGraphQL(filter))
 		},
 	}, page)
 }

@@ -7,9 +7,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
 	"github.com/sspserver/api/pkg/repository/os"
+	"github.com/sspserver/api/pkg/repository/os/models"
 )
 
 type Repository struct {

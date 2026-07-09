@@ -1,62 +1,22 @@
-package models
+package graphql
 
 import (
 	"github.com/demdxx/gocast/v2"
-	"github.com/demdxx/xtypes"
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/trafficrouter"
+	"github.com/sspserver/api/pkg/repository/trafficrouter/models"
+	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
-func FromTrafficRouterModel(m *models.TrafficRouter) *TrafficRouter {
-	if m == nil {
-		return nil
-	}
-	return &TrafficRouter{
-		ID:          m.ID,
-		AccountID:   m.AccountID,
-		Title:       m.Title,
-		Percent:     m.Percent,
-		Description: m.Description,
-
-		Active: FromActiveStatus(m.Active),
-
-		RTBSourceIDs: m.RTBSourceIDs,
-
-		// Targeting filters
-		FormatCodes:     m.Formats,
-		DeviceTypeIDs:   m.DeviceTypes,
-		DeviceIDs:       m.Devices,
-		OSIDs:           m.OS,
-		BrowserIDs:      m.Browsers,
-		CarrierIDs:      m.Carriers,
-		CategoryIDs:     m.Categories,
-		CountryCodes:    m.Countries,
-		LanguageCodes:   m.Languages,
-		Domains:         m.Domains,
-		ApplicationIDs:  m.Applications,
-		ZoneIDs:         m.Zones,
-		Secure:          FromAnyOnlyExclude(m.Secure),
-		AdBlock:         FromAnyOnlyExclude(m.AdBlock),
-		PrivateBrowsing: FromAnyOnlyExclude(m.PrivateBrowsing),
-		IP:              FromAnyIPv4IPv6(m.IP),
-		CreatedAt:       m.CreatedAt,
-		UpdatedAt:       m.UpdatedAt,
-	}
-}
-
-func FromTrafficRouterModelList(m []*models.TrafficRouter) []*TrafficRouter {
-	return xtypes.SliceApply(m, FromTrafficRouterModel)
-}
-
-func (fl *TrafficRouterListFilter) Filter() *trafficrouter.Filter {
+func TrafficRouterFilterFromGraphQL(fl *gqlmodels.TrafficRouterListFilter) *trafficrouter.Filter {
 	if fl == nil {
 		return nil
 	}
 	return &trafficrouter.Filter{
 		ID:              fl.ID,
 		AccountID:       gocast.PtrAsValue(fl.AccountID, 0),
-		Active:          ActiveStatusPtr(fl.Active),
+		Active:          activeStatusPtrFromGraphQL(fl.Active),
 		RTBSourceIDs:    fl.RTBSourceIDs,
 		Formats:         fl.FormatCodes,
 		DeviceTypes:     fl.DeviceTypeIDs,
@@ -77,44 +37,54 @@ func (fl *TrafficRouterListFilter) Filter() *trafficrouter.Filter {
 	}
 }
 
-func (ord *TrafficRouterListOrder) Order() *trafficrouter.ListOrder {
-	if ord == nil {
+func activeStatusPtrFromGraphQL(status *gqlmodels.ActiveStatus) *types.ActiveStatus {
+	if status == nil {
 		return nil
 	}
-	return &trafficrouter.ListOrder{
-		ID:        ord.ID.AsOrder(),
-		Active:    ord.Active.AsOrder(),
-		Percent:   ord.Percent.AsOrder(),
-		CreatedAt: ord.CreatedAt.AsOrder(),
-		UpdatedAt: ord.UpdatedAt.AsOrder(),
-	}
+	st := activeStatusFromGraphQL(*status)
+	return &st
 }
 
-func (ord *TrafficRouterListOrder) Fill(order *trafficrouter.ListOrder) {
-	if ord == nil || order == nil {
+func activeStatusFromGraphQL(status gqlmodels.ActiveStatus) types.ActiveStatus {
+	if status == gqlmodels.ActiveStatusActive {
+		return types.StatusActive
+	}
+	return types.StatusPause
+}
+
+func FillTrafficRouterListOrderFromGraphQL(src *gqlmodels.TrafficRouterListOrder, dst *trafficrouter.ListOrder) {
+	if src == nil || dst == nil {
 		return
 	}
-	if ord.ID != nil {
-		order.ID = ord.ID.AsOrder()
+	if src.ID != nil {
+		dst.ID = src.ID.AsOrder()
 	}
-	if ord.Title != nil {
-		order.Title = ord.Title.AsOrder()
+	if src.Title != nil {
+		dst.Title = src.Title.AsOrder()
 	}
-	if ord.Active != nil {
-		order.Active = ord.Active.AsOrder()
+	if src.Active != nil {
+		dst.Active = src.Active.AsOrder()
 	}
-	if ord.Percent != nil {
-		order.Percent = ord.Percent.AsOrder()
+	if src.Percent != nil {
+		dst.Percent = src.Percent.AsOrder()
 	}
-	if ord.CreatedAt != nil {
-		order.CreatedAt = ord.CreatedAt.AsOrder()
+	if src.CreatedAt != nil {
+		dst.CreatedAt = src.CreatedAt.AsOrder()
 	}
-	if ord.UpdatedAt != nil {
-		order.UpdatedAt = ord.UpdatedAt.AsOrder()
+	if src.UpdatedAt != nil {
+		dst.UpdatedAt = src.UpdatedAt.AsOrder()
 	}
 }
 
-func (inp *TrafficRouterCreateInput) FillModel(obj *models.TrafficRouter) {
+func TrafficRouterListOrderFromGraphQL(order []*gqlmodels.TrafficRouterListOrder) trafficrouter.ListOrder {
+	var out trafficrouter.ListOrder
+	for _, item := range order {
+		FillTrafficRouterListOrderFromGraphQL(item, &out)
+	}
+	return out
+}
+
+func FillTrafficRouterCreateInputModel(inp gqlmodels.TrafficRouterCreateInput, obj *models.TrafficRouter) {
 	if obj == nil {
 		return
 	}
@@ -141,7 +111,7 @@ func (inp *TrafficRouterCreateInput) FillModel(obj *models.TrafficRouter) {
 	obj.IP = inp.IP.Int()
 }
 
-func (inp *TrafficRouterUpdateInput) FillModel(obj *models.TrafficRouter) {
+func FillTrafficRouterUpdateInputModel(inp gqlmodels.TrafficRouterUpdateInput, obj *models.TrafficRouter) {
 	if obj == nil {
 		return
 	}

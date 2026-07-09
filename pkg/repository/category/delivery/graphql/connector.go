@@ -25,17 +25,17 @@ func NewCategoryConnection(
 ) *CategoryConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Category]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Category, error) {
-			newFilter := filter.Filter()
+			newFilter := CategoryFilterFromGraphQL(filter)
 			list, err := categoryAccessor.FetchList(ctx,
 				&repository.PreloadOption{
 					Fields: gocast.IfThen(newFilter.IsChildrensPreload(),
 						[]string{`Parent`, `Childrens`}, []string{`Parent`}),
 				},
-				newFilter, order.Order(), page.Pagination())
+				newFilter, CategoryOrderFromGraphQL(order), page.Pagination())
 			return FromCategoryModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return categoryAccessor.Count(ctx, filter.Filter())
+			return categoryAccessor.Count(ctx, CategoryFilterFromGraphQL(filter))
 		},
 	}, page)
 }

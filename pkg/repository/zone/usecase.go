@@ -3,7 +3,7 @@ package zone
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/zone/models"
 )
 
 // Usecase of access to the zone

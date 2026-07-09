@@ -4,7 +4,7 @@ package statistic
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/statistic/models"
 )
 
 // Usecase of access to the statistic

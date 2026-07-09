@@ -7,7 +7,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -35,11 +34,6 @@ func (r *oSResolver) Versions(ctx context.Context, obj *models.Os) ([]*models.Os
 	return r.os.Versions(ctx, obj)
 }
 
-// Edges is the resolver for the edges field.
-func (r *oSConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Os]) ([]*models.OSEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
 // Os is the resolver for the OS field.
 func (r *queryResolver) Os(ctx context.Context, id uint64) (*models.OSPayload, error) {
 	return r.os.Get(ctx, id)
@@ -53,8 +47,4 @@ func (r *queryResolver) ListOs(ctx context.Context, filter *models.OSListFilter,
 // OS returns generated.OSResolver implementation.
 func (r *Resolver) OS() generated.OSResolver { return &oSResolver{r} }
 
-// OSConnection returns generated.OSConnectionResolver implementation.
-func (r *Resolver) OSConnection() generated.OSConnectionResolver { return &oSConnectionResolver{r} }
-
 type oSResolver struct{ *Resolver }
-type oSConnectionResolver struct{ *Resolver }

@@ -9,9 +9,9 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 	"gorm.io/gorm"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
 	"github.com/sspserver/api/pkg/repository/rtbsource"
+	"github.com/sspserver/api/pkg/repository/rtbsource/models"
 )
 
 type Repository struct {

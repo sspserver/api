@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 
-	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 
@@ -24,13 +23,12 @@ func NewRTBSourceConnection(
 ) *RTBSourceConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.RTBSource]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.RTBSource, error) {
-			newOrder := xtypes.SliceReduce(order,
-				func(val *gqlmodels.RTBSourceListOrder, res *rtbsource.ListOrder) { val.Fill(res) })
-			list, err := rtbSourceAccessor.FetchList(ctx, filter.Filter(), &newOrder, page.Pagination())
+			newOrder := RTBSourceListOrderFromGraphQL(order)
+			list, err := rtbSourceAccessor.FetchList(ctx, RTBSourceFilterFromGraphQL(filter), &newOrder, page.Pagination())
 			return FromRTBSourceModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return rtbSourceAccessor.Count(ctx, filter.Filter())
+			return rtbSourceAccessor.Count(ctx, RTBSourceFilterFromGraphQL(filter))
 		},
 	}, page)
 }

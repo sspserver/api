@@ -10,10 +10,9 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/os"
+	"github.com/sspserver/api/pkg/repository/os/models"
 	"github.com/sspserver/api/pkg/repository/os/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -34,13 +33,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.OSPayload,
 	return &qmodels.OSPayload{
 		ClientMutationID: requestid.Get(ctx),
 		Osid:             obj.ID,
-		Os:               qmodels.FromOSModel(obj),
+		Os:               FromOSModel(obj),
 	}, nil
 }
 
 // List OS is the resolver for the listOS field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.OSListFilter, order []*qmodels.OSListOrder, page *qmodels.Page) (*connectors.OSConnection, error) {
-	return connectors.NewOSConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.OSListFilter, order []*qmodels.OSListOrder, page *qmodels.Page) (*OSConnection, error) {
+	return NewOSConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // ListByIDs returns a list of OS by their IDs.
@@ -78,7 +77,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 		r.cacheList(ctx, osList)
 		list = append(list, osList...)
 	}
-	return qmodels.FromOSModelList(list), nil
+	return FromOSModelList(list), nil
 }
 
 // Versions is the resolver for the versions field.
@@ -94,13 +93,13 @@ func (r *QueryResolver) Versions(ctx context.Context, obj *qmodels.Os) ([]*qmode
 		return nil, err
 	}
 	r.cacheList(ctx, osList)
-	return qmodels.FromOSModelList(osList), nil
+	return FromOSModelList(osList), nil
 }
 
 // Create OS is the resolver for the createOS field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSCreateInput) (*qmodels.OSPayload, error) {
 	var obj models.OS
-	if err := input.FillModel(&obj); err != nil {
+	if err := FillOSCreateInputModel(input, &obj); err != nil {
 		return nil, err
 	}
 
@@ -112,7 +111,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.OSCreateInput)
 	return &qmodels.OSPayload{
 		ClientMutationID: requestid.Get(ctx),
 		Osid:             id,
-		Os:               qmodels.FromOSModel(&obj),
+		Os:               FromOSModel(&obj),
 	}, nil
 }
 
@@ -125,7 +124,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.OSU
 	if obj == nil {
 		return nil, fmt.Errorf("OS not found")
 	}
-	if err = input.FillModel(obj); err != nil {
+	if err = FillOSUpdateInputModel(input, obj); err != nil {
 		return nil, err
 	}
 	if err := r.uc.Update(ctx, id, obj); err != nil {
@@ -134,7 +133,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.OSU
 	return &qmodels.OSPayload{
 		ClientMutationID: requestid.Get(ctx),
 		Osid:             id,
-		Os:               qmodels.FromOSModel(obj),
+		Os:               FromOSModel(obj),
 	}, nil
 }
 
@@ -153,7 +152,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.OSPayload{
 		ClientMutationID: requestid.Get(ctx),
 		Osid:             obj.ID,
-		Os:               qmodels.FromOSModel(obj),
+		Os:               FromOSModel(obj),
 	}, nil
 }
 

@@ -10,7 +10,6 @@ import (
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/devicemaker"
 	"github.com/sspserver/api/pkg/repository/devicemaker/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -31,19 +30,19 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.DeviceMake
 	return &qmodels.DeviceMakerPayload{
 		ClientMutationID: requestid.Get(ctx),
 		MakerID:          gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Maker:            qmodels.FromDeviceMakerModel(object),
+		Maker:            FromDeviceMakerModel(object),
 	}, nil
 }
 
 // List DeviceMakers is the resolver for the listDeviceMakers field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceMakerListFilter, order []*qmodels.DeviceMakerListOrder, page *qmodels.Page) (*connectors.DeviceMakerConnection, error) {
-	return connectors.NewDeviceMakerConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceMakerListFilter, order []*qmodels.DeviceMakerListOrder, page *qmodels.Page) (*DeviceMakerConnection, error) {
+	return NewDeviceMakerConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // Create DeviceMaker is the resolver for the createDeviceMaker field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceMakerCreateInput) (*qmodels.DeviceMakerPayload, error) {
 	var object models.DeviceMaker
-	if err := input.FillModel(&object); err != nil {
+	if err := FillDeviceMakerCreateInputModel(input, &object); err != nil {
 		return nil, err
 	}
 
@@ -54,7 +53,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceMakerCre
 	return &qmodels.DeviceMakerPayload{
 		ClientMutationID: requestid.Get(ctx),
 		MakerID:          id,
-		Maker:            qmodels.FromDeviceMakerModel(&object),
+		Maker:            FromDeviceMakerModel(&object),
 	}, nil
 }
 
@@ -69,7 +68,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Dev
 	}
 	models := object.Models
 	object.Models = nil
-	input.FillModel(object)
+	FillDeviceMakerUpdateInputModel(input, object)
 	if err = r.uc.Update(ctx, id, object); err != nil {
 		return nil, err
 	}
@@ -77,7 +76,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Dev
 	return &qmodels.DeviceMakerPayload{
 		ClientMutationID: requestid.Get(ctx),
 		MakerID:          object.ID,
-		Maker:            qmodels.FromDeviceMakerModel(object),
+		Maker:            FromDeviceMakerModel(object),
 	}, nil
 }
 
@@ -96,6 +95,6 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.DeviceMakerPayload{
 		ClientMutationID: requestid.Get(ctx),
 		MakerID:          object.ID,
-		Maker:            qmodels.FromDeviceMakerModel(object),
+		Maker:            FromDeviceMakerModel(object),
 	}, nil
 }

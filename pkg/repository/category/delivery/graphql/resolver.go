@@ -13,7 +13,6 @@ import (
 	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/category"
 	"github.com/sspserver/api/pkg/repository/category/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -34,13 +33,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.CategoryPa
 	return &qmodels.CategoryPayload{
 		ClientMutationID: requestid.Get(ctx),
 		CategoryID:       gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Category:         qmodels.FromCategoryModel(object),
+		Category:         FromCategoryModel(object),
 	}, nil
 }
 
 // List Categorys is the resolver for the listCategorys field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.CategoryListFilter, order *qmodels.CategoryListOrder, page *qmodels.Page) (*connectors.CategoryConnection, error) {
-	return connectors.NewCategoryConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.CategoryListFilter, order *qmodels.CategoryListOrder, page *qmodels.Page) (*CategoryConnection, error) {
+	return NewCategoryConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // ListByIDs returns a list of DeviceModels by their IDs.
@@ -80,7 +79,7 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 		}
 		list = append(list, newList...)
 	}
-	return qmodels.FromCategoryModelList(list), nil
+	return FromCategoryModelList(list), nil
 }
 
 // Childrens is the resolver for the childrens field.
@@ -104,13 +103,13 @@ func (r *QueryResolver) Childrens(ctx context.Context, obj *qmodels.Category) ([
 	if err != nil {
 		return nil, err
 	}
-	return qmodels.FromCategoryModelList(list), nil
+	return FromCategoryModelList(list), nil
 }
 
 // Create Category is the resolver for the createCategory field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.CategoryInput) (*qmodels.CategoryPayload, error) {
 	var object models.Category
-	input.FillModel(&object)
+	FillCategoryInputModel(input, &object)
 
 	id, err := r.uc.Create(ctx, &object)
 	if err != nil {
@@ -120,7 +119,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.CategoryInput)
 	return &qmodels.CategoryPayload{
 		ClientMutationID: requestid.Get(ctx),
 		CategoryID:       id,
-		Category:         qmodels.FromCategoryModel(&object),
+		Category:         FromCategoryModel(&object),
 	}, nil
 }
 
@@ -135,7 +134,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Cat
 		return nil, fmt.Errorf("category not found")
 	}
 
-	input.FillModel(object)
+	FillCategoryInputModel(input, object)
 	if err = r.uc.Update(ctx, id, object); err != nil {
 		return nil, err
 	}
@@ -143,7 +142,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Cat
 	return &qmodels.CategoryPayload{
 		ClientMutationID: requestid.Get(ctx),
 		CategoryID:       gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Category:         qmodels.FromCategoryModel(object),
+		Category:         FromCategoryModel(object),
 	}, nil
 }
 
@@ -162,7 +161,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.CategoryPayload{
 		ClientMutationID: requestid.Get(ctx),
 		CategoryID:       object.ID,
-		Category:         qmodels.FromCategoryModel(object),
+		Category:         FromCategoryModel(object),
 	}, nil
 }
 

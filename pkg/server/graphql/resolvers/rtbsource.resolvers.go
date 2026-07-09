@@ -7,7 +7,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -126,18 +125,7 @@ func (r *rTBSourceResolver) Zones(ctx context.Context, obj *models.RTBSource) (_
 	return obj.Zones, err
 }
 
-// Edges is the resolver for the edges field.
-func (r *rTBSourceConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.RTBSource]) ([]*models.RTBSourceEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
 // RTBSource returns generated.RTBSourceResolver implementation.
 func (r *Resolver) RTBSource() generated.RTBSourceResolver { return &rTBSourceResolver{r} }
 
-// RTBSourceConnection returns generated.RTBSourceConnectionResolver implementation.
-func (r *Resolver) RTBSourceConnection() generated.RTBSourceConnectionResolver {
-	return &rTBSourceConnectionResolver{r}
-}
-
 type rTBSourceResolver struct{ *Resolver }
-type rTBSourceConnectionResolver struct{ *Resolver }

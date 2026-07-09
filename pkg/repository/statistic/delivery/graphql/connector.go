@@ -25,12 +25,12 @@ func NewStatisticAdItemConnection(
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.StatisticAdItem]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.StatisticAdItem, error) {
 			list, err := statisticAccessor.Statistic(ctx,
-				filter.Filter(), StatisticGroup(group),
+				StatisticFilterFromGraphQL(filter), StatisticGroup(group),
 				StatisticAdListOrder(order, group), page.Pagination())
 			return FromStatisticAdItemModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return statisticAccessor.Count(ctx, filter.Filter(), StatisticGroup(group))
+			return statisticAccessor.Count(ctx, StatisticFilterFromGraphQL(filter), StatisticGroup(group))
 		},
 	}, page)
 }

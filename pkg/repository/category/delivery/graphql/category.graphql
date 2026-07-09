@@ -63,28 +63,11 @@ type Category {
   deletedAt: Time
 }
 
-type CategoryEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The Category at the end of the edge
-  """
-  node: Category!
-}
-
 type CategoryConnection {
   """
   Total count of Category objects
   """
   totalCount: Int!
-
-  """
-  Edges of Category objects
-  """
-  edges: [CategoryEdge!]!
 
   """
   List of Category objects
@@ -119,20 +102,20 @@ type CategoryPayload {
 ###############################################################################
 
 input CategoryListFilter {
-  ID:        [ID64!]
-  name:      [String!]
-  IABCode:   [String!]
-  parentID:  [ID64!]
-  active:    [ActiveStatus!]
+  ID: [ID64!]
+  name: [String!]
+  IABCode: [String!]
+  parentID: [ID64!]
+  active: [ActiveStatus!]
 }
 
 input CategoryListOrder {
-  ID:        Ordering
-  name:      Ordering
-  IABCode:   Ordering
-  parentID:  Ordering
-  position:  Ordering
-  active:    Ordering
+  ID: Ordering
+  name: Ordering
+  IABCode: Ordering
+  parentID: Ordering
+  position: Ordering
+  active: Ordering
   createdAt: Ordering
   updatedAt: Ordering
 }
@@ -177,14 +160,15 @@ input CategoryInput {
 ###############################################################################
 
 extend type Query {
-  category(ID: ID64!): CategoryPayload @acl(permissions: ["adv_category.view.*"])
+  category(ID: ID64!): CategoryPayload
+    @acl(permissions: ["adv_category.view.*"])
 
   """
   List of categories
   """
   listCategories(
-    filter: CategoryListFilter = null,
-    order: CategoryListOrder = null,
+    filter: CategoryListFilter = null
+    order: CategoryListOrder = null
     page: Page = null
   ): CategoryConnection @acl(permissions: ["adv_category.list.*"])
 }
@@ -193,12 +177,14 @@ extend type Mutation {
   """
   Create new category
   """
-  createCategory(input: CategoryInput!): CategoryPayload @acl(permissions: ["adv_category.create.*"])
+  createCategory(input: CategoryInput!): CategoryPayload
+    @acl(permissions: ["adv_category.create.*"])
 
   """
   Update category
   """
-  updateCategory(ID: ID64!, input: CategoryInput!): CategoryPayload @acl(permissions: ["adv_category.update.*"])
+  updateCategory(ID: ID64!, input: CategoryInput!): CategoryPayload
+    @acl(permissions: ["adv_category.update.*"])
 
   """
   Delete category
@@ -207,7 +193,7 @@ extend type Mutation {
     """
     Category ID
     """
-    ID: ID64!,
+    ID: ID64!
 
     """
     Message for deletion

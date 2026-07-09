@@ -1,11 +1,13 @@
-package models
+package graphql
 
 import (
 	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/gogeo"
+
+	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
-func FromGeoContinentByCode(code string) *Continent {
+func FromGeoContinentByCode(code string) *gqlmodels.Continent {
 	if code == "" {
 		return nil
 	}
@@ -17,16 +19,16 @@ func FromGeoContinentByCode(code string) *Continent {
 	return nil
 }
 
-func FromGeoContinentModel(c gogeo.Continent) *Continent {
-	return &Continent{
+func FromGeoContinentModel(c gogeo.Continent) *gqlmodels.Continent {
+	return &gqlmodels.Continent{
 		ID:    uint64(c.ID),
 		Code2: c.Code2,
 		Name:  c.Name,
 	}
 }
 
-func FromGeoCountryModel(c gogeo.Country) *Country {
-	return &Country{
+func FromGeoCountryModel(c gogeo.Country) *gqlmodels.Country {
+	return &gqlmodels.Country{
 		ID:            uint64(c.ID),
 		Code2:         c.Code2,
 		Code3:         c.Code3,
@@ -38,23 +40,23 @@ func FromGeoCountryModel(c gogeo.Country) *Country {
 		Languages:     c.Languages,
 		PhoneCodes:    c.Phones,
 		Currency:      c.Currency,
-		TimeZones: xtypes.SliceApply(c.TimeZones, func(tz gogeo.TimeZone) *TimeZone {
-			return &TimeZone{
+		TimeZones: xtypes.SliceApply(c.TimeZones, func(tz gogeo.TimeZone) *gqlmodels.TimeZone {
+			return &gqlmodels.TimeZone{
 				Name: tz.ZoneName,
 				Lon:  tz.Lon,
 			}
 		}),
-		Coordinates: &Coordinates{
+		Coordinates: &gqlmodels.Coordinates{
 			Lat: c.Coordinates.Lat,
 			Lon: c.Coordinates.Lon,
 		},
 	}
 }
 
-func FromGeoCountryModelList(c []gogeo.Country) []*Country {
+func FromGeoCountryModelList(c []gogeo.Country) []*gqlmodels.Country {
 	return xtypes.SliceApply(c, FromGeoCountryModel)
 }
 
-func FromGeoContinentModelList(c []gogeo.Continent) []*Continent {
+func FromGeoContinentModelList(c []gogeo.Continent) []*gqlmodels.Continent {
 	return xtypes.SliceApply(c, FromGeoContinentModel)
 }

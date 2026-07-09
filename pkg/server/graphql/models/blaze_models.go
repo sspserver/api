@@ -18,7 +18,6 @@ type (
 	ActiveStatus   = bzgqlmodel.ActiveStatus
 
 	HistoryAction           = bzgqlmodel.HistoryAction
-	HistoryActionEdge       = bzgqlmodel.HistoryActionEdge
 	HistoryActionListFilter = bzgqlmodel.HistoryActionListFilter
 	HistoryActionListOrder  = bzgqlmodel.HistoryActionListOrder
 	HistoryActionPayload    = bzgqlmodel.HistoryActionPayload

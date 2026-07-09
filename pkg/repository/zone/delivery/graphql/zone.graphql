@@ -20,15 +20,15 @@ type Zone {
   active: ActiveStatus!
 
   defaultCode: NullableJSON!
-  context:     NullableJSON!
-  minECPM:     Float!
+  context: NullableJSON!
+  minECPM: Float!
   # minECPMByGeo: JSON
 
   fixedPurchasePrice: Float!
 
-  allowedFormats:    [String!]
-  allowedTypes:      [ID64!]
-  allowedSources:    [ID64!]
+  allowedFormats: [String!]
+  allowedTypes: [ID64!]
+  allowedSources: [ID64!]
   disallowedSources: [ID64!]
 
   campaigns: [ID64!]
@@ -39,21 +39,6 @@ type Zone {
 }
 
 """
-ZoneEdge wrapper to access Zone objects
-"""
-type ZoneEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The Zone at the end of ZoneEdge.
-  """
-  node: Zone!
-}
-
-"""
 ZoneConnection wrapper to access Zone objects
 """
 type ZoneConnection {
@@ -61,11 +46,6 @@ type ZoneConnection {
   Total count of Zone objects
   """
   totalCount: Int!
-
-  """
-  Edges of Zone objects
-  """
-  edges: [ZoneEdge!]
 
   """
   List of Zone objects
@@ -163,9 +143,9 @@ input ZoneCreateInput {
 
   fixedPurchasePrice: Float
 
-  allowedFormats:    [String!]
-  allowedTypes:      [ID64!]
-  allowedSources:    [ID64!]
+  allowedFormats: [String!]
+  allowedTypes: [ID64!]
+  allowedSources: [ID64!]
   disallowedSources: [ID64!]
 
   campaigns: [ID64!]
@@ -197,9 +177,9 @@ input ZoneUpdateInput {
 
   fixedPurchasePrice: Float
 
-  allowedFormats:    [String!]
-  allowedTypes:      [ID64!]
-  allowedSources:    [ID64!]
+  allowedFormats: [String!]
+  allowedTypes: [ID64!]
+  allowedSources: [ID64!]
   disallowedSources: [ID64!]
 
   campaigns: [ID64!]
@@ -219,8 +199,8 @@ extend type Query {
   List of the Zone objects which can be filtered and ordered by some fields
   """
   listZones(
-    filter: ZoneListFilter = null,
-    order: ZoneListOrder = null,
+    filter: ZoneListFilter = null
+    order: ZoneListOrder = null
     page: Page = null
   ): ZoneConnection @acl(permissions: ["adv_zone.list.*"])
 }
@@ -229,35 +209,44 @@ extend type Mutation {
   """
   Create a new Zone
   """
-  createZone(input: ZoneCreateInput!): ZonePayload! @acl(permissions: ["adv_zone.create.*"]) @requireAgreements
+  createZone(input: ZoneCreateInput!): ZonePayload!
+    @acl(permissions: ["adv_zone.create.*"])
+    @requireAgreements
 
   """
   Update Zone information
   """
-  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload! @acl(permissions: ["adv_zone.update.*"]) @requireAgreements
+  updateZone(ID: ID64!, input: ZoneUpdateInput!): ZonePayload!
+    @acl(permissions: ["adv_zone.update.*"])
+    @requireAgreements
 
   """
   Delete Zone
   """
-  deleteZone(ID: ID64!, msg: String = null): ZonePayload @acl(permissions: ["adv_zone.delete.*"])
+  deleteZone(ID: ID64!, msg: String = null): ZonePayload
+    @acl(permissions: ["adv_zone.delete.*"])
 
   """
   Activate the Zone
   """
-  activateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+  activateZone(ID: ID64!, msg: String = null): ZonePayload!
+    @acl(permissions: ["adv_zone.update.*"])
 
   """
   Deactivate the Zone
   """
-  deactivateZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.update.*"])
+  deactivateZone(ID: ID64!, msg: String = null): ZonePayload!
+    @acl(permissions: ["adv_zone.update.*"])
 
   """
   Approve the Zone to be active
   """
-  approveZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.approve.*"])
+  approveZone(ID: ID64!, msg: String = null): ZonePayload!
+    @acl(permissions: ["adv_zone.approve.*"])
 
   """
   Reject the Zone
   """
-  rejectZone(ID: ID64!, msg: String = null): ZonePayload! @acl(permissions: ["adv_zone.reject.*"])
+  rejectZone(ID: ID64!, msg: String = null): ZonePayload!
+    @acl(permissions: ["adv_zone.reject.*"])
 }

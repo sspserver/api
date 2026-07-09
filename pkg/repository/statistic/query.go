@@ -9,9 +9,9 @@ import (
 
 	"github.com/demdxx/gocast/v2"
 	"github.com/demdxx/xtypes"
+	coremodels "github.com/geniusrabbit/blaze-api/pkg/models"
 	"github.com/geniusrabbit/blaze-api/repository"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/adformat"
 	adfrepo "github.com/sspserver/api/pkg/repository/adformat/repository"
 )
@@ -76,9 +76,11 @@ func (cond *Condition) PrepareQuery(query *gorm.DB) *gorm.DB {
 		if err != nil {
 			panic("failed to fetch ad formats for condition: " + err.Error())
 		}
-		cond.Value = xtypes.SliceApply(formats, func(format *models.Format) any {
-			return format.ID
-		})
+		ids := make([]any, 0, len(formats))
+		for _, format := range formats {
+			ids = append(ids, format.ID)
+		}
+		cond.Value = ids
 		cond.Key = KeyFormatID
 	}
 	// Process conditions
@@ -162,15 +164,15 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 
 // ListOrder of the objects list
 type ListOrder struct {
-	Orders map[OrderingKey]models.Order
+	Orders map[OrderingKey]coremodels.Order
 }
 
-func (ol *ListOrder) SetOrder(key OrderingKey, order models.Order) {
+func (ol *ListOrder) SetOrder(key OrderingKey, order coremodels.Order) {
 	if ol == nil {
 		return
 	}
 	if ol.Orders == nil {
-		ol.Orders = make(map[OrderingKey]models.Order)
+		ol.Orders = make(map[OrderingKey]coremodels.Order)
 	}
 	if key == OrderingKeyFormatCode {
 		key = OrderingKeyFormatID
@@ -189,7 +191,7 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 		// query = order.PrepareQuery(query, key.String())
 		query = query.Order(clause.OrderByColumn{
 			Column: clause.Column{Name: key.String(), Raw: strings.ContainsAny(key.String(), " \t\n\r()<>=!@#$%^&*|`~{}[]'\"+-*/\\")},
-			Desc:   order == models.OrderDesc,
+			Desc:   order == coremodels.OrderDesc,
 		})
 	}
 	return query

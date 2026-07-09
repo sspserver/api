@@ -3,20 +3,18 @@ package adformat
 
 import (
 	"context"
-
-	"github.com/sspserver/api/pkg/models"
 )
 
 // Repository of access to the ad format
 //
 //go:generate mockgen -source $GOFILE -package mocks -destination mocks/repository.go
 type Repository interface {
-	Get(ctx context.Context, id uint64) (*models.Format, error)
-	GetByCodename(ctx context.Context, codename string) (*models.Format, error)
-	FetchList(ctx context.Context, qops ...Option) ([]*models.Format, error)
+	Get(ctx context.Context, id uint64) (*Format, error)
+	GetByCodename(ctx context.Context, codename string) (*Format, error)
+	FetchList(ctx context.Context, qops ...Option) ([]*Format, error)
 	Count(ctx context.Context, qops ...Option) (int64, error)
-	Create(ctx context.Context, source *models.Format) (uint64, error)
-	Update(ctx context.Context, id uint64, source *models.Format) error
+	Create(ctx context.Context, source *Format) (uint64, error)
+	Update(ctx context.Context, id uint64, source *Format) error
 	Delete(ctx context.Context, id uint64) error
 	DeleteByCodename(ctx context.Context, codename string) error
 }

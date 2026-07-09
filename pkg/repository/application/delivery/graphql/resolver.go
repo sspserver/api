@@ -10,10 +10,9 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/application"
+	"github.com/sspserver/api/pkg/repository/application/models"
 	"github.com/sspserver/api/pkg/repository/application/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -34,13 +33,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.Applicati
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    gocast.IfThenExec(obj != nil, func() uint64 { return obj.ID }, func() uint64 { return 0 }),
-		Application:      qlmodels.FromApplicationModel(obj),
+		Application:      FromApplicationModel(obj),
 	}, nil
 }
 
 // List Applications is the resolver for the listApplications field.
-func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationListFilter, order *qlmodels.ApplicationListOrder, page *qlmodels.Page) (*connectors.ApplicationConnection, error) {
-	return connectors.NewApplicationConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ApplicationListFilter, order *qlmodels.ApplicationListOrder, page *qlmodels.Page) (*ApplicationConnection, error) {
+	return NewApplicationConnection(ctx, r.uc, filter, order, page), nil
 }
 
 func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodels.Application, error) {
@@ -79,13 +78,13 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodel
 		}
 		list = append(list, newList...)
 	}
-	return qlmodels.FromApplicationModelList(list), nil
+	return FromApplicationModelList(list), nil
 }
 
 // Create Application is the resolver for the createApplication field.
 func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationCreateInput) (*qlmodels.ApplicationPayload, error) {
 	var obj models.Application
-	if err := input.FillModel(&obj); err != nil {
+	if err := FillApplicationCreateInputModel(input, &obj); err != nil {
 		return nil, err
 	}
 
@@ -108,7 +107,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ApplicationCr
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(&obj),
+		Application:      FromApplicationModel(&obj),
 	}, nil
 }
 
@@ -123,7 +122,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.Ap
 		return nil, fmt.Errorf("application not found")
 	}
 
-	if err = input.FillModel(obj); err != nil {
+	if err = FillApplicationUpdateInputModel(input, obj); err != nil {
 		return nil, err
 	}
 
@@ -134,7 +133,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.Ap
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(obj),
+		Application:      FromApplicationModel(obj),
 	}, nil
 }
 
@@ -156,7 +155,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*ql
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(obj),
+		Application:      FromApplicationModel(obj),
 	}, nil
 }
 
@@ -170,7 +169,7 @@ func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmod
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(app),
+		Application:      FromApplicationModel(app),
 	}, nil
 }
 
@@ -184,7 +183,7 @@ func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlm
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(app),
+		Application:      FromApplicationModel(app),
 	}, nil
 }
 
@@ -198,7 +197,7 @@ func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*q
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(app),
+		Application:      FromApplicationModel(app),
 	}, nil
 }
 
@@ -212,7 +211,7 @@ func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*ql
 	return &qlmodels.ApplicationPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ApplicationID:    id,
-		Application:      qlmodels.FromApplicationModel(app),
+		Application:      FromApplicationModel(app),
 	}, nil
 }
 

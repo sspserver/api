@@ -17,7 +17,6 @@ func FromDeviceMakerModel(m *models.DeviceMaker) *gqlmodels.DeviceMaker {
 		Name:        m.Name,
 		Description: m.Description,
 		MatchExp:    m.MatchExp,
-		Models:      gqlmodels.FromDeviceModelModelList(m.Models),
 		Active:      gqlmodels.FromActiveStatus(m.Active),
 		CreatedAt:   m.CreatedAt,
 		UpdatedAt:   m.UpdatedAt,

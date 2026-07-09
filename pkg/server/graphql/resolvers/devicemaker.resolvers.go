@@ -7,18 +7,11 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
-
-// Edges is the resolver for the edges field.
-func (r *deviceMakerConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.DeviceMaker]) ([]*models.DeviceMakerEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
 
 // CreateDeviceMaker is the resolver for the createDeviceMaker field.
 func (r *mutationResolver) CreateDeviceMaker(ctx context.Context, input models.DeviceMakerCreateInput) (*models.DeviceMakerPayload, error) {
@@ -44,10 +37,3 @@ func (r *queryResolver) DeviceMaker(ctx context.Context, id uint64, codename str
 func (r *queryResolver) ListDeviceMakers(ctx context.Context, filter *models.DeviceMakerListFilter, order []*models.DeviceMakerListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.DeviceMaker], error) {
 	return r.device_makers.List(ctx, filter, order, page)
 }
-
-// DeviceMakerConnection returns generated.DeviceMakerConnectionResolver implementation.
-func (r *Resolver) DeviceMakerConnection() generated.DeviceMakerConnectionResolver {
-	return &deviceMakerConnectionResolver{r}
-}
-
-type deviceMakerConnectionResolver struct{ *Resolver }

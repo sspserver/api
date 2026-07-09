@@ -59,28 +59,11 @@ type AdFormat {
   deletedAt: Time
 }
 
-type AdFormatEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The AdFormat at the end of the edge
-  """
-  node: AdFormat!
-}
-
 type AdFormatConnection {
   """
   Total count of AdFormat objects
   """
   totalCount: Int!
-
-  """
-  Edges of AdFormat objects
-  """
-  edges: [AdFormatEdge!]!
 
   """
   List of AdFormat objects
@@ -115,19 +98,19 @@ type AdFormatPayload {
 ###############################################################################
 
 input AdFormatListFilter {
-  ID:        [ID64!]
-  codename:  [String!]
-  type:      [String!]
-  title:     [String!]
-  active:    [ActiveStatus!]
+  ID: [ID64!]
+  codename: [String!]
+  type: [String!]
+  title: [String!]
+  active: [ActiveStatus!]
 }
 
 input AdFormatListOrder {
-  ID:        Ordering
-  codename:  Ordering
-  type:      Ordering
-  title:     Ordering
-  active:    Ordering
+  ID: Ordering
+  codename: Ordering
+  type: Ordering
+  title: Ordering
+  active: Ordering
   createdAt: Ordering
   updatedAt: Ordering
 }
@@ -196,7 +179,7 @@ extend type Query {
     """
     Ad format ID
     """
-    ID: ID64! = 0,
+    ID: ID64! = 0
 
     """
     Codename of the ad format
@@ -208,8 +191,8 @@ extend type Query {
   List of ad formats
   """
   listFormats(
-    filter: AdFormatListFilter = null,
-    order: AdFormatListOrder = null,
+    filter: AdFormatListFilter = null
+    order: AdFormatListOrder = null
     page: Page = null
   ): AdFormatConnection @acl(permissions: ["adv_format.list.*"])
 }
@@ -218,12 +201,14 @@ extend type Mutation {
   """
   Create new ad format
   """
-  createFormat(input: AdFormatInput!): AdFormatPayload @acl(permissions: ["adv_format.create.*"])
+  createFormat(input: AdFormatInput!): AdFormatPayload
+    @acl(permissions: ["adv_format.create.*"])
 
   """
   Update ad format
   """
-  updateFormat(ID: ID64!, input: AdFormatInput!): AdFormatPayload @acl(permissions: ["adv_format.update.*"])
+  updateFormat(ID: ID64!, input: AdFormatInput!): AdFormatPayload
+    @acl(permissions: ["adv_format.update.*"])
 
   """
   Delete ad format
@@ -232,12 +217,12 @@ extend type Mutation {
     """
     Ad format ID
     """
-    ID: ID64! = 0,
+    ID: ID64! = 0
 
     """
     Codename of the ad format
     """
-    codename: String! = "",
+    codename: String! = ""
 
     """
     Message for deletion
@@ -245,4 +230,3 @@ extend type Mutation {
     msg: String = null
   ): AdFormatPayload @acl(permissions: ["adv_format.delete.*"])
 }
-

@@ -8,9 +8,9 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 	"gorm.io/gorm"
 
-	"github.com/sspserver/api/pkg/models"
 	pkgrepo "github.com/sspserver/api/pkg/repository"
 	"github.com/sspserver/api/pkg/repository/trafficrouter"
+	"github.com/sspserver/api/pkg/repository/trafficrouter/models"
 )
 
 var (

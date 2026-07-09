@@ -3,10 +3,20 @@
 
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
+  # - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
+  # - ../../submodules/blaze-api/repository/**/*.graphql
+  # - ../../pkg/repository/**/*.graphql
   - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
-  - ../../submodules/blaze-api/repository/**/*.graphql
-  - ./schemas/*.graphql
+  - ../../submodules/blaze-api/repository/*/*/graphql/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_base/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_login/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_member.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_base/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_email/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_password/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_password_reset/*.graphql
   - ../../pkg/repository/**/*.graphql
+  - ./schemas/*.graphql
 
 skip_mod_tidy: true
 
@@ -82,11 +92,11 @@ models:
     model: github.com/geniusrabbit/blaze-api/server/graphql/types.ID64
   # Connectors
   UserConnection:
-    model: github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql.UserConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.UserConnection
   AccountConnection:
-    model: github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql.AccountConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.AccountConnection
   MemberConnection:
-    model: github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql.MemberConnection
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.MemberConnection
   SocialAccountConnection:
     model: github.com/geniusrabbit/blaze-api/repository/socialaccount/delivery/graphql.SocialAccountConnection
   RBACRoleConnection:

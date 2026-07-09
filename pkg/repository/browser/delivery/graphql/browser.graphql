@@ -74,28 +74,11 @@ type Browser {
   deletedAt: Time
 }
 
-type BrowserEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The Browser at the end of the edge
-  """
-  node: Browser!
-}
-
 type BrowserConnection {
   """
   Total count of Browser objects
   """
   totalCount: Int!
-
-  """
-  Edges of Browser objects
-  """
-  edges: [BrowserEdge!]!
 
   """
   List of Browser objects
@@ -130,19 +113,19 @@ type BrowserPayload {
 ###############################################################################
 
 input BrowserListFilter {
-  ID:           [ID64!]
-  parentID:     [ID64!]
-  name:         [String!]
-  active:       [ActiveStatus!]
+  ID: [ID64!]
+  parentID: [ID64!]
+  name: [String!]
+  active: [ActiveStatus!]
 }
 
 input BrowserListOrder {
-  ID:           Ordering
-  name:         Ordering
-  active:       Ordering
-  createdAt:    Ordering
-  updatedAt:    Ordering
-  yearRelease:  Ordering
+  ID: Ordering
+  name: Ordering
+  active: Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+  yearRelease: Ordering
 }
 
 """
@@ -162,7 +145,8 @@ input BrowserCreateInput {
   """
   Version of the browser
   """
-  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+  version: String
+    @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the browser
@@ -185,8 +169,8 @@ input BrowserCreateInput {
   yearEndSupport: Int
 
   # Match expressions
-  matchNameExp:       String @notempty(trim: true, ornil: true)
-  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchNameExp: String @notempty(trim: true, ornil: true)
+  matchUserAgentExp: String @notempty(trim: true, ornil: true)
   matchVersionMinExp: String @notempty(trim: true, ornil: true)
   matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
@@ -203,7 +187,8 @@ input BrowserUpdateInput {
   """
   Version of the browser
   """
-  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+  version: String
+    @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the browser
@@ -226,8 +211,8 @@ input BrowserUpdateInput {
   yearEndSupport: Int
 
   # Match expressions
-  matchNameExp:       String @notempty(trim: true, ornil: true)
-  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchNameExp: String @notempty(trim: true, ornil: true)
+  matchUserAgentExp: String @notempty(trim: true, ornil: true)
   matchVersionMinExp: String @notempty(trim: true, ornil: true)
   matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
@@ -243,8 +228,8 @@ extend type Query {
   List of browsers
   """
   listBrowsers(
-    filter: BrowserListFilter = null,
-    order: [BrowserListOrder!] = null,
+    filter: BrowserListFilter = null
+    order: [BrowserListOrder!] = null
     page: Page = null
   ): BrowserConnection @acl(permissions: ["type_browser.list.*"])
 }
@@ -253,12 +238,14 @@ extend type Mutation {
   """
   Create new browser
   """
-  createBrowser(input: BrowserCreateInput!): BrowserPayload @acl(permissions: ["type_browser.create.*"])
+  createBrowser(input: BrowserCreateInput!): BrowserPayload
+    @acl(permissions: ["type_browser.create.*"])
 
   """
   Update browser
   """
-  updateBrowser(ID: ID64!, input: BrowserUpdateInput!): BrowserPayload @acl(permissions: ["type_browser.update.*"])
+  updateBrowser(ID: ID64!, input: BrowserUpdateInput!): BrowserPayload
+    @acl(permissions: ["type_browser.update.*"])
 
   """
   Delete browser
@@ -267,7 +254,7 @@ extend type Mutation {
     """
     Browser ID
     """
-    ID: ID64!,
+    ID: ID64!
 
     """
     Message for deletion

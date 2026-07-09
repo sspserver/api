@@ -7,18 +7,11 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
-
-// Edges is the resolver for the edges field.
-func (r *browserConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Browser]) ([]*models.BrowserEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
 
 // CreateBrowser is the resolver for the createBrowser field.
 func (r *mutationResolver) CreateBrowser(ctx context.Context, input models.BrowserCreateInput) (*models.BrowserPayload, error) {
@@ -44,10 +37,3 @@ func (r *queryResolver) Browser(ctx context.Context, id uint64) (*models.Browser
 func (r *queryResolver) ListBrowsers(ctx context.Context, filter *models.BrowserListFilter, order []*models.BrowserListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Browser], error) {
 	return r.browsers.List(ctx, filter, order, page)
 }
-
-// BrowserConnection returns generated.BrowserConnectionResolver implementation.
-func (r *Resolver) BrowserConnection() generated.BrowserConnectionResolver {
-	return &browserConnectionResolver{r}
-}
-
-type browserConnectionResolver struct{ *Resolver }

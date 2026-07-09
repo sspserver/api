@@ -24,5 +24,5 @@ func (r *QueryResolver) List(ctx context.Context) ([]*qlmodels.DeviceType, error
 	if err != nil {
 		return nil, err
 	}
-	return qlmodels.FromDeviceTypeModelList(list), nil
+	return FromDeviceTypeModelList(list), nil
 }

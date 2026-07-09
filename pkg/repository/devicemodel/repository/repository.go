@@ -7,9 +7,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
 	"github.com/sspserver/api/pkg/repository/devicemodel"
+	"github.com/sspserver/api/pkg/repository/devicemodel/models"
 	"github.com/sspserver/api/pkg/repository/devicetype"
 	devicetyperepo "github.com/sspserver/api/pkg/repository/devicetype/repository"
 )

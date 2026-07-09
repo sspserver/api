@@ -3,11 +3,12 @@ package usecase
 import (
 	"context"
 
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
 
 	"github.com/sspserver/api/pkg/acl"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/application"
+	"github.com/sspserver/api/pkg/repository/application/models"
 	"github.com/sspserver/api/pkg/repository/application/repository"
 	"github.com/sspserver/api/pkg/sysops"
 )
@@ -72,8 +73,8 @@ func (u *Usecase) Create(ctx context.Context, object *models.Application) (uint6
 	if !acl.HaveAccessCreate(ctx, object) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
-	object.Status = models.ApproveStatus(
-		sysops.Get(`logic.crud.default.approval`, models.StatusPending).
+	object.Status = types.ApproveStatus(
+		sysops.Get(`logic.crud.default.approval`, int(types.StatusPending)).
 			Int())
 	return u.repo.Create(ctx, object)
 }

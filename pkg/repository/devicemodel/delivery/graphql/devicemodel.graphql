@@ -71,7 +71,7 @@ type DeviceModel {
   List of device model versions
   """
   versions(
-    filter: DeviceModelListFilter = null,
+    filter: DeviceModelListFilter = null
     order: [DeviceModelListOrder!] = null
   ): [DeviceModel!]
 
@@ -96,28 +96,11 @@ type DeviceModel {
   deletedAt: Time
 }
 
-type DeviceModelEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The DeviceModel at the end of the edge
-  """
-  node: DeviceModel!
-}
-
 type DeviceModelConnection {
   """
   Total count of DeviceModel objects
   """
   totalCount: Int!
-
-  """
-  Edges of DeviceModel objects
-  """
-  edges: [DeviceModelEdge!]!
 
   """
   List of DeviceModel objects
@@ -151,28 +134,28 @@ type DeviceModelPayload {
 # Input
 
 input DeviceModelListOrder {
-  ID:             Ordering
-  codename:       Ordering
-  name:           Ordering
-  typeCodename:   Ordering
-  makerCodename:  Ordering
-  active:         Ordering
-  createdAt:      Ordering
-  updatedAt:      Ordering
-  yearRelease:    Ordering
+  ID: Ordering
+  codename: Ordering
+  name: Ordering
+  typeCodename: Ordering
+  makerCodename: Ordering
+  active: Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+  yearRelease: Ordering
 }
 
 """
 Input model list filter
 """
 input DeviceModelListFilter {
-  ID:             [ID64!]
-  parentID:       [ID64!]
-  codename:       [String!]
-  name:           [String!]
-  typeCodename:   [String!]
-  makerCodename:  [String!]
-  active:         [ActiveStatus!]
+  ID: [ID64!]
+  parentID: [ID64!]
+  codename: [String!]
+  name: [String!]
+  typeCodename: [String!]
+  makerCodename: [String!]
+  active: [ActiveStatus!]
 }
 
 """
@@ -247,7 +230,8 @@ input DeviceModelUpdateInput {
   """
   Version of the device model
   """
-  version: String @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true, ornil: true)
+  version: String
+    @regex(pattern: "^(\\d+(\\.\\d+){1,2})?$", trim: true, ornil: true)
 
   """
   Device parent ID
@@ -283,14 +267,15 @@ extend type Query {
   """
   Get device model by ID
   """
-  deviceModel(ID: ID64! = 0, codename: String! = ""): DeviceModelPayload @acl(permissions: ["device_model.view.*"])
+  deviceModel(ID: ID64! = 0, codename: String! = ""): DeviceModelPayload
+    @acl(permissions: ["device_model.view.*"])
 
   """
   List of device models
   """
   listDeviceModels(
-    filter: DeviceModelListFilter = null,
-    order: [DeviceModelListOrder!] = null,
+    filter: DeviceModelListFilter = null
+    order: [DeviceModelListOrder!] = null
     page: Page = null
   ): DeviceModelConnection @acl(permissions: ["device_model.list.*"])
 }
@@ -299,13 +284,14 @@ extend type Mutation {
   """
   Create new device model
   """
-  createDeviceModel(input: DeviceModelCreateInput!): DeviceModelPayload @acl(permissions: ["device_model.create.*"])
+  createDeviceModel(input: DeviceModelCreateInput!): DeviceModelPayload
+    @acl(permissions: ["device_model.create.*"])
 
   """
   Update device model
   """
   updateDeviceModel(
-    ID: ID64!,
+    ID: ID64!
     input: DeviceModelUpdateInput!
   ): DeviceModelPayload @acl(permissions: ["device_model.update.*"])
 
@@ -316,7 +302,7 @@ extend type Mutation {
     """
     Device model ID
     """
-    ID: ID64!,
+    ID: ID64!
 
     """
     Message for deletion

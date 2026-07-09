@@ -7,7 +7,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -129,18 +128,7 @@ func (r *trafficRouterResolver) Zones(ctx context.Context, obj *models.TrafficRo
 	return obj.Zones, err
 }
 
-// Edges is the resolver for the edges field.
-func (r *trafficRouterConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.TrafficRouter]) ([]*models.TrafficRouterEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-
 // TrafficRouter returns generated.TrafficRouterResolver implementation.
 func (r *Resolver) TrafficRouter() generated.TrafficRouterResolver { return &trafficRouterResolver{r} }
 
-// TrafficRouterConnection returns generated.TrafficRouterConnectionResolver implementation.
-func (r *Resolver) TrafficRouterConnection() generated.TrafficRouterConnectionResolver {
-	return &trafficRouterConnectionResolver{r}
-}
-
 type trafficRouterResolver struct{ *Resolver }
-type trafficRouterConnectionResolver struct{ *Resolver }

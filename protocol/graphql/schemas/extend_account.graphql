@@ -1,0 +1,66 @@
+type Contact {
+  type: String!
+  value: String!
+  isPrimary: Boolean
+}
+
+input ContactInput {
+  type: String!
+  value: String!
+  isPrimary: Boolean
+}
+
+extend type Account {
+  name: String!
+  description: String!
+
+  countryCode: String
+  city: String
+  zipCode: String
+  address: String
+  phone: String
+  vatNumber: String
+  companyRegNumber: String
+
+  contacts: [Contact!]
+}
+
+extend input AccountCreateInput {
+  name: String! @notempty(trim: true)
+  description: String @notempty(trim: true, ornil: true)
+  countryCode: String @regex(pattern: "^[A-Z]{2}$", ornil: true, trim: true)
+  city: String @notempty(trim: true, ornil: true)
+  zipCode: String @notempty(trim: true, ornil: true)
+  address: String @notempty(trim: true, ornil: true)
+  phone: String @notempty(trim: true, ornil: true)
+  vatNumber: String @notempty(trim: true, ornil: true)
+  companyRegNumber: String @notempty(trim: true, ornil: true)
+  contacts: [ContactInput!]
+}
+
+extend input AccountUpdateInput {
+  name: String @notempty(trim: true, ornil: true)
+  description: String @notempty(trim: true, ornil: true)
+  countryCode: String @regex(pattern: "^[A-Z]{2}$", ornil: true, trim: true)
+  city: String @notempty(trim: true, ornil: true)
+  zipCode: String @notempty(trim: true, ornil: true)
+  address: String @notempty(trim: true, ornil: true)
+  phone: String @notempty(trim: true, ornil: true)
+  vatNumber: String @notempty(trim: true, ornil: true)
+  companyRegNumber: String @notempty(trim: true, ornil: true)
+  contacts: [ContactInput!]
+}
+
+extend input AccountListFilter {
+  name: [String!]
+  countryCode: [String!]
+  vatNumber: [String!]
+  companyRegNumber: [String!]
+}
+
+extend input AccountListOrder {
+  name: Ordering
+  countryCode: Ordering
+  vatNumber: Ordering
+  companyRegNumber: Ordering
+}

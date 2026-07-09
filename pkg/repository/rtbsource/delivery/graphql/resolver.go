@@ -8,9 +8,8 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/rtbsource"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
+	rtbmodels "github.com/sspserver/api/pkg/repository/rtbsource/models"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -31,24 +30,24 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qmodels.RTBSourceP
 		return nil, err
 	}
 	src := gocast.IfThenExec(source != nil,
-		func() *models.RTBSource { return source.(*models.RTBSource) },
-		func() *models.RTBSource { return nil })
+		func() *rtbmodels.RTBSource { return source.(*rtbmodels.RTBSource) },
+		func() *rtbmodels.RTBSource { return nil })
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         gocast.IfThenExec(src != nil, func() uint64 { return src.ID }, func() uint64 { return 0 }),
-		Source:           qmodels.FromRTBSourceModel(src),
+		Source:           FromRTBSourceModel(src),
 	}, nil
 }
 
 // List RTBSources is the resolver for the listRTBSources field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.RTBSourceListFilter, order []*qmodels.RTBSourceListOrder, page *qmodels.Page) (*connectors.RTBSourceConnection, error) {
-	return connectors.NewRTBSourceConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.RTBSourceListFilter, order []*qmodels.RTBSourceListOrder, page *qmodels.Page) (*RTBSourceConnection, error) {
+	return NewRTBSourceConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // Create RTBSource is the resolver for the createRTBSource field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.RTBSourceCreateInput) (*qmodels.RTBSourcePayload, error) {
-	var source models.RTBSource
-	input.FillModel(&source)
+	var source rtbmodels.RTBSource
+	FillRTBSourceCreateInputModel(input, &source)
 
 	id, err := r.uc.Create(ctx, &source)
 	if err != nil {
@@ -58,7 +57,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.RTBSourceCreat
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         id,
-		Source:           qmodels.FromRTBSourceModel(&source),
+		Source:           FromRTBSourceModel(&source),
 	}, nil
 }
 
@@ -73,7 +72,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.RTB
 		return nil, fmt.Errorf("RTBSource not found")
 	}
 
-	input.FillModel(source)
+	FillRTBSourceUpdateInputModel(input, source)
 	if err = r.uc.Update(ctx, id, source); err != nil {
 		return nil, err
 	}
@@ -81,7 +80,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.RTB
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         gocast.IfThenExec(source != nil, func() uint64 { return source.ID }, func() uint64 { return 0 }),
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }
 
@@ -100,7 +99,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         source.ID,
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }
 
@@ -114,7 +113,7 @@ func (r *QueryResolver) Run(ctx context.Context, id uint64) (*qmodels.RTBSourceP
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         id,
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }
 
@@ -128,7 +127,7 @@ func (r *QueryResolver) Pause(ctx context.Context, id uint64) (*qmodels.RTBSourc
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         id,
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }
 
@@ -146,7 +145,7 @@ func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*q
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         id,
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }
 
@@ -164,6 +163,6 @@ func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.RTBSourcePayload{
 		ClientMutationID: requestid.Get(ctx),
 		SourceID:         id,
-		Source:           qmodels.FromRTBSourceModel(source),
+		Source:           FromRTBSourceModel(source),
 	}, nil
 }

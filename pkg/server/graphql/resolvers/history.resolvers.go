@@ -7,26 +7,12 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 )
-
-// Edges is the resolver for the edges field.
-func (r *historyActionConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.HistoryAction]) ([]*models.HistoryActionEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
 
 // ListHistory is the resolver for the listHistory field.
 func (r *queryResolver) ListHistory(ctx context.Context, filter *models.HistoryActionListFilter, order []*models.HistoryActionListOrder, page *models.Page) (*connectors.CollectionConnection[*models.HistoryAction], error) {
 	return r.historylogs.List(ctx, filter, order, page)
 }
-
-// HistoryActionConnection returns generated.HistoryActionConnectionResolver implementation.
-func (r *Resolver) HistoryActionConnection() generated.HistoryActionConnectionResolver {
-	return &historyActionConnectionResolver{r}
-}
-
-type historyActionConnectionResolver struct{ *Resolver }

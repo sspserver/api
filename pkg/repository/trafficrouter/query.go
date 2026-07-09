@@ -1,8 +1,8 @@
 package trafficrouter
 
 import (
+	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/repository"
-	"github.com/sspserver/api/pkg/models"
 	"gorm.io/gorm"
 )
 
@@ -10,7 +10,7 @@ import (
 type Filter struct {
 	ID              []uint64
 	AccountID       uint64
-	Active          *models.ActiveStatus
+	Active          *types.ActiveStatus
 	RTBSourceIDs    []uint64
 	Formats         []string
 	DeviceTypes     []uint64
@@ -99,12 +99,12 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 
 // ListOrder of the objects list
 type ListOrder struct {
-	ID        models.Order
-	Title     models.Order
-	Active    models.Order
-	Percent   models.Order
-	CreatedAt models.Order
-	UpdatedAt models.Order
+	ID        Order
+	Title     Order
+	Active    Order
+	Percent   Order
+	CreatedAt Order
+	UpdatedAt Order
 }
 
 func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {

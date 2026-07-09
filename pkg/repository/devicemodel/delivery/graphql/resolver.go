@@ -9,10 +9,9 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/devicemodel"
+	"github.com/sspserver/api/pkg/repository/devicemodel/models"
 	"github.com/sspserver/api/pkg/repository/devicemodel/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
 	qmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -41,13 +40,13 @@ func (r *QueryResolver) Get(ctx context.Context, id uint64, codename string) (*q
 	return &qmodels.DeviceModelPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ModelID:          gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Model:            qmodels.FromDeviceModelModel(object),
+		Model:            FromDeviceModelModel(object),
 	}, nil
 }
 
 // List DeviceModel is the resolver for the listDeviceModels field.
-func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceModelListFilter, order []*qmodels.DeviceModelListOrder, page *qmodels.Page) (*connectors.DeviceModelConnection, error) {
-	return connectors.NewDeviceModelConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *qmodels.DeviceModelListFilter, order []*qmodels.DeviceModelListOrder, page *qmodels.Page) (*DeviceModelConnection, error) {
+	return NewDeviceModelConnection(ctx, r.uc, filter, order, page), nil
 }
 
 // ListByIDs returns a list of DeviceModels by their IDs.
@@ -89,13 +88,13 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qmodels
 		}
 		list = append(list, newList...)
 	}
-	return qmodels.FromDeviceModelModelList(list), nil
+	return FromDeviceModelModelList(list), nil
 }
 
 // Create DeviceModel is the resolver for the createDeviceModel field.
 func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelCreateInput) (*qmodels.DeviceModelPayload, error) {
 	var object models.DeviceModel
-	if err := input.FillModel(&object); err != nil {
+	if err := FillDeviceModelCreateInputModel(input, &object); err != nil {
 		return nil, err
 	}
 
@@ -113,7 +112,7 @@ func (r *QueryResolver) Create(ctx context.Context, input qmodels.DeviceModelCre
 	return &qmodels.DeviceModelPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ModelID:          id,
-		Model:            qmodels.FromDeviceModelModel(nObject),
+		Model:            FromDeviceModelModel(nObject),
 	}, nil
 }
 
@@ -128,7 +127,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Dev
 		return nil, fmt.Errorf("DeviceModel not found")
 	}
 
-	input.FillModel(object)
+	FillDeviceModelUpdateInputModel(input, object)
 	if err = r.uc.Update(ctx, id, object); err != nil {
 		return nil, err
 	}
@@ -142,7 +141,7 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qmodels.Dev
 	return &qmodels.DeviceModelPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ModelID:          gocast.IfThenExec(object != nil, func() uint64 { return object.ID }, func() uint64 { return 0 }),
-		Model:            qmodels.FromDeviceModelModel(nObject),
+		Model:            FromDeviceModelModel(nObject),
 	}, nil
 }
 
@@ -161,7 +160,7 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qm
 	return &qmodels.DeviceModelPayload{
 		ClientMutationID: requestid.Get(ctx),
 		ModelID:          object.ID,
-		Model:            qmodels.FromDeviceModelModel(object),
+		Model:            FromDeviceModelModel(object),
 	}, nil
 }
 

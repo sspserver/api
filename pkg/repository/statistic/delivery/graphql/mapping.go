@@ -17,7 +17,7 @@ func FromStatisticAdItemKeyModel(st *models.StatisticAdItemKey) *gqlmodels.Stati
 		return nil
 	}
 	return &gqlmodels.StatisticItemKey{
-		Key: gqlmodels.FromRepoStatisticKey(
+		Key: FromRepoStatisticKey(
 			statistic.Key(strings.ToLower(st.Key)),
 		),
 		Value: st.Value,
@@ -63,9 +63,7 @@ func StatisticGroup(group []gqlmodels.StatisticKey) *repository.GroupOption {
 		return nil
 	}
 	return statistic.WithGroup(
-		xtypes.SliceApply(group, func(k gqlmodels.StatisticKey) statistic.Key {
-			return k.AsQueryKey()
-		})...,
+		xtypes.SliceApply(group, statisticKeyFromGraphQL)...,
 	)
 }
 
@@ -75,10 +73,10 @@ func StatisticAdListOrder(ord []*gqlmodels.StatisticAdKeyOrder, group []gqlmodel
 	}
 	nord := &statistic.ListOrder{}
 	groupKeys := xtypes.SliceApply(group, func(k gqlmodels.StatisticKey) string {
-		return k.AsQueryKey().String()
+		return statisticKeyFromGraphQL(k).String()
 	})
 	for _, o := range ord {
-		oKey := o.Key.AsQueryOrderKey()
+		oKey := statisticOrderKeyFromGraphQL(o.Key)
 		if !statistic.IsAggregationKey(oKey.String()) ||
 			slices.Contains(groupKeys, oKey.String()) {
 			nord.SetOrder(oKey, o.Order.AsOrder())

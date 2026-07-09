@@ -1,4 +1,3 @@
-
 """
 Device maker schema
 """
@@ -55,28 +54,11 @@ type DeviceMaker {
   deletedAt: Time
 }
 
-type DeviceMakerEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The DeviceMaker at the end of the edge
-  """
-  node: DeviceMaker!
-}
-
 type DeviceMakerConnection {
   """
   Total count of DeviceMaker objects
   """
   totalCount: Int!
-
-  """
-  Edges of DeviceMaker objects
-  """
-  edges: [DeviceMakerEdge!]!
 
   """
   List of DeviceMaker objects
@@ -111,19 +93,19 @@ type DeviceMakerPayload {
 ###############################################################################
 
 input DeviceMakerListFilter {
-  ID:         [ID64!]
-  codename:   [String!]
-  name:       [String!]
-  active:     [ActiveStatus!]
+  ID: [ID64!]
+  codename: [String!]
+  name: [String!]
+  active: [ActiveStatus!]
 }
 
 input DeviceMakerListOrder {
-  ID:         Ordering
-  codename:   Ordering
-  name:       Ordering
-  active:     Ordering
-  createdAt:  Ordering
-  updatedAt:  Ordering
+  ID: Ordering
+  codename: Ordering
+  name: Ordering
+  active: Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
 }
 
 """
@@ -194,14 +176,15 @@ extend type Query {
   """
   Get device maker by ID
   """
-  deviceMaker(ID: ID64! = 0, codename: String! = ""): DeviceMakerPayload @acl(permissions: ["device_maker.view.*"])
+  deviceMaker(ID: ID64! = 0, codename: String! = ""): DeviceMakerPayload
+    @acl(permissions: ["device_maker.view.*"])
 
   """
   List of device makers
   """
   listDeviceMakers(
-    filter: DeviceMakerListFilter = null,
-    order: [DeviceMakerListOrder!] = null,
+    filter: DeviceMakerListFilter = null
+    order: [DeviceMakerListOrder!] = null
     page: Page = null
   ): DeviceMakerConnection @acl(permissions: ["device_maker.list.*"])
 }
@@ -210,12 +193,16 @@ extend type Mutation {
   """
   Create new device maker
   """
-  createDeviceMaker(input: DeviceMakerCreateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.create.*"])
+  createDeviceMaker(input: DeviceMakerCreateInput!): DeviceMakerPayload
+    @acl(permissions: ["device_maker.create.*"])
 
   """
   Update device maker
   """
-  updateDeviceMaker(ID: ID64!, input: DeviceMakerUpdateInput!): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
+  updateDeviceMaker(
+    ID: ID64!
+    input: DeviceMakerUpdateInput!
+  ): DeviceMakerPayload @acl(permissions: ["device_maker.update.*"])
 
   """
   Delete device maker
@@ -224,7 +211,7 @@ extend type Mutation {
     """
     Device maker ID
     """
-    ID: ID64!,
+    ID: ID64!
 
     """
     Message for deletion

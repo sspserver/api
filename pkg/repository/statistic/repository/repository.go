@@ -7,10 +7,11 @@ import (
 	"github.com/demdxx/xtypes"
 	"gorm.io/gorm"
 
-	"github.com/sspserver/api/pkg/models"
+	appmodels "github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
 	adfrepo "github.com/sspserver/api/pkg/repository/adformat/repository"
 	"github.com/sspserver/api/pkg/repository/statistic"
+	"github.com/sspserver/api/pkg/repository/statistic/models"
 )
 
 type Repository struct {
@@ -48,7 +49,7 @@ func (r *Repository) Statistic(ctx context.Context, opts ...statistic.Option) ([
 		}
 	}
 
-	formats := ([]*models.Format)(nil)
+	formats := ([]*appmodels.Format)(nil)
 	if hasFormatCode {
 		fmts := adfrepo.New()
 		formats, _ = fmts.FetchList(ctx)

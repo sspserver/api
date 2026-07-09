@@ -23,11 +23,11 @@ func NewZoneConnection(
 ) *ZoneConnection {
 	return connectors.NewCollectionConnection(ctx, &connectors.DataAccessorFunc[*gqlmodels.Zone]{
 		FetchDataListFunc: func(ctx context.Context) ([]*gqlmodels.Zone, error) {
-			list, err := zoneAccessor.FetchList(ctx, filter.Filter(), order.Order(), page.Pagination())
+			list, err := zoneAccessor.FetchList(ctx, ZoneFilterFromGraphQL(filter), ZoneOrderFromGraphQL(order), page.Pagination())
 			return FromZoneModelList(list), err
 		},
 		CountDataFunc: func(ctx context.Context) (int64, error) {
-			return zoneAccessor.Count(ctx, filter.Filter())
+			return zoneAccessor.Count(ctx, ZoneFilterFromGraphQL(filter))
 		},
 	}, page)
 }

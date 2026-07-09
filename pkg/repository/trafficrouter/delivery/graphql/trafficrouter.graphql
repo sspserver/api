@@ -49,48 +49,35 @@ type TrafficRouter {
   RTBSources: [RTBSource!]
 
   # Targeting filters
-  formatCodes:     [String!]       # List of format codes for targeting
-  formats:         [AdFormat!]     # List of ad formats for targeting
-  deviceTypeIDs:   [ID64!]         # List of device type IDs for targeting
-  deviceTypes:     [DeviceType!]   # List of device types for targeting
-  deviceIDs:       [ID64!]         # List of device model IDs for targeting
-  devices:         [DeviceModel!]  # List of device models for targeting
-  OSIDs:           [ID64!]         # List of operating system IDs for targeting
-  OS:              [OS!]           # List of operating systems for targeting
-  browserIDs:      [ID64!]         # List of browser IDs for targeting
-  browsers:        [Browser!]      # List of browsers for targeting
-  carrierIDs:      [ID64!]         # List of carrier IDs for targeting
-  categoryIDs:     [ID64!]         # List of category IDs for targeting
-  categories:      [Category!]     # List of categories for targeting
-  countryCodes:    [String!]       # List of country codes for targeting
-  countries:       [Country!]      # List of countries for targeting
-  languageCodes:   [String!]       # List of language codes for targeting
-  languages:       [Lang!]         # List of languages for targeting
-  domains:         [String!]       # List of domains for targeting
-  applicationIDs:  [ID64!]         # List of application IDs for targeting
-  applications:    [Application!]  # List of applications for targeting
-  zoneIDs:         [ID64!]         # List of zone IDs for targeting
-  zones:           [Zone!]         # List of zones for targeting
-  secure:          AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
-  adBlock:         AnyOnlyExclude! # AdBlock targeting option
+  formatCodes: [String!] # List of format codes for targeting
+  formats: [AdFormat!] # List of ad formats for targeting
+  deviceTypeIDs: [ID64!] # List of device type IDs for targeting
+  deviceTypes: [DeviceType!] # List of device types for targeting
+  deviceIDs: [ID64!] # List of device model IDs for targeting
+  devices: [DeviceModel!] # List of device models for targeting
+  OSIDs: [ID64!] # List of operating system IDs for targeting
+  OS: [OS!] # List of operating systems for targeting
+  browserIDs: [ID64!] # List of browser IDs for targeting
+  browsers: [Browser!] # List of browsers for targeting
+  carrierIDs: [ID64!] # List of carrier IDs for targeting
+  categoryIDs: [ID64!] # List of category IDs for targeting
+  categories: [Category!] # List of categories for targeting
+  countryCodes: [String!] # List of country codes for targeting
+  countries: [Country!] # List of countries for targeting
+  languageCodes: [String!] # List of language codes for targeting
+  languages: [Lang!] # List of languages for targeting
+  domains: [String!] # List of domains for targeting
+  applicationIDs: [ID64!] # List of application IDs for targeting
+  applications: [Application!] # List of applications for targeting
+  zoneIDs: [ID64!] # List of zone IDs for targeting
+  zones: [Zone!] # List of zones for targeting
+  secure: AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
+  adBlock: AnyOnlyExclude! # AdBlock targeting option
   privateBrowsing: AnyOnlyExclude! # Private browsing targeting option
-  IP:              AnyIPv4IPv6!    # IP targeting option (IPv4/IPv6)
-
+  IP: AnyIPv4IPv6! # IP targeting option (IPv4/IPv6)
   createdAt: Time!
   updatedAt: Time!
-	deletedAt: Time
-}
-
-type TrafficRouterEdge {
-  """
-  Cursor for the traffic router
-  """
-  cursor: String!
-
-  """
-  Node of the traffic router
-  """
-  node: TrafficRouter!
+  deletedAt: Time
 }
 
 type TrafficRouterConnection {
@@ -98,11 +85,6 @@ type TrafficRouterConnection {
   Total count of the traffic routers
   """
   totalCount: Int!
-
-  """
-  Edges of the traffic router
-  """
-  edges: [TrafficRouterEdge!]
 
   """
   List of the traffic routers
@@ -137,33 +119,33 @@ type TrafficRouterPayload {
 ###############################################################################
 
 input TrafficRouterListFilter {
-  ID:               [ID64!]
-  accountID:        ID64
-  active:           ActiveStatus   # Active status of the traffic router
-  RTBSourceIDs:     [ID64!]        # RTB sources of the advertising
-  formatCodes:      [String!]      # Supported ad formats.
-  deviceTypeIDs:    [ID64!]        # Supported device types.
-  deviceIDs:        [ID64!]        # Specific devices supported.
-  OSIDs:            [ID64!]        # Supported operating systems.
-  browserIDs:       [ID64!]        # Supported browsers.
-  carrierIDs:       [ID64!]        # Supported carriers.
-  categoryIDs:      [ID64!]        # Supported ad categories.
-  countryCodes:     [String!]      # Supported countries (ISO codes).
-  languageCodes:    [String!]      # Supported languages (ISO codes).
-  applicationIDs:   [ID64!]        # Supported applications.
-  domains:          [String!]      # Supported domains.
-  zoneIDs:          [ID64!]        # Supported zones.
-  secure:           AnyOnlyExclude
-  adBlock:          AnyOnlyExclude
-  privateBrowsing:  AnyOnlyExclude
-  IP:               AnyIPv4IPv6
+  ID: [ID64!]
+  accountID: ID64
+  active: ActiveStatus # Active status of the traffic router
+  RTBSourceIDs: [ID64!] # RTB sources of the advertising
+  formatCodes: [String!] # Supported ad formats.
+  deviceTypeIDs: [ID64!] # Supported device types.
+  deviceIDs: [ID64!] # Specific devices supported.
+  OSIDs: [ID64!] # Supported operating systems.
+  browserIDs: [ID64!] # Supported browsers.
+  carrierIDs: [ID64!] # Supported carriers.
+  categoryIDs: [ID64!] # Supported ad categories.
+  countryCodes: [String!] # Supported countries (ISO codes).
+  languageCodes: [String!] # Supported languages (ISO codes).
+  applicationIDs: [ID64!] # Supported applications.
+  domains: [String!] # Supported domains.
+  zoneIDs: [ID64!] # Supported zones.
+  secure: AnyOnlyExclude
+  adBlock: AnyOnlyExclude
+  privateBrowsing: AnyOnlyExclude
+  IP: AnyIPv4IPv6
 }
 
 input TrafficRouterListOrder {
-  ID:        Ordering
-  title:     Ordering
-  active:    Ordering
-  percent:   Ordering
+  ID: Ordering
+  title: Ordering
+  active: Ordering
+  percent: Ordering
   createdAt: Ordering
   updatedAt: Ordering
 }
@@ -198,22 +180,22 @@ input TrafficRouterCreateInput {
   RTBSourceIDs: [ID64!]! @notempty(ornil: false)
 
   # Targeting filters
-  formatCodes:     [String!]  # Supported ad formats.
-  deviceTypeIDs:   [ID64!]    # Supported device types.
-  deviceIDs:       [ID64!]    # Specific devices supported.
-  OSIDs:           [ID64!]    # Supported operating systems.
-  browserIDs:      [ID64!]    # Supported browsers.
-  carrierIDs:      [ID64!]    # Supported carriers.
-  categoryIDs:     [ID64!]    # Supported ad categories.
-  countryCodes:    [String!]  # Supported countries (ISO codes).
-  languageCodes:   [String!]  # Supported languages (ISO codes).
-  applicationIDs:  [ID64!]    # Supported applications.
-  domains:         [String!]  # Supported domains.
-  zoneIDs:         [ID64!]    # Supported zones.
-  secure:          AnyOnlyExclude
-  adBlock:         AnyOnlyExclude
+  formatCodes: [String!] # Supported ad formats.
+  deviceTypeIDs: [ID64!] # Supported device types.
+  deviceIDs: [ID64!] # Specific devices supported.
+  OSIDs: [ID64!] # Supported operating systems.
+  browserIDs: [ID64!] # Supported browsers.
+  carrierIDs: [ID64!] # Supported carriers.
+  categoryIDs: [ID64!] # Supported ad categories.
+  countryCodes: [String!] # Supported countries (ISO codes).
+  languageCodes: [String!] # Supported languages (ISO codes).
+  applicationIDs: [ID64!] # Supported applications.
+  domains: [String!] # Supported domains.
+  zoneIDs: [ID64!] # Supported zones.
+  secure: AnyOnlyExclude
+  adBlock: AnyOnlyExclude
   privateBrowsing: AnyOnlyExclude
-  IP:              AnyIPv4IPv6
+  IP: AnyIPv4IPv6
 }
 
 """
@@ -241,22 +223,22 @@ input TrafficRouterUpdateInput {
   RTBSourceIDs: [ID64!] @notempty(ornil: false)
 
   # Targeting filters
-  formatCodes:     [String!]  # Supported ad formats.
-  deviceTypeIDs:   [ID64!]    # Supported device types.
-  deviceIDs:       [ID64!]    # Specific devices supported.
-  OSIDs:           [ID64!]    # Supported operating systems.
-  browserIDs:      [ID64!]    # Supported browsers.
-  carrierIDs:      [ID64!]    # Supported carriers.
-  categoryIDs:     [ID64!]    # Supported ad categories.
-  countryCodes:    [String!]  # Supported countries (ISO codes).
-  languageCodes:   [String!]  # Supported languages (ISO codes).
-  applicationIDs:  [ID64!]    # Supported applications.
-  domains:         [String!]  # Supported domains.
-  zoneIDs:         [ID64!]    # Supported zones.
-  secure:          AnyOnlyExclude
-  adBlock:         AnyOnlyExclude
+  formatCodes: [String!] # Supported ad formats.
+  deviceTypeIDs: [ID64!] # Supported device types.
+  deviceIDs: [ID64!] # Specific devices supported.
+  OSIDs: [ID64!] # Supported operating systems.
+  browserIDs: [ID64!] # Supported browsers.
+  carrierIDs: [ID64!] # Supported carriers.
+  categoryIDs: [ID64!] # Supported ad categories.
+  countryCodes: [String!] # Supported countries (ISO codes).
+  languageCodes: [String!] # Supported languages (ISO codes).
+  applicationIDs: [ID64!] # Supported applications.
+  domains: [String!] # Supported domains.
+  zoneIDs: [ID64!] # Supported zones.
+  secure: AnyOnlyExclude
+  adBlock: AnyOnlyExclude
   privateBrowsing: AnyOnlyExclude
-  IP:              AnyIPv4IPv6
+  IP: AnyIPv4IPv6
 }
 
 ###############################################################################
@@ -267,7 +249,8 @@ extend type Query {
   """
   Traffic router by ID
   """
-  trafficRouter(ID: ID64!): TrafficRouterPayload @acl(permissions: ["traffic_router.view.*"])
+  trafficRouter(ID: ID64!): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.view.*"])
 
   """
   List of traffic routers
@@ -276,12 +259,12 @@ extend type Query {
     """
     Filter for the traffic routers
     """
-    filter: TrafficRouterListFilter = null,
+    filter: TrafficRouterListFilter = null
 
     """
     Order for the traffic routers
     """
-    order: [TrafficRouterListOrder!] = null,
+    order: [TrafficRouterListOrder!] = null
 
     """
     Pagination for the traffic routers
@@ -294,25 +277,35 @@ extend type Mutation {
   """
   Create new traffic router
   """
-  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.create.*"]) @requireAgreements
+  createTrafficRouter(input: TrafficRouterCreateInput!): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.create.*"])
+    @requireAgreements
 
   """
   Update traffic router
   """
-  updateTrafficRouter(ID: ID64!, input: TrafficRouterUpdateInput!): TrafficRouterPayload @acl(permissions: ["traffic_router.update.*"]) @requireAgreements
+  updateTrafficRouter(
+    ID: ID64!
+    input: TrafficRouterUpdateInput!
+  ): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.update.*"])
+    @requireAgreements
 
   """
   Delete traffic router
   """
-  deleteTrafficRouter(ID: ID64!): TrafficRouterPayload @acl(permissions: ["traffic_router.delete.*"])
+  deleteTrafficRouter(ID: ID64!): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.delete.*"])
 
   """
   Run traffic router
   """
-  runTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.run.*"])
+  runTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.run.*"])
 
   """
   Pause traffic router
   """
-  pauseTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload @acl(permissions: ["traffic_router.pause.*"])
+  pauseTrafficRouter(ID: ID64!, msg: String! = ""): TrafficRouterPayload
+    @acl(permissions: ["traffic_router.pause.*"])
 }

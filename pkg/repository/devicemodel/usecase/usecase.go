@@ -7,8 +7,8 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 	"github.com/go-faster/errors"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/devicemodel"
+	"github.com/sspserver/api/pkg/repository/devicemodel/models"
 	"github.com/sspserver/api/pkg/repository/devicemodel/repository"
 )
 

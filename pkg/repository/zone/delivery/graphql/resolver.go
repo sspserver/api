@@ -9,11 +9,10 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 
 	"github.com/sspserver/api/pkg/context/ctxcache"
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/zone"
+	"github.com/sspserver/api/pkg/repository/zone/models"
 	"github.com/sspserver/api/pkg/repository/zone/usecase"
-	"github.com/sspserver/api/pkg/server/graphql/connectors"
-	qlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
 type QueryResolver struct {
@@ -25,23 +24,23 @@ func NewQueryResolver() *QueryResolver {
 }
 
 // Get is the resolver for the zone field.
-func (r *QueryResolver) Get(ctx context.Context, id uint64) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Get(ctx context.Context, id uint64) (*gqlmodels.ZonePayload, error) {
 	obj, err := r.cachedZoneByID(ctx, id, true)
 	if err != nil {
 		return nil, err
 	}
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
-		Zone:             qlmodels.FromZoneModel(obj),
+		Zone:             FromZoneModel(obj),
 	}, nil
 }
 
 // List Zones is the resolver for the listApplications field.
-func (r *QueryResolver) List(ctx context.Context, filter *qlmodels.ZoneListFilter, order *qlmodels.ZoneListOrder, page *qlmodels.Page) (*connectors.ZoneConnection, error) {
-	return connectors.NewZoneConnection(ctx, r.uc, filter, order, page), nil
+func (r *QueryResolver) List(ctx context.Context, filter *gqlmodels.ZoneListFilter, order *gqlmodels.ZoneListOrder, page *gqlmodels.Page) (*ZoneConnection, error) {
+	return NewZoneConnection(ctx, r.uc, filter, order, page), nil
 }
 
-func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodels.Zone, error) {
+func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*gqlmodels.Zone, error) {
 	if len(ids) == 0 {
 		return nil, nil
 	}
@@ -79,28 +78,28 @@ func (r *QueryResolver) ListByIDs(ctx context.Context, ids []uint64) ([]*qlmodel
 		list = append(list, zoneList...)
 	}
 
-	return qlmodels.FromZoneModelList(list), nil
+	return FromZoneModelList(list), nil
 }
 
 // Create Zone is the resolver for the createApplication field.
-func (r *QueryResolver) Create(ctx context.Context, input qlmodels.ZoneCreateInput) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Create(ctx context.Context, input gqlmodels.ZoneCreateInput) (*gqlmodels.ZonePayload, error) {
 	var obj models.Zone
-	input.FillModel(&obj)
+	FillZoneCreateInputModel(input, &obj)
 
 	id, err := r.uc.Create(ctx, &obj)
 	if err != nil {
 		return nil, err
 	}
 
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(&obj),
+		Zone:             FromZoneModel(&obj),
 	}, nil
 }
 
 // Update Zone is the resolver for the updateApplication field.
-func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.ZoneUpdateInput) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Update(ctx context.Context, id uint64, input gqlmodels.ZoneUpdateInput) (*gqlmodels.ZonePayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err
@@ -110,20 +109,20 @@ func (r *QueryResolver) Update(ctx context.Context, id uint64, input qlmodels.Zo
 		return nil, fmt.Errorf("zone not found")
 	}
 
-	input.FillModel(obj)
+	FillZoneUpdateInputModel(input, obj)
 	if err = r.uc.Update(ctx, id, obj); err != nil {
 		return nil, err
 	}
 
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(obj),
+		Zone:             FromZoneModel(obj),
 	}, nil
 }
 
 // Delete Zone is the resolver for the deleteApplication field.
-func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*gqlmodels.ZonePayload, error) {
 	obj, err := r.uc.Get(ctx, id)
 	if err != nil {
 		return nil, err
@@ -137,66 +136,66 @@ func (r *QueryResolver) Delete(ctx context.Context, id uint64, msg *string) (*ql
 		return nil, err
 	}
 
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(obj),
+		Zone:             FromZoneModel(obj),
 	}, nil
 }
 
 // Run Zone is the resolver for the runApplication field.
-func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Run(ctx context.Context, id uint64, msg *string) (*gqlmodels.ZonePayload, error) {
 	err := r.uc.Run(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
 	zone, _ := r.uc.Get(ctx, id)
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(zone),
+		Zone:             FromZoneModel(zone),
 	}, nil
 }
 
 // Pause Zone is the resolver for the pauseApplication field.
-func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Pause(ctx context.Context, id uint64, msg *string) (*gqlmodels.ZonePayload, error) {
 	err := r.uc.Pause(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
 	zone, _ := r.uc.Get(ctx, id)
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(zone),
+		Zone:             FromZoneModel(zone),
 	}, nil
 }
 
 // Approve Zone is the resolver for the approveApplication field.
-func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Approve(ctx context.Context, id uint64, msg *string) (*gqlmodels.ZonePayload, error) {
 	err := r.uc.Approve(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
 	zone, _ := r.uc.Get(ctx, id)
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(zone),
+		Zone:             FromZoneModel(zone),
 	}, nil
 }
 
 // Reject Zone is the resolver for the rejectApplication field.
-func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*qlmodels.ZonePayload, error) {
+func (r *QueryResolver) Reject(ctx context.Context, id uint64, msg *string) (*gqlmodels.ZonePayload, error) {
 	err := r.uc.Reject(ctx, id, gocast.PtrAsValue(msg, ""))
 	if err != nil {
 		return nil, err
 	}
 	zone, _ := r.uc.Get(ctx, id)
-	return &qlmodels.ZonePayload{
+	return &gqlmodels.ZonePayload{
 		ClientMutationID: requestid.Get(ctx),
 		ZoneID:           id,
-		Zone:             qlmodels.FromZoneModel(zone),
+		Zone:             FromZoneModel(zone),
 	}, nil
 }
 

@@ -21,6 +21,7 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/requestid"
 	accAuth "github.com/geniusrabbit/blaze-api/repository/account/auth"
 	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/server/graphql"
 )
 
 type (
@@ -36,6 +37,7 @@ type HTTPServer struct {
 	AuthLoader     *accAuth.Loader[*models.User, *models.Account]
 	Authorizers    []blazeauth.Authorizer[*models.User, *models.Account]
 	SessionManager *scs.SessionManager
+	GraphqlOptions graphql.Options
 }
 
 // Run starts a HTTP server and blocks while running if successful.

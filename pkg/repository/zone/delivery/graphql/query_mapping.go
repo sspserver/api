@@ -1,52 +1,16 @@
-package models
+package graphql
 
 import (
 	"github.com/demdxx/gocast/v2"
-	"github.com/demdxx/xtypes"
 	"github.com/geniusrabbit/adcorelib/admodels/types"
-	gqtypes "github.com/geniusrabbit/blaze-api/server/graphql/types"
+	bzgqlmodels "github.com/geniusrabbit/blaze-api/server/graphql/models"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/zone"
+	"github.com/sspserver/api/pkg/repository/zone/models"
+	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
-func FromZoneModel(obj *models.Zone) *Zone {
-	if obj == nil {
-		return nil
-	}
-	return &Zone{
-		ID:        obj.ID,
-		Codename:  obj.Codename,
-		AccountID: obj.AccountID,
-
-		Title:       obj.Title,
-		Description: obj.Description,
-
-		Status: FromApproveStatus(obj.Status),
-		Active: FromActiveStatus(obj.Active),
-
-		DefaultCode: *gqtypes.MustNullableJSONFrom(obj.DefaultCode.DataOr(nil)),
-		Context:     *gqtypes.MustNullableJSONFrom(obj.Context.DataOr(nil)),
-
-		MinEcpm:            obj.MinECPM,
-		FixedPurchasePrice: obj.FixedPurchasePrice,
-
-		AllowedFormats:    obj.AllowedFormats,
-		AllowedTypes:      obj.AllowedTypes,
-		AllowedSources:    obj.AllowedSources,
-		DisallowedSources: obj.DisallowedSources,
-		Campaigns:         obj.Campaigns,
-
-		CreatedAt: obj.CreatedAt,
-		UpdatedAt: obj.UpdatedAt,
-	}
-}
-
-func FromZoneModelList(obj []*models.Zone) []*Zone {
-	return xtypes.SliceApply(obj, FromZoneModel)
-}
-
-func (fl *ZoneListFilter) Filter() *zone.Filter {
+func ZoneFilterFromGraphQL(fl *gqlmodels.ZoneListFilter) *zone.Filter {
 	if fl == nil {
 		return nil
 	}
@@ -60,13 +24,13 @@ func (fl *ZoneListFilter) Filter() *zone.Filter {
 				return &st
 			},
 			func() *types.ApproveStatus { return nil }),
-		Active:  ActiveStatusPtr(fl.Active),
+		Active:  activeStatusPtrFromBlazeGraphQL(fl.Active),
 		MinECPM: fl.MinEcpm,
 		MaxECPM: fl.MaxEcpm,
 	}
 }
 
-func (ord *ZoneListOrder) Order() *zone.ListOrder {
+func ZoneOrderFromGraphQL(ord *gqlmodels.ZoneListOrder) *zone.ListOrder {
 	if ord == nil {
 		return nil
 	}
@@ -88,7 +52,7 @@ func (ord *ZoneListOrder) Order() *zone.ListOrder {
 	}
 }
 
-func (inp *ZoneCreateInput) FillModel(obj *models.Zone) {
+func FillZoneCreateInputModel(inp gqlmodels.ZoneCreateInput, obj *models.Zone) {
 	if obj == nil {
 		return
 	}
@@ -114,7 +78,7 @@ func (inp *ZoneCreateInput) FillModel(obj *models.Zone) {
 	obj.Campaigns = inp.Campaigns
 }
 
-func (inp *ZoneUpdateInput) FillModel(obj *models.Zone) {
+func FillZoneUpdateInputModel(inp gqlmodels.ZoneUpdateInput, obj *models.Zone) {
 	if obj == nil {
 		return
 	}
@@ -138,4 +102,19 @@ func (inp *ZoneUpdateInput) FillModel(obj *models.Zone) {
 	obj.AllowedSources = gocast.IfThen(inp.AllowedSources != nil, inp.AllowedSources, obj.AllowedSources)
 	obj.DisallowedSources = gocast.IfThen(inp.DisallowedSources != nil, inp.DisallowedSources, obj.DisallowedSources)
 	obj.Campaigns = gocast.IfThen(inp.Campaigns != nil, inp.Campaigns, obj.Campaigns)
+}
+
+func activeStatusPtrFromBlazeGraphQL(status *bzgqlmodels.ActiveStatus) *types.ActiveStatus {
+	if status == nil {
+		return nil
+	}
+	st := activeStatusFromBlazeGraphQL(*status)
+	return &st
+}
+
+func activeStatusFromBlazeGraphQL(status bzgqlmodels.ActiveStatus) types.ActiveStatus {
+	if status == bzgqlmodels.ActiveStatusActive {
+		return types.StatusActive
+	}
+	return types.StatusPause
 }

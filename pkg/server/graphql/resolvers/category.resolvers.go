@@ -7,7 +7,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
@@ -18,11 +17,6 @@ import (
 // Childrens is the resolver for the childrens field.
 func (r *categoryResolver) Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error) {
 	return r.categories.Childrens(ctx, obj)
-}
-
-// Edges is the resolver for the edges field.
-func (r *categoryConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Category]) ([]*models.CategoryEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
 }
 
 // CreateCategory is the resolver for the createCategory field.
@@ -53,10 +47,4 @@ func (r *queryResolver) ListCategories(ctx context.Context, filter *models.Categ
 // Category returns generated.CategoryResolver implementation.
 func (r *Resolver) Category() generated.CategoryResolver { return &categoryResolver{r} }
 
-// CategoryConnection returns generated.CategoryConnectionResolver implementation.
-func (r *Resolver) CategoryConnection() generated.CategoryConnectionResolver {
-	return &categoryConnectionResolver{r}
-}
-
 type categoryResolver struct{ *Resolver }
-type categoryConnectionResolver struct{ *Resolver }

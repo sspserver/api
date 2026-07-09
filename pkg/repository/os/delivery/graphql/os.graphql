@@ -74,28 +74,11 @@ type OS {
   deletedAt: Time
 }
 
-type OSEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The OS at the end of the edge
-  """
-  node: OS!
-}
-
 type OSConnection {
   """
   Total count of OS objects
   """
   totalCount: Int!
-
-  """
-  Edges of OS objects
-  """
-  edges: [OSEdge!]
 
   """
   List of OS objects
@@ -130,19 +113,19 @@ type OSPayload {
 ###############################################################################
 
 input OSListFilter {
-  ID:           [ID64!]
-  parentID:     [ID64!]
-  name:         [String!]
-  active:       ActiveStatus
+  ID: [ID64!]
+  parentID: [ID64!]
+  name: [String!]
+  active: ActiveStatus
 }
 
 input OSListOrder {
-  ID:           Ordering
-  name:         Ordering
-  active:       Ordering
-  createdAt:    Ordering
-  updatedAt:    Ordering
-  yearRelease:  Ordering
+  ID: Ordering
+  name: Ordering
+  active: Ordering
+  createdAt: Ordering
+  updatedAt: Ordering
+  yearRelease: Ordering
 }
 
 """
@@ -162,7 +145,8 @@ input OSCreateInput {
   """
   Version of the OS
   """
-  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+  version: String
+    @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the OS
@@ -185,8 +169,8 @@ input OSCreateInput {
   yearEndSupport: Int
 
   # Match expressions
-  matchNameExp:       String @notempty(trim: true, ornil: true)
-  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchNameExp: String @notempty(trim: true, ornil: true)
+  matchUserAgentExp: String @notempty(trim: true, ornil: true)
   matchVersionMinExp: String @notempty(trim: true, ornil: true)
   matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
@@ -200,7 +184,8 @@ input OSUpdateInput {
   """
   Version of the OS
   """
-  version: String @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
+  version: String
+    @regex(pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$", trim: true, ornil: true)
 
   """
   Description of the OS
@@ -223,8 +208,8 @@ input OSUpdateInput {
   yearEndSupport: Int
 
   # Match expressions
-  matchNameExp:       String @notempty(trim: true, ornil: true)
-  matchUserAgentExp:  String @notempty(trim: true, ornil: true)
+  matchNameExp: String @notempty(trim: true, ornil: true)
+  matchUserAgentExp: String @notempty(trim: true, ornil: true)
   matchVersionMinExp: String @notempty(trim: true, ornil: true)
   matchVersionMaxExp: String @notempty(trim: true, ornil: true)
 }
@@ -240,8 +225,8 @@ extend type Query {
   List of OS
   """
   listOS(
-    filter: OSListFilter = null,
-    order: [OSListOrder!]! = null,
+    filter: OSListFilter = null
+    order: [OSListOrder!]! = null
     page: Page = null
   ): OSConnection @acl(permissions: ["type_os.list.*"])
 }
@@ -250,12 +235,14 @@ extend type Mutation {
   """
   Create new OS
   """
-  createOS(input: OSCreateInput!): OSPayload @acl(permissions: ["type_os.create.*"])
+  createOS(input: OSCreateInput!): OSPayload
+    @acl(permissions: ["type_os.create.*"])
 
   """
   Update OS
   """
-  updateOS(ID: ID64!, input: OSUpdateInput!): OSPayload @acl(permissions: ["type_os.update.*"])
+  updateOS(ID: ID64!, input: OSUpdateInput!): OSPayload
+    @acl(permissions: ["type_os.update.*"])
 
   """
   Delete OS
@@ -264,7 +251,7 @@ extend type Mutation {
     """
     OS ID
     """
-    ID: ID64!,
+    ID: ID64!
 
     """
     Message for deletion

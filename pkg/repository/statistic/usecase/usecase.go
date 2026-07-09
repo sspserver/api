@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository/statistic"
+	"github.com/sspserver/api/pkg/repository/statistic/models"
 )
 
 type Usecase struct {

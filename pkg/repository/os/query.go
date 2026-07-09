@@ -4,8 +4,6 @@ import (
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/repository"
 	"gorm.io/gorm"
-
-	"github.com/sspserver/api/pkg/models"
 )
 
 // Filter of the objects list
@@ -45,12 +43,12 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 
 // ListOrder of the objects list
 type ListOrder struct {
-	ID          models.Order
-	Name        models.Order
-	Active      models.Order
-	CreatedAt   models.Order
-	UpdatedAt   models.Order
-	YearRelease models.Order
+	ID          Order
+	Name        Order
+	Active      Order
+	CreatedAt   Order
+	UpdatedAt   Order
+	YearRelease Order
 }
 
 func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {

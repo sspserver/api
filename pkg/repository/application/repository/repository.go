@@ -10,9 +10,9 @@ import (
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 
-	"github.com/sspserver/api/pkg/models"
 	"github.com/sspserver/api/pkg/repository"
 	"github.com/sspserver/api/pkg/repository/application"
+	"github.com/sspserver/api/pkg/repository/application/models"
 )
 
 type Repository struct {

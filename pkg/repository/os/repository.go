@@ -4,7 +4,7 @@ package os
 import (
 	"context"
 
-	"github.com/sspserver/api/pkg/models"
+	"github.com/sspserver/api/pkg/repository/os/models"
 )
 
 // Repository of access to the os

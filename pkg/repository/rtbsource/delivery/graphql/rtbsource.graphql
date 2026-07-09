@@ -2,22 +2,20 @@
 RTBSource object represents a source of RTB (Real-Time Bidding) advertising.
 """
 type RTBSource {
-  ID:         ID64!  # Unique identifier for the RTB source.
-  accountID:  ID64!  # Identifier for the associated account.
-
+  ID: ID64! # Unique identifier for the RTB source.
+  accountID: ID64! # Identifier for the associated account.
   """
   Account owner of the traffic router
   """
   account: Account
 
-  title:        String!  # Title of the RTB source.
-  description:  String!  # Description of the RTB source.
-
+  title: String! # Title of the RTB source.
+  description: String! # Description of the RTB source.
   """
   Status of source approval, indicating whether the source is approved or not.
   """
   status: ApproveStatus!
-  
+
   """
   Active status of the source, indicating whether the source is currently active.
   """
@@ -29,76 +27,55 @@ type RTBSource {
   flags: NullableJSON!
 
   # Protocol configurations
-  protocol:      String!  # Protocol used by the RTB source (e.g., HTTP, HTTPS).
-  minimalWeight: Float!   # Minimum weight for the source in the bidding process.
-  
+  protocol: String! # Protocol used by the RTB source (e.g., HTTP, HTTPS).
+  minimalWeight: Float! # Minimum weight for the source in the bidding process.
   """
   URL of the RTB source. This cannot be changed after approval.
   """
-  URL:          String!
-  method:       String!  # HTTP method used (e.g., GET, POST).
-  requestType:  RTBRequestFormatType!  # Format type of the RTB request.
-  headers:      NullableJSON!  # HTTP headers for the RTB request.
-  RPS:          Int!  # Requests per second allowed for the source.
-  timeout:      Int!  # Timeout for the RTB request in seconds.
-
+  URL: String!
+  method: String! # HTTP method used (e.g., GET, POST).
+  requestType: RTBRequestFormatType! # Format type of the RTB request.
+  headers: NullableJSON! # HTTP headers for the RTB request.
+  RPS: Int! # Requests per second allowed for the source.
+  timeout: Int! # Timeout for the RTB request in seconds.
   # Money configurations
-  accuracy:               Float!  # Accuracy of the bidding process.
-  priceCorrectionReduce:  Float!  # Price correction factor for reducing bids.
-  auctionType:            AuctionType!  # Type of auction used (e.g., first-price, second-price).
-
+  accuracy: Float! # Accuracy of the bidding process.
+  priceCorrectionReduce: Float! # Price correction factor for reducing bids.
+  auctionType: AuctionType! # Type of auction used (e.g., first-price, second-price).
   # Price limits
-  minBid: Float!  # Minimum bid allowed for the source.
-  maxBid: Float!  # Maximum bid allowed for the source.
-
+  minBid: Float! # Minimum bid allowed for the source.
+  maxBid: Float! # Maximum bid allowed for the source.
   # Targeting filters
-  formatCodes:     [String!]       # List of format codes for targeting
-  formats:         [AdFormat!]     # List of ad formats for targeting
-  deviceTypeIDs:   [ID64!]         # List of device type IDs for targeting
-  deviceTypes:     [DeviceType!]   # List of device types for targeting
-  deviceIDs:       [ID64!]         # List of device model IDs for targeting
-  devices:         [DeviceModel!]  # List of device models for targeting
-  OSIDs:           [ID64!]         # List of operating system IDs for targeting
-  OS:              [OS!]           # List of operating systems for targeting
-  browserIDs:      [ID64!]         # List of browser IDs for targeting
-  browsers:        [Browser!]      # List of browsers for targeting
-  carrierIDs:      [ID64!]         # List of carrier IDs for targeting
-  categoryIDs:     [ID64!]         # List of category IDs for targeting
-  categories:      [Category!]     # List of categories for targeting
-  countryCodes:    [String!]       # List of country codes for targeting
-  countries:       [Country!]      # List of countries for targeting
-  languageCodes:   [String!]       # List of language codes for targeting
-  languages:       [Lang!]         # List of languages for targeting
-  domains:         [String!]       # List of domains for targeting
-  applicationIDs:  [ID64!]         # List of application IDs for targeting
-  applications:    [Application!]  # List of applications for targeting
-  zoneIDs:         [ID64!]         # List of zone IDs for targeting
-  zones:           [Zone!]         # List of zones for targeting
-  secure:          AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
-  adBlock:         AnyOnlyExclude! # AdBlock targeting option
+  formatCodes: [String!] # List of format codes for targeting
+  formats: [AdFormat!] # List of ad formats for targeting
+  deviceTypeIDs: [ID64!] # List of device type IDs for targeting
+  deviceTypes: [DeviceType!] # List of device types for targeting
+  deviceIDs: [ID64!] # List of device model IDs for targeting
+  devices: [DeviceModel!] # List of device models for targeting
+  OSIDs: [ID64!] # List of operating system IDs for targeting
+  OS: [OS!] # List of operating systems for targeting
+  browserIDs: [ID64!] # List of browser IDs for targeting
+  browsers: [Browser!] # List of browsers for targeting
+  carrierIDs: [ID64!] # List of carrier IDs for targeting
+  categoryIDs: [ID64!] # List of category IDs for targeting
+  categories: [Category!] # List of categories for targeting
+  countryCodes: [String!] # List of country codes for targeting
+  countries: [Country!] # List of countries for targeting
+  languageCodes: [String!] # List of language codes for targeting
+  languages: [Lang!] # List of languages for targeting
+  domains: [String!] # List of domains for targeting
+  applicationIDs: [ID64!] # List of application IDs for targeting
+  applications: [Application!] # List of applications for targeting
+  zoneIDs: [ID64!] # List of zone IDs for targeting
+  zones: [Zone!] # List of zones for targeting
+  secure: AnyOnlyExclude! # Secure targeting option (e.g., HTTPS)
+  adBlock: AnyOnlyExclude! # AdBlock targeting option
   privateBrowsing: AnyOnlyExclude! # Private browsing targeting option
-  IP:              AnyIPv4IPv6!    # IP targeting option (IPv4/IPv6)
-
-  config: NullableJSON!  # Additional configuration for the RTB source.
-
-  createdAt: Time!  # Timestamp when the RTB source was created.
-  updatedAt: Time!  # Timestamp when the RTB source was last updated.
-  deletedAt: Time   # Timestamp when the RTB source was deleted (if applicable).
-}
-
-"""
-RTBSourceEdge wrapper to access RTBSource objects in a paginated list.
-"""
-type RTBSourceEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The RTBSource at the end of the RTBSourceEdge.
-  """
-  node: RTBSource!
+  IP: AnyIPv4IPv6! # IP targeting option (IPv4/IPv6)
+  config: NullableJSON! # Additional configuration for the RTB source.
+  createdAt: Time! # Timestamp when the RTB source was created.
+  updatedAt: Time! # Timestamp when the RTB source was last updated.
+  deletedAt: Time # Timestamp when the RTB source was deleted (if applicable).
 }
 
 """
@@ -109,11 +86,6 @@ type RTBSourceConnection {
   Total count of RTBSource objects.
   """
   totalCount: Int!
-
-  """
-  Edges of RTBSource objects, containing nodes and cursors.
-  """
-  edges: [RTBSourceEdge!]!
 
   """
   List of RTBSource objects.
@@ -154,39 +126,36 @@ type RTBSourcePayload {
 Filter options for listing RTBSource objects.
 """
 input RTBSourceListFilter {
-  ID:           [ID64!]  # Filter by RTBSource IDs.
-  accountID:    ID64     # Filter by account ID.
-  protocol:     [String!]  # Filter by protocol type.
-  status:       ApproveStatus  # Filter by approval status.
-  active:       ActiveStatus   # Filter by active status.
+  ID: [ID64!] # Filter by RTBSource IDs.
+  accountID: ID64 # Filter by account ID.
+  protocol: [String!] # Filter by protocol type.
+  status: ApproveStatus # Filter by approval status.
+  active: ActiveStatus # Filter by active status.
   # Request
-  method:       [String!]  # Filter by HTTP method.
-  requestType:  [RTBRequestFormatType!]  # Filter by request format type.
+  method: [String!] # Filter by HTTP method.
+  requestType: [RTBRequestFormatType!] # Filter by request format type.
   # Auction
-  auctionType:  [AuctionType!]  # Filter by auction type.
+  auctionType: [AuctionType!] # Filter by auction type.
 }
 
 """
 Ordering options for listing RTBSource objects.
 """
 input RTBSourceListOrder {
-  ID:           Ordering  # Order by RTBSource ID.
-  accountID:    Ordering  # Order by account ID.
-  title:        Ordering  # Order by title.
-  protocol:     Ordering  # Order by protocol type.
-  status:       Ordering  # Order by approval status.
-  active:       Ordering  # Order by active status.
-
+  ID: Ordering # Order by RTBSource ID.
+  accountID: Ordering # Order by account ID.
+  title: Ordering # Order by title.
+  protocol: Ordering # Order by protocol type.
+  status: Ordering # Order by approval status.
+  active: Ordering # Order by active status.
   # Request
-  method:       Ordering  # Order by HTTP method.
-  requestType:  Ordering  # Order by request format type.
-
+  method: Ordering # Order by HTTP method.
+  requestType: Ordering # Order by request format type.
   # Auction
-  auctionType:  Ordering  # Order by auction type.
-
-  createdAt:    Ordering  # Order by creation timestamp.
-  updatedAt:    Ordering  # Order by last update timestamp.
-  deletedAt:    Ordering  # Order by deletion timestamp.
+  auctionType: Ordering # Order by auction type.
+  createdAt: Ordering # Order by creation timestamp.
+  updatedAt: Ordering # Order by last update timestamp.
+  deletedAt: Ordering # Order by deletion timestamp.
 }
 
 ###############################################################################
@@ -197,17 +166,16 @@ input RTBSourceListOrder {
 Input for creating a new RTBSource.
 """
 input RTBSourceCreateInput {
-  accountID: ID64  # Associated account ID.
-
+  accountID: ID64 # Associated account ID.
   """
   Title of the RTB source.
   """
-  title:        String! @length(min: 1, max: 255, trim: true)
+  title: String! @length(min: 1, max: 255, trim: true)
 
   """
   Description of the RTB source.
   """
-  description:  String  @length(min: 0, max: 1024, trim: true, ornil: true)
+  description: String @length(min: 0, max: 1024, trim: true, ornil: true)
 
   """
   Flags associated with the source.
@@ -215,64 +183,58 @@ input RTBSourceCreateInput {
   flags: NullableJSON
 
   # Protocol configurations
-  protocol:      String! @notempty(trim: true)  # Protocol type.
-  minimalWeight: Float  # Minimum weight for bidding.
-
+  protocol: String! @notempty(trim: true) # Protocol type.
+  minimalWeight: Float # Minimum weight for bidding.
   """
   URL of the RTB source. Cannot be changed after approval.
   """
-  URL:          String! @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true)
-  method:       String! @notempty(trim: true)  # HTTP method.
-  requestType:  RTBRequestFormatType!  # Request format type.
-  headers:      NullableJSON  # HTTP headers.
-  RPS:          Int!  # Requests per second.
-  timeout:      Int!  # Timeout in seconds.
-
+  URL: String! @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true)
+  method: String! @notempty(trim: true) # HTTP method.
+  requestType: RTBRequestFormatType! # Request format type.
+  headers: NullableJSON # HTTP headers.
+  RPS: Int! # Requests per second.
+  timeout: Int! # Timeout in seconds.
   # Money configurations
-  accuracy:               Float!  # Bidding accuracy.
-  priceCorrectionReduce:  Float!  # Price correction factor.
-  auctionType:            AuctionType!  # Auction type.
-
+  accuracy: Float! # Bidding accuracy.
+  priceCorrectionReduce: Float! # Price correction factor.
+  auctionType: AuctionType! # Auction type.
   # Price limits
-  minBid: Float!  # Minimum bid.
-  maxBid: Float!  # Maximum bid.
-
+  minBid: Float! # Minimum bid.
+  maxBid: Float! # Maximum bid.
   # Targeting filters
-  formatCodes:     [String!]  # Supported ad formats.
-  deviceTypeIDs:   [ID64!]    # Supported device types.
-  deviceIDs:       [ID64!]    # Specific devices supported.
-  OSIDs:           [ID64!]    # Supported operating systems.
-  browserIDs:      [ID64!]    # Supported browsers.
-  carrierIDs:      [ID64!]    # Supported carriers.
-  categoryIDs:     [ID64!]    # Supported ad categories.
-  countryCodes:    [String!]  # Supported countries (ISO codes).
-  languageCodes:   [String!]  # Supported languages (ISO codes).
-  applicationIDs:  [ID64!]    # Supported applications.
-  domains:         [String!]  # Supported domains.
-  zoneIDs:         [ID64!]    # Supported zones.
-  secure:          AnyOnlyExclude  # Security settings.
-  adBlock:         AnyOnlyExclude  # Ad-blocking settings.
-  privateBrowsing: AnyOnlyExclude  # Private browsing settings.
-  IP:              AnyIPv4IPv6  # IP filtering settings.
-
-  config: NullableJSON  # Additional configuration.
+  formatCodes: [String!] # Supported ad formats.
+  deviceTypeIDs: [ID64!] # Supported device types.
+  deviceIDs: [ID64!] # Specific devices supported.
+  OSIDs: [ID64!] # Supported operating systems.
+  browserIDs: [ID64!] # Supported browsers.
+  carrierIDs: [ID64!] # Supported carriers.
+  categoryIDs: [ID64!] # Supported ad categories.
+  countryCodes: [String!] # Supported countries (ISO codes).
+  languageCodes: [String!] # Supported languages (ISO codes).
+  applicationIDs: [ID64!] # Supported applications.
+  domains: [String!] # Supported domains.
+  zoneIDs: [ID64!] # Supported zones.
+  secure: AnyOnlyExclude # Security settings.
+  adBlock: AnyOnlyExclude # Ad-blocking settings.
+  privateBrowsing: AnyOnlyExclude # Private browsing settings.
+  IP: AnyIPv4IPv6 # IP filtering settings.
+  config: NullableJSON # Additional configuration.
 }
 
 """
 Input for updating an existing RTBSource.
 """
 input RTBSourceUpdateInput {
-  accountID: ID64  # Associated account ID.
-
+  accountID: ID64 # Associated account ID.
   """
   Title of the RTB source.
   """
-  title:        String  @length(min: 1, max: 255, trim: true, ornil: true)
+  title: String @length(min: 1, max: 255, trim: true, ornil: true)
 
   """
   Description of the RTB source.
   """
-  description:  String  @length(min: 0, max: 1024, trim: true, ornil: true)
+  description: String @length(min: 0, max: 1024, trim: true, ornil: true)
 
   """
   Flags associated with the source.
@@ -280,47 +242,43 @@ input RTBSourceUpdateInput {
   flags: NullableJSON
 
   # Protocol configurations
-  protocol:      String @notempty(trim: true, ornil: true)  # Protocol type.
-  minimalWeight: Float  # Minimum weight for bidding.
-
+  protocol: String @notempty(trim: true, ornil: true) # Protocol type.
+  minimalWeight: Float # Minimum weight for bidding.
   """
   URL of the RTB source. Cannot be changed after approval.
   """
-  URL:          String @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true, ornil: true)
-  method:       String @notempty(trim: true, ornil: true)  # HTTP method.
-  requestType:  RTBRequestFormatType  # Request format type.
-  headers:      NullableJSON  # HTTP headers.
-  RPS:          Int  # Requests per second.
-  timeout:      Int  # Timeout in seconds.
-
+  URL: String
+    @regex(pattern: "^(http|https|grpc|grpcs)://.*$", trim: true, ornil: true)
+  method: String @notempty(trim: true, ornil: true) # HTTP method.
+  requestType: RTBRequestFormatType # Request format type.
+  headers: NullableJSON # HTTP headers.
+  RPS: Int # Requests per second.
+  timeout: Int # Timeout in seconds.
   # Money configurations
-  accuracy:               Float  # Bidding accuracy.
-  priceCorrectionReduce:  Float  # Price correction factor.
-  auctionType:            AuctionType  # Auction type.
-
+  accuracy: Float # Bidding accuracy.
+  priceCorrectionReduce: Float # Price correction factor.
+  auctionType: AuctionType # Auction type.
   # Price limits
-  minBid: Float  # Minimum bid.
-  maxBid: Float  # Maximum bid.
-
+  minBid: Float # Minimum bid.
+  maxBid: Float # Maximum bid.
   # Targeting filters
-  formatCodes:     [String!]  # Supported ad formats.
-  deviceTypeIDs:   [ID64!]    # Supported device types.
-  deviceIDs:       [ID64!]    # Specific devices supported.
-  OSIDs:           [ID64!]    # Supported operating systems.
-  browserIDs:      [ID64!]    # Supported browsers.
-  carrierIDs:      [ID64!]    # Supported carriers.
-  categoryIDs:     [ID64!]    # Supported ad categories.
-  countryCodes:    [String!]  # Supported countries (ISO codes).
-  languageCodes:   [String!]  # Supported languages (ISO codes).
-  applicationIDs:  [ID64!]    # Supported applications.
-  domains:         [String!]  # Supported domains.
-  zoneIDs:         [ID64!]    # Supported zones.
-  secure:          AnyOnlyExclude  # Security settings.
-  adBlock:         AnyOnlyExclude  # Ad-blocking settings.
-  privateBrowsing: AnyOnlyExclude  # Private browsing settings.
-  IP:              AnyIPv4IPv6  # IP filtering settings.
-
-  config: NullableJSON  # Additional configuration.
+  formatCodes: [String!] # Supported ad formats.
+  deviceTypeIDs: [ID64!] # Supported device types.
+  deviceIDs: [ID64!] # Specific devices supported.
+  OSIDs: [ID64!] # Supported operating systems.
+  browserIDs: [ID64!] # Supported browsers.
+  carrierIDs: [ID64!] # Supported carriers.
+  categoryIDs: [ID64!] # Supported ad categories.
+  countryCodes: [String!] # Supported countries (ISO codes).
+  languageCodes: [String!] # Supported languages (ISO codes).
+  applicationIDs: [ID64!] # Supported applications.
+  domains: [String!] # Supported domains.
+  zoneIDs: [ID64!] # Supported zones.
+  secure: AnyOnlyExclude # Security settings.
+  adBlock: AnyOnlyExclude # Ad-blocking settings.
+  privateBrowsing: AnyOnlyExclude # Private browsing settings.
+  IP: AnyIPv4IPv6 # IP filtering settings.
+  config: NullableJSON # Additional configuration.
 }
 
 ###############################################################################
@@ -331,14 +289,15 @@ extend type Query {
   """
   Get an RTBSource object by its unique ID.
   """
-  RTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.view.*"])
+  RTBSource(ID: ID64!): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.view.*"])
 
   """
   List RTBSource objects with optional filtering, ordering, and pagination.
   """
   listRTBSources(
-    filter: RTBSourceListFilter = null,
-    order: [RTBSourceListOrder] = null,
+    filter: RTBSourceListFilter = null
+    order: [RTBSourceListOrder] = null
     page: Page = null
   ): RTBSourceConnection @acl(permissions: ["rtb_source.list.*"])
 }
@@ -347,35 +306,44 @@ extend type Mutation {
   """
   Create a new RTBSource.
   """
-  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.create.*"]) @requireAgreements
+  createRTBSource(input: RTBSourceCreateInput!): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.create.*"])
+    @requireAgreements
 
   """
   Update an existing RTBSource by its ID.
   """
-  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"]) @requireAgreements
+  updateRTBSource(ID: ID64!, input: RTBSourceUpdateInput!): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.update.*"])
+    @requireAgreements
 
   """
   Delete an RTBSource by its ID.
   """
-  deleteRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload @acl(permissions: ["rtb_source.delete.*"])
+  deleteRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload
+    @acl(permissions: ["rtb_source.delete.*"])
 
   """
   Run an RTBSource to start receiving data from it.
   """
-  runRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+  runRTBSource(ID: ID64!): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.update.*"])
 
   """
   Pause an RTBSource to stop receiving data from it.
   """
-  pauseRTBSource(ID: ID64!): RTBSourcePayload! @acl(permissions: ["rtb_source.update.*"])
+  pauseRTBSource(ID: ID64!): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.update.*"])
 
   """
   Approve an RTBSource to allow it to start receiving data.
   """
-  approveRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.approve.*"])
+  approveRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.approve.*"])
 
   """
   Reject an RTBSource to prevent it from receiving data.
   """
-  rejectRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload! @acl(permissions: ["rtb_source.reject.*"])
+  rejectRTBSource(ID: ID64!, msg: String = null): RTBSourcePayload!
+    @acl(permissions: ["rtb_source.reject.*"])
 }
