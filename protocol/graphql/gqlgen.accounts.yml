@@ -1,0 +1,92 @@
+# Generate the server inside the folder
+# > go run github.com/99designs/gqlgen
+
+# Where are all the schema files located? globs are supported eg  src/**/*.graphqls
+schema:
+  - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
+  - ../../submodules/blaze-api/repository/rbac/*/graphql/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_base/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_login/*.graphql
+  - ../../submodules/blaze-api/repository/account/*/graphql/account_member.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_base/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_email/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_password/*.graphql
+  - ../../submodules/blaze-api/repository/user/*/graphql/user_password_reset/*.graphql
+  - ./accounts/*.graphql
+  - ./schemas/schema.graphql
+
+skip_mod_tidy: true
+
+# Where should the generated server code go?
+exec:
+  filename: ../../pkg/server/graphql/.tmp/exec.go
+  package: generated
+
+model:
+  filename: ../../pkg/server/graphql/accounts/generated.go
+  package: accounts
+
+# Where should the resolver implementations go?
+resolver:
+  layout: follow-schema
+  dir: ../../pkg/server/graphql/.tmp/resolvers
+  package: resolvers
+
+# Optional: turn on use ` + "`" + `gqlgen:"fieldName"` + "`" + ` tags in your models
+# struct_tag: json
+
+# Optional: turn on to use []Thing instead of []*Thing
+omit_slice_element_pointers: false
+
+# Optional: set to speed up generation time by not performing a final validation pass.
+skip_validation: true
+
+# gqlgen will search for any type names in the schema in these go packages
+# if they match it will use them, otherwise it will generate them.
+autobind:
+  - github.com/geniusrabbit/blaze-api/server/graphql/models
+
+# This section declares type mapping between the GraphQL and go type systems
+#
+# The first line in each type will be used as defaults for resolver arguments and
+# modelgen, the others will be allowed when binding to fields. Configure them to
+# your liking
+models:
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int64:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int64
+  Uint64:
+    model:
+      - github.com/99designs/gqlgen/graphql.Uint64
+  Time:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.Time
+  TimeDuration:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.TimeDuration
+  DateTime:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.DateTime
+  JSON:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.JSON
+  NullableJSON:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.NullableJSON
+  UUID:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.UUID
+  ID64:
+    model: github.com/geniusrabbit/blaze-api/server/graphql/types.ID64
+  # Connectors
+  UserConnection:
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.UserConnection
+  AccountConnection:
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.AccountConnection
+  MemberConnection:
+    model: github.com/sspserver/api/pkg/server/graphql/connectors.MemberConnection

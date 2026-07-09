@@ -6,6 +6,7 @@ import (
 	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 
 	"github.com/sspserver/api/pkg/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -18,30 +19,30 @@ type EmailPasswordLoginHandler interface {
 type AccountQueryResolver = accountgraphql.QueryResolver[
 	*models.User,
 	*models.Account,
-	*gqlmodels.Account,
-	*gqlmodels.AccountPayload,
-	*gqlmodels.AccountCreateInput,
-	*gqlmodels.AccountUpdateInput,
-	*gqlmodels.AccountListFilter,
-	*gqlmodels.AccountListOrder,
-	*gqlmodels.User,
-	*gqlmodels.UserCreateInput,
-	*gqlmodels.UserUpdateInput,
+	*gqlaccounts.Account,
+	*gqlaccounts.AccountPayload,
+	*gqlaccounts.AccountCreateInput,
+	*gqlaccounts.AccountUpdateInput,
+	*gqlaccounts.AccountListFilter,
+	*gqlaccounts.AccountListOrder,
+	*gqlaccounts.User,
+	*gqlaccounts.UserCreateInput,
+	*gqlaccounts.UserUpdateInput,
 ]
 
 // AccountQueryResolverConfig wires extended account GraphQL models.
 type AccountQueryResolverConfig = accountgraphql.QueryResolverConfig[
 	*models.User,
 	*models.Account,
-	*gqlmodels.Account,
-	*gqlmodels.AccountPayload,
-	*gqlmodels.AccountCreateInput,
-	*gqlmodels.AccountUpdateInput,
-	*gqlmodels.AccountListFilter,
-	*gqlmodels.AccountListOrder,
-	*gqlmodels.User,
-	*gqlmodels.UserCreateInput,
-	*gqlmodels.UserUpdateInput,
+	*gqlaccounts.Account,
+	*gqlaccounts.AccountPayload,
+	*gqlaccounts.AccountCreateInput,
+	*gqlaccounts.AccountUpdateInput,
+	*gqlaccounts.AccountListFilter,
+	*gqlaccounts.AccountListOrder,
+	*gqlaccounts.User,
+	*gqlaccounts.UserCreateInput,
+	*gqlaccounts.UserUpdateInput,
 ]
 
 // NewAccountQueryResolver wires account resolvers with extended GraphQL models.

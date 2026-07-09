@@ -57,19 +57,3 @@ func (r *queryResolver) Application(ctx context.Context, id uint64) (*models.App
 func (r *queryResolver) ListApplications(ctx context.Context, filter *models.ApplicationListFilter, order *models.ApplicationListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Application], error) {
 	return r.app.List(ctx, filter, order, page)
 }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *applicationConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
-func (r *Resolver) ApplicationConnection() generated.ApplicationConnectionResolver {
-	return &applicationConnectionResolver{r}
-}
-type applicationConnectionResolver struct{ *Resolver }
-*/

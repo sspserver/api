@@ -7,7 +7,7 @@ import (
 	accountlogin "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql/account_login"
 	"github.com/geniusrabbit/blaze-api/repository/user"
 
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/wiring"
 )
 
@@ -25,7 +25,7 @@ func WithUserAccountResolvers[TUser user.Model, TAccount account.Model](
 	provider *jwt.Provider,
 	users wiring.UserQueryResolver,
 	auth *accountgraphql.AuthResolver[TUser, TAccount],
-	accounts accountgraphql.AccountQueryHandler[*gqlmodels.Account, *gqlmodels.AccountPayload, *gqlmodels.AccountCreateInput, *gqlmodels.AccountUpdateInput, *gqlmodels.AccountListFilter, *gqlmodels.AccountListOrder],
+	accounts accountgraphql.AccountQueryHandler[*accounts.Account, *accounts.AccountPayload, *accounts.AccountCreateInput, *accounts.AccountUpdateInput, *accounts.AccountListFilter, *accounts.AccountListOrder],
 	members accountgraphql.MemberQueryHandler,
 ) wiring.Option {
 	return wiring.WithUserAccountResolvers(provider, users, auth, accounts, members)

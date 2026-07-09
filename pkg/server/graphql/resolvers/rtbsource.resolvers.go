@@ -10,6 +10,7 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	models2 "github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
@@ -60,7 +61,7 @@ func (r *queryResolver) ListRTBSources(ctx context.Context, filter *models.RTBSo
 }
 
 // Account is the resolver for the account field.
-func (r *rTBSourceResolver) Account(ctx context.Context, obj *models.RTBSource) (_ *models.Account, err error) {
+func (r *rTBSourceResolver) Account(ctx context.Context, obj *models.RTBSource) (_ *models2.Account, err error) {
 	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
 	return obj.Account, err
 }

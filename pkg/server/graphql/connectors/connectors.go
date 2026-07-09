@@ -10,13 +10,13 @@ import (
 	usergraphql "github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql"
 	blazegqlmodels "github.com/geniusrabbit/blaze-api/server/graphql/models"
 
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 type Page = blazegqlmodels.Page
 
 // AccountConnection implements collection accessor interface with pagination.
-type AccountConnection = accountgraphql.AccountConnection[*gqlmodels.Account]
+type AccountConnection = accountgraphql.AccountConnection[*accounts.Account]
 
 // RBACRoleConnection implements collection accessor interface with pagination.
 type RBACRoleConnection = rbacgraphql.RBACRoleConnection
@@ -25,7 +25,7 @@ type RBACRoleConnection = rbacgraphql.RBACRoleConnection
 type AuthClientConnection = authclientgraphql.AuthClientConnection
 
 // UserConnection implements collection accessor interface with pagination.
-type UserConnection = usergraphql.UserConnection[*gqlmodels.User]
+type UserConnection = usergraphql.UserConnection[*accounts.User]
 
 // MemberConnection implements collection accessor interface with pagination.
 type MemberConnection = accountgraphql.MemberConnection

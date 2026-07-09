@@ -10,7 +10,7 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
-	models1 "github.com/sspserver/api/pkg/server/graphql/models"
+	models2 "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 // Logout is the resolver for the logout field.
@@ -24,22 +24,22 @@ func (r *mutationResolver) SwitchAccount(ctx context.Context, id uint64) (*model
 }
 
 // RegisterAccount is the resolver for the registerAccount field.
-func (r *mutationResolver) RegisterAccount(ctx context.Context, ownerID uint64, input models1.AccountCreateInput) (*models1.AccountPayload, error) {
+func (r *mutationResolver) RegisterAccount(ctx context.Context, ownerID uint64, input models2.AccountCreateInput) (*models2.AccountPayload, error) {
 	return r.accounts.RegisterAccount(ctx, ownerID, &input)
 }
 
 // UpdateAccount is the resolver for the updateAccount field.
-func (r *mutationResolver) UpdateAccount(ctx context.Context, id uint64, input models1.AccountUpdateInput) (*models1.AccountPayload, error) {
+func (r *mutationResolver) UpdateAccount(ctx context.Context, id uint64, input models2.AccountUpdateInput) (*models2.AccountPayload, error) {
 	return r.accounts.UpdateAccount(ctx, uint64(id), &input)
 }
 
 // ApproveAccount is the resolver for the approveAccount field.
-func (r *mutationResolver) ApproveAccount(ctx context.Context, id uint64, msg string) (*models1.AccountPayload, error) {
+func (r *mutationResolver) ApproveAccount(ctx context.Context, id uint64, msg string) (*models2.AccountPayload, error) {
 	return r.accounts.ApproveAccount(ctx, uint64(id), msg)
 }
 
 // RejectAccount is the resolver for the rejectAccount field.
-func (r *mutationResolver) RejectAccount(ctx context.Context, id uint64, msg string) (*models1.AccountPayload, error) {
+func (r *mutationResolver) RejectAccount(ctx context.Context, id uint64, msg string) (*models2.AccountPayload, error) {
 	return r.accounts.RejectAccount(ctx, uint64(id), msg)
 }
 
@@ -49,17 +49,17 @@ func (r *queryResolver) CurrentSession(ctx context.Context) (*models.SessionToke
 }
 
 // CurrentAccount is the resolver for the currentAccount field.
-func (r *queryResolver) CurrentAccount(ctx context.Context) (*models1.AccountPayload, error) {
+func (r *queryResolver) CurrentAccount(ctx context.Context) (*models2.AccountPayload, error) {
 	return r.accounts.CurrentAccount(ctx)
 }
 
 // Account is the resolver for the account field.
-func (r *queryResolver) Account(ctx context.Context, id uint64) (*models1.AccountPayload, error) {
+func (r *queryResolver) Account(ctx context.Context, id uint64) (*models2.AccountPayload, error) {
 	return r.accounts.Account(ctx, id)
 }
 
 // ListAccounts is the resolver for the listAccounts field.
-func (r *queryResolver) ListAccounts(ctx context.Context, filter *models1.AccountListFilter, order []*models1.AccountListOrder, page *models.Page) (*connectors.CollectionConnection[*models1.Account], error) {
+func (r *queryResolver) ListAccounts(ctx context.Context, filter *models2.AccountListFilter, order []*models2.AccountListOrder, page *models.Page) (*connectors.CollectionConnection[*models2.Account], error) {
 	return r.accounts.ListAccounts(ctx, filter, order, page)
 }
 
@@ -67,3 +67,23 @@ func (r *queryResolver) ListAccounts(ctx context.Context, filter *models1.Accoun
 func (r *queryResolver) ListAccountRolesAndPermissions(ctx context.Context, accountID uint64, order []*models.RBACRoleListOrder) (*connectors.CollectionConnection[*models.RBACRole], error) {
 	return r.accAuth.ListRolesAndPermissions(ctx, accountID, order)
 }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+/*
+	func (r *accountConnectionResolver) TotalCount(ctx context.Context, obj *invalid type) (int, error){
+			panic(fmt.Errorf("not implemented: TotalCount - totalCount"))
+		}
+func (r *accountConnectionResolver) List(ctx context.Context, obj *invalid type) ([]*models2.Account, error){
+			panic(fmt.Errorf("not implemented: List - list"))
+		}
+func (r *accountConnectionResolver) PageInfo(ctx context.Context, obj *invalid type) (*models.PageInfo, error){
+			panic(fmt.Errorf("not implemented: PageInfo - pageInfo"))
+		}
+func (r *Resolver) AccountConnection() generated.AccountConnectionResolver { return &accountConnectionResolver{r} }
+type accountConnectionResolver struct { *Resolver }
+*/

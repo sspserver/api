@@ -45,7 +45,7 @@ import (
 	statisticrc "github.com/sspserver/api/pkg/repository/statistic/repository"
 	statisticuc "github.com/sspserver/api/pkg/repository/statistic/usecase"
 	"github.com/sspserver/api/pkg/server/graphql"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/resolvers"
 	"github.com/sspserver/api/pkg/server/graphql/wiring"
 	"github.com/sspserver/api/pkg/sysops"
@@ -209,7 +209,7 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 					},
 				),
 				accountgraphql.NewMemberQueryResolver(
-					accountgraphql.MemberQueryResolverConfig[*models.User, *models.Account, *gqlmodels.Account]{
+					accountgraphql.MemberQueryResolverConfig[*models.User, *models.Account, *gqlaccounts.Account]{
 						Accounts: accountUC,
 						Members:  memberUC,
 						UserRepo: userModule.Repo,

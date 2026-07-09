@@ -40,7 +40,7 @@ import (
 	statistic_graphql "github.com/sspserver/api/pkg/repository/statistic/delivery/graphql"
 	trafficrouter_graphql "github.com/sspserver/api/pkg/repository/trafficrouter/delivery/graphql"
 	zone_graphql "github.com/sspserver/api/pkg/repository/zone/delivery/graphql"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	"github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/wiring"
 	"github.com/sspserver/api/private/agreements"
 )
@@ -133,7 +133,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 		members: account_graphql.NewMemberQueryResolver(account_graphql.MemberQueryResolverConfig[
 			*domainmodels.User,
 			*domainmodels.Account,
-			*gqlmodels.Account,
+			*accounts.Account,
 		]{
 			Accounts: accountUsecaseInst,
 			Members:  memberUsecaseInst,

@@ -9,15 +9,15 @@ import (
 	"github.com/geniusrabbit/blaze-api/repository/user"
 	basemodels "github.com/geniusrabbit/blaze-api/server/graphql/models"
 	"github.com/sspserver/api/pkg/models"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 // AccountToGraphQL maps example domain Account to extended GraphQL Account.
-func AccountToGraphQL(acc *models.Account) *gqlmodels.Account {
+func AccountToGraphQL(acc *models.Account) *gqlaccounts.Account {
 	if acc == nil {
 		return nil
 	}
-	return &gqlmodels.Account{
+	return &gqlaccounts.Account{
 		ID:               acc.GetID(),
 		Status:           basemodels.ApproveStatusFrom(acc.GetApprove()),
 		Name:             acc.Name,
@@ -31,8 +31,8 @@ func AccountToGraphQL(acc *models.Account) *gqlmodels.Account {
 		CompanyRegNumber: gocast.IfThen(acc.CompanyRegNumber != "", &acc.CompanyRegNumber, nil),
 		CreatedAt:        acc.GetCreatedAt(),
 		UpdatedAt:        acc.GetUpdatedAt(),
-		Contacts: xtypes.SliceApply(acc.Contacts, func(c models.Contact) *gqlmodels.Contact {
-			return &gqlmodels.Contact{
+		Contacts: xtypes.SliceApply(acc.Contacts, func(c models.Contact) *gqlaccounts.Contact {
+			return &gqlaccounts.Contact{
 				Type:      c.Type,
 				Value:     c.Value,
 				IsPrimary: gocast.IfThen(c.IsPrimary, &c.IsPrimary, nil),
@@ -42,7 +42,7 @@ func AccountToGraphQL(acc *models.Account) *gqlmodels.Account {
 }
 
 // FillAccountFromCreateInput copies account create input into domain Account.
-func FillAccountFromCreateInput(dest *models.Account, input *gqlmodels.AccountCreateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
+func FillAccountFromCreateInput(dest *models.Account, input *gqlaccounts.AccountCreateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
 	if dest == nil || input == nil {
 		return dest
 	}
@@ -67,7 +67,7 @@ func FillAccountFromCreateInput(dest *models.Account, input *gqlmodels.AccountCr
 	dest.CompanyRegNumber = gocast.PtrAsValue(input.CompanyRegNumber, dest.CompanyRegNumber)
 
 	dest.Contacts = gogosql.NullableJSONArray[models.Contact](
-		xtypes.SliceApply(input.Contacts, func(c *gqlmodels.ContactInput) models.Contact {
+		xtypes.SliceApply(input.Contacts, func(c *gqlaccounts.ContactInput) models.Contact {
 			return models.Contact{
 				Type:      c.Type,
 				Value:     c.Value,
@@ -80,7 +80,7 @@ func FillAccountFromCreateInput(dest *models.Account, input *gqlmodels.AccountCr
 }
 
 // FillAccountFromUpdateInput applies account update input to a domain Account.
-func FillAccountFromUpdateInput(dest *models.Account, input *gqlmodels.AccountUpdateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
+func FillAccountFromUpdateInput(dest *models.Account, input *gqlaccounts.AccountUpdateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
 	if dest == nil {
 		return dest
 	}
@@ -101,7 +101,7 @@ func FillAccountFromUpdateInput(dest *models.Account, input *gqlmodels.AccountUp
 		dest.VATNumber = gocast.PtrAsValue(input.VatNumber, dest.VATNumber)
 		dest.CompanyRegNumber = gocast.PtrAsValue(input.CompanyRegNumber, dest.CompanyRegNumber)
 		dest.Contacts = gogosql.NullableJSONArray[models.Contact](
-			xtypes.SliceApply(input.Contacts, func(c *gqlmodels.ContactInput) models.Contact {
+			xtypes.SliceApply(input.Contacts, func(c *gqlaccounts.ContactInput) models.Contact {
 				return models.Contact{
 					Type:      c.Type,
 					Value:     c.Value,
@@ -114,11 +114,11 @@ func FillAccountFromUpdateInput(dest *models.Account, input *gqlmodels.AccountUp
 }
 
 // UserToGraphQL maps example domain User to base GraphQL User.
-func UserToGraphQL(u *models.User) *gqlmodels.User {
+func UserToGraphQL(u *models.User) *gqlaccounts.User {
 	if u == nil {
 		return nil
 	}
-	return &gqlmodels.User{
+	return &gqlaccounts.User{
 		ID:        u.GetID(),
 		Email:     u.GetEmail(),
 		Status:    basemodels.ApproveStatusFrom(u.GetApprove()),
@@ -128,7 +128,7 @@ func UserToGraphQL(u *models.User) *gqlmodels.User {
 }
 
 // UserToGraphQLPtr maps example domain User to base GraphQL User pointer (account/member payloads).
-func UserToGraphQLPtr(u *models.User) *gqlmodels.User {
+func UserToGraphQLPtr(u *models.User) *gqlaccounts.User {
 	if u == nil {
 		return nil
 	}
@@ -136,7 +136,7 @@ func UserToGraphQLPtr(u *models.User) *gqlmodels.User {
 }
 
 // UserFromCreateInput builds a new domain User from GraphQL create input.
-func UserFromCreateInput(input *gqlmodels.UserCreateInput, appStatus ...pkgModels.ApproveStatus) *models.User {
+func UserFromCreateInput(input *gqlaccounts.UserCreateInput, appStatus ...pkgModels.ApproveStatus) *models.User {
 	if input == nil {
 		return nil
 	}
@@ -151,7 +151,7 @@ func UserFromCreateInput(input *gqlmodels.UserCreateInput, appStatus ...pkgModel
 }
 
 // FillUserFromInput merges GraphQL update input into an existing domain User.
-func UserFromUpdateInput(input *gqlmodels.UserUpdateInput, dest *models.User, appStatus ...pkgModels.ApproveStatus) *models.User {
+func UserFromUpdateInput(input *gqlaccounts.UserUpdateInput, dest *models.User, appStatus ...pkgModels.ApproveStatus) *models.User {
 	if dest == nil {
 		return nil
 	}
@@ -167,7 +167,7 @@ func UserFromUpdateInput(input *gqlmodels.UserUpdateInput, dest *models.User, ap
 }
 
 // UserListFilterMapper converts extended user list filter to domain query option.
-func UserListFilterMapper(fl *gqlmodels.UserListFilter) user.QOption {
+func UserListFilterMapper(fl *gqlaccounts.UserListFilter) user.QOption {
 	if fl == nil {
 		return nil
 	}
@@ -182,7 +182,7 @@ func UserListFilterMapper(fl *gqlmodels.UserListFilter) user.QOption {
 }
 
 // UserListOrderMapper converts extended user list order to domain query option.
-func UserListOrderMapper(ord *gqlmodels.UserListOrder) user.QOption {
+func UserListOrderMapper(ord *gqlaccounts.UserListOrder) user.QOption {
 	if ord == nil {
 		return nil
 	}

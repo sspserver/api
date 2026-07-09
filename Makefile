@@ -51,7 +51,9 @@ generate-code: ## Run codegeneration procedure
 .PHONY: build-gql
 build-gql: ## Build graphql server
 	# cd protocol/graphql && go run github.com/99designs/gqlgen
-	cd protocol/graphql && gqlgen
+	cd protocol/graphql && gqlgen generate --config gqlgen.accounts.yml
+	rm -rf pkg/server/graphql/.tmp
+	cd protocol/graphql && gqlgen generate --config gqlgen.yml
 
 .PHONY: build
 build: ## Build API application

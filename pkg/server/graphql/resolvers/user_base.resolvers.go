@@ -10,40 +10,40 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/models"
+	models2 "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input models.UserCreateInput) (*models.UserPayload, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input models2.UserCreateInput) (*models2.UserPayload, error) {
 	return r.users.CreateUser(ctx, &input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
-func (r *mutationResolver) UpdateUser(ctx context.Context, id uint64, input models.UserUpdateInput) (*models.UserPayload, error) {
+func (r *mutationResolver) UpdateUser(ctx context.Context, id uint64, input models2.UserUpdateInput) (*models2.UserPayload, error) {
 	return r.users.UpdateUser(ctx, id, &input)
 }
 
 // ApproveUser is the resolver for the approveUser field.
-func (r *mutationResolver) ApproveUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error) {
+func (r *mutationResolver) ApproveUser(ctx context.Context, id uint64, msg *string) (*models2.UserPayload, error) {
 	return r.users.ApproveUser(ctx, id, msg)
 }
 
 // RejectUser is the resolver for the rejectUser field.
-func (r *mutationResolver) RejectUser(ctx context.Context, id uint64, msg *string) (*models.UserPayload, error) {
+func (r *mutationResolver) RejectUser(ctx context.Context, id uint64, msg *string) (*models2.UserPayload, error) {
 	return r.users.RejectUser(ctx, id, msg)
 }
 
 // CurrentUser is the resolver for the currentUser field.
-func (r *queryResolver) CurrentUser(ctx context.Context) (*models.UserPayload, error) {
+func (r *queryResolver) CurrentUser(ctx context.Context) (*models2.UserPayload, error) {
 	return r.users.CurrentUser(ctx)
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, id uint64, username string) (*models.UserPayload, error) {
+func (r *queryResolver) User(ctx context.Context, id uint64, username string) (*models2.UserPayload, error) {
 	return r.users.User(ctx, id, username)
 }
 
 // ListUsers is the resolver for the listUsers field.
-func (r *queryResolver) ListUsers(ctx context.Context, filter *models.UserListFilter, order []*models.UserListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.User], error) {
+func (r *queryResolver) ListUsers(ctx context.Context, filter *models2.UserListFilter, order []*models2.UserListOrder, page *models1.Page) (*connectors.CollectionConnection[*models2.User], error) {
 	return r.users.ListUsers(ctx, filter, order, page)
 }

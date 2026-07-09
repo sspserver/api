@@ -6,10 +6,17 @@ import (
 	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 	accountlogin "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql/account_login"
 	"github.com/geniusrabbit/blaze-api/repository/user"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
-type AccountQueryHandler = accountgraphql.AccountQueryHandler[*gqlmodels.Account, *gqlmodels.AccountPayload, *gqlmodels.AccountCreateInput, *gqlmodels.AccountUpdateInput, *gqlmodels.AccountListFilter, *gqlmodels.AccountListOrder]
+type AccountQueryHandler = accountgraphql.AccountQueryHandler[
+	*gqlaccounts.Account,
+	*gqlaccounts.AccountPayload,
+	*gqlaccounts.AccountCreateInput,
+	*gqlaccounts.AccountUpdateInput,
+	*gqlaccounts.AccountListFilter,
+	*gqlaccounts.AccountListOrder,
+]
 
 // OptionsConfig carries all resolver overrides for the example/api GraphQL handler.
 // Instantiate with concrete user/account types at the entry point (e.g. main.go).

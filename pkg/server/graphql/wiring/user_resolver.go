@@ -7,74 +7,75 @@ import (
 	useremail "github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql/user_email"
 	userpassword "github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql/user_password"
 	userpassreset "github.com/geniusrabbit/blaze-api/repository/user/delivery/graphql/user_password_reset"
+
 	"github.com/sspserver/api/pkg/models"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 type UserQueryResolver interface {
 	usergraphql.UserBaseQueryResolver[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserCreateInput,
-		*gqlmodels.UserUpdateInput,
-		*gqlmodels.UserPayload,
-		*gqlmodels.UserListFilter,
-		*gqlmodels.UserListOrder,
+		*gqlaccounts.User,
+		*gqlaccounts.UserCreateInput,
+		*gqlaccounts.UserUpdateInput,
+		*gqlaccounts.UserPayload,
+		*gqlaccounts.UserListFilter,
+		*gqlaccounts.UserListOrder,
 	]
 	usergraphql.UserEmailQueryResolver[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserPayload,
+		*gqlaccounts.User,
+		*gqlaccounts.UserPayload,
 	]
 	// usergraphql.UserUsernameQueryResolver[
 	// 	*models.User,
-	// 	*gqlmodels.User,
-	// 	*gqlmodels.UserCreateInput,
-	// 	*gqlmodels.UserPayload,
+	// 	*gqlaccounts.User,
+	// 	*gqlaccounts.UserCreateInput,
+	// 	*gqlaccounts.UserPayload,
 	// ]
 	usergraphql.UserPasswordQueryResolver[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserCreateInput,
-		*gqlmodels.UserPayload,
+		*gqlaccounts.User,
+		*gqlaccounts.UserCreateInput,
+		*gqlaccounts.UserPayload,
 	]
 	usergraphql.UserPasswordResetQueryResolver[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserPayload,
+		*gqlaccounts.User,
+		*gqlaccounts.UserPayload,
 	]
 }
 
 type userQueryResolver struct {
 	userbase.QueryResolverBase[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserCreateInput,
-		*gqlmodels.UserUpdateInput,
-		*gqlmodels.UserPayload,
-		*gqlmodels.UserListFilter,
-		*gqlmodels.UserListOrder,
+		*gqlaccounts.User,
+		*gqlaccounts.UserCreateInput,
+		*gqlaccounts.UserUpdateInput,
+		*gqlaccounts.UserPayload,
+		*gqlaccounts.UserListFilter,
+		*gqlaccounts.UserListOrder,
 	]
 	useremail.QueryResolverEmail[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserPayload,
+		*gqlaccounts.User,
+		*gqlaccounts.UserPayload,
 	]
 	// userusername.QueryResolverUsername[
 	// 	*models.User,
-	// 	*gqlmodels.User,
-	// 	*gqlmodels.UserCreateInput,
-	// 	*gqlmodels.UserPayload,
-	// 	*gqlmodels.UserListFilter,
-	// 	*gqlmodels.UserListOrder,
+	// 	*gqlaccounts.User,
+	// 	*gqlaccounts.UserCreateInput,
+	// 	*gqlaccounts.UserPayload,
+	// 	*gqlaccounts.UserListFilter,
+	// 	*gqlaccounts.UserListOrder,
 	// ]
 	userpassword.QueryResolverPassword[
 		*models.User,
-		*gqlmodels.User,
-		*gqlmodels.UserCreateInput,
-		*gqlmodels.UserPayload,
-		*gqlmodels.UserListFilter,
-		*gqlmodels.UserListOrder,
+		*gqlaccounts.User,
+		*gqlaccounts.UserCreateInput,
+		*gqlaccounts.UserPayload,
+		*gqlaccounts.UserListFilter,
+		*gqlaccounts.UserListOrder,
 	]
 	userpassreset.PasswordResetQueryResolver[*models.User]
 }
@@ -88,20 +89,20 @@ func NewUserQueryResolver(
 	return &userQueryResolver{
 		QueryResolverBase: *userbase.NewQueryResolverBase(userbase.QueryResolverBaseConfig[
 			*models.User,
-			*gqlmodels.User,
-			*gqlmodels.UserCreateInput,
-			*gqlmodels.UserUpdateInput,
-			*gqlmodels.UserPayload,
-			*gqlmodels.UserListFilter,
-			*gqlmodels.UserListOrder,
+			*gqlaccounts.User,
+			*gqlaccounts.UserCreateInput,
+			*gqlaccounts.UserUpdateInput,
+			*gqlaccounts.UserPayload,
+			*gqlaccounts.UserListFilter,
+			*gqlaccounts.UserListOrder,
 		]{
 			Core:   core,
 			Mapper: mapper,
 		}),
 		QueryResolverEmail: *useremail.NewQueryResolverEmail(useremail.QueryResolverEmailConfig[
 			*models.User,
-			*gqlmodels.User,
-			*gqlmodels.UserPayload,
+			*gqlaccounts.User,
+			*gqlaccounts.UserPayload,
 		]{
 			Core:       core,
 			Email:      emailUsecase,
@@ -110,22 +111,22 @@ func NewUserQueryResolver(
 		}),
 		// QueryResolverUsername: *userusername.NewQueryResolverUsername(userusername.QueryResolverUsernameConfig[
 		// 	*models.User,
-		// 	*gqlmodels.User,
-		// 	*gqlmodels.UserCreateInput,
-		// 	*gqlmodels.UserPayload,
-		// 	*gqlmodels.UserListFilter,
-		// 	*gqlmodels.UserListOrder,
+		// 	*gqlaccounts.User,
+		// 	*gqlaccounts.UserCreateInput,
+		// 	*gqlaccounts.UserPayload,
+		// 	*gqlaccounts.UserListFilter,
+		// 	*gqlaccounts.UserListOrder,
 		// ]{
 		// 	Core:      core,
 		// 	ToGraphQL: mapper.ToGQL,
 		// }),
 		QueryResolverPassword: *userpassword.NewQueryResolverPassword(userpassword.QueryResolverPasswordConfig[
 			*models.User,
-			*gqlmodels.User,
-			*gqlmodels.UserCreateInput,
-			*gqlmodels.UserPayload,
-			*gqlmodels.UserListFilter,
-			*gqlmodels.UserListOrder,
+			*gqlaccounts.User,
+			*gqlaccounts.UserCreateInput,
+			*gqlaccounts.UserPayload,
+			*gqlaccounts.UserListFilter,
+			*gqlaccounts.UserListOrder,
 		]{
 			Core:      core,
 			ToGraphQL: mapper.ToGQL,

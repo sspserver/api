@@ -11,89 +11,8 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/models"
 	"github.com/geniusrabbit/blaze-api/server/graphql/types"
+	"github.com/sspserver/api/pkg/server/graphql/accounts"
 )
-
-// Account is a company account that can be used to login to the system.
-// Core fields only — extend in consumer schema via `extend type Account`.
-type Account struct {
-	// The primary key of the Account
-	ID uint64 `json:"ID"`
-	// Status of Account active
-	Status models.ApproveStatus `json:"status"`
-	// Message which defined during user approve/rejection process
-	StatusMessage    *string    `json:"statusMessage,omitempty"`
-	CreatedAt        time.Time  `json:"createdAt"`
-	UpdatedAt        time.Time  `json:"updatedAt"`
-	Name             string     `json:"name"`
-	Description      string     `json:"description"`
-	CountryCode      *string    `json:"countryCode,omitempty"`
-	City             *string    `json:"city,omitempty"`
-	ZipCode          *string    `json:"zipCode,omitempty"`
-	Address          *string    `json:"address,omitempty"`
-	Phone            *string    `json:"phone,omitempty"`
-	VatNumber        *string    `json:"vatNumber,omitempty"`
-	CompanyRegNumber *string    `json:"companyRegNumber,omitempty"`
-	Contacts         []*Contact `json:"contacts,omitempty"`
-}
-
-type AccountCreateInput struct {
-	Status           *models.ApproveStatus `json:"status,omitempty"`
-	Name             string                `json:"name"`
-	Description      *string               `json:"description,omitempty"`
-	CountryCode      *string               `json:"countryCode,omitempty"`
-	City             *string               `json:"city,omitempty"`
-	ZipCode          *string               `json:"zipCode,omitempty"`
-	Address          *string               `json:"address,omitempty"`
-	Phone            *string               `json:"phone,omitempty"`
-	VatNumber        *string               `json:"vatNumber,omitempty"`
-	CompanyRegNumber *string               `json:"companyRegNumber,omitempty"`
-	Contacts         []*ContactInput       `json:"contacts,omitempty"`
-}
-
-type AccountListFilter struct {
-	ID               []uint64               `json:"ID,omitempty"`
-	UserID           []uint64               `json:"UserID,omitempty"`
-	Status           []models.ApproveStatus `json:"status,omitempty"`
-	Name             []string               `json:"name,omitempty"`
-	CountryCode      []string               `json:"countryCode,omitempty"`
-	VatNumber        []string               `json:"vatNumber,omitempty"`
-	CompanyRegNumber []string               `json:"companyRegNumber,omitempty"`
-}
-
-type AccountListOrder struct {
-	ID               *models.Ordering `json:"ID,omitempty"`
-	Status           *models.Ordering `json:"status,omitempty"`
-	CreatedAt        *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt        *models.Ordering `json:"updatedAt,omitempty"`
-	Name             *models.Ordering `json:"name,omitempty"`
-	CountryCode      *models.Ordering `json:"countryCode,omitempty"`
-	VatNumber        *models.Ordering `json:"vatNumber,omitempty"`
-	CompanyRegNumber *models.Ordering `json:"companyRegNumber,omitempty"`
-}
-
-// AccountPayload wrapper to access of Account oprtation results
-type AccountPayload struct {
-	// A unique identifier for the client performing the mutation.
-	ClientMutationID string `json:"clientMutationID"`
-	// Account ID operation result
-	AccountID uint64 `json:"accountID"`
-	// Account object accessor
-	Account *Account `json:"account,omitempty"`
-}
-
-type AccountUpdateInput struct {
-	Status           *models.ApproveStatus `json:"status,omitempty"`
-	Name             *string               `json:"name,omitempty"`
-	Description      *string               `json:"description,omitempty"`
-	CountryCode      *string               `json:"countryCode,omitempty"`
-	City             *string               `json:"city,omitempty"`
-	ZipCode          *string               `json:"zipCode,omitempty"`
-	Address          *string               `json:"address,omitempty"`
-	Phone            *string               `json:"phone,omitempty"`
-	VatNumber        *string               `json:"vatNumber,omitempty"`
-	CompanyRegNumber *string               `json:"companyRegNumber,omitempty"`
-	Contacts         []*ContactInput       `json:"contacts,omitempty"`
-}
 
 type AdFormat struct {
 	// Ad format ID
@@ -461,18 +380,6 @@ type CategoryPayload struct {
 	CategoryID uint64 `json:"categoryID"`
 	// The Category object accessible by a client.
 	Category *Category `json:"category"`
-}
-
-type Contact struct {
-	Type      string `json:"type"`
-	Value     string `json:"value"`
-	IsPrimary *bool  `json:"isPrimary,omitempty"`
-}
-
-type ContactInput struct {
-	Type      string `json:"type"`
-	Value     string `json:"value"`
-	IsPrimary *bool  `json:"isPrimary,omitempty"`
 }
 
 type Continent struct {
@@ -852,9 +759,9 @@ type RTBSource struct {
 	ID        uint64 `json:"ID"`
 	AccountID uint64 `json:"accountID"`
 	// Account owner of the traffic router
-	Account     *Account `json:"account,omitempty"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
+	Account     *accounts.Account `json:"account,omitempty"`
+	Title       string            `json:"title"`
+	Description string            `json:"description"`
 	// Status of source approval, indicating whether the source is approved or not.
 	Status models.ApproveStatus `json:"status"`
 	// Active status of the source, indicating whether the source is currently active.
@@ -1086,7 +993,7 @@ type TrafficRouter struct {
 	// Account ID owner of the traffic router
 	AccountID uint64 `json:"accountID"`
 	// Account owner of the traffic router
-	Account *Account `json:"account,omitempty"`
+	Account *accounts.Account `json:"account,omitempty"`
 	// Traffic router percent of the traffic to share between RTB sources
 	Percent float64 `json:"percent"`
 	// Description of the traffic router
@@ -1225,62 +1132,6 @@ type TrafficRouterUpdateInput struct {
 	AdBlock         *AnyOnlyExclude `json:"adBlock,omitempty"`
 	PrivateBrowsing *AnyOnlyExclude `json:"privateBrowsing,omitempty"`
 	IP              *AnyIPv4IPv6    `json:"IP,omitempty"`
-}
-
-// User represents a user object of the system.
-// Core fields only — extend in consumer schema via `extend type User`.
-type User struct {
-	// The primary key of the user
-	ID uint64 `json:"ID"`
-	// Status of user active
-	Status models.ApproveStatus `json:"status"`
-	// Message which defined during user approve/rejection process
-	StatusMessage *string   `json:"statusMessage,omitempty"`
-	CreatedAt     time.Time `json:"createdAt"`
-	UpdatedAt     time.Time `json:"updatedAt"`
-	// Email address (optional trait — present only when user.Email is embedded).
-	Email string  `json:"email"`
-	Notes *string `json:"notes,omitempty"`
-}
-
-type UserCreateInput struct {
-	Status *models.ApproveStatus `json:"status,omitempty"`
-	Email  string                `json:"email"`
-}
-
-// UserListFilter implements filter for user list query
-type UserListFilter struct {
-	ID        []uint64 `json:"ID,omitempty"`
-	Emails    []string `json:"emails,omitempty"`
-	AccountID []uint64 `json:"accountID,omitempty"`
-	Roles     []uint64 `json:"roles,omitempty"`
-}
-
-// UserListOrder implements order for user list query
-type UserListOrder struct {
-	ID               *models.Ordering `json:"ID,omitempty"`
-	Status           *models.Ordering `json:"status,omitempty"`
-	CreatedAt        *models.Ordering `json:"createdAt,omitempty"`
-	UpdatedAt        *models.Ordering `json:"updatedAt,omitempty"`
-	Email            *models.Ordering `json:"email,omitempty"`
-	RegistrationDate *models.Ordering `json:"registrationDate,omitempty"`
-	Country          *models.Ordering `json:"country,omitempty"`
-	Manager          *models.Ordering `json:"manager,omitempty"`
-}
-
-// UserPayload wrapper to access of user oprtation results
-type UserPayload struct {
-	// A unique identifier for the client performing the mutation.
-	ClientMutationID string `json:"clientMutationID"`
-	// User ID operation result
-	UserID uint64 `json:"userID"`
-	// User object accessor
-	User *User `json:"user,omitempty"`
-}
-
-type UserUpdateInput struct {
-	Status *models.ApproveStatus `json:"status,omitempty"`
-	Email  *string               `json:"email,omitempty"`
 }
 
 // Zone object represents a specific advertising zone within an account.

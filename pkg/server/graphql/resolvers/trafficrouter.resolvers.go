@@ -10,6 +10,7 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
+	models2 "github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
@@ -50,7 +51,7 @@ func (r *queryResolver) ListTrafficRouters(ctx context.Context, filter *models.T
 }
 
 // Account is the resolver for the account field.
-func (r *trafficRouterResolver) Account(ctx context.Context, obj *models.TrafficRouter) (_ *models.Account, err error) {
+func (r *trafficRouterResolver) Account(ctx context.Context, obj *models.TrafficRouter) (_ *models2.Account, err error) {
 	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
 	return obj.Account, err
 }

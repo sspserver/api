@@ -5,7 +5,7 @@ import (
 	accountrepo "github.com/geniusrabbit/blaze-api/repository/account"
 	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 	"github.com/sspserver/api/pkg/models"
-	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
+	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 )
 
 // AccountGraphQLMappers is the 2-param consumer alias for example/api.
@@ -14,12 +14,12 @@ import (
 type AccountGraphQLMappers[T accountrepo.Model, TGQLAccount any] = accountgraphql.AccountGraphQLMappers[
 	T,
 	TGQLAccount,
-	*gqlmodels.AccountPayload,     // TGQLPayload
-	*gqlmodels.AccountCreateInput, // TGQLCreateInput
-	*gqlmodels.AccountUpdateInput, // TGQLUpdateInput (status-only update in base schema)
-	*gqlmodels.AccountListFilter,  // TFilter
-	*gqlmodels.AccountListOrder,   // TOrder
-	*gqlmodels.User,               // TGQLUser
+	*gqlaccounts.AccountPayload,     // TGQLPayload
+	*gqlaccounts.AccountCreateInput, // TGQLCreateInput
+	*gqlaccounts.AccountUpdateInput, // TGQLUpdateInput (status-only update in base schema)
+	*gqlaccounts.AccountListFilter,  // TFilter
+	*gqlaccounts.AccountListOrder,   // TOrder
+	*gqlaccounts.User,               // TGQLUser
 ]
 
 // AccountGraphQLMappersImpl implements AccountGraphQLMappers for example/api.
@@ -28,7 +28,7 @@ type AccountGraphQLMappers[T accountrepo.Model, TGQLAccount any] = accountgraphq
 type AccountGraphQLMappersImpl struct{}
 
 // Compile-time assertion: AccountGraphQLMappersImpl satisfies the 2-param alias when T = *Account.
-var _ AccountGraphQLMappers[*models.Account, *gqlmodels.Account] = AccountGraphQLMappersImpl{}
+var _ AccountGraphQLMappers[*models.Account, *gqlaccounts.Account] = AccountGraphQLMappersImpl{}
 
 // New creates a new empty domain Account.
 func (AccountGraphQLMappersImpl) New() *models.Account {
@@ -36,14 +36,14 @@ func (AccountGraphQLMappersImpl) New() *models.Account {
 }
 
 // ToGQL maps a domain Account to the extended GraphQL Account model.
-func (AccountGraphQLMappersImpl) ToGQL(a *models.Account) *gqlmodels.Account {
+func (AccountGraphQLMappersImpl) ToGQL(a *models.Account) *gqlaccounts.Account {
 	return AccountToGraphQL(a)
 }
 
 // NewPayload builds account payload from parts.
-func (AccountGraphQLMappersImpl) NewPayload(clientMutationID string, accountID uint64, account *gqlmodels.Account) *gqlmodels.AccountPayload {
+func (AccountGraphQLMappersImpl) NewPayload(clientMutationID string, accountID uint64, account *gqlaccounts.Account) *gqlaccounts.AccountPayload {
 	acc := account
-	return &gqlmodels.AccountPayload{
+	return &gqlaccounts.AccountPayload{
 		ClientMutationID: clientMutationID,
 		AccountID:        accountID,
 		Account:          acc,
@@ -51,7 +51,7 @@ func (AccountGraphQLMappersImpl) NewPayload(clientMutationID string, accountID u
 }
 
 // FromCreateInput builds a new domain Account from a create-account account input.
-func (AccountGraphQLMappersImpl) FromCreateInput(inp *gqlmodels.AccountCreateInput) *models.Account {
+func (AccountGraphQLMappersImpl) FromCreateInput(inp *gqlaccounts.AccountCreateInput) *models.Account {
 	if inp == nil {
 		return new(models.Account)
 	}
@@ -60,7 +60,7 @@ func (AccountGraphQLMappersImpl) FromCreateInput(inp *gqlmodels.AccountCreateInp
 
 // FromUpdateInput merges an update mutation input into an existing domain Account.
 // AccountUpdateInput carries only the approval status; profile edits use a separate mutation.
-func (AccountGraphQLMappersImpl) FromUpdateInput(inp *gqlmodels.AccountUpdateInput, dest *models.Account) *models.Account {
+func (AccountGraphQLMappersImpl) FromUpdateInput(inp *gqlaccounts.AccountUpdateInput, dest *models.Account) *models.Account {
 	if inp == nil || dest == nil {
 		return dest
 	}
@@ -71,7 +71,7 @@ func (AccountGraphQLMappersImpl) FromUpdateInput(inp *gqlmodels.AccountUpdateInp
 }
 
 // FromFilter converts the extended GraphQL account list filter to a domain QOption.
-func (AccountGraphQLMappersImpl) FromFilter(f *gqlmodels.AccountListFilter) accountrepo.QOption {
+func (AccountGraphQLMappersImpl) FromFilter(f *gqlaccounts.AccountListFilter) accountrepo.QOption {
 	if f == nil {
 		return nil
 	}
@@ -82,7 +82,7 @@ func (AccountGraphQLMappersImpl) FromFilter(f *gqlmodels.AccountListFilter) acco
 }
 
 // FromOrder converts the extended GraphQL account list order to a domain QOption.
-func (AccountGraphQLMappersImpl) FromOrder(o *gqlmodels.AccountListOrder) accountrepo.QOption {
+func (AccountGraphQLMappersImpl) FromOrder(o *gqlaccounts.AccountListOrder) accountrepo.QOption {
 	if o == nil {
 		return nil
 	}
@@ -96,6 +96,6 @@ func (AccountGraphQLMappersImpl) FromOrder(o *gqlmodels.AccountListOrder) accoun
 
 // FillAccountFromInputWithStatus is a helper for wiring account repos that need an approve-status override.
 // Used internally by account graphql wiring.
-func FillAccountFromInputWithStatus(dest *models.Account, inp *gqlmodels.AccountUpdateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
+func FillAccountFromInputWithStatus(dest *models.Account, inp *gqlaccounts.AccountUpdateInput, appStatus ...pkgModels.ApproveStatus) *models.Account {
 	return FillAccountFromUpdateInput(dest, inp, appStatus...)
 }
