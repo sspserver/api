@@ -1,11 +1,18 @@
 package wiring
 
 import (
+	"context"
+
 	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 
 	"github.com/sspserver/api/pkg/models"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
+
+// EmailPasswordLoginHandler handles the login(email, password, accountID) mutation.
+type EmailPasswordLoginHandler interface {
+	Login(ctx context.Context, email, password string, accountID ...uint64) (*gqlmodels.SessionToken, error)
+}
 
 // AccountQueryResolver is account QueryResolver wired to extended GraphQL models.
 type AccountQueryResolver = accountgraphql.QueryResolver[

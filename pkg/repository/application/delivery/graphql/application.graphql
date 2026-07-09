@@ -30,7 +30,7 @@ type Application {
 
   title: String!
   description: String!
-  
+
   """
   Unique application identifier, e.g., site domain or app bundle
   """
@@ -38,7 +38,7 @@ type Application {
   type: ApplicationType!
   platform: PlatformType!
   premium: Boolean!
-  
+
   """
   Status of the application
   """
@@ -73,21 +73,6 @@ type Application {
 }
 
 """
-ApplicationEdge wrapper to access Application objects
-"""
-type ApplicationEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The Application at the end of ApplicationEdge.
-  """
-  node: Application!
-}
-
-"""
 ApplicationConnection wrapper to access Application objects
 """
 type ApplicationConnection {
@@ -95,11 +80,6 @@ type ApplicationConnection {
   Total count of Application objects
   """
   totalCount: Int!
-
-  """
-  Edges of Application objects
-  """
-  edges: [ApplicationEdge!]!
 
   """
   List of Application objects
@@ -171,40 +151,39 @@ input ApplicationCreateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID:    ID64
+  accountID: ID64
 
-  title:        String! @length(min: 3, max: 255, trim: true)
-  description:  String  @notempty(trim: true, ornil: true)
+  title: String! @length(min: 3, max: 255, trim: true)
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
+  URI: String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
 
-  type:         ApplicationType
-  platform:     PlatformType
-  categories:   [Int!]
+  type: ApplicationType
+  platform: PlatformType
+  categories: [Int!]
   revenueShare: Float
 }
-
 
 input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID:    ID64
+  accountID: ID64
 
-  title:        String @notempty(trim: true, ornil: true)
-  description:  String @notempty(trim: true, ornil: true)
+  title: String @notempty(trim: true, ornil: true)
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
+  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
 
-  type:         ApplicationType
-  platform:     PlatformType
-  categories:   [Int!]
+  type: ApplicationType
+  platform: PlatformType
+  categories: [Int!]
   revenueShare: Float
 }
 
@@ -216,14 +195,15 @@ extend type Query {
   """
   Get Application object by ID
   """
-  application(ID: ID64!): ApplicationPayload! @acl(permissions: ["adv_application.view.*"])
+  application(ID: ID64!): ApplicationPayload!
+    @acl(permissions: ["adv_application.view.*"])
 
   """
   List of the application objects which can be filtered and ordered by some fields
   """
   listApplications(
-    filter: ApplicationListFilter = null,
-    order: ApplicationListOrder = null,
+    filter: ApplicationListFilter = null
+    order: ApplicationListOrder = null
     page: Page = null
   ): ApplicationConnection @acl(permissions: ["adv_application.list.*"])
 }
@@ -232,35 +212,47 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"]) @requireAgreements
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload!
+    @acl(permissions: ["adv_application.create.*"])
+    @requireAgreements
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"]) @requireAgreements
+  updateApplication(
+    ID: ID64!
+    input: ApplicationUpdateInput!
+  ): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
+    @requireAgreements
 
   """
   Delete Application
   """
-  deleteApplication(ID: ID64!, msg: String = null): ApplicationPayload @acl(permissions: ["adv_application.delete.*"])
+  deleteApplication(ID: ID64!, msg: String = null): ApplicationPayload
+    @acl(permissions: ["adv_application.delete.*"])
 
   """
   Run the Application
   """
-  runApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  runApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
 
   """
   Pause the Application
   """
-  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
 
   """
   Approve the Application to be active
   """
-  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.approve.*"])
+  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.approve.*"])
 
   """
   Reject the Application
   """
-  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.reject.*"])
+  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.reject.*"])
 }

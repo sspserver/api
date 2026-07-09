@@ -16,6 +16,7 @@ schema:
   - ../../submodules/blaze-api/repository/user/*/graphql/user_password/*.graphql
   - ../../submodules/blaze-api/repository/user/*/graphql/user_password_reset/*.graphql
   - ../../pkg/repository/**/*.graphql
+  - ./accounts/*.graphql
   - ./schemas/*.graphql
 
 skip_mod_tidy: true

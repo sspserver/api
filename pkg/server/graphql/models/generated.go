@@ -240,14 +240,6 @@ type ApplicationCreateInput struct {
 	RevenueShare *float64         `json:"revenueShare,omitempty"`
 }
 
-// ApplicationEdge wrapper to access Application objects
-type ApplicationEdge struct {
-	// A cursor for use in pagination.
-	Cursor string `json:"cursor"`
-	// The Application at the end of ApplicationEdge.
-	Node *Application `json:"node"`
-}
-
 type ApplicationListFilter struct {
 	ID        []uint64              `json:"ID,omitempty"`
 	Title     *string               `json:"title,omitempty"`

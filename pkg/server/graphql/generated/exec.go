@@ -33,7 +33,6 @@ func NewExecutableSchema(cfg Config) graphql.ExecutableSchema {
 type Config = graphql.Config[ResolverRoot, DirectiveRoot, ComplexityRoot]
 
 type ResolverRoot interface {
-	ApplicationConnection() ApplicationConnectionResolver
 	Category() CategoryResolver
 	DeviceModel() DeviceModelResolver
 	Mutation() MutationResolver
@@ -152,15 +151,9 @@ type ComplexityRoot struct {
 	}
 
 	ApplicationConnection struct {
-		Edges      func(childComplexity int) int
 		List       func(childComplexity int) int
 		PageInfo   func(childComplexity int) int
 		TotalCount func(childComplexity int) int
-	}
-
-	ApplicationEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
 	}
 
 	ApplicationPayload struct {
@@ -940,9 +933,6 @@ type ComplexityRoot struct {
 
 // region    ************************** generated!.gotpl **************************
 
-type ApplicationConnectionResolver interface {
-	Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error)
-}
 type CategoryResolver interface {
 	Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error)
 }
@@ -1577,12 +1567,6 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.ComplexityRoot.Application.UpdatedAt(childComplexity), true
 
-	case "ApplicationConnection.edges":
-		if e.ComplexityRoot.ApplicationConnection.Edges == nil {
-			break
-		}
-
-		return e.ComplexityRoot.ApplicationConnection.Edges(childComplexity), true
 	case "ApplicationConnection.list":
 		if e.ComplexityRoot.ApplicationConnection.List == nil {
 			break
@@ -1601,19 +1585,6 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.ApplicationConnection.TotalCount(childComplexity), true
-
-	case "ApplicationEdge.cursor":
-		if e.ComplexityRoot.ApplicationEdge.Cursor == nil {
-			break
-		}
-
-		return e.ComplexityRoot.ApplicationEdge.Cursor(childComplexity), true
-	case "ApplicationEdge.node":
-		if e.ComplexityRoot.ApplicationEdge.Node == nil {
-			break
-		}
-
-		return e.ComplexityRoot.ApplicationEdge.Node(childComplexity), true
 
 	case "ApplicationPayload.application":
 		if e.ComplexityRoot.ApplicationPayload.Application == nil {
@@ -8120,7 +8091,7 @@ type Application {
 
   title: String!
   description: String!
-  
+
   """
   Unique application identifier, e.g., site domain or app bundle
   """
@@ -8128,7 +8099,7 @@ type Application {
   type: ApplicationType!
   platform: PlatformType!
   premium: Boolean!
-  
+
   """
   Status of the application
   """
@@ -8163,21 +8134,6 @@ type Application {
 }
 
 """
-ApplicationEdge wrapper to access Application objects
-"""
-type ApplicationEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The Application at the end of ApplicationEdge.
-  """
-  node: Application!
-}
-
-"""
 ApplicationConnection wrapper to access Application objects
 """
 type ApplicationConnection {
@@ -8185,11 +8141,6 @@ type ApplicationConnection {
   Total count of Application objects
   """
   totalCount: Int!
-
-  """
-  Edges of Application objects
-  """
-  edges: [ApplicationEdge!]!
 
   """
   List of Application objects
@@ -8261,40 +8212,39 @@ input ApplicationCreateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID:    ID64
+  accountID: ID64
 
-  title:        String! @length(min: 3, max: 255, trim: true)
-  description:  String  @notempty(trim: true, ornil: true)
+  title: String! @length(min: 3, max: 255, trim: true)
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
+  URI: String! @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true)
 
-  type:         ApplicationType
-  platform:     PlatformType
-  categories:   [Int!]
+  type: ApplicationType
+  platform: PlatformType
+  categories: [Int!]
   revenueShare: Float
 }
-
 
 input ApplicationUpdateInput {
   """
   Account ID associated with the application and can be defined if have permission
   """
-  accountID:    ID64
+  accountID: ID64
 
-  title:        String @notempty(trim: true, ornil: true)
-  description:  String @notempty(trim: true, ornil: true)
+  title: String @notempty(trim: true, ornil: true)
+  description: String @notempty(trim: true, ornil: true)
 
   """
   Unique application identifier, e.g., site domain or app bundle
   """
-  URI:          String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
+  URI: String @regex(pattern: "^[a-zA-Z0-9.-]*$", trim: true, ornil: true)
 
-  type:         ApplicationType
-  platform:     PlatformType
-  categories:   [Int!]
+  type: ApplicationType
+  platform: PlatformType
+  categories: [Int!]
   revenueShare: Float
 }
 
@@ -8306,14 +8256,15 @@ extend type Query {
   """
   Get Application object by ID
   """
-  application(ID: ID64!): ApplicationPayload! @acl(permissions: ["adv_application.view.*"])
+  application(ID: ID64!): ApplicationPayload!
+    @acl(permissions: ["adv_application.view.*"])
 
   """
   List of the application objects which can be filtered and ordered by some fields
   """
   listApplications(
-    filter: ApplicationListFilter = null,
-    order: ApplicationListOrder = null,
+    filter: ApplicationListFilter = null
+    order: ApplicationListOrder = null
     page: Page = null
   ): ApplicationConnection @acl(permissions: ["adv_application.list.*"])
 }
@@ -8322,37 +8273,49 @@ extend type Mutation {
   """
   Create a new Application
   """
-  createApplication(input: ApplicationCreateInput!): ApplicationPayload! @acl(permissions: ["adv_application.create.*"]) @requireAgreements
+  createApplication(input: ApplicationCreateInput!): ApplicationPayload!
+    @acl(permissions: ["adv_application.create.*"])
+    @requireAgreements
 
   """
   Update Application information
   """
-  updateApplication(ID: ID64!, input: ApplicationUpdateInput!): ApplicationPayload! @acl(permissions: ["adv_application.update.*"]) @requireAgreements
+  updateApplication(
+    ID: ID64!
+    input: ApplicationUpdateInput!
+  ): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
+    @requireAgreements
 
   """
   Delete Application
   """
-  deleteApplication(ID: ID64!, msg: String = null): ApplicationPayload @acl(permissions: ["adv_application.delete.*"])
+  deleteApplication(ID: ID64!, msg: String = null): ApplicationPayload
+    @acl(permissions: ["adv_application.delete.*"])
 
   """
   Run the Application
   """
-  runApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  runApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
 
   """
   Pause the Application
   """
-  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.update.*"])
+  pauseApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.update.*"])
 
   """
   Approve the Application to be active
   """
-  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.approve.*"])
+  approveApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.approve.*"])
 
   """
   Reject the Application
   """
-  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload! @acl(permissions: ["adv_application.reject.*"])
+  rejectApplication(ID: ID64!, msg: String = null): ApplicationPayload!
+    @acl(permissions: ["adv_application.reject.*"])
 }
 `, BuiltIn: false},
 	{Name: "../../../repository/browser/delivery/graphql/browser.graphql", Input: `"""
@@ -10232,35 +10195,52 @@ enum StatisticKey {
   BROWSER_ID
 }
 
+enum StatisticCondition {
+  EQ # Equal (==)
+  NOT_EQ # Not equal (!=)
+  GT # Greater than (>)
+  GT_EQ # Greater than or equal (>=)
+  LT # Less than (<)
+  LT_EQ # Less than or equal (<=)
+  IN # In list
+  NOT_IN # Not in list
+  BETWEEN # Between
+  NOT_BETWEEN # Not between
+  LIKE # Like
+  NOT_LIKE # Not like
+  IS_NULL # Is null
+  IS_NOT_NULL # Is not null
+}
+
 type StatisticItemKey {
-  key:    StatisticKey!
-  value:  Any!
-  text:   String!
+  key: StatisticKey!
+  value: Any!
+  text: String!
 }
 
 type StatisticAdItem {
   keys: [StatisticItemKey!]
 
   # Money counters
-  revenue:      Float!
-  bidPrice:     Float!
+  revenue: Float!
+  bidPrice: Float!
 
   # Counters
-  requests:     Uint64!
-  impressions:  Uint64!
-  views:        Uint64!
-  directs:      Uint64!
-  clicks:       Uint64!
-  bids:         Uint64!
-  wins:         Uint64!
-  skips:        Uint64!
-  nobids:       Uint64!
-  errors:       Uint64!
+  requests: Uint64!
+  impressions: Uint64!
+  views: Uint64!
+  directs: Uint64!
+  clicks: Uint64!
+  bids: Uint64!
+  wins: Uint64!
+  skips: Uint64!
+  nobids: Uint64!
+  errors: Uint64!
 
   ## Calculated fields
-  CTR:          Float!
-  eCPM:         Float!
-  eCPC:         Float!
+  CTR: Float!
+  eCPM: Float!
+  eCPC: Float!
 }
 
 """
@@ -10288,20 +10268,20 @@ type StatisticAdItemConnection {
 ###############################################################################
 
 input StatisticAdKeyCondition {
-  key:    StatisticKey!
-  op:     StatisticCondition!
+  key: StatisticKey!
+  op: StatisticCondition!
   value: [Any!]!
 }
 
 input StatisticAdListFilter {
   conditions: [StatisticAdKeyCondition!]
-  startDate:  DateTime
-  endDate:    DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input StatisticAdKeyOrder {
-  key:    StatisticOrderingKey!
-  order:  Ordering!
+  key: StatisticOrderingKey!
+  order: Ordering!
 }
 
 extend type Query {
@@ -10309,9 +10289,9 @@ extend type Query {
   Get a list of StatisticAdItem objects.
   """
   statisticAdList(
-    filter: StatisticAdListFilter = null,
-    group:  [StatisticKey!] = null,
-    order:  [StatisticAdKeyOrder!] = null,
+    filter: StatisticAdListFilter = null
+    group: [StatisticKey!] = null
+    order: [StatisticAdKeyOrder!] = null
     page: Page = null
   ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
 }
@@ -10881,60 +10861,7 @@ extend type Mutation {
     @acl(permissions: ["adv_zone.reject.*"])
 }
 `, BuiltIn: false},
-	{Name: "../../../../protocol/graphql/schemas/constants.graphql", Input: `enum RTBRequestFormatType {
-  UNDEFINED
-  JSON
-  XML
-}
-
-enum AuctionType {
-  UNDEFINED
-  FIRST_PRICE
-  SECOND_PRICE
-}
-
-enum AnyOnlyExclude {
-  ANY
-  ONLY
-  EXCLUDE
-}
-
-enum AnyIPv4IPv6 {
-  ANY
-  IPv4
-  IPv6
-}
-
-enum StatisticCondition {
-  EQ          # Equal (==)
-  NOT_EQ      # Not equal (!=)
-  GT          # Greater than (>)
-  GT_EQ       # Greater than or equal (>=)
-  LT          # Less than (<)
-  LT_EQ       # Less than or equal (<=)
-  IN          # In list
-  NOT_IN      # Not in list
-  BETWEEN     # Between
-  NOT_BETWEEN # Not between
-  LIKE        # Like
-  NOT_LIKE    # Not like
-  IS_NULL     # Is null
-  IS_NOT_NULL # Is not null
-}
-
-enum PrivateStatus {
-  PUBLIC
-  PRIVATE
-}
-
-enum PricingModel {
-  UNDEFINED
-  CPM
-  CPC
-  CPA
-}
-`, BuiltIn: false},
-	{Name: "../../../../protocol/graphql/schemas/extend_account.graphql", Input: `type Contact {
+	{Name: "../../../../protocol/graphql/accounts/extend_account.graphql", Input: `type Contact {
   type: String!
   value: String!
   isPrimary: Boolean
@@ -11001,7 +10928,7 @@ extend input AccountListOrder {
   companyRegNumber: Ordering
 }
 `, BuiltIn: false},
-	{Name: "../../../../protocol/graphql/schemas/extend_user.graphql", Input: `# Example consumer: extended user list filter/order fields.
+	{Name: "../../../../protocol/graphql/accounts/extend_user.graphql", Input: `# Example consumer: extended user list filter/order fields.
 
 extend type User {
   notes: String
@@ -11016,6 +10943,42 @@ extend input UserListOrder {
   registrationDate: Ordering
   country: Ordering
   manager: Ordering
+}
+`, BuiltIn: false},
+	{Name: "../../../../protocol/graphql/schemas/constants.graphql", Input: `enum RTBRequestFormatType {
+  UNDEFINED
+  JSON
+  XML
+}
+
+enum AuctionType {
+  UNDEFINED
+  FIRST_PRICE
+  SECOND_PRICE
+}
+
+enum AnyOnlyExclude {
+  ANY
+  ONLY
+  EXCLUDE
+}
+
+enum AnyIPv4IPv6 {
+  ANY
+  IPv4
+  IPv6
+}
+
+enum PrivateStatus {
+  PUBLIC
+  PRIVATE
+}
+
+enum PricingModel {
+  UNDEFINED
+  CPM
+  CPC
+  CPA
 }
 `, BuiltIn: false},
 	{Name: "../../../../protocol/graphql/schemas/schema.graphql", Input: `# https://github.com/prisma/graphql-import
@@ -11230,24 +11193,12 @@ func (ec *executionContext) childFields_ApplicationConnection(ctx context.Contex
 	switch field.Name {
 	case "totalCount":
 		return ec.fieldContext_ApplicationConnection_totalCount(ctx, field)
-	case "edges":
-		return ec.fieldContext_ApplicationConnection_edges(ctx, field)
 	case "list":
 		return ec.fieldContext_ApplicationConnection_list(ctx, field)
 	case "pageInfo":
 		return ec.fieldContext_ApplicationConnection_pageInfo(ctx, field)
 	}
 	return nil, fmt.Errorf("no field named %q was found under type ApplicationConnection", field.Name)
-}
-
-func (ec *executionContext) childFields_ApplicationEdge(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-	switch field.Name {
-	case "cursor":
-		return ec.fieldContext_ApplicationEdge_cursor(ctx, field)
-	case "node":
-		return ec.fieldContext_ApplicationEdge_node(ctx, field)
-	}
-	return nil, fmt.Errorf("no field named %q was found under type ApplicationEdge", field.Name)
 }
 
 func (ec *executionContext) childFields_ApplicationPayload(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
@@ -17356,40 +17307,6 @@ func (ec *executionContext) fieldContext_ApplicationConnection_totalCount(_ cont
 	return graphql.NewScalarFieldContext("ApplicationConnection", field, true, false, errors.New("field of type Int does not have child fields"))
 }
 
-func (ec *executionContext) _ApplicationConnection_edges(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
-	return graphql.ResolveField(
-		ctx,
-		ec.OperationContext,
-		field,
-		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.fieldContext_ApplicationConnection_edges(ctx, field)
-		},
-		func(ctx context.Context) (any, error) {
-			return ec.Resolvers.ApplicationConnection().Edges(ctx, obj)
-		},
-		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
-			return ec._fieldMiddleware(ctx, obj, next)
-		},
-		func(ctx context.Context, selections ast.SelectionSet, v []*models.ApplicationEdge) graphql.Marshaler {
-			return ec.marshalNApplicationEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationEdgeᚄ(ctx, selections, v)
-		},
-		true,
-		true,
-	)
-}
-func (ec *executionContext) fieldContext_ApplicationConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ApplicationConnection",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.childFields_ApplicationEdge(ctx, field)
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _ApplicationConnection_list(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.Application]) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -17453,65 +17370,6 @@ func (ec *executionContext) fieldContext_ApplicationConnection_pageInfo(_ contex
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_PageInfo(ctx, field)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ApplicationEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *models.ApplicationEdge) (ret graphql.Marshaler) {
-	return graphql.ResolveField(
-		ctx,
-		ec.OperationContext,
-		field,
-		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.fieldContext_ApplicationEdge_cursor(ctx, field)
-		},
-		func(ctx context.Context) (any, error) {
-			return obj.Cursor, nil
-		},
-		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
-			return ec._fieldMiddleware(ctx, obj, next)
-		},
-		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
-			return ec.marshalNString2string(ctx, selections, v)
-		},
-		true,
-		true,
-	)
-}
-func (ec *executionContext) fieldContext_ApplicationEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	return graphql.NewScalarFieldContext("ApplicationEdge", field, false, false, errors.New("field of type String does not have child fields"))
-}
-
-func (ec *executionContext) _ApplicationEdge_node(ctx context.Context, field graphql.CollectedField, obj *models.ApplicationEdge) (ret graphql.Marshaler) {
-	return graphql.ResolveField(
-		ctx,
-		ec.OperationContext,
-		field,
-		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.fieldContext_ApplicationEdge_node(ctx, field)
-		},
-		func(ctx context.Context) (any, error) {
-			return obj.Node, nil
-		},
-		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
-			return ec._fieldMiddleware(ctx, obj, next)
-		},
-		func(ctx context.Context, selections ast.SelectionSet, v *models.Application) graphql.Marshaler {
-			return ec.marshalNApplication2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplication(ctx, selections, v)
-		},
-		true,
-		true,
-	)
-}
-func (ec *executionContext) fieldContext_ApplicationEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ApplicationEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.childFields_Application(ctx, field)
 		},
 	}
 	return fc, nil
@@ -48220,96 +48078,15 @@ func (ec *executionContext) _ApplicationConnection(ctx context.Context, sel ast.
 		case "totalCount":
 			out.Values[i] = ec._ApplicationConnection_totalCount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
+				out.Invalids++
 			}
-		case "edges":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._ApplicationConnection_edges(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			if field.IsDeferred() {
-				deferredFieldSet.AddField(field)
-				fieldIndex := len(deferredFieldSet.Values) - 1
-				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, deferredFieldSet)
-				})
-
-				for _, deferrable := range field.Deferrables {
-					view, ok := deferLabelToView[deferrable.Label]
-					if !ok {
-						view = deferredFieldSet.NewView()
-						deferLabelToView[deferrable.Label] = view
-					}
-					view.AddIndices(fieldIndex)
-				}
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "list":
 			out.Values[i] = ec._ApplicationConnection_list(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
+				out.Invalids++
 			}
 		case "pageInfo":
 			out.Values[i] = ec._ApplicationConnection_pageInfo(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.Deferred, int32(min(len(deferLabelToView), math.MaxInt32)))
-
-	ec.ProcessDeferredGroup(graphql.DeferredGroup{
-		Defers:   deferLabelToView,
-		Path:     graphql.GetPath(ctx),
-		FieldSet: deferredFieldSet,
-		Context:  ctx,
-	})
-
-	return out
-}
-
-var applicationEdgeImplementors = []string{"ApplicationEdge"}
-
-func (ec *executionContext) _ApplicationEdge(ctx context.Context, sel ast.SelectionSet, obj *models.ApplicationEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, applicationEdgeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferredFieldSet := graphql.NewFieldSet(nil)
-	deferLabelToView := make(map[string]*graphql.FieldSetView)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ApplicationEdge")
-		case "cursor":
-			out.Values[i] = ec._ApplicationEdge_cursor(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "node":
-			out.Values[i] = ec._ApplicationEdge_node(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -55969,32 +55746,6 @@ func (ec *executionContext) marshalNApplication2ᚖgithubᚗcomᚋsspserverᚋap
 func (ec *executionContext) unmarshalNApplicationCreateInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationCreateInput(ctx context.Context, v any) (models.ApplicationCreateInput, error) {
 	res, err := ec.unmarshalInputApplicationCreateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNApplicationEdge2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.ApplicationEdge) graphql.Marshaler {
-	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
-		fc := graphql.GetFieldContext(ctx)
-		fc.Result = &v[i]
-		return ec.marshalNApplicationEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationEdge(ctx, sel, v[i])
-	})
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNApplicationEdge2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationEdge(ctx context.Context, sel ast.SelectionSet, v *models.ApplicationEdge) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._ApplicationEdge(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNApplicationPayload2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐApplicationPayload(ctx context.Context, sel ast.SelectionSet, v models.ApplicationPayload) graphql.Marshaler {

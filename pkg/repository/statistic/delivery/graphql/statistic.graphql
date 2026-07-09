@@ -57,35 +57,52 @@ enum StatisticKey {
   BROWSER_ID
 }
 
+enum StatisticCondition {
+  EQ # Equal (==)
+  NOT_EQ # Not equal (!=)
+  GT # Greater than (>)
+  GT_EQ # Greater than or equal (>=)
+  LT # Less than (<)
+  LT_EQ # Less than or equal (<=)
+  IN # In list
+  NOT_IN # Not in list
+  BETWEEN # Between
+  NOT_BETWEEN # Not between
+  LIKE # Like
+  NOT_LIKE # Not like
+  IS_NULL # Is null
+  IS_NOT_NULL # Is not null
+}
+
 type StatisticItemKey {
-  key:    StatisticKey!
-  value:  Any!
-  text:   String!
+  key: StatisticKey!
+  value: Any!
+  text: String!
 }
 
 type StatisticAdItem {
   keys: [StatisticItemKey!]
 
   # Money counters
-  revenue:      Float!
-  bidPrice:     Float!
+  revenue: Float!
+  bidPrice: Float!
 
   # Counters
-  requests:     Uint64!
-  impressions:  Uint64!
-  views:        Uint64!
-  directs:      Uint64!
-  clicks:       Uint64!
-  bids:         Uint64!
-  wins:         Uint64!
-  skips:        Uint64!
-  nobids:       Uint64!
-  errors:       Uint64!
+  requests: Uint64!
+  impressions: Uint64!
+  views: Uint64!
+  directs: Uint64!
+  clicks: Uint64!
+  bids: Uint64!
+  wins: Uint64!
+  skips: Uint64!
+  nobids: Uint64!
+  errors: Uint64!
 
   ## Calculated fields
-  CTR:          Float!
-  eCPM:         Float!
-  eCPC:         Float!
+  CTR: Float!
+  eCPM: Float!
+  eCPC: Float!
 }
 
 """
@@ -113,20 +130,20 @@ type StatisticAdItemConnection {
 ###############################################################################
 
 input StatisticAdKeyCondition {
-  key:    StatisticKey!
-  op:     StatisticCondition!
+  key: StatisticKey!
+  op: StatisticCondition!
   value: [Any!]!
 }
 
 input StatisticAdListFilter {
   conditions: [StatisticAdKeyCondition!]
-  startDate:  DateTime
-  endDate:    DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input StatisticAdKeyOrder {
-  key:    StatisticOrderingKey!
-  order:  Ordering!
+  key: StatisticOrderingKey!
+  order: Ordering!
 }
 
 extend type Query {
@@ -134,9 +151,9 @@ extend type Query {
   Get a list of StatisticAdItem objects.
   """
   statisticAdList(
-    filter: StatisticAdListFilter = null,
-    group:  [StatisticKey!] = null,
-    order:  [StatisticAdKeyOrder!] = null,
+    filter: StatisticAdListFilter = null
+    group: [StatisticKey!] = null
+    order: [StatisticAdKeyOrder!] = null
     page: Page = null
   ): StatisticAdItemConnection! @acl(permissions: ["statistic.list.*"])
 }

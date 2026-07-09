@@ -7,18 +7,11 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/geniusrabbit/blaze-api/server/graphql/connectors"
 	models1 "github.com/geniusrabbit/blaze-api/server/graphql/models"
-	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
-
-// Edges is the resolver for the edges field.
-func (r *applicationConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error) {
-	panic(fmt.Errorf("not implemented: Edges - edges"))
-}
 
 // CreateApplication is the resolver for the createApplication field.
 func (r *mutationResolver) CreateApplication(ctx context.Context, input models.ApplicationCreateInput) (*models.ApplicationPayload, error) {
@@ -65,9 +58,18 @@ func (r *queryResolver) ListApplications(ctx context.Context, filter *models.App
 	return r.app.List(ctx, filter, order, page)
 }
 
-// ApplicationConnection returns generated.ApplicationConnectionResolver implementation.
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+/*
+	func (r *applicationConnectionResolver) Edges(ctx context.Context, obj *connectors.CollectionConnection[*models.Application]) ([]*models.ApplicationEdge, error) {
+	panic(fmt.Errorf("not implemented: Edges - edges"))
+}
 func (r *Resolver) ApplicationConnection() generated.ApplicationConnectionResolver {
 	return &applicationConnectionResolver{r}
 }
-
 type applicationConnectionResolver struct{ *Resolver }
+*/
