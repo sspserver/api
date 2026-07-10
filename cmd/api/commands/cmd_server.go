@@ -171,6 +171,18 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 	socialAuthUsecase := socialauthuc.New(socialauthrepo.New(), userModule.Repo)
 	authLoader := accAuth.NewLoader(userModule.Repo, accountRepoInst, memberRepoInst)
 
+	// Ensure superuser exists
+	if err = appinit.EnsureSuperuser(
+		ctx,
+		conf.Superuser.Email,
+		conf.Superuser.Password,
+		userModule.Repo,
+		accountRepoInst,
+		memberRepoInst,
+	); err != nil {
+		return err
+	}
+
 	// Init HTTP server with GraphQL API
 	httpServer := server.HTTPServer{
 		SessionManager: appinit.SessionManager(conf.Session.CookieName, conf.Session.Lifetime),
