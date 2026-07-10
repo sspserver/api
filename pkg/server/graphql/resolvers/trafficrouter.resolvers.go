@@ -52,8 +52,11 @@ func (r *queryResolver) ListTrafficRouters(ctx context.Context, filter *models.T
 
 // Account is the resolver for the account field.
 func (r *trafficRouterResolver) Account(ctx context.Context, obj *models.TrafficRouter) (_ *models2.Account, err error) {
-	obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
-	return obj.Account, err
+	if obj.Account == nil {
+		obj.Account, err = r.general.Account(ctx, obj.Account, obj.AccountID)
+		return obj.Account, err
+	}
+	return obj.Account, nil
 }
 
 // RTBSources is the resolver for the RTBSources field.

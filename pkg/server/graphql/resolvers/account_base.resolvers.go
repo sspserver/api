@@ -67,23 +67,3 @@ func (r *queryResolver) ListAccounts(ctx context.Context, filter *models2.Accoun
 func (r *queryResolver) ListAccountRolesAndPermissions(ctx context.Context, accountID uint64, order []*models.RBACRoleListOrder) (*connectors.CollectionConnection[*models.RBACRole], error) {
 	return r.accAuth.ListRolesAndPermissions(ctx, accountID, order)
 }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *accountConnectionResolver) TotalCount(ctx context.Context, obj *invalid type) (int, error){
-			panic(fmt.Errorf("not implemented: TotalCount - totalCount"))
-		}
-func (r *accountConnectionResolver) List(ctx context.Context, obj *invalid type) ([]*models2.Account, error){
-			panic(fmt.Errorf("not implemented: List - list"))
-		}
-func (r *accountConnectionResolver) PageInfo(ctx context.Context, obj *invalid type) (*models.PageInfo, error){
-			panic(fmt.Errorf("not implemented: PageInfo - pageInfo"))
-		}
-func (r *Resolver) AccountConnection() generated.AccountConnectionResolver { return &accountConnectionResolver{r} }
-type accountConnectionResolver struct { *Resolver }
-*/

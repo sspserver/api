@@ -3,9 +3,6 @@
 
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  # - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
-  # - ../../submodules/blaze-api/repository/**/*.graphql
-  # - ../../pkg/repository/**/*.graphql
   - ../../submodules/blaze-api/protocol/graphql/schemas/*.graphql
   - ../../submodules/blaze-api/repository/*/*/graphql/*.graphql
   - ../../submodules/blaze-api/repository/account/*/graphql/account_base/*.graphql
