@@ -5,7 +5,6 @@ import (
 
 	"github.com/geniusrabbit/blaze-api/pkg/auth/jwt"
 	accountrepoapi "github.com/geniusrabbit/blaze-api/repository/account"
-	account_graphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 	accountgraphql "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql"
 	accountlogin "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql/account_login"
 	accountrepo "github.com/geniusrabbit/blaze-api/repository/account/repository"
@@ -51,6 +50,7 @@ import (
 
 type Resolver struct {
 	general *generalResolver
+
 	// Basic resolvers
 	users             wiring.UserQueryResolver
 	accAuth           accountgraphql.AuthQueryHandler
@@ -64,6 +64,7 @@ type Resolver struct {
 	historylogs       *historylog_graphql.QueryResolver
 	options           *option_graphql.QueryResolver
 	directaccesstoken *directaccesstoken_graphql.QueryResolver
+
 	// Current API extensions
 	rtbsource     *rtbsource_graphql.QueryResolver
 	adformat      *adformat_graphql.QueryResolver
@@ -108,7 +109,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 	memberUsecaseInst := accountusecase.NewMemberUsecase(userRepoInst, accountRepoInst, memberRepoInst)
 
 	rbacRepoInst := rbacrepo.New()
-	accAuthCore := account_graphql.NewAuthResolver(provider,
+	accAuthCore := accountgraphql.NewAuthResolver(provider,
 		accountRepoInst, accountUsecaseInst, rbacRepoInst)
 	loginResolver := accountlogin.New(provider,
 		accountlogin.NewEmailPasswordLogin(userEmailRepo, userPasswordRepo),
@@ -130,7 +131,7 @@ func NewResolver(usecases *Usecases, provider *jwt.Provider) *Resolver {
 			UsersMapper:    wiring.UserGraphQLMappersImpl{},
 			Members:        memberUsecaseInst,
 		}),
-		members: account_graphql.NewMemberQueryResolver(account_graphql.MemberQueryResolverConfig[
+		members: accountgraphql.NewMemberQueryResolver(accountgraphql.MemberQueryResolverConfig[
 			*domainmodels.User,
 			*domainmodels.Account,
 			*accounts.Account,

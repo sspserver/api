@@ -2,6 +2,7 @@ package directives
 
 import (
 	"context"
+	"math"
 
 	"github.com/99designs/gqlgen/graphql"
 )
@@ -9,6 +10,9 @@ import (
 func ValidateRange(ctx context.Context, obj any, next graphql.Resolver, min, max float64, ornil bool) (res any, err error) {
 	if res, err = next(ctx); err != nil {
 		return nil, err
+	}
+	if min > max {
+		max = math.MaxFloat64
 	}
 	switch v := res.(type) {
 	case nil:

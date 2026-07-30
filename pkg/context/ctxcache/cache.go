@@ -47,6 +47,8 @@ func (c *cache) GetOrCache(key any, fn func(key any) (any, error)) (any, error) 
 }
 
 func (c *cache) Set(key any, value any) {
+	c.rw.Lock()
+	defer c.rw.Unlock()
 	c.data[key] = value
 }
 
