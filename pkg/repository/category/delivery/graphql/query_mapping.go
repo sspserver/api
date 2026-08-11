@@ -19,6 +19,9 @@ func FillCategoryInputModel(input gqlmodels.CategoryInput, trg *models.Category)
 	trg.Description = gocast.PtrAsValue(input.Description, trg.Description)
 	trg.ParentID = sql.Null[uint64]{V: gocast.PtrAsValue(input.ParentID, 0), Valid: input.ParentID != nil && *input.ParentID > 0}
 	trg.IABCode = gocast.PtrAsValue(input.IABCode, trg.IABCode)
+	if input.Keywords != nil {
+		trg.Keywords = input.Keywords
+	}
 	if input.Active != nil {
 		trg.Active = activeStatusFromGraphQL(*input.Active)
 	}

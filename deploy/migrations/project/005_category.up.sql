@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS adv_category
 , description            TEXT                       NOT NULL
 
 , iab_code               VARCHAR(255)               NOT NULL        UNIQUE -- IAB code
+, keywords               TEXT[]                     NOT NULL        DEFAULT '{}'
 
 , parent_id              BIGINT                     REFERENCES adv_category(id) MATCH SIMPLE
                                                                        ON UPDATE NO ACTION

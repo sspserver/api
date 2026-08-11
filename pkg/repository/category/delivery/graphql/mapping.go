@@ -22,6 +22,7 @@ func FromCategoryModel(category *models.Category) *gqlmodels.Category {
 		Parent:    FromCategoryModel(category.Parent),
 		Childrens: xtypes.SliceApply(category.Childrens, FromCategoryModel),
 		IABCode:   category.IABCode,
+		Keywords:  category.Keywords,
 		Active:    gqlmodels.FromActiveStatus(category.Active),
 		Position:  int(category.Position),
 		CreatedAt: category.CreatedAt,

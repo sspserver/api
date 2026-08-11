@@ -23,6 +23,11 @@ type Category {
   IABCode: String!
 
   """
+  Keywords used to match this category
+  """
+  keywords: [String!]
+
+  """
   Parent category ID
   """
   parentID: ID64
@@ -138,6 +143,11 @@ input CategoryInput {
   IAB category code of OpenRTB
   """
   IABCode: String
+
+  """
+  Keywords used to match this category
+  """
+  keywords: [String!]
 
   """
   Parent category ID

@@ -320,6 +320,8 @@ type Category struct {
 	Description string `json:"description"`
 	// IAB category code of OpenRTB
 	IABCode string `json:"IABCode"`
+	// Keywords used to match this category
+	Keywords []string `json:"keywords,omitempty"`
 	// Parent category ID
 	ParentID *uint64 `json:"parentID,omitempty"`
 	// Parent category object
@@ -346,6 +348,8 @@ type CategoryInput struct {
 	Description *string `json:"description,omitempty"`
 	// IAB category code of OpenRTB
 	IABCode *string `json:"IABCode,omitempty"`
+	// Keywords used to match this category
+	Keywords []string `json:"keywords,omitempty"`
 	// Parent category ID
 	ParentID *uint64 `json:"parentID,omitempty"`
 	// Position of the category

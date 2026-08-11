@@ -235,6 +235,7 @@ type ComplexityRoot struct {
 		Description func(childComplexity int) int
 		IABCode     func(childComplexity int) int
 		ID          func(childComplexity int) int
+		Keywords    func(childComplexity int) int
 		Name        func(childComplexity int) int
 		Parent      func(childComplexity int) int
 		ParentID    func(childComplexity int) int
@@ -1930,6 +1931,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Category.ID(childComplexity), true
+	case "Category.keywords":
+		if e.ComplexityRoot.Category.Keywords == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Category.Keywords(childComplexity), true
 	case "Category.name":
 		if e.ComplexityRoot.Category.Name == nil {
 			break
@@ -8609,6 +8616,11 @@ type Category {
   IABCode: String!
 
   """
+  Keywords used to match this category
+  """
+  keywords: [String!]
+
+  """
   Parent category ID
   """
   parentID: ID64
@@ -8724,6 +8736,11 @@ input CategoryInput {
   IAB category code of OpenRTB
   """
   IABCode: String
+
+  """
+  Keywords used to match this category
+  """
+  keywords: [String!]
 
   """
   Parent category ID
@@ -11352,6 +11369,8 @@ func (ec *executionContext) childFields_Category(ctx context.Context, field grap
 		return ec.fieldContext_Category_description(ctx, field)
 	case "IABCode":
 		return ec.fieldContext_Category_IABCode(ctx, field)
+	case "keywords":
+		return ec.fieldContext_Category_keywords(ctx, field)
 	case "parentID":
 		return ec.fieldContext_Category_parentID(ctx, field)
 	case "parent":
@@ -18779,6 +18798,31 @@ func (ec *executionContext) _Category_IABCode(ctx context.Context, field graphql
 	)
 }
 func (ec *executionContext) fieldContext_Category_IABCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Category_keywords(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Category_keywords(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Keywords, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []string) graphql.Marshaler {
+			return ec.marshalOString2ᚕstringᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Category_keywords(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
@@ -41452,7 +41496,7 @@ func (ec *executionContext) unmarshalInputCategoryInput(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "IABCode", "parentID", "position", "active"}
+	fieldsInOrder := [...]string{"name", "description", "IABCode", "keywords", "parentID", "position", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -41480,6 +41524,13 @@ func (ec *executionContext) unmarshalInputCategoryInput(ctx context.Context, obj
 				return it, err
 			}
 			it.IABCode = data
+		case "keywords":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keywords"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Keywords = data
 		case "parentID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
 			data, err := ec.unmarshalOID642ᚖuint64(ctx, v)
@@ -48618,6 +48669,11 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 		case "IABCode":
 			out.Values[i] = ec._Category_IABCode(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "keywords":
+			out.Values[i] = ec._Category_keywords(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "parentID":

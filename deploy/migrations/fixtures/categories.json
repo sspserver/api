@@ -1,0 +1,3262 @@
+[
+  {
+    "iab_code": "IAB1",
+    "name": "Arts & Entertainment",
+    "description": "This category includes all content related to visual arts, music, theater, movies, and other forms of entertainment. It covers topics such as performance art, exhibitions, and cultural events.",
+    "position": 1,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB1-1",
+        "name": "Books & Literature",
+        "description": "This subcategory under Arts & Entertainment focuses on literature, including books and literary reviews.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-2",
+        "name": "Celebrity Fan/Gossip",
+        "description": "This subcategory covers celebrity news and gossip within the Arts & Entertainment domain.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-3",
+        "name": "Fine Art",
+        "description": "This subcategory is dedicated to fine art, including painting, sculpture, and art exhibitions under Arts & Entertainment.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-4",
+        "name": "Humor",
+        "description": "This subcategory highlights comedic content and humor in the context of Arts & Entertainment.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-5",
+        "name": "Movies",
+        "description": "This subcategory focuses on films and cinematic content, reviews, and movie industry news.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-6",
+        "name": "Music",
+        "description": "This subcategory covers music genres, industry news, and related entertainment topics.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB1-7",
+        "name": "Television",
+        "description": "This subcategory encompasses TV shows, broadcast news, and other television-related content.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB2",
+    "name": "Automotive",
+    "description": "This category encompasses all aspects of the automotive industry including cars, trucks, parts, repairs, and innovations in vehicle technology.",
+    "position": 2,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB2-1",
+        "name": "Auto Parts",
+        "description": "This subcategory under Automotive focuses on auto parts, components, and accessories.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-2",
+        "name": "Auto Repair",
+        "description": "This subcategory covers repair services, maintenance tips, and troubleshooting for vehicles.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-3",
+        "name": "Buying/Selling Cars",
+        "description": "This subcategory provides information on buying and selling vehicles, including market trends and advice.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-4",
+        "name": "Car Culture",
+        "description": "This subcategory explores the lifestyle, trends, and cultural aspects surrounding automobiles.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-5",
+        "name": "Certified Pre-Owned",
+        "description": "This subcategory focuses on certified pre-owned vehicles and related buying advice.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-6",
+        "name": "Convertible",
+        "description": "This subcategory is dedicated to convertible cars, their features, and market reviews.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-7",
+        "name": "Coupe",
+        "description": "This subcategory covers coupe-style vehicles and their performance features.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-8",
+        "name": "Crossover",
+        "description": "This subcategory focuses on crossover vehicles, blending SUV and car characteristics.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-9",
+        "name": "Diesel",
+        "description": "This subcategory covers diesel-powered vehicles, their efficiency, and performance.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-10",
+        "name": "Electric Vehicle",
+        "description": "This subcategory focuses on electric vehicles, including technology, innovations, and market trends.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-11",
+        "name": "Hatchback",
+        "description": "This subcategory covers hatchback vehicles and their design features.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-12",
+        "name": "Hybrid",
+        "description": "This subcategory is dedicated to hybrid vehicles and their environmental and performance benefits.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-13",
+        "name": "Luxury",
+        "description": "This subcategory focuses on luxury automobiles, premium features, and high-end market trends.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-14",
+        "name": "Minivan",
+        "description": "This subcategory covers minivans, family vehicles, and related market advice.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-15",
+        "name": "Motorcycles",
+        "description": "This subcategory focuses on motorcycles, including news, reviews, and maintenance tips.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-16",
+        "name": "Off-Road Vehicles",
+        "description": "This subcategory covers off-road vehicles and related adventure and utility topics.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-17",
+        "name": "Performance Vehicles",
+        "description": "This subcategory is dedicated to high-performance vehicles and their engineering.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-18",
+        "name": "Pickup",
+        "description": "This subcategory focuses on pickup trucks, including features, reviews, and market trends.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-19",
+        "name": "Road-Side Assistance",
+        "description": "This subcategory provides information on roadside assistance services and emergency repair.",
+        "position": 19,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-20",
+        "name": "Sedan",
+        "description": "This subcategory covers sedan vehicles and their design, performance, and market positioning.",
+        "position": 20,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-21",
+        "name": "Trucks & Accessories",
+        "description": "This subcategory focuses on trucks and related accessories, including modifications and aftermarket parts.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-22",
+        "name": "Vintage Cars",
+        "description": "This subcategory covers vintage cars, classic models, and restoration projects.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB2-23",
+        "name": "Wagon",
+        "description": "This subcategory is dedicated to wagon-style vehicles and their practical features.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB3",
+    "name": "Business",
+    "description": "This category covers business-related topics including corporate news, management strategies, market trends, and economic insights relevant to entrepreneurs and corporations.",
+    "position": 3,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB3-1",
+        "name": "Advertising",
+        "description": "This subcategory under Business focuses on advertising strategies, trends, and industry news.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-2",
+        "name": "Agriculture",
+        "description": "This subcategory covers agricultural business, market trends, and farming innovations.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-3",
+        "name": "Biotech/Biomedical",
+        "description": "This subcategory focuses on the biotech and biomedical sectors, including research and industry developments.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-4",
+        "name": "Business Software",
+        "description": "This subcategory covers software solutions and technology trends in business management.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-5",
+        "name": "Construction",
+        "description": "This subcategory focuses on construction industry news, projects, and market trends.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-6",
+        "name": "Forestry",
+        "description": "This subcategory covers forestry, lumber, and related business topics in natural resources.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-7",
+        "name": "Government",
+        "description": "This subcategory focuses on government-related business issues and regulatory news.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-8",
+        "name": "Green Solutions",
+        "description": "This subcategory covers sustainable business practices and green technology initiatives.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-9",
+        "name": "Human Resources",
+        "description": "This subcategory provides insights into human resource management, recruitment, and workplace culture.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-10",
+        "name": "Logistics",
+        "description": "This subcategory focuses on logistics, supply chain management, and transportation solutions.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-11",
+        "name": "Marketing",
+        "description": "This subcategory covers marketing strategies, digital marketing trends, and brand management.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB3-12",
+        "name": "Metals",
+        "description": "This subcategory focuses on the metals industry, including market trends and raw material analysis.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB4",
+    "name": "Careers",
+    "description": "This category provides resources and advice for career planning, job search strategies, resume writing, and professional development across various industries.",
+    "position": 4,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB4-1",
+        "name": "Career Planning",
+        "description": "This subcategory under Careers provides guidance and strategies for career planning and development.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-2",
+        "name": "College",
+        "description": "This subcategory focuses on college-related topics including admissions, campus life, and academic advice.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-3",
+        "name": "Financial Aid",
+        "description": "This subcategory covers financial aid, scholarships, and funding options for education and careers.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-4",
+        "name": "Job Fairs",
+        "description": "This subcategory provides information on job fairs, networking events, and career expos.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-5",
+        "name": "Job Search",
+        "description": "This subcategory focuses on job search strategies, resume tips, and interview preparation.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-6",
+        "name": "Resume Writing/Advice",
+        "description": "This subcategory offers advice on crafting effective resumes and cover letters.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-7",
+        "name": "Nursing",
+        "description": "This subcategory covers career opportunities and advice specifically for the nursing field.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-8",
+        "name": "Scholarships",
+        "description": "This subcategory focuses on scholarships and financial support options for students and professionals.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-9",
+        "name": "Telecommuting",
+        "description": "This subcategory covers remote work opportunities and telecommuting best practices.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-10",
+        "name": "U.S. Military",
+        "description": "This subcategory provides information on career opportunities and guidance within the U.S. military.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB4-11",
+        "name": "Career Advice",
+        "description": "This subcategory offers general career advice, mentoring, and professional development tips.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB5",
+    "name": "Education",
+    "description": "This category includes topics related to educational systems, academic advice, learning resources, and higher education, ranging from K-12 to college and beyond.",
+    "position": 5,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB5-1",
+        "name": "7-12 Education",
+        "description": "This subcategory under Education focuses on primary and secondary education topics.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-2",
+        "name": "Adult Education",
+        "description": "This subcategory covers continuing education and learning opportunities for adults.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-3",
+        "name": "Art History",
+        "description": "This subcategory focuses on art history as an academic subject and cultural study.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-4",
+        "name": "College Administration",
+        "description": "This subcategory covers topics related to college administration, policies, and management.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-5",
+        "name": "College Life",
+        "description": "This subcategory provides insights into college life, student experiences, and campus activities.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-6",
+        "name": "Distance Learning",
+        "description": "This subcategory focuses on distance learning and online education methods.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-7",
+        "name": "English as a 2nd Language",
+        "description": "This subcategory covers resources and tips for learning English as a second language.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-8",
+        "name": "Language Learning",
+        "description": "This subcategory provides information and resources for learning various languages.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-9",
+        "name": "Graduate School",
+        "description": "This subcategory focuses on graduate school admissions, experiences, and academic advice.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-10",
+        "name": "Homeschooling",
+        "description": "This subcategory covers homeschooling techniques, curricula, and family education strategies.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-11",
+        "name": "Homework/Study Tips",
+        "description": "This subcategory offers tips and strategies for effective studying and homework completion.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-12",
+        "name": "K-6 Educators",
+        "description": "This subcategory is designed for educators teaching K-6 and provides resources and teaching strategies.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-13",
+        "name": "Private School",
+        "description": "This subcategory covers topics related to private schooling, admissions, and educational standards.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-14",
+        "name": "Special Education",
+        "description": "This subcategory focuses on special education, inclusive teaching practices, and support strategies.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB5-15",
+        "name": "Studying Business",
+        "description": "This subcategory provides resources for studying business, including coursework and industry insights.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB6",
+    "name": "Family & Parenting",
+    "description": "This category covers content related to family life and parenting, including child care, family relationships, and guidance for raising children and managing household dynamics.",
+    "position": 6,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB6-1",
+        "name": "Adoption",
+        "description": "This subcategory under Family & Parenting covers topics related to adoption and related legal processes.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-2",
+        "name": "Babies & Toddlers",
+        "description": "This subcategory focuses on the care, development, and needs of babies and toddlers.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-3",
+        "name": "Daycare/Pre School",
+        "description": "This subcategory covers daycare options, pre-school education, and early childhood care.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-4",
+        "name": "Family Internet",
+        "description": "This subcategory discusses safe internet practices and digital resources for families.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-5",
+        "name": "Parenting - K-6 Kids",
+        "description": "This subcategory provides advice and resources for parenting young children in kindergarten to grade 6.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-6",
+        "name": "Parenting teens",
+        "description": "This subcategory focuses on the challenges and advice related to parenting teenagers.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-7",
+        "name": "Pregnancy",
+        "description": "This subcategory covers topics related to pregnancy, prenatal care, and expecting parents.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-8",
+        "name": "Special Needs Kids",
+        "description": "This subcategory provides resources and support for families with special needs children.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB6-9",
+        "name": "Eldercare",
+        "description": "This subcategory focuses on care and support for elderly family members.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB7",
+    "name": "Health & Fitness",
+    "description": "This category features health advice, fitness tips, medical news, wellness practices, and information on nutrition, exercise, and lifestyle improvements.",
+    "position": 7,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB7-1",
+        "name": "Exercise",
+        "description": "This subcategory under Health & Fitness focuses on physical exercise routines and workout tips.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-2",
+        "name": "ADD",
+        "description": "This subcategory covers Attention Deficit Disorder, its management, and related therapies.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-3",
+        "name": "AIDS/HIV",
+        "description": "This subcategory provides information and updates on AIDS/HIV research and treatment.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-4",
+        "name": "Allergies",
+        "description": "This subcategory covers information on allergies, symptoms, and treatments.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-5",
+        "name": "Alternative Medicine",
+        "description": "This subcategory focuses on alternative medicine practices and holistic healing.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-6",
+        "name": "Arthritis",
+        "description": "This subcategory covers arthritis, its management, and treatment options.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-7",
+        "name": "Asthma",
+        "description": "This subcategory provides information on asthma, its triggers, and management techniques.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-8",
+        "name": "Autism/PDD",
+        "description": "This subcategory focuses on autism and pervasive developmental disorders, including support and resources.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-9",
+        "name": "Bipolar Disorder",
+        "description": "This subcategory covers bipolar disorder, its treatment, and management strategies.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-10",
+        "name": "Brain Tumor",
+        "description": "This subcategory provides information on brain tumors, research, and treatment options.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-11",
+        "name": "Cancer",
+        "description": "This subcategory focuses on cancer research, treatment options, and patient support.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-12",
+        "name": "Cholesterol",
+        "description": "This subcategory covers cholesterol management, diet tips, and related health advice.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-13",
+        "name": "Chronic Fatigue Syndrome",
+        "description": "This subcategory provides information on chronic fatigue syndrome and its management.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-14",
+        "name": "Chronic Pain",
+        "description": "This subcategory covers chronic pain management, therapies, and patient resources.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-15",
+        "name": "Cold & Flu",
+        "description": "This subcategory focuses on common illnesses such as colds and flu, including prevention and treatment.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-16",
+        "name": "Deafness",
+        "description": "This subcategory covers deafness, hearing loss, and related assistive technologies.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-17",
+        "name": "Dental Care",
+        "description": "This subcategory provides information on dental health, care routines, and treatments.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-18",
+        "name": "Depression",
+        "description": "This subcategory focuses on depression, mental health support, and treatment options.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-19",
+        "name": "Dermatology",
+        "description": "This subcategory covers skin care, dermatological treatments, and cosmetic procedures.",
+        "position": 19,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-20",
+        "name": "Diabetes",
+        "description": "This subcategory focuses on diabetes management, diet, and treatment strategies.",
+        "position": 20,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-21",
+        "name": "Epilepsy",
+        "description": "This subcategory covers epilepsy, seizure management, and patient support resources.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-22",
+        "name": "GERD/Acid Reflux",
+        "description": "This subcategory focuses on GERD and acid reflux, including dietary tips and treatments.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-23",
+        "name": "Headaches/Migraines",
+        "description": "This subcategory covers headaches and migraines, including causes and treatment options.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-24",
+        "name": "Heart Disease",
+        "description": "This subcategory provides information on heart disease, risk factors, and preventive measures.",
+        "position": 24,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-25",
+        "name": "Herbs for Health",
+        "description": "This subcategory focuses on the use of herbs in promoting health and wellness.",
+        "position": 25,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-26",
+        "name": "Holistic Healing",
+        "description": "This subcategory covers holistic healing practices and alternative health therapies.",
+        "position": 26,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-27",
+        "name": "IBS/Crohn's Disease",
+        "description": "This subcategory focuses on digestive disorders like IBS and Crohn's disease, including management tips.",
+        "position": 27,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-28",
+        "name": "Incest/Abuse Support",
+        "description": "This subcategory provides support and resources for survivors of abuse.",
+        "position": 28,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-29",
+        "name": "Incontinence",
+        "description": "This subcategory covers incontinence issues and treatment options.",
+        "position": 29,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-30",
+        "name": "Infertility",
+        "description": "This subcategory focuses on infertility, treatment options, and support resources.",
+        "position": 30,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-31",
+        "name": "Men's Health",
+        "description": "This subcategory covers men's health issues, wellness tips, and medical advice.",
+        "position": 31,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-32",
+        "name": "Nutrition",
+        "description": "This subcategory focuses on nutrition, dietary advice, and healthy eating practices.",
+        "position": 32,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-33",
+        "name": "Orthopedics",
+        "description": "This subcategory covers orthopedic health, joint care, and related treatments.",
+        "position": 33,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-34",
+        "name": "Panic/Anxiety Disorders",
+        "description": "This subcategory focuses on panic and anxiety disorders, providing support and treatment options.",
+        "position": 34,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-35",
+        "name": "Pediatrics",
+        "description": "This subcategory covers pediatric health, child wellness, and medical care for children.",
+        "position": 35,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-36",
+        "name": "Physical Therapy",
+        "description": "This subcategory focuses on physical therapy, rehabilitation, and recovery programs.",
+        "position": 36,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-37",
+        "name": "Psychology/Psychiatry",
+        "description": "This subcategory covers mental health, psychology, and psychiatric treatment options.",
+        "position": 37,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-38",
+        "name": "Senior Health",
+        "description": "This subcategory focuses on health issues related to senior citizens and aging.",
+        "position": 38,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-39",
+        "name": "Sexuality",
+        "description": "This subcategory covers topics related to sexuality, sexual health, and relationships.",
+        "position": 39,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-40",
+        "name": "Sleep Disorders",
+        "description": "This subcategory focuses on sleep disorders, their causes, and treatment options.",
+        "position": 40,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-41",
+        "name": "Smoking Cessation",
+        "description": "This subcategory provides resources and tips for quitting smoking.",
+        "position": 41,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-42",
+        "name": "Substance Abuse",
+        "description": "This subcategory covers substance abuse issues, treatment programs, and recovery support.",
+        "position": 42,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-43",
+        "name": "Thyroid Disease",
+        "description": "This subcategory focuses on thyroid health, disorders, and treatment options.",
+        "position": 43,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-44",
+        "name": "Weight Loss",
+        "description": "This subcategory covers weight loss strategies, diets, and fitness programs.",
+        "position": 44,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB7-45",
+        "name": "Women's Health",
+        "description": "This subcategory focuses on women's health issues, wellness, and medical care.",
+        "position": 45,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB8",
+    "name": "Food & Drink",
+    "description": "This category includes culinary content such as recipes, restaurant reviews, cooking techniques, and discussions about various cuisines and beverages.",
+    "position": 8,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB8-1",
+        "name": "American Cuisine",
+        "description": "This subcategory under Food & Drink focuses on American culinary traditions and recipes.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-2",
+        "name": "Barbecues & Grilling",
+        "description": "This subcategory covers barbecue techniques, grilling recipes, and outdoor cooking.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-3",
+        "name": "Cajun/Creole",
+        "description": "This subcategory focuses on Cajun and Creole cuisines, highlighting their unique flavors and dishes.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-4",
+        "name": "Chinese Cuisine",
+        "description": "This subcategory covers Chinese culinary traditions, recipes, and cooking techniques.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-5",
+        "name": "Cocktails/Beer",
+        "description": "This subcategory focuses on cocktail recipes, beer reviews, and mixology tips.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-6",
+        "name": "Coffee/Tea",
+        "description": "This subcategory covers topics related to coffee and tea, including brewing techniques and product reviews.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-7",
+        "name": "Cuisine-Specific",
+        "description": "This subcategory explores cuisine-specific topics, highlighting regional and ethnic culinary traditions.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-8",
+        "name": "Desserts & Baking",
+        "description": "This subcategory focuses on desserts, baking techniques, and sweet culinary creations.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-9",
+        "name": "Dining Out",
+        "description": "This subcategory covers restaurant reviews, dining experiences, and food critique.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-10",
+        "name": "Food Allergies",
+        "description": "This subcategory provides information on food allergies, dietary restrictions, and safe eating practices.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-11",
+        "name": "French Cuisine",
+        "description": "This subcategory focuses on French culinary traditions, recipes, and cooking techniques.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-12",
+        "name": "Health/Low-Fat Cooking",
+        "description": "This subcategory covers healthy cooking methods, low-fat recipes, and nutritional advice.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-13",
+        "name": "Italian Cuisine",
+        "description": "This subcategory focuses on Italian culinary traditions, pasta dishes, and regional specialties.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-14",
+        "name": "Japanese Cuisine",
+        "description": "This subcategory covers Japanese culinary arts, sushi, ramen, and traditional recipes.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-15",
+        "name": "Mexican Cuisine",
+        "description": "This subcategory focuses on Mexican food, recipes, and culinary traditions.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-16",
+        "name": "Vegan",
+        "description": "This subcategory covers vegan cooking, recipes, and plant-based dietary tips.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-17",
+        "name": "Vegetarian",
+        "description": "This subcategory focuses on vegetarian cuisine, recipes, and healthy eating practices.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB8-18",
+        "name": "Wine",
+        "description": "This subcategory covers wine reviews, tasting notes, and vineyard news.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB9",
+    "name": "Hobbies & Interests",
+    "description": "This category covers a wide range of personal interests and leisure activities including arts, crafts, gaming, and other recreational pursuits.",
+    "position": 9,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB9-1",
+        "name": "Art/Technology",
+        "description": "This subcategory under Hobbies & Interests focuses on the intersection of art and technology.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-2",
+        "name": "Arts & Crafts",
+        "description": "This subcategory covers various arts and crafts activities, DIY projects, and creative hobbies.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-3",
+        "name": "Beadwork",
+        "description": "This subcategory focuses on beadwork techniques, jewelry making, and decorative crafts.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-4",
+        "name": "Bird-Watching",
+        "description": "This subcategory covers bird-watching tips, guides, and nature observation techniques.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-5",
+        "name": "Board Games/Puzzles",
+        "description": "This subcategory focuses on board games, puzzles, and related recreational activities.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-6",
+        "name": "Candle & Soap Making",
+        "description": "This subcategory covers techniques for making candles and soaps as creative hobbies.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-7",
+        "name": "Card Games",
+        "description": "This subcategory focuses on card games, strategies, and related entertainment.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-8",
+        "name": "Chess",
+        "description": "This subcategory covers chess strategies, tournaments, and learning resources.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-9",
+        "name": "Cigars",
+        "description": "This subcategory focuses on cigars, including reviews, history, and smoking culture.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-10",
+        "name": "Collecting",
+        "description": "This subcategory covers various collecting hobbies, from stamps to antiques.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-11",
+        "name": "Comic Books",
+        "description": "This subcategory focuses on comic books, graphic novels, and related art forms.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-12",
+        "name": "Drawing/Sketching",
+        "description": "This subcategory covers drawing techniques, sketching, and artistic expression.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-13",
+        "name": "Freelance Writing",
+        "description": "This subcategory focuses on freelance writing, creative writing tips, and literary pursuits.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-14",
+        "name": "Genealogy",
+        "description": "This subcategory covers genealogy research, family trees, and ancestral history.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-15",
+        "name": "Getting Published",
+        "description": "This subcategory provides tips and advice for writers looking to get published.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-16",
+        "name": "Guitar",
+        "description": "This subcategory focuses on guitar playing, techniques, and music creation.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-17",
+        "name": "Home Recording",
+        "description": "This subcategory covers home recording techniques, equipment, and music production.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-18",
+        "name": "Investors & Patents",
+        "description": "This subcategory focuses on creative investments, patents, and intellectual property in hobbies.",
+        "position": 18,
+        "keywords": [
+          "investor",
+          "patent",
+          "intellectual property"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-19",
+        "name": "Jewelry Making",
+        "description": "This subcategory covers jewelry making techniques, design, and craft.",
+        "position": 19,
+        "keywords": [
+          "jewelry"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-20",
+        "name": "Magic & Illusion",
+        "description": "This subcategory focuses on magic tricks, illusions, and performance art in hobbies.",
+        "position": 20,
+        "keywords": [
+          "magic",
+          "illusion"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-21",
+        "name": "Needlework",
+        "description": "This subcategory covers needlework, embroidery, and related textile crafts.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-22",
+        "name": "Painting",
+        "description": "This subcategory focuses on painting techniques, art styles, and creative expression.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-23",
+        "name": "Photography",
+        "description": "This subcategory covers photography tips, techniques, and equipment reviews.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-24",
+        "name": "Radio",
+        "description": "This subcategory focuses on radio broadcasting, podcasting, and audio entertainment.",
+        "position": 24,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-25",
+        "name": "Roleplaying Games",
+        "description": "This subcategory covers roleplaying games, game mechanics, and community discussions.",
+        "position": 25,
+        "keywords": [
+          "roleplaying games",
+          "rpg",
+          "role playing games"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-26",
+        "name": "Sci-Fi & Fantasy",
+        "description": "This subcategory focuses on science fiction and fantasy genres within hobbies and interests.",
+        "position": 26,
+        "keywords": [
+          "sci-fi",
+          "fantasy"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-27",
+        "name": "Scrapbooking",
+        "description": "This subcategory covers scrapbooking techniques, materials, and creative layouts.",
+        "position": 27,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-28",
+        "name": "Screenwriting",
+        "description": "This subcategory focuses on screenwriting, script development, and film writing.",
+        "position": 28,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-29",
+        "name": "Stamps & Coins",
+        "description": "This subcategory covers stamp and coin collecting, valuation, and history.",
+        "position": 29,
+        "keywords": [
+          "stamps",
+          "coins"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-30",
+        "name": "Video & Computer Games",
+        "description": "This subcategory focuses on video games, computer games, and gaming culture.",
+        "position": 30,
+        "keywords": [
+          "video games",
+          "computer games",
+          "gaming"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB9-31",
+        "name": "Woodworking",
+        "description": "This subcategory covers woodworking projects, tools, and techniques for hobbyists.",
+        "position": 31,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB10",
+    "name": "Home & Garden",
+    "description": "This category provides content related to home improvement, interior design, gardening tips, and DIY projects to enhance living spaces.",
+    "position": 10,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB10-1",
+        "name": "Appliances",
+        "description": "This subcategory under Home & Garden focuses on home appliances, reviews, and buying guides.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-2",
+        "name": "Entertaining",
+        "description": "This subcategory covers tips and ideas for entertaining guests at home.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-3",
+        "name": "Environmental Safety",
+        "description": "This subcategory focuses on environmental safety in the home and garden.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-4",
+        "name": "Gardening",
+        "description": "This subcategory covers gardening tips, plant care, and landscape design.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-5",
+        "name": "Home Repair",
+        "description": "This subcategory provides advice and tips on home repair and maintenance.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-6",
+        "name": "Home Theater",
+        "description": "This subcategory focuses on home theater systems, reviews, and setup guides.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-7",
+        "name": "Interior Decorating",
+        "description": "This subcategory covers interior decorating ideas, trends, and design tips.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-8",
+        "name": "Landscaping",
+        "description": "This subcategory focuses on landscaping ideas, garden design, and outdoor aesthetics.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB10-9",
+        "name": "Remodeling & Construction",
+        "description": "This subcategory covers remodeling projects, construction advice, and renovation ideas.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB11",
+    "name": "Law, Government, & Politics",
+    "description": "This category focuses on legal issues, governmental policies, political analysis, and the impact of public policy on society.",
+    "position": 11,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB11-1",
+        "name": "Immigration",
+        "description": "This subcategory under Law, Government, & Politics focuses on immigration policies and legal issues.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB11-2",
+        "name": "Legal Issues",
+        "description": "This subcategory covers legal issues, court cases, and regulatory news.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB11-3",
+        "name": "U.S. Government Resources",
+        "description": "This subcategory provides information on U.S. government resources and services.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB11-4",
+        "name": "Politics",
+        "description": "This subcategory covers political news, analysis, and discussions.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB11-5",
+        "name": "Commentary",
+        "description": "This subcategory focuses on political commentary, opinions, and analysis.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB12",
+    "name": "News",
+    "description": "This category delivers current events, breaking news, and in-depth reporting on local, national, and international affairs.",
+    "position": 12,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB12-1",
+        "name": "International News",
+        "description": "This subcategory under News covers global events and international news.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB12-2",
+        "name": "National News",
+        "description": "This subcategory focuses on national news and events within a country.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB12-3",
+        "name": "Local News",
+        "description": "This subcategory covers local news, community events, and regional updates.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB13",
+    "name": "Personal Finance",
+    "description": "This category offers advice on managing personal finances, investing, budgeting, retirement planning, and navigating financial markets.",
+    "position": 13,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB13-1",
+        "name": "Beginning Investing",
+        "description": "This subcategory under Personal Finance focuses on introductory investing strategies and tips.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-2",
+        "name": "Credit/Debt & Loans",
+        "description": "This subcategory covers topics related to credit, debt management, and loan advice.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-3",
+        "name": "Financial News",
+        "description": "This subcategory provides updates on financial markets and economic news.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-4",
+        "name": "Financial Planning",
+        "description": "This subcategory focuses on financial planning, budgeting, and long-term wealth management.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-5",
+        "name": "Hedge Fund",
+        "description": "This subcategory covers hedge funds, investment strategies, and market analysis.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-6",
+        "name": "Insurance",
+        "description": "This subcategory provides information on insurance products and financial protection strategies.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-7",
+        "name": "Investing",
+        "description": "This subcategory covers various investment opportunities and strategies.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-8",
+        "name": "Mutual Funds",
+        "description": "This subcategory focuses on mutual funds, portfolio management, and investment analysis.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-9",
+        "name": "Options",
+        "description": "This subcategory covers options trading, strategies, and market insights.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-10",
+        "name": "Retirement Planning",
+        "description": "This subcategory provides guidance on retirement planning and saving for the future.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-11",
+        "name": "Stocks",
+        "description": "This subcategory focuses on stock market trends, analysis, and trading tips.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB13-12",
+        "name": "Tax Planning",
+        "description": "This subcategory covers tax planning strategies and updates on tax regulations.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB14",
+    "name": "Society",
+    "description": "This category covers social issues, cultural trends, relationship dynamics, and discussions on societal norms and values.",
+    "position": 14,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB14-1",
+        "name": "Dating",
+        "description": "This subcategory under Society focuses on dating advice, relationship tips, and social interactions.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-2",
+        "name": "Divorce Support",
+        "description": "This subcategory covers divorce support, legal advice, and coping strategies.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-3",
+        "name": "Gay Life",
+        "description": "This subcategory focuses on issues, culture, and support within the LGBTQ+ community.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-4",
+        "name": "Marriage",
+        "description": "This subcategory covers topics related to marriage, relationships, and wedding planning.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-5",
+        "name": "Senior Living",
+        "description": "This subcategory focuses on senior living, retirement communities, and elder care.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-6",
+        "name": "Teens",
+        "description": "This subcategory covers topics and issues relevant to teenagers and youth culture.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-7",
+        "name": "Weddings",
+        "description": "This subcategory focuses on wedding planning, bridal trends, and matrimonial advice.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB14-8",
+        "name": "Ethnic Specific",
+        "description": "This subcategory covers ethnic-specific cultural topics and community issues.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB15",
+    "name": "Science",
+    "description": "This category explores topics in science, including research breakthroughs, technological innovations, and studies in fields such as biology, physics, and chemistry.",
+    "position": 15,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB15-1",
+        "name": "Astrology",
+        "description": "This subcategory under Science focuses on astrology, horoscopes, and celestial studies.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-2",
+        "name": "Biology",
+        "description": "This subcategory covers biology, life sciences, and related research topics.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-3",
+        "name": "Chemistry",
+        "description": "This subcategory focuses on chemistry, chemical research, and laboratory studies.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-4",
+        "name": "Geology",
+        "description": "This subcategory covers geology, earth sciences, and related research.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-5",
+        "name": "Paranormal Phenomena",
+        "description": "This subcategory focuses on paranormal phenomena, unexplained events, and related scientific investigations.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-6",
+        "name": "Physics",
+        "description": "This subcategory covers physics, theoretical studies, and scientific discoveries.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-7",
+        "name": "Space/Astronomy",
+        "description": "This subcategory focuses on space exploration, astronomy, and cosmic research.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-8",
+        "name": "Geography",
+        "description": "This subcategory covers geography, maps, and spatial analysis.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-9",
+        "name": "Botany",
+        "description": "This subcategory focuses on botany, plant sciences, and horticulture.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB15-10",
+        "name": "Weather",
+        "description": "This subcategory covers weather, meteorology, and climate studies.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB16",
+    "name": "Pets",
+    "description": "This category is dedicated to pet care, animal health, and advice on raising and training pets, as well as information on different pet species.",
+    "position": 16,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB16-1",
+        "name": "Aquariums",
+        "description": "This subcategory under Pets focuses on aquariums, fish care, and aquatic pet maintenance.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-2",
+        "name": "Birds",
+        "description": "This subcategory covers pet birds, care tips, and avian health.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-3",
+        "name": "Cats",
+        "description": "This subcategory focuses on cats, including care, behavior, and health issues.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-4",
+        "name": "Dogs",
+        "description": "This subcategory covers dog care, training, and health tips.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-5",
+        "name": "Large Animals",
+        "description": "This subcategory focuses on large pets such as horses and livestock, including care and management.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-6",
+        "name": "Reptiles",
+        "description": "This subcategory covers reptile care, habitat setup, and health information.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB16-7",
+        "name": "Veterinary Medicine",
+        "description": "This subcategory focuses on veterinary medicine, pet health, and animal care best practices.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB17",
+    "name": "Sports",
+    "description": "This category includes coverage of sporting events, athletic news, game analyses, and discussions on various sports and related activities.",
+    "position": 17,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB17-1",
+        "name": "Auto Racing",
+        "description": "This subcategory under Sports focuses on auto racing events, news, and analysis.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-2",
+        "name": "Baseball",
+        "description": "This subcategory covers baseball news, games, and analysis.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-3",
+        "name": "Bicycling",
+        "description": "This subcategory focuses on bicycling, cycling events, and equipment reviews.",
+        "position": 3,
+        "keywords": [
+          "bicycling",
+          "cycling",
+          "bicycle"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-4",
+        "name": "Bodybuilding",
+        "description": "This subcategory covers bodybuilding, fitness competitions, and training tips.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-5",
+        "name": "Boxing",
+        "description": "This subcategory focuses on boxing events, fighters, and match analyses.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-6",
+        "name": "Canoeing/Kayaking",
+        "description": "This subcategory covers canoeing and kayaking activities, equipment, and events.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-7",
+        "name": "Cheerleading",
+        "description": "This subcategory focuses on cheerleading, routines, and competitive events.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-8",
+        "name": "Climbing",
+        "description": "This subcategory covers climbing, bouldering, and mountaineering activities.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-9",
+        "name": "Cricket",
+        "description": "This subcategory focuses on cricket news, matches, and team analysis.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-10",
+        "name": "Figure Skating",
+        "description": "This subcategory covers figure skating events, competitions, and athlete profiles.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-11",
+        "name": "Fly Fishing",
+        "description": "This subcategory focuses on fly fishing techniques, gear, and locations.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-12",
+        "name": "Football",
+        "description": "This subcategory covers football news, games, and team strategies.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-13",
+        "name": "Freshwater Fishing",
+        "description": "This subcategory focuses on freshwater fishing tips, gear, and locations.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-14",
+        "name": "Game & Fish",
+        "description": "This subcategory covers hunting, fishing, and outdoor game activities.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-15",
+        "name": "Golf",
+        "description": "This subcategory focuses on golf news, tips, and tournament updates.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-16",
+        "name": "Horse Racing",
+        "description": "This subcategory covers horse racing events, betting, and industry news.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-17",
+        "name": "Horses",
+        "description": "This subcategory focuses on horse-related sports, riding, and care.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-18",
+        "name": "Hunting/Shooting",
+        "description": "This subcategory covers hunting and shooting sports, equipment, and safety tips.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-19",
+        "name": "Inline Skating",
+        "description": "This subcategory focuses on inline skating, gear, and recreational tips.",
+        "position": 19,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-20",
+        "name": "Martial Arts",
+        "description": "This subcategory covers martial arts disciplines, training, and competition news.",
+        "position": 20,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-21",
+        "name": "Mountain Biking",
+        "description": "This subcategory focuses on mountain biking trails, gear, and adventure rides.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-22",
+        "name": "NASCAR Racing",
+        "description": "This subcategory covers NASCAR racing events, drivers, and race analysis.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-23",
+        "name": "Olympics",
+        "description": "This subcategory focuses on the Olympics, including news, events, and athlete profiles.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-24",
+        "name": "Paintball",
+        "description": "This subcategory covers paintball sports, equipment, and game strategies.",
+        "position": 24,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-25",
+        "name": "Power & Motorcycles",
+        "description": "This subcategory focuses on power sports and motorcycle events and reviews.",
+        "position": 25,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-26",
+        "name": "Pro Basketball",
+        "description": "This subcategory covers professional basketball news, games, and analysis.",
+        "position": 26,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-27",
+        "name": "Pro Ice Hockey",
+        "description": "This subcategory focuses on professional ice hockey, including games, teams, and player news.",
+        "position": 27,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-28",
+        "name": "Rodeo",
+        "description": "This subcategory covers rodeo events, competitions, and related sports.",
+        "position": 28,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-29",
+        "name": "Rugby",
+        "description": "This subcategory focuses on rugby news, matches, and team strategies.",
+        "position": 29,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-30",
+        "name": "Running/Jogging",
+        "description": "This subcategory covers running and jogging tips, events, and training programs.",
+        "position": 30,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-31",
+        "name": "Sailing",
+        "description": "This subcategory focuses on sailing, boat racing, and maritime activities.",
+        "position": 31,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-32",
+        "name": "Saltwater Fishing",
+        "description": "This subcategory covers saltwater fishing techniques, gear, and locations.",
+        "position": 32,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-33",
+        "name": "Scuba Diving",
+        "description": "This subcategory focuses on scuba diving, underwater exploration, and safety tips.",
+        "position": 33,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-34",
+        "name": "Skateboarding",
+        "description": "This subcategory covers skateboarding, tricks, gear, and cultural aspects.",
+        "position": 34,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-35",
+        "name": "Skiing",
+        "description": "This subcategory focuses on skiing, equipment, resorts, and winter sports.",
+        "position": 35,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-36",
+        "name": "Snowboarding",
+        "description": "This subcategory covers snowboarding techniques, gear, and mountain resorts.",
+        "position": 36,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-37",
+        "name": "Surfing/Body-Boarding",
+        "description": "This subcategory focuses on surfing and bodyboarding, including tips and destination guides.",
+        "position": 37,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-38",
+        "name": "Swimming",
+        "description": "This subcategory covers swimming, aquatic sports, and training techniques.",
+        "position": 38,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-39",
+        "name": "Table Tennis/Ping-Pong",
+        "description": "This subcategory focuses on table tennis, including game strategies and equipment reviews.",
+        "position": 39,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-40",
+        "name": "Tennis",
+        "description": "This subcategory covers tennis news, matches, and player analysis.",
+        "position": 40,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-41",
+        "name": "Volleyball",
+        "description": "This subcategory focuses on volleyball, including game rules, teams, and tournaments.",
+        "position": 41,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-42",
+        "name": "Walking",
+        "description": "This subcategory covers walking as a fitness activity and leisure pursuit.",
+        "position": 42,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-43",
+        "name": "Waterski/Wakeboard",
+        "description": "This subcategory focuses on waterskiing and wakeboarding, including techniques and equipment.",
+        "position": 43,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB17-44",
+        "name": "World Soccer",
+        "description": "This subcategory covers international soccer news, matches, and analysis.",
+        "position": 44,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB18",
+    "name": "Style & Fashion",
+    "description": "This category covers trends in fashion, beauty, personal style, and the latest in clothing, accessories, and lifestyle aesthetics.",
+    "position": 18,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB18-1",
+        "name": "Beauty",
+        "description": "This subcategory under Style & Fashion focuses on beauty trends, skincare, and makeup tips.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB18-2",
+        "name": "Body Art",
+        "description": "This subcategory covers body art, tattoos, and other forms of personal expression through art.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB18-3",
+        "name": "Fashion",
+        "description": "This subcategory focuses on fashion trends, designer news, and style advice.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB18-4",
+        "name": "Jewelry",
+        "description": "This subcategory covers jewelry trends, design, and accessories.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB18-5",
+        "name": "Clothing",
+        "description": "This subcategory focuses on clothing styles, brands, and fashion advice.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB18-6",
+        "name": "Accessories",
+        "description": "This subcategory covers fashion accessories, including bags, scarves, and other items.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB19",
+    "name": "Technology & Computing",
+    "description": "This category features content on technology trends, computing advancements, software reviews, hardware innovations, and digital culture.",
+    "position": 19,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB19-1",
+        "name": "3-D Graphics",
+        "description": "This subcategory under Technology & Computing focuses on 3-D graphics, modeling, and animation.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-2",
+        "name": "Animation",
+        "description": "This subcategory covers animation techniques, software, and industry news.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-3",
+        "name": "Antivirus Software",
+        "description": "This subcategory focuses on antivirus software, security solutions, and cybersecurity tips.",
+        "position": 3,
+        "keywords": [
+          "antivirus",
+          "cybersecurity"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-4",
+        "name": "C/C++",
+        "description": "This subcategory covers programming in C and C++, including tutorials and development tips.",
+        "position": 4,
+        "keywords": [
+          "c language",
+          "c++",
+          "cpp language"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-5",
+        "name": "Cameras & Camcorders",
+        "description": "This subcategory focuses on cameras, camcorders, and related technology reviews.",
+        "position": 5,
+        "keywords": [
+          "cameras",
+          "camcorders"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-6",
+        "name": "Cell Phones",
+        "description": "This subcategory covers cell phone technology, reviews, and mobile trends.",
+        "position": 6,
+        "keywords": [
+          "cell phone",
+          "mobile phone",
+          "smartphone"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-7",
+        "name": "Computer Certification",
+        "description": "This subcategory focuses on computer certifications, training, and career advice in IT.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-8",
+        "name": "Computer Networking",
+        "description": "This subcategory covers networking technology, protocols, and infrastructure.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-9",
+        "name": "Computer Peripherals",
+        "description": "This subcategory focuses on computer peripherals, accessories, and hardware reviews.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-10",
+        "name": "Computer Reviews",
+        "description": "This subcategory covers reviews of computers, laptops, and related technology.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-11",
+        "name": "Data Centers",
+        "description": "This subcategory focuses on data centers, server technology, and cloud computing infrastructure.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-12",
+        "name": "Databases",
+        "description": "This subcategory covers database technology, management systems, and data solutions.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-13",
+        "name": "Desktop Publishing",
+        "description": "This subcategory focuses on desktop publishing software, design, and layout techniques.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-14",
+        "name": "Desktop Video",
+        "description": "This subcategory covers desktop video editing, production software, and tutorials.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-15",
+        "name": "Email",
+        "description": "This subcategory focuses on email technology, communication tools, and best practices.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-16",
+        "name": "Graphics Software",
+        "description": "This subcategory covers graphics software, design tools, and creative applications.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-17",
+        "name": "Home Video/DVD",
+        "description": "This subcategory focuses on home video technology, DVD reviews, and media players.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-18",
+        "name": "Internet Technology",
+        "description": "This subcategory covers internet technology, web development, and digital trends.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-19",
+        "name": "Java",
+        "description": "This subcategory focuses on Java programming, development tips, and software updates.",
+        "position": 19,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-20",
+        "name": "JavaScript",
+        "description": "This subcategory covers JavaScript programming, web development, and interactive design.",
+        "position": 20,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-21",
+        "name": "Mac Support",
+        "description": "This subcategory focuses on support and resources for Mac computers and software.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-22",
+        "name": "MP3/MIDI",
+        "description": "This subcategory covers MP3 and MIDI technology, audio software, and music production tools.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-23",
+        "name": "Net Conferencing",
+        "description": "This subcategory focuses on net conferencing tools, online collaboration, and communication platforms.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-24",
+        "name": "Net for Beginners",
+        "description": "This subcategory provides guidance and resources for beginners in internet technology.",
+        "position": 24,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-25",
+        "name": "Network Security",
+        "description": "This subcategory covers network security, cybersecurity, and protection measures.",
+        "position": 25,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-26",
+        "name": "Palmtops/PDAs",
+        "description": "This subcategory focuses on palmtop computers, PDAs, and mobile computing devices.",
+        "position": 26,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-27",
+        "name": "PC Support",
+        "description": "This subcategory covers support resources, troubleshooting, and maintenance for PCs.",
+        "position": 27,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-28",
+        "name": "Portable",
+        "description": "This subcategory focuses on portable computing devices, including tablets and laptops.",
+        "position": 28,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-29",
+        "name": "Entertainment",
+        "description": "This subcategory covers entertainment technology, including multimedia systems and home entertainment.",
+        "position": 29,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-30",
+        "name": "Shareware/Freeware",
+        "description": "This subcategory focuses on shareware and freeware software, including reviews and downloads.",
+        "position": 30,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-31",
+        "name": "Unix",
+        "description": "This subcategory covers Unix operating systems, commands, and related technology.",
+        "position": 31,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-32",
+        "name": "Visual Basic",
+        "description": "This subcategory focuses on Visual Basic programming and application development.",
+        "position": 32,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-33",
+        "name": "Web Clip Art",
+        "description": "This subcategory covers web clip art, digital images, and graphic resources for web design.",
+        "position": 33,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-34",
+        "name": "Web Design/HTML",
+        "description": "This subcategory focuses on web design, HTML coding, and website development.",
+        "position": 34,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-35",
+        "name": "Web Search",
+        "description": "This subcategory covers web search technologies, search engines, and online research.",
+        "position": 35,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB19-36",
+        "name": "Windows",
+        "description": "This subcategory focuses on Windows operating systems, updates, and software reviews.",
+        "position": 36,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB20",
+    "name": "Travel",
+    "description": "This category provides travel guides, destination reviews, tips for planning trips, and insights into various travel experiences around the world.",
+    "position": 20,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB20-1",
+        "name": "Adventure Travel",
+        "description": "This subcategory under Travel focuses on adventure travel experiences and destinations.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-2",
+        "name": "Africa",
+        "description": "This subcategory covers travel information, guides, and tips for destinations in Africa.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-3",
+        "name": "Air Travel",
+        "description": "This subcategory focuses on air travel tips, airline reviews, and flight experiences.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-4",
+        "name": "Australia & New Zealand",
+        "description": "This subcategory covers travel guides and tips for Australia and New Zealand.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-5",
+        "name": "Bed & Breakfasts",
+        "description": "This subcategory focuses on bed and breakfast accommodations and travel experiences.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-6",
+        "name": "Budget Travel",
+        "description": "This subcategory covers budget travel tips, affordable destinations, and cost-saving strategies.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-7",
+        "name": "Business Travel",
+        "description": "This subcategory focuses on travel related to business, including corporate travel tips and services.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-8",
+        "name": "By US Locale",
+        "description": "This subcategory covers travel information categorized by US locales and regions.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-9",
+        "name": "Camping",
+        "description": "This subcategory focuses on camping tips, gear, and destination guides.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-10",
+        "name": "Canada",
+        "description": "This subcategory covers travel guides and tips for destinations in Canada.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-11",
+        "name": "Caribbean",
+        "description": "This subcategory focuses on travel to Caribbean destinations, including resorts and cultural experiences.",
+        "position": 11,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-12",
+        "name": "Cruises",
+        "description": "This subcategory covers cruise travel, itineraries, and tips for cruising.",
+        "position": 12,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-13",
+        "name": "Eastern Europe",
+        "description": "This subcategory focuses on travel in Eastern Europe, including destinations and cultural insights.",
+        "position": 13,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-14",
+        "name": "Europe",
+        "description": "This subcategory covers travel guides and tips for various European destinations.",
+        "position": 14,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-15",
+        "name": "France",
+        "description": "This subcategory focuses on travel information and tips for France, including culture and attractions.",
+        "position": 15,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-16",
+        "name": "Greece",
+        "description": "This subcategory covers travel guides for Greece, including historical sites and island destinations.",
+        "position": 16,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-17",
+        "name": "Honeymoons/Getaways",
+        "description": "This subcategory focuses on travel ideas for honeymoons and romantic getaways.",
+        "position": 17,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-18",
+        "name": "Hotels",
+        "description": "This subcategory covers hotel reviews, booking tips, and accommodation guides.",
+        "position": 18,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-19",
+        "name": "Italy",
+        "description": "This subcategory focuses on travel information and guides for Italy, including cultural highlights.",
+        "position": 19,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-20",
+        "name": "Japan",
+        "description": "This subcategory covers travel guides and tips for Japan, including cultural experiences and technology.",
+        "position": 20,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-21",
+        "name": "Mexico & Central America",
+        "description": "This subcategory focuses on travel in Mexico and Central American countries, including resorts and cultural insights.",
+        "position": 21,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-22",
+        "name": "National Parks",
+        "description": "This subcategory covers national parks, outdoor adventures, and nature travel.",
+        "position": 22,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-23",
+        "name": "South America",
+        "description": "This subcategory focuses on travel guides and tips for South American destinations.",
+        "position": 23,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-24",
+        "name": "Spas",
+        "description": "This subcategory covers spa resorts, wellness retreats, and relaxation travel experiences.",
+        "position": 24,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-25",
+        "name": "Theme Parks",
+        "description": "This subcategory focuses on theme parks, attractions, and family travel experiences.",
+        "position": 25,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-26",
+        "name": "Traveling with Kids",
+        "description": "This subcategory covers travel tips, destinations, and activities for families with children.",
+        "position": 26,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB20-27",
+        "name": "United Kingdom",
+        "description": "This subcategory focuses on travel guides and tips for the United Kingdom, including cultural insights.",
+        "position": 27,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB21",
+    "name": "Real Estate",
+    "description": "This category covers topics in real estate including property buying and selling, market trends, and advice on home investments.",
+    "position": 21,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB21-1",
+        "name": "Apartments",
+        "description": "This subcategory under Real Estate focuses on apartments, rental listings, and related advice.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB21-2",
+        "name": "Architects",
+        "description": "This subcategory covers topics related to architects, design, and building trends.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB21-3",
+        "name": "Buying/Selling Homes",
+        "description": "This subcategory focuses on the process of buying and selling homes, including market trends and advice.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB22",
+    "name": "Shopping",
+    "description": "This category offers insights into consumer shopping trends, product reviews, discounts, and comparisons across various retail sectors.",
+    "position": 22,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB22-1",
+        "name": "Contests & Freebies",
+        "description": "This subcategory under Shopping covers contests, giveaways, and freebies.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB22-2",
+        "name": "Couponing",
+        "description": "This subcategory focuses on couponing strategies, discounts, and savings tips.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB22-3",
+        "name": "Comparison",
+        "description": "This subcategory covers product comparisons, reviews, and shopping guides.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB22-4",
+        "name": "Engines",
+        "description": "This subcategory focuses on shopping for engines and related automotive components.",
+        "position": 4,
+        "keywords": [
+          "engines",
+          "automotive",
+          "motor"
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB23",
+    "name": "Religion & Spirituality",
+    "description": "This category explores topics related to religious beliefs, spiritual practices, and philosophical discussions across different faiths.",
+    "position": 23,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB23-1",
+        "name": "Alternative Religions",
+        "description": "This subcategory under Religion & Spirituality focuses on alternative religious beliefs and practices.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-2",
+        "name": "Atheism/Agnosticism",
+        "description": "This subcategory covers atheism, agnosticism, and secular perspectives.",
+        "position": 2,
+        "keywords": [
+          "atheism",
+          "agnosticism",
+          "secular"
+        ],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-3",
+        "name": "Buddhism",
+        "description": "This subcategory focuses on Buddhism, its teachings, and cultural impact.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-4",
+        "name": "Catholicism",
+        "description": "This subcategory covers Catholicism, including traditions, teachings, and community.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-5",
+        "name": "Christianity",
+        "description": "This subcategory focuses on Christianity, its denominations, and religious practices.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-6",
+        "name": "Hinduism",
+        "description": "This subcategory covers Hinduism, its traditions, and cultural significance.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-7",
+        "name": "Islam",
+        "description": "This subcategory focuses on Islam, its teachings, and cultural impact.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-8",
+        "name": "Judaism",
+        "description": "This subcategory covers Judaism, its traditions, and cultural heritage.",
+        "position": 8,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-9",
+        "name": "Latter-Day Saints",
+        "description": "This subcategory focuses on the beliefs and practices of Latter-Day Saints.",
+        "position": 9,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB23-10",
+        "name": "Pagan/Wiccan",
+        "description": "This subcategory covers Pagan and Wiccan practices, beliefs, and cultural aspects.",
+        "position": 10,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB24",
+    "name": "Uncategorized",
+    "description": "This category is used for content that does not fit into any other predefined category and remains uncategorized.",
+    "position": 24,
+    "keywords": [],
+    "children": []
+  },
+  {
+    "iab_code": "IAB25",
+    "name": "Non-Standard Content",
+    "description": "This category includes content that deviates from traditional standards, such as user-generated content and non-conventional media.",
+    "position": 25,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB25-1",
+        "name": "Unmoderated UGC",
+        "description": "This subcategory under Non-Standard Content focuses on unmoderated user-generated content.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB25-2",
+        "name": "Extreme Graphic/Explicit Violence",
+        "description": "This subcategory covers content featuring extreme graphic or explicit violence.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB25-3",
+        "name": "Pornography",
+        "description": "This subcategory focuses on adult content and pornography.",
+        "position": 3,
+        "keywords": [],
+        "children": [
+          {
+            "iab_code": "IAB25-RA3-1",
+            "name": "Straight Porn",
+            "description": "This subcategory covers straight pornography.",
+            "position": 1,
+            "keywords": [
+              "straight adult",
+              "straight content"
+            ],
+            "children": []
+          },
+          {
+            "iab_code": "IAB25-RA3-2",
+            "name": "Gay Porn",
+            "description": "This subcategory covers gay pornography.",
+            "position": 2,
+            "keywords": [
+              "gay adult",
+              "gay content"
+            ],
+            "children": []
+          },
+          {
+            "iab_code": "IAB25-RA3-3",
+            "name": "Lesbian Porn",
+            "description": "This subcategory covers lesbian pornography.",
+            "position": 3,
+            "keywords": [
+              "lesbian adult",
+              "lesbian content"
+            ],
+            "children": []
+          },
+          {
+            "iab_code": "IAB25-RA3-4",
+            "name": "Trans / Shemale Porn",
+            "description": "This subcategory covers trans / shemale pornography.",
+            "position": 4,
+            "keywords": [
+              "trans porn",
+              "trans adult",
+              "trans content",
+              "shemale porn",
+              "shemale adult",
+              "shemale content",
+              "shemale"
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "iab_code": "IAB25-4",
+        "name": "Profane Content",
+        "description": "This subcategory covers content that includes profanity and explicit language.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB25-5",
+        "name": "Hate Content",
+        "description": "This subcategory focuses on hate content and inflammatory material.",
+        "position": 5,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB25-6",
+        "name": "Under Construction",
+        "description": "This subcategory indicates content that is under construction or in development.",
+        "position": 6,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB25-7",
+        "name": "Incentivized",
+        "description": "This subcategory covers content that is incentivized or rewards-based.",
+        "position": 7,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  },
+  {
+    "iab_code": "IAB26",
+    "name": "Illegal Content",
+    "description": "This category covers content that is prohibited or falls under illegal activities, including copyright infringement and other unlawful material.",
+    "position": 26,
+    "keywords": [],
+    "children": [
+      {
+        "iab_code": "IAB26-1",
+        "name": "Illegal Content",
+        "description": "This subcategory under Illegal Content focuses on content that is deemed illegal or prohibited.",
+        "position": 1,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB26-2",
+        "name": "Warez",
+        "description": "This subcategory covers warez, including pirated software and unauthorized content sharing.",
+        "position": 2,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB26-3",
+        "name": "Spyware/Malware",
+        "description": "This subcategory focuses on spyware, malware, and related cybersecurity threats.",
+        "position": 3,
+        "keywords": [],
+        "children": []
+      },
+      {
+        "iab_code": "IAB26-4",
+        "name": "Copyright Infringement",
+        "description": "This subcategory covers copyright infringement issues and unauthorized content distribution.",
+        "position": 4,
+        "keywords": [],
+        "children": []
+      }
+    ]
+  }
+]

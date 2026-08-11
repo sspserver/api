@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
+	"github.com/geniusrabbit/gosql/v2"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,8 @@ type Category struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 
-	IABCode string `json:"iab_code"` // IAB category code of OpenRTB
+	IABCode  string                    `json:"iab_code"` // IAB category code of OpenRTB
+	Keywords gosql.NullableStringArray `gorm:"type:TEXT[]" json:"keywords,omitempty"`
 
 	ParentID  sql.Null[uint64] `json:"parent_id" gorm:"column:parent_id"`
 	Parent    *Category        `json:"parent,omitempty" gorm:"foreignKey:parent_id;references:ID"`
