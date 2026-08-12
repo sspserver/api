@@ -3131,7 +3131,7 @@
         "name": "Pornography",
         "description": "This subcategory focuses on adult content and pornography.",
         "position": 3,
-        "keywords": [],
+        "keywords": ["porn", "sex content"],
         "children": [
           {
             "iab_code": "IAB25-RA3-1",

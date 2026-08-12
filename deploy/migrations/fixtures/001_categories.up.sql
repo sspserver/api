@@ -651,7 +651,7 @@ INSERT INTO adv_category (name, description, iab_code, keywords, parent_id, posi
 VALUES
   ('Unmoderated UGC', 'This subcategory under Non-Standard Content focuses on unmoderated user-generated content.', 'IAB25-1', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 1),
   ('Extreme Graphic/Explicit Violence', 'This subcategory covers content featuring extreme graphic or explicit violence.', 'IAB25-2', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 2),
-  ('Pornography', 'This subcategory focuses on adult content and pornography.', 'IAB25-3', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 3),
+  ('Pornography', 'This subcategory focuses on adult content and pornography.', 'IAB25-3', ARRAY['porn', 'sex content']::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 3),
   ('Profane Content', 'This subcategory covers content that includes profanity and explicit language.', 'IAB25-4', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 4),
   ('Hate Content', 'This subcategory focuses on hate content and inflammatory material.', 'IAB25-5', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 5),
   ('Under Construction', 'This subcategory indicates content that is under construction or in development.', 'IAB25-6', ARRAY[]::TEXT[], (SELECT id FROM adv_category WHERE iab_code = 'IAB25' LIMIT 1), 6),
