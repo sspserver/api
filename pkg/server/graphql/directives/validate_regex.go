@@ -30,8 +30,14 @@ func ValidateRegex(ctx context.Context, obj any, next graphql.Resolver, pattern 
 	case string:
 		str = v
 	case *string:
-		str = *v
 		canBeNil = true
+		if v == nil {
+			if ornil {
+				return nil, nil
+			}
+			return nil, ErrValueIsNil
+		}
+		str = *v
 	default:
 		if gocast.IsEmpty(res) {
 			if ornil && reflect.ValueOf(res).Kind() == reflect.Pointer {

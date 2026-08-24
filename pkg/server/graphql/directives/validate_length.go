@@ -35,8 +35,14 @@ func _validateLength(val any, min, max int, trim, ornil bool) (any, error) {
 	case string:
 		str = v
 	case *string:
-		str = *v
 		canBeNil = true
+		if v == nil {
+			if ornil {
+				return nil, nil
+			}
+			return nil, ErrValueIsNil
+		}
+		str = *v
 	default:
 		if isArray = gocast.IsSlice(res); !isArray {
 			return nil, fmt.Errorf("value is not a string or slice")
