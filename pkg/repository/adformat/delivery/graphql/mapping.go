@@ -31,11 +31,61 @@ func FromAdFormatModel(format *models.Format) *gqlmodels.AdFormat {
 		MinWidth:  format.MinWidth,
 		MinHeight: format.MinHeight,
 
-		Config: *gqtypes.MustNullableJSONFrom(format.Config.Data),
+		Config: fromFormatConfig(format.Config.Data),
 
 		CreatedAt: format.CreatedAt,
 		UpdatedAt: format.UpdatedAt,
 		DeletedAt: gocast.IfThen(format.DeletedAt.Time.IsZero(), nil, &format.DeletedAt.Time),
+	}
+}
+
+func fromFormatConfig(cfg *types.FormatConfig) *gqlmodels.AdFormatConfig {
+	if cfg == nil {
+		return &gqlmodels.AdFormatConfig{}
+	}
+	return &gqlmodels.AdFormatConfig{
+		Assets: xtypes.SliceApply(cfg.Assets, fromFormatAsset),
+		Fields: xtypes.SliceApply(cfg.Fields, fromFormatField),
+	}
+}
+
+func fromFormatAsset(asset types.FormatFileRequirement) *gqlmodels.AdFormatAsset {
+	return &gqlmodels.AdFormatAsset{
+		ID:           gocast.IfThen(asset.ID != 0, gocast.Ptr(asset.ID), nil),
+		Required:     gocast.IfThen(asset.Required, gocast.Ptr(asset.Required), nil),
+		Name:         gocast.IfThen(asset.Name != "", gocast.Ptr(asset.Name), nil),
+		AdjustSize:   gocast.IfThen(asset.AdjustSize, gocast.Ptr(asset.AdjustSize), nil),
+		Width:        gocast.IfThen(asset.Width != 0, gocast.Ptr(asset.Width), nil),
+		Height:       gocast.IfThen(asset.Height != 0, gocast.Ptr(asset.Height), nil),
+		MinWidth:     gocast.IfThen(asset.MinWidth != 0, gocast.Ptr(asset.MinWidth), nil),
+		MinHeight:    gocast.IfThen(asset.MinHeight != 0, gocast.Ptr(asset.MinHeight), nil),
+		Animated:     gocast.IfThen(asset.Animated, gocast.Ptr(asset.Animated), nil),
+		Sound:        gocast.IfThen(asset.Sound, gocast.Ptr(asset.Sound), nil),
+		Thumbs:       asset.Thumbs,
+		AllowedTypes: asset.AllowedTypes,
+	}
+}
+
+func fromFormatField(field types.FormatField) *gqlmodels.AdFormatField {
+	typ := string(field.Type)
+	return &gqlmodels.AdFormatField{
+		ID:          gocast.IfThen(field.ID != 0, gocast.Ptr(field.ID), nil),
+		Required:    gocast.IfThen(field.Required, gocast.Ptr(field.Required), nil),
+		Title:       gocast.IfThen(field.Title != "", gocast.Ptr(field.Title), nil),
+		Description: gocast.IfThen(field.Description != "", gocast.Ptr(field.Description), nil),
+		Name:        field.Name,
+		Type:        gocast.IfThen(typ != "", gocast.Ptr(typ), nil),
+		Exclude:     field.Exclude,
+		Select: xtypes.SliceApply(field.Select, func(v any) *gqtypes.JSON {
+			return gqtypes.MustJSONFrom(v)
+		}),
+		Min:       gocast.IfThen(field.Min != 0, gocast.Ptr(field.Min), nil),
+		Max:       gocast.IfThen(field.Max != 0, gocast.Ptr(field.Max), nil),
+		Mask:      gocast.IfThen(field.Mask != "", gocast.Ptr(field.Mask), nil),
+		Regexp:    gocast.IfThen(field.RegExp != "", gocast.Ptr(field.RegExp), nil),
+		Multiline: gocast.IfThen(field.Multiline > 0, gocast.Ptr(field.Multiline), nil),
+		Editable:  field.IsEditable(),
+		Multilang: field.IsMultilang(),
 	}
 }
 

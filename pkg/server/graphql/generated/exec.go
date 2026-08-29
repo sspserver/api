@@ -105,10 +105,48 @@ type ComplexityRoot struct {
 		Width       func(childComplexity int) int
 	}
 
+	AdFormatAsset struct {
+		AdjustSize   func(childComplexity int) int
+		AllowedTypes func(childComplexity int) int
+		Animated     func(childComplexity int) int
+		Height       func(childComplexity int) int
+		ID           func(childComplexity int) int
+		MinHeight    func(childComplexity int) int
+		MinWidth     func(childComplexity int) int
+		Name         func(childComplexity int) int
+		Required     func(childComplexity int) int
+		Sound        func(childComplexity int) int
+		Thumbs       func(childComplexity int) int
+		Width        func(childComplexity int) int
+	}
+
+	AdFormatConfig struct {
+		Assets func(childComplexity int) int
+		Fields func(childComplexity int) int
+	}
+
 	AdFormatConnection struct {
 		List       func(childComplexity int) int
 		PageInfo   func(childComplexity int) int
 		TotalCount func(childComplexity int) int
+	}
+
+	AdFormatField struct {
+		Description func(childComplexity int) int
+		Editable    func(childComplexity int) int
+		Exclude     func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Mask        func(childComplexity int) int
+		Max         func(childComplexity int) int
+		Min         func(childComplexity int) int
+		Multilang   func(childComplexity int) int
+		Multiline   func(childComplexity int) int
+		Name        func(childComplexity int) int
+		Regexp      func(childComplexity int) int
+		Required    func(childComplexity int) int
+		Select      func(childComplexity int) int
+		Title       func(childComplexity int) int
+		Type        func(childComplexity int) int
 	}
 
 	AdFormatPayload struct {
@@ -1361,6 +1399,92 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.ComplexityRoot.AdFormat.Width(childComplexity), true
 
+	case "AdFormatAsset.adjustSize":
+		if e.ComplexityRoot.AdFormatAsset.AdjustSize == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.AdjustSize(childComplexity), true
+	case "AdFormatAsset.allowedTypes":
+		if e.ComplexityRoot.AdFormatAsset.AllowedTypes == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.AllowedTypes(childComplexity), true
+	case "AdFormatAsset.animated":
+		if e.ComplexityRoot.AdFormatAsset.Animated == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Animated(childComplexity), true
+	case "AdFormatAsset.height":
+		if e.ComplexityRoot.AdFormatAsset.Height == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Height(childComplexity), true
+	case "AdFormatAsset.id":
+		if e.ComplexityRoot.AdFormatAsset.ID == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.ID(childComplexity), true
+	case "AdFormatAsset.minHeight":
+		if e.ComplexityRoot.AdFormatAsset.MinHeight == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.MinHeight(childComplexity), true
+	case "AdFormatAsset.minWidth":
+		if e.ComplexityRoot.AdFormatAsset.MinWidth == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.MinWidth(childComplexity), true
+	case "AdFormatAsset.name":
+		if e.ComplexityRoot.AdFormatAsset.Name == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Name(childComplexity), true
+	case "AdFormatAsset.required":
+		if e.ComplexityRoot.AdFormatAsset.Required == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Required(childComplexity), true
+	case "AdFormatAsset.sound":
+		if e.ComplexityRoot.AdFormatAsset.Sound == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Sound(childComplexity), true
+	case "AdFormatAsset.thumbs":
+		if e.ComplexityRoot.AdFormatAsset.Thumbs == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Thumbs(childComplexity), true
+	case "AdFormatAsset.width":
+		if e.ComplexityRoot.AdFormatAsset.Width == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatAsset.Width(childComplexity), true
+
+	case "AdFormatConfig.assets":
+		if e.ComplexityRoot.AdFormatConfig.Assets == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatConfig.Assets(childComplexity), true
+	case "AdFormatConfig.fields":
+		if e.ComplexityRoot.AdFormatConfig.Fields == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatConfig.Fields(childComplexity), true
+
 	case "AdFormatConnection.list":
 		if e.ComplexityRoot.AdFormatConnection.List == nil {
 			break
@@ -1379,6 +1503,97 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.AdFormatConnection.TotalCount(childComplexity), true
+
+	case "AdFormatField.description":
+		if e.ComplexityRoot.AdFormatField.Description == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Description(childComplexity), true
+	case "AdFormatField.editable":
+		if e.ComplexityRoot.AdFormatField.Editable == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Editable(childComplexity), true
+	case "AdFormatField.exclude":
+		if e.ComplexityRoot.AdFormatField.Exclude == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Exclude(childComplexity), true
+	case "AdFormatField.id":
+		if e.ComplexityRoot.AdFormatField.ID == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.ID(childComplexity), true
+	case "AdFormatField.mask":
+		if e.ComplexityRoot.AdFormatField.Mask == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Mask(childComplexity), true
+	case "AdFormatField.max":
+		if e.ComplexityRoot.AdFormatField.Max == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Max(childComplexity), true
+	case "AdFormatField.min":
+		if e.ComplexityRoot.AdFormatField.Min == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Min(childComplexity), true
+	case "AdFormatField.multilang":
+		if e.ComplexityRoot.AdFormatField.Multilang == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Multilang(childComplexity), true
+	case "AdFormatField.multiline":
+		if e.ComplexityRoot.AdFormatField.Multiline == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Multiline(childComplexity), true
+	case "AdFormatField.name":
+		if e.ComplexityRoot.AdFormatField.Name == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Name(childComplexity), true
+	case "AdFormatField.regexp":
+		if e.ComplexityRoot.AdFormatField.Regexp == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Regexp(childComplexity), true
+	case "AdFormatField.required":
+		if e.ComplexityRoot.AdFormatField.Required == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Required(childComplexity), true
+	case "AdFormatField.select":
+		if e.ComplexityRoot.AdFormatField.Select == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Select(childComplexity), true
+	case "AdFormatField.title":
+		if e.ComplexityRoot.AdFormatField.Title == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Title(childComplexity), true
+	case "AdFormatField.type":
+		if e.ComplexityRoot.AdFormatField.Type == nil {
+			break
+		}
+
+		return e.ComplexityRoot.AdFormatField.Type(childComplexity), true
 
 	case "AdFormatPayload.clientMutationID":
 		if e.ComplexityRoot.AdFormatPayload.ClientMutationID == nil {
@@ -7795,11 +8010,82 @@ extend type Mutation {
   """
   Configurations of the ad format which includes structure of assets and their properties
   """
-  config: NullableJSON!
+  config: AdFormatConfig!
 
   createdAt: Time!
   updatedAt: Time!
   deletedAt: Time
+}
+
+"""
+Asset and field requirements of an ad format
+"""
+type AdFormatConfig {
+  """
+  File assets required or optional for this format
+  """
+  assets: [AdFormatAsset!]
+
+  """
+  Text/numeric fields of the creative
+  """
+  fields: [AdFormatField!]
+}
+
+"""
+File asset requirement of an ad format
+"""
+type AdFormatAsset {
+  id: Int
+  required: Boolean
+  name: String
+  adjustSize: Boolean
+  width: Int
+  height: Int
+  minWidth: Int
+  minHeight: Int
+  animated: Boolean
+  sound: Boolean
+  thumbs: [String!]
+  allowedTypes: [String!]
+}
+
+"""
+Creative field requirement of an ad format
+"""
+type AdFormatField {
+  id: Int
+  required: Boolean
+  title: String
+
+  """
+  Helper text shown under the title in the edit UI
+  """
+  description: String
+
+  name: String!
+  type: String
+  exclude: [String!]
+  select: [JSON!]
+  min: Float
+  max: Float
+  mask: String
+  regexp: String
+
+  """
+  Minimum textarea row count; null/0 means a single-line input
+  """
+  multiline: Int
+
+  """
+  When false, the field is hidden from the general edit UI. Defaults to true.
+  """
+  editable: Boolean!
+
+  """
+  Field supports multiple languages when editing
+  """
+  multilang: Boolean!
 }
 
 type AdFormatConnection {
@@ -11115,6 +11401,46 @@ func (ec *executionContext) childFields_AdFormat(ctx context.Context, field grap
 	return nil, fmt.Errorf("no field named %q was found under type AdFormat", field.Name)
 }
 
+func (ec *executionContext) childFields_AdFormatAsset(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+	switch field.Name {
+	case "id":
+		return ec.fieldContext_AdFormatAsset_id(ctx, field)
+	case "required":
+		return ec.fieldContext_AdFormatAsset_required(ctx, field)
+	case "name":
+		return ec.fieldContext_AdFormatAsset_name(ctx, field)
+	case "adjustSize":
+		return ec.fieldContext_AdFormatAsset_adjustSize(ctx, field)
+	case "width":
+		return ec.fieldContext_AdFormatAsset_width(ctx, field)
+	case "height":
+		return ec.fieldContext_AdFormatAsset_height(ctx, field)
+	case "minWidth":
+		return ec.fieldContext_AdFormatAsset_minWidth(ctx, field)
+	case "minHeight":
+		return ec.fieldContext_AdFormatAsset_minHeight(ctx, field)
+	case "animated":
+		return ec.fieldContext_AdFormatAsset_animated(ctx, field)
+	case "sound":
+		return ec.fieldContext_AdFormatAsset_sound(ctx, field)
+	case "thumbs":
+		return ec.fieldContext_AdFormatAsset_thumbs(ctx, field)
+	case "allowedTypes":
+		return ec.fieldContext_AdFormatAsset_allowedTypes(ctx, field)
+	}
+	return nil, fmt.Errorf("no field named %q was found under type AdFormatAsset", field.Name)
+}
+
+func (ec *executionContext) childFields_AdFormatConfig(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+	switch field.Name {
+	case "assets":
+		return ec.fieldContext_AdFormatConfig_assets(ctx, field)
+	case "fields":
+		return ec.fieldContext_AdFormatConfig_fields(ctx, field)
+	}
+	return nil, fmt.Errorf("no field named %q was found under type AdFormatConfig", field.Name)
+}
+
 func (ec *executionContext) childFields_AdFormatConnection(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 	switch field.Name {
 	case "totalCount":
@@ -11125,6 +11451,42 @@ func (ec *executionContext) childFields_AdFormatConnection(ctx context.Context, 
 		return ec.fieldContext_AdFormatConnection_pageInfo(ctx, field)
 	}
 	return nil, fmt.Errorf("no field named %q was found under type AdFormatConnection", field.Name)
+}
+
+func (ec *executionContext) childFields_AdFormatField(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+	switch field.Name {
+	case "id":
+		return ec.fieldContext_AdFormatField_id(ctx, field)
+	case "required":
+		return ec.fieldContext_AdFormatField_required(ctx, field)
+	case "title":
+		return ec.fieldContext_AdFormatField_title(ctx, field)
+	case "description":
+		return ec.fieldContext_AdFormatField_description(ctx, field)
+	case "name":
+		return ec.fieldContext_AdFormatField_name(ctx, field)
+	case "type":
+		return ec.fieldContext_AdFormatField_type(ctx, field)
+	case "exclude":
+		return ec.fieldContext_AdFormatField_exclude(ctx, field)
+	case "select":
+		return ec.fieldContext_AdFormatField_select(ctx, field)
+	case "min":
+		return ec.fieldContext_AdFormatField_min(ctx, field)
+	case "max":
+		return ec.fieldContext_AdFormatField_max(ctx, field)
+	case "mask":
+		return ec.fieldContext_AdFormatField_mask(ctx, field)
+	case "regexp":
+		return ec.fieldContext_AdFormatField_regexp(ctx, field)
+	case "multiline":
+		return ec.fieldContext_AdFormatField_multiline(ctx, field)
+	case "editable":
+		return ec.fieldContext_AdFormatField_editable(ctx, field)
+	case "multilang":
+		return ec.fieldContext_AdFormatField_multilang(ctx, field)
+	}
+	return nil, fmt.Errorf("no field named %q was found under type AdFormatField", field.Name)
 }
 
 func (ec *executionContext) childFields_AdFormatPayload(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
@@ -16339,15 +16701,24 @@ func (ec *executionContext) _AdFormat_config(ctx context.Context, field graphql.
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
-		func(ctx context.Context, selections ast.SelectionSet, v types.NullableJSON) graphql.Marshaler {
-			return ec.marshalNNullableJSON2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐNullableJSON(ctx, selections, v)
+		func(ctx context.Context, selections ast.SelectionSet, v *models.AdFormatConfig) graphql.Marshaler {
+			return ec.marshalNAdFormatConfig2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatConfig(ctx, selections, v)
 		},
 		true,
 		true,
 	)
 }
 func (ec *executionContext) fieldContext_AdFormat_config(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	return graphql.NewScalarFieldContext("AdFormat", field, false, false, errors.New("field of type NullableJSON does not have child fields"))
+	fc = &graphql.FieldContext{
+		Object:     "AdFormat",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_AdFormatConfig(ctx, field)
+		},
+	}
+	return fc, nil
 }
 
 func (ec *executionContext) _AdFormat_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.AdFormat) (ret graphql.Marshaler) {
@@ -16423,6 +16794,374 @@ func (ec *executionContext) _AdFormat_deletedAt(ctx context.Context, field graph
 }
 func (ec *executionContext) fieldContext_AdFormat_deletedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	return graphql.NewScalarFieldContext("AdFormat", field, false, false, errors.New("field of type Time does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_id(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_id(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.ID, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_required(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_required(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Required, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *bool) graphql.Marshaler {
+			return ec.marshalOBoolean2ᚖbool(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_required(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_name(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_name(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Name, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_adjustSize(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_adjustSize(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.AdjustSize, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *bool) graphql.Marshaler {
+			return ec.marshalOBoolean2ᚖbool(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_adjustSize(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_width(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_width(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Width, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_width(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_height(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_height(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Height, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_height(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_minWidth(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_minWidth(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.MinWidth, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_minWidth(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_minHeight(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_minHeight(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.MinHeight, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_minHeight(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_animated(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_animated(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Animated, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *bool) graphql.Marshaler {
+			return ec.marshalOBoolean2ᚖbool(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_animated(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_sound(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_sound(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Sound, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *bool) graphql.Marshaler {
+			return ec.marshalOBoolean2ᚖbool(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_sound(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_thumbs(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_thumbs(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Thumbs, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []string) graphql.Marshaler {
+			return ec.marshalOString2ᚕstringᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_thumbs(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatAsset_allowedTypes(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatAsset) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatAsset_allowedTypes(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.AllowedTypes, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []string) graphql.Marshaler {
+			return ec.marshalOString2ᚕstringᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatAsset_allowedTypes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatAsset", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatConfig_assets(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatConfig) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatConfig_assets(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Assets, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.AdFormatAsset) graphql.Marshaler {
+			return ec.marshalOAdFormatAsset2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatAssetᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatConfig_assets(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AdFormatConfig",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_AdFormatAsset(ctx, field)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AdFormatConfig_fields(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatConfig) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatConfig_fields(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Fields, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.AdFormatField) graphql.Marshaler {
+			return ec.marshalOAdFormatField2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatFieldᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatConfig_fields(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AdFormatConfig",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_AdFormatField(ctx, field)
+		},
+	}
+	return fc, nil
 }
 
 func (ec *executionContext) _AdFormatConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *connectors.CollectionConnection[*models.AdFormat]) (ret graphql.Marshaler) {
@@ -16516,6 +17255,381 @@ func (ec *executionContext) fieldContext_AdFormatConnection_pageInfo(_ context.C
 		},
 	}
 	return fc, nil
+}
+
+func (ec *executionContext) _AdFormatField_id(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_id(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.ID, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_required(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_required(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Required, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *bool) graphql.Marshaler {
+			return ec.marshalOBoolean2ᚖbool(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_required(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_title(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_title(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Title, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_description(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_description(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Description, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_name(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_name(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Name, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
+			return ec.marshalNString2string(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_type(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_type(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Type, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_type(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_exclude(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_exclude(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Exclude, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []string) graphql.Marshaler {
+			return ec.marshalOString2ᚕstringᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_exclude(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_select(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_select(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Select, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []*types.JSON) graphql.Marshaler {
+			return ec.marshalOJSON2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSONᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_select(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type JSON does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_min(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_min(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Min, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *float64) graphql.Marshaler {
+			return ec.marshalOFloat2ᚖfloat64(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_min(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Float does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_max(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_max(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Max, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *float64) graphql.Marshaler {
+			return ec.marshalOFloat2ᚖfloat64(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_max(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Float does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_mask(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_mask(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Mask, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_mask(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_regexp(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_regexp(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Regexp, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_regexp(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_multiline(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_multiline(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Multiline, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *int) graphql.Marshaler {
+			return ec.marshalOInt2ᚖint(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_multiline(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Int does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_editable(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_editable(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Editable, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v bool) graphql.Marshaler {
+			return ec.marshalNBoolean2bool(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_editable(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Boolean does not have child fields"))
+}
+
+func (ec *executionContext) _AdFormatField_multilang(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_AdFormatField_multilang(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Multilang, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v bool) graphql.Marshaler {
+			return ec.marshalNBoolean2bool(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_AdFormatField_multilang(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("AdFormatField", field, false, false, errors.New("field of type Boolean does not have child fields"))
 }
 
 func (ec *executionContext) _AdFormatPayload_clientMutationID(ctx context.Context, field graphql.CollectedField, obj *models.AdFormatPayload) (ret graphql.Marshaler) {
@@ -47813,6 +48927,142 @@ func (ec *executionContext) _AdFormat(ctx context.Context, sel ast.SelectionSet,
 	return out
 }
 
+var adFormatAssetImplementors = []string{"AdFormatAsset"}
+
+func (ec *executionContext) _AdFormatAsset(ctx context.Context, sel ast.SelectionSet, obj *models.AdFormatAsset) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, adFormatAssetImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferredFieldSet := graphql.NewFieldSet(nil)
+	deferLabelToView := make(map[string]*graphql.FieldSetView)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("AdFormatAsset")
+		case "id":
+			out.Values[i] = ec._AdFormatAsset_id(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "required":
+			out.Values[i] = ec._AdFormatAsset_required(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "name":
+			out.Values[i] = ec._AdFormatAsset_name(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "adjustSize":
+			out.Values[i] = ec._AdFormatAsset_adjustSize(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "width":
+			out.Values[i] = ec._AdFormatAsset_width(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "height":
+			out.Values[i] = ec._AdFormatAsset_height(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "minWidth":
+			out.Values[i] = ec._AdFormatAsset_minWidth(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "minHeight":
+			out.Values[i] = ec._AdFormatAsset_minHeight(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "animated":
+			out.Values[i] = ec._AdFormatAsset_animated(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "sound":
+			out.Values[i] = ec._AdFormatAsset_sound(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "thumbs":
+			out.Values[i] = ec._AdFormatAsset_thumbs(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "allowedTypes":
+			out.Values[i] = ec._AdFormatAsset_allowedTypes(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.Deferred, int32(min(len(deferLabelToView), math.MaxInt32)))
+
+	ec.ProcessDeferredGroup(graphql.DeferredGroup{
+		Defers:   deferLabelToView,
+		Path:     graphql.GetPath(ctx),
+		FieldSet: deferredFieldSet,
+		Context:  ctx,
+	})
+
+	return out
+}
+
+var adFormatConfigImplementors = []string{"AdFormatConfig"}
+
+func (ec *executionContext) _AdFormatConfig(ctx context.Context, sel ast.SelectionSet, obj *models.AdFormatConfig) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, adFormatConfigImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferredFieldSet := graphql.NewFieldSet(nil)
+	deferLabelToView := make(map[string]*graphql.FieldSetView)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("AdFormatConfig")
+		case "assets":
+			out.Values[i] = ec._AdFormatConfig_assets(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "fields":
+			out.Values[i] = ec._AdFormatConfig_fields(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.Deferred, int32(min(len(deferLabelToView), math.MaxInt32)))
+
+	ec.ProcessDeferredGroup(graphql.DeferredGroup{
+		Defers:   deferLabelToView,
+		Path:     graphql.GetPath(ctx),
+		FieldSet: deferredFieldSet,
+		Context:  ctx,
+	})
+
+	return out
+}
+
 var adFormatConnectionImplementors = []string{"AdFormatConnection"}
 
 func (ec *executionContext) _AdFormatConnection(ctx context.Context, sel ast.SelectionSet, obj *connectors.CollectionConnection[*models.AdFormat]) graphql.Marshaler {
@@ -47837,6 +49087,114 @@ func (ec *executionContext) _AdFormatConnection(ctx context.Context, sel ast.Sel
 			}
 		case "pageInfo":
 			out.Values[i] = ec._AdFormatConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.Deferred, int32(min(len(deferLabelToView), math.MaxInt32)))
+
+	ec.ProcessDeferredGroup(graphql.DeferredGroup{
+		Defers:   deferLabelToView,
+		Path:     graphql.GetPath(ctx),
+		FieldSet: deferredFieldSet,
+		Context:  ctx,
+	})
+
+	return out
+}
+
+var adFormatFieldImplementors = []string{"AdFormatField"}
+
+func (ec *executionContext) _AdFormatField(ctx context.Context, sel ast.SelectionSet, obj *models.AdFormatField) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, adFormatFieldImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferredFieldSet := graphql.NewFieldSet(nil)
+	deferLabelToView := make(map[string]*graphql.FieldSetView)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("AdFormatField")
+		case "id":
+			out.Values[i] = ec._AdFormatField_id(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "required":
+			out.Values[i] = ec._AdFormatField_required(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "title":
+			out.Values[i] = ec._AdFormatField_title(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "description":
+			out.Values[i] = ec._AdFormatField_description(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "name":
+			out.Values[i] = ec._AdFormatField_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "type":
+			out.Values[i] = ec._AdFormatField_type(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "exclude":
+			out.Values[i] = ec._AdFormatField_exclude(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "select":
+			out.Values[i] = ec._AdFormatField_select(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "min":
+			out.Values[i] = ec._AdFormatField_min(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "max":
+			out.Values[i] = ec._AdFormatField_max(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "mask":
+			out.Values[i] = ec._AdFormatField_mask(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "regexp":
+			out.Values[i] = ec._AdFormatField_regexp(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "multiline":
+			out.Values[i] = ec._AdFormatField_multiline(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				out.Invalids++
+			}
+		case "editable":
+			out.Values[i] = ec._AdFormatField_editable(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "multilang":
+			out.Values[i] = ec._AdFormatField_multilang(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -55657,6 +57015,36 @@ func (ec *executionContext) marshalNAdFormat2ᚖgithubᚗcomᚋsspserverᚋapi�
 	return ec._AdFormat(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNAdFormatAsset2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatAsset(ctx context.Context, sel ast.SelectionSet, v *models.AdFormatAsset) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._AdFormatAsset(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNAdFormatConfig2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatConfig(ctx context.Context, sel ast.SelectionSet, v *models.AdFormatConfig) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._AdFormatConfig(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNAdFormatField2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatField(ctx context.Context, sel ast.SelectionSet, v *models.AdFormatField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._AdFormatField(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNAdFormatInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatInput(ctx context.Context, v any) (models.AdFormatInput, error) {
 	res, err := ec.unmarshalInputAdFormatInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -56255,6 +57643,22 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 func (ec *executionContext) unmarshalNInviteMemberInput2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐInviteMemberInput(ctx context.Context, v any) (models1.InviteMemberInput, error) {
 	res, err := ec.unmarshalInputInviteMemberInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx context.Context, v any) (*types.JSON, error) {
+	var res = new(types.JSON)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx context.Context, sel ast.SelectionSet, v *types.JSON) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) marshalNLang2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐLang(ctx context.Context, sel ast.SelectionSet, v *models.Lang) graphql.Marshaler {
@@ -57189,11 +58593,49 @@ func (ec *executionContext) marshalOAdFormat2ᚕᚖgithubᚗcomᚋsspserverᚋap
 	return ret
 }
 
+func (ec *executionContext) marshalOAdFormatAsset2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatAssetᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.AdFormatAsset) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
+		fc := graphql.GetFieldContext(ctx)
+		fc.Result = &v[i]
+		return ec.marshalNAdFormatAsset2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatAsset(ctx, sel, v[i])
+	})
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalOAdFormatConnection2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋconnectorsᚐCollectionConnection(ctx context.Context, sel ast.SelectionSet, v *connectors.CollectionConnection[*models.AdFormat]) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._AdFormatConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOAdFormatField2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatFieldᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.AdFormatField) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
+		fc := graphql.GetFieldContext(ctx)
+		fc.Result = &v[i]
+		return ec.marshalNAdFormatField2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatField(ctx, sel, v[i])
+	})
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOAdFormatListFilter2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐAdFormatListFilter(ctx context.Context, v any) (*models.AdFormatListFilter, error) {
@@ -58156,6 +59598,42 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	_ = ctx
 	res := graphql.MarshalInt(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOJSON2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSONᚄ(ctx context.Context, v any) ([]*types.JSON, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	vSlice = graphql.CoerceList(v)
+	var err error
+	res := make([]*types.JSON, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOJSON2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSONᚄ(ctx context.Context, sel ast.SelectionSet, v []*types.JSON) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOJSON2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋtypesᚐJSON(ctx context.Context, v any) (*types.JSON, error) {

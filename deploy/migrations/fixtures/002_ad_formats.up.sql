@@ -5,7 +5,24 @@ INSERT INTO adv_format
 VALUES
     (1, 'direct', 'direct', 'Direct', 'active', NULL, NULL, NULL, NULL, '{}'::jsonb),
 
-    (2, 'proxy', 'proxy', 'Proxy Stretch', 'active', 0, 0, 10, 10, '{}'::jsonb),
+    (2, 'proxy', 'proxy', 'Proxy Stretch', 'active', 0, 0, 10, 10, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
 
     (3, 'video', 'video', 'Video', 'active', NULL, NULL, NULL, NULL,
         $json$
@@ -57,12 +74,14 @@ VALUES
               "name": "title",
               "type": "string",
               "min": 3,
-              "max": 150
+              "max": 150,
+              "multilang": true
             },
             {
               "id": 102,
               "required": false,
               "title": "Display start",
+              "description": "When to show the companion overlay",
               "name": "start",
               "type": "string",
               "select": [
@@ -77,6 +96,7 @@ VALUES
               "id": 103,
               "required": false,
               "title": "Display on specific time",
+              "description": "Show companion at this second",
               "name": "start_on",
               "exclude": ["start"],
               "type": "int"
@@ -124,16 +144,20 @@ VALUES
               "name": "title",
               "type": "string",
               "min": 5,
-              "max": 40
+              "max": 40,
+              "multilang": true
             },
             {
               "id": 102,
               "required": true,
               "title": "Description",
+              "description": "Body text shown with the ad",
               "name": "description",
               "type": "string",
               "min": 5,
-              "max": 80
+              "max": 80,
+              "multiline": 3,
+              "multilang": true
             },
             {
               "id": 103,
@@ -141,7 +165,8 @@ VALUES
               "title": "Brandname",
               "name": "brandname",
               "type": "string",
-              "max": 30
+              "max": 30,
+              "multilang": true
             },
             {
               "id": 104,
@@ -154,6 +179,7 @@ VALUES
               "id": 105,
               "required": false,
               "title": "Promotion URL",
+              "description": "Click-through landing page URL",
               "name": "url",
               "type": "url"
             }
@@ -161,29 +187,348 @@ VALUES
         }
         $json$::jsonb),
 
-    (5, 'proxy_250x250', 'proxy', 'Proxy (Square)', 'active', 250, 250, NULL, NULL, '{}'::jsonb),
-    (6, 'proxy_200x200', 'proxy', 'Proxy (Small Square)', 'active', 200, 200, NULL, NULL, '{}'::jsonb),
-    (7, 'proxy_468x60', 'proxy', 'Proxy (Banner)', 'active', 468, 60, NULL, NULL, '{}'::jsonb),
-    (8, 'proxy_728x90', 'proxy', 'Proxy (Leaderboard)', 'active', 728, 90, NULL, NULL, '{}'::jsonb),
-    (9, 'proxy_300x250', 'proxy', 'Proxy (Inline Rectangle)', 'active', 300, 250, NULL, NULL, '{}'::jsonb),
-    (10, 'proxy_336x280', 'proxy', 'Proxy (Large Rectangle)', 'active', 336, 280, NULL, NULL, '{}'::jsonb),
-    (11, 'proxy_120x600', 'proxy', 'Proxy (Skyscraper)', 'active', 120, 600, NULL, NULL, '{}'::jsonb),
-    (12, 'proxy_160x600', 'proxy', 'Proxy (Wide Skyscraper)', 'active', 160, 600, NULL, NULL, '{}'::jsonb),
-    (13, 'proxy_300x600', 'proxy', 'Proxy (Half-Page Ad)', 'active', 300, 600, NULL, NULL, '{}'::jsonb),
-    (14, 'proxy_970x90', 'proxy', 'Proxy (Large Leaderboard)', 'active', 970, 90, NULL, NULL, '{}'::jsonb),
-    (15, 'proxy_320x50', 'proxy', 'Proxy (Mobile Leaderboard)', 'active', 320, 50, NULL, NULL, '{}'::jsonb),
+    (5, 'proxy_250x250', 'proxy', 'Proxy (Square)', 'active', 250, 250, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (6, 'proxy_200x200', 'proxy', 'Proxy (Small Square)', 'active', 200, 200, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (7, 'proxy_468x60', 'proxy', 'Proxy (Banner)', 'active', 468, 60, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (8, 'proxy_728x90', 'proxy', 'Proxy (Leaderboard)', 'active', 728, 90, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (9, 'proxy_300x250', 'proxy', 'Proxy (Inline Rectangle)', 'active', 300, 250, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (10, 'proxy_336x280', 'proxy', 'Proxy (Large Rectangle)', 'active', 336, 280, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (11, 'proxy_120x600', 'proxy', 'Proxy (Skyscraper)', 'active', 120, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (12, 'proxy_160x600', 'proxy', 'Proxy (Wide Skyscraper)', 'active', 160, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (13, 'proxy_300x600', 'proxy', 'Proxy (Half-Page Ad)', 'active', 300, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (14, 'proxy_970x90', 'proxy', 'Proxy (Large Leaderboard)', 'active', 970, 90, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
+    (15, 'proxy_320x50', 'proxy', 'Proxy (Mobile Leaderboard)', 'active', 320, 50, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "name": "main",
+            "allowed_types": ["text/html"]
+          }
+        ],
+        "fields": [
+          {
+            "id": 1001,
+            "title": "HTML Content",
+            "name": "content",
+            "type": "html",
+            "multiline": 10
+          }
+        ]
+      }$json$::jsonb),
 
-    (16, 'banner_250x250', 'banner', 'Square', 'active', 250, 250, NULL, NULL, '{}'::jsonb),
-    (17, 'banner_200x200', 'banner', 'Small Square', 'active', 200, 200, NULL, NULL, '{}'::jsonb),
-    (18, 'banner_468x60', 'banner', 'Banner', 'active', 468, 60, NULL, NULL, '{}'::jsonb),
-    (19, 'banner_728x90', 'banner', 'Leaderboard', 'active', 728, 90, NULL, NULL, '{}'::jsonb),
-    (20, 'banner_300x250', 'banner', 'Inline Rectangle', 'active', 300, 250, NULL, NULL, '{}'::jsonb),
-    (21, 'banner_336x280', 'banner', 'Large Rectangle', 'active', 336, 280, NULL, NULL, '{}'::jsonb),
-    (22, 'banner_120x600', 'banner', 'Skyscraper', 'active', 120, 600, NULL, NULL, '{}'::jsonb),
-    (23, 'banner_160x600', 'banner', 'Wide Skyscraper', 'active', 160, 600, NULL, NULL, '{}'::jsonb),
-    (24, 'banner_300x600', 'banner', 'Half-Page Ad', 'active', 300, 600, NULL, NULL, '{}'::jsonb),
-    (25, 'banner_970x90', 'banner', 'Large Leaderboard', 'active', 970, 90, NULL, NULL, '{}'::jsonb),
-    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'active', 320, 50, NULL, NULL, '{}'::jsonb)
+    (16, 'banner_250x250', 'banner', 'Square', 'active', 250, 250, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 250,
+            "height": 250,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (17, 'banner_200x200', 'banner', 'Small Square', 'active', 200, 200, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 200,
+            "height": 200,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (18, 'banner_468x60', 'banner', 'Banner', 'active', 468, 60, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 468,
+            "height": 60,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (19, 'banner_728x90', 'banner', 'Leaderboard', 'active', 728, 90, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 728,
+            "height": 90,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (20, 'banner_300x250', 'banner', 'Inline Rectangle', 'active', 300, 250, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 300,
+            "height": 250,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (21, 'banner_336x280', 'banner', 'Large Rectangle', 'active', 336, 280, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 336,
+            "height": 280,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (22, 'banner_120x600', 'banner', 'Skyscraper', 'active', 120, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 120,
+            "height": 600,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (23, 'banner_160x600', 'banner', 'Wide Skyscraper', 'active', 160, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 160,
+            "height": 600,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (24, 'banner_300x600', 'banner', 'Half-Page Ad', 'active', 300, 600, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 300,
+            "height": 600,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (25, 'banner_970x90', 'banner', 'Large Leaderboard', 'active', 970, 90, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 970,
+            "height": 90,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb),
+    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'active', 320, 50, NULL, NULL, $json${
+        "assets": [
+          {
+            "id": 1,
+            "required": true,
+            "name": "main",
+            "adjust_size": true,
+            "width": 320,
+            "height": 50,
+            "allowed_types": ["image/jpeg", "image/png"]
+          }
+        ]
+      }$json$::jsonb)
 ON CONFLICT (codename) DO UPDATE
 SET
     type = EXCLUDED.type,

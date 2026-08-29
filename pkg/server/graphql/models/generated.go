@@ -36,10 +36,57 @@ type AdFormat struct {
 	// Minimum height of the ad format
 	MinHeight int `json:"minHeight"`
 	// Configurations of the ad format which includes structure of assets and their properties
-	Config    types.NullableJSON `json:"config"`
-	CreatedAt time.Time          `json:"createdAt"`
-	UpdatedAt time.Time          `json:"updatedAt"`
-	DeletedAt *time.Time         `json:"deletedAt,omitempty"`
+	Config    *AdFormatConfig `json:"config"`
+	CreatedAt time.Time       `json:"createdAt"`
+	UpdatedAt time.Time       `json:"updatedAt"`
+	DeletedAt *time.Time      `json:"deletedAt,omitempty"`
+}
+
+// File asset requirement of an ad format
+type AdFormatAsset struct {
+	ID           *int     `json:"id,omitempty"`
+	Required     *bool    `json:"required,omitempty"`
+	Name         *string  `json:"name,omitempty"`
+	AdjustSize   *bool    `json:"adjustSize,omitempty"`
+	Width        *int     `json:"width,omitempty"`
+	Height       *int     `json:"height,omitempty"`
+	MinWidth     *int     `json:"minWidth,omitempty"`
+	MinHeight    *int     `json:"minHeight,omitempty"`
+	Animated     *bool    `json:"animated,omitempty"`
+	Sound        *bool    `json:"sound,omitempty"`
+	Thumbs       []string `json:"thumbs,omitempty"`
+	AllowedTypes []string `json:"allowedTypes,omitempty"`
+}
+
+// Asset and field requirements of an ad format
+type AdFormatConfig struct {
+	// File assets required or optional for this format
+	Assets []*AdFormatAsset `json:"assets,omitempty"`
+	// Text/numeric fields of the creative
+	Fields []*AdFormatField `json:"fields,omitempty"`
+}
+
+// Creative field requirement of an ad format
+type AdFormatField struct {
+	ID       *int    `json:"id,omitempty"`
+	Required *bool   `json:"required,omitempty"`
+	Title    *string `json:"title,omitempty"`
+	// Helper text shown under the title in the edit UI
+	Description *string       `json:"description,omitempty"`
+	Name        string        `json:"name"`
+	Type        *string       `json:"type,omitempty"`
+	Exclude     []string      `json:"exclude,omitempty"`
+	Select      []*types.JSON `json:"select,omitempty"`
+	Min         *float64      `json:"min,omitempty"`
+	Max         *float64      `json:"max,omitempty"`
+	Mask        *string       `json:"mask,omitempty"`
+	Regexp      *string       `json:"regexp,omitempty"`
+	// Minimum textarea row count; null/0 means a single-line input
+	Multiline *int `json:"multiline,omitempty"`
+	// When false, the field is hidden from the general edit UI. Defaults to true.
+	Editable bool `json:"editable"`
+	// Field supports multiple languages when editing
+	Multilang bool `json:"multilang"`
 }
 
 // Input for querying ad formats

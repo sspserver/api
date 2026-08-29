@@ -52,11 +52,82 @@ type AdFormat {
   """
   Configurations of the ad format which includes structure of assets and their properties
   """
-  config: NullableJSON!
+  config: AdFormatConfig!
 
   createdAt: Time!
   updatedAt: Time!
   deletedAt: Time
+}
+
+"""
+Asset and field requirements of an ad format
+"""
+type AdFormatConfig {
+  """
+  File assets required or optional for this format
+  """
+  assets: [AdFormatAsset!]
+
+  """
+  Text/numeric fields of the creative
+  """
+  fields: [AdFormatField!]
+}
+
+"""
+File asset requirement of an ad format
+"""
+type AdFormatAsset {
+  id: Int
+  required: Boolean
+  name: String
+  adjustSize: Boolean
+  width: Int
+  height: Int
+  minWidth: Int
+  minHeight: Int
+  animated: Boolean
+  sound: Boolean
+  thumbs: [String!]
+  allowedTypes: [String!]
+}
+
+"""
+Creative field requirement of an ad format
+"""
+type AdFormatField {
+  id: Int
+  required: Boolean
+  title: String
+
+  """
+  Helper text shown under the title in the edit UI
+  """
+  description: String
+
+  name: String!
+  type: String
+  exclude: [String!]
+  select: [JSON!]
+  min: Float
+  max: Float
+  mask: String
+  regexp: String
+
+  """
+  Minimum textarea row count; null/0 means a single-line input
+  """
+  multiline: Int
+
+  """
+  When false, the field is hidden from the general edit UI. Defaults to true.
+  """
+  editable: Boolean!
+
+  """
+  Field supports multiple languages when editing
+  """
+  multilang: Boolean!
 }
 
 type AdFormatConnection {
