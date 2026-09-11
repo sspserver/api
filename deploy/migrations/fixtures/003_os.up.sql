@@ -1,116 +1,661 @@
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows', '', 'Microsoft Windows operating system', 'Windows', '$regex$Windows NT.*', '', '', 1985, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 95', '95', 'Microsoft Windows 95', 'Windows 95', '$regex$Windows 95', '4.0', '4.5', 1995, 2001, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 98', '98', 'Microsoft Windows 98', 'Windows 98', '$regex$Windows 98', '4.1', '4.9', 1998, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows XP', '', 'Microsoft Windows XP', 'Windows XP', '$regex$Windows NT 5.1', '5', '6', 2001, 2014, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows Vista', '', 'Microsoft Windows Vista', 'Windows Vista', '$regex$Windows NT 6.0', '6.0', '6.1', 2007, 2017, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 7', '7', 'Microsoft Windows 7', 'Windows 7', '$regex$Windows NT 6.1', '6.1', '7.0', 2009, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 8', '8', 'Microsoft Windows 8', 'Windows 8', '$regex$Windows NT 6.2', '6.2', '6.3', 2012, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 10', '10', 'Microsoft Windows 10', 'Windows 10', '$regex$Windows NT 10.0', '10', '11', 2015, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Windows 11', '11', 'Microsoft Windows 11', 'Windows 11', '$regex$Windows NT 11.0', '11', '12', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS', '', 'Apple macOS operating system', 'macOS', '$regex$Mac OS X|macOS.*', '', '', 2001, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mac OS X Panther', '10.3', 'Apple Mac OS X Panther', 'Mac OS X 10.3', '$regex$Mac OS X 10_3.*', '10.3', '10.3.9', 2003, 2007, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mac OS X Tiger', '10.4', 'Apple Mac OS X Tiger', 'Mac OS X 10.4', '$regex$Mac OS X 10_4.*', '10.4', '10.4.11', 2005, 2009, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mac OS X Leopard', '10.5', 'Apple Mac OS X Leopard', 'Mac OS X 10.5', '$regex$Mac OS X 10_5.*', '10.5', '10.5.8', 2007, 2011, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mac OS X Snow Leopard', '10.6', 'Apple Mac OS X Snow Leopard', 'Mac OS X 10.6', '$regex$Mac OS X 10_6.*', '10.6', '10.6.8', 2009, 2013, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mac OS X Lion', '10.7', 'Apple Mac OS X Lion', 'Mac OS X 10.7', '$regex$Mac OS X 10_7.*', '10.7', '10.7.5', 2011, 2014, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS Mojave', '10.14', 'Apple macOS Mojave', 'macOS 10.14', '$regex$Mac OS X 10_14.*', '10.14', '10.14.6', 2018, 2021, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS Catalina', '10.15', 'Apple macOS Catalina', 'macOS 10.15', '$regex$Mac OS X 10_15.*', '10.15', '10.15.7', 2019, 2022, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS Big Sur', '11', 'Apple macOS Big Sur', 'macOS 11', '$regex$Mac OS X 11.*', '11.0', '11.6.8', 2020, 2023, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS Monterey', '12', 'Apple macOS Monterey', 'macOS 12', '$regex$Mac OS X 12.*', '12.0', '12.6.3', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('macOS Ventura', '13', 'Apple macOS Ventura', 'macOS 13', '$regex$Mac OS X 13.*', '13.0', '13.3', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu', '', 'Ubuntu Linux distribution', 'Ubuntu', '$regex$Ubuntu/.*', '', '', 2004, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 6.06 LTS', '6.06', 'Ubuntu 6.06 Dapper Drake', 'Ubuntu 6.06', '$regex$Ubuntu/6.06.*', '6.06', '7', 2006, 2011, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 8.04 LTS', '8.04', 'Ubuntu 8.04 Hardy Heron', 'Ubuntu 8.04', '$regex$Ubuntu/8.04.*', '8.04', '9', 2008, 2013, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 10.04 LTS', '10.04', 'Ubuntu 10.04 Lucid Lynx', 'Ubuntu 10.04', '$regex$Ubuntu/10.04.*', '10.04', '11', 2010, 2015, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 12.04 LTS', '12.04', 'Ubuntu 12.04 Precise Pangolin', 'Ubuntu 12.04', '$regex$Ubuntu/12.04.*', '12.04', '13', 2012, 2017, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 14.04 LTS', '14.04', 'Ubuntu 14.04 Trusty Tahr', 'Ubuntu 14.04', '$regex$Ubuntu/14.04.*', '14.04', '15', 2014, 2019, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 16.04 LTS', '16.04', 'Ubuntu 16.04 Xenial Xerus', 'Ubuntu 16.04', '$regex$Ubuntu/16.04.*', '16.04', '17', 2016, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 18.04 LTS', '18.04', 'Ubuntu 18.04 Bionic Beaver', 'Ubuntu 18.04', '$regex$Ubuntu/18.04.*', '18.04', '19', 2018, 2028, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 20.04 LTS', '20.04', 'Ubuntu 20.04 Focal Fossa', 'Ubuntu 20.04', '$regex$Ubuntu/20.04.*', '20.04', '21', 2020, 2030, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Ubuntu 22.04 LTS', '22.04', 'Ubuntu 22.04 Jammy Jellyfish', 'Ubuntu 22.04', '$regex$Ubuntu/22.04.*', '22.04', '23', 2022, 2032, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian', '', 'Debian Linux distribution', 'Debian', '$regex$Debian/.*', '', '', 1993, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 1.1 (Buzz)', '1.1', 'Debian 1.1 Buzz', 'Debian 1.1', '$regex$Debian/1.1.*', '1.1', '2.0', 1996, 1997, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 2.0 (Hamm)', '2.0', 'Debian 2.0 Hamm', 'Debian 2.0', '$regex$Debian/2.0.*', '2.0', '2.1', 1998, 2000, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 2.1 (Slink)', '2.1', 'Debian 2.1 Slink', 'Debian 2.1', '$regex$Debian/2.1.*', '2.1', '2.2', 1999, 2001, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 2.2 (Potato)', '2.2', 'Debian 2.2 Potato', 'Debian 2.2', '$regex$Debian/2.2.*', '2.2', '3.0', 2000, 2003, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 3.0 (Woody)', '3.0', 'Debian 3.0 Woody', 'Debian 3.0', '$regex$Debian/3.0.*', '3.0', '3.1', 2002, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 3.1 (Sarge)', '3.1', 'Debian 3.1 Sarge', 'Debian 3.1', '$regex$Debian/3.1.*', '3.1', '4.0', 2005, 2008, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 4.0 (Etch)', '4.0', 'Debian 4.0 Etch', 'Debian 4.0', '$regex$Debian/4.0.*', '4.0', '5.0', 2007, 2010, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 5.0 (Lenny)', '5.0', 'Debian 5.0 Lenny', 'Debian 5.0', '$regex$Debian/5.0.*', '5.0', '6.0', 2009, 2012, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 6.0 (Squeeze)', '6.0', 'Debian 6.0 Squeeze', 'Debian 6.0', '$regex$Debian/6.0.*', '6.0', '7.0', 2011, 2016, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 7.0 (Wheezy)', '7.0', 'Debian 7.0 Wheezy', 'Debian 7.0', '$regex$Debian/7.0.*', '7.0', '7.0.999', 2013, 2018, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 8.0 (Jessie)', '8.0', 'Debian 8.0 Jessie', 'Debian 8.0', '$regex$Debian/8.0.*', '8.0', '8.0.999', 2015, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 9.0 (Stretch)', '9.0', 'Debian 9.0 Stretch', 'Debian 9.0', '$regex$Debian/9.0.*', '9.0', '9.0.999', 2017, 2022, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 10.0 (Buster)', '10.0', 'Debian 10.0 Buster', 'Debian 10.0', '$regex$Debian/10.0.*', '10', '11', 2019, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 11.0 (Bullseye)', '11.0', 'Debian 11.0 Bullseye', 'Debian 11.0', '$regex$Debian/11.0.*', '11', '12', 2021, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Debian 12.0 (Bookworm)', '12.0', 'Debian 12.0 Bookworm', 'Debian 12.0', '$regex$Debian/12.0.*', '12', '13', 2023, 2028, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL', '', 'Red Hat Enterprise Linux distribution', 'RHEL', '$regex$Red Hat Enterprise Linux.*', '', '', 2000, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 2.1', '2.1', 'Red Hat Enterprise Linux 2.1', 'RHEL 2.1', '$regex$Red Hat Enterprise Linux 2.1.*', '2.1', '3.0', 2002, 2009, 'pause', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 3', '3', 'Red Hat Enterprise Linux 3', 'RHEL 3', '$regex$Red Hat Enterprise Linux 3.*', '3.0', '4.0', 2003, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 4', '4', 'Red Hat Enterprise Linux 4', 'RHEL 4', '$regex$Red Hat Enterprise Linux 4.*', '4.0', '5.0', 2005, 2012, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 5', '5', 'Red Hat Enterprise Linux 5', 'RHEL 5', '$regex$Red Hat Enterprise Linux 5.*', '5.0', '6.0', 2007, 2017, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 6', '6', 'Red Hat Enterprise Linux 6', 'RHEL 6', '$regex$Red Hat Enterprise Linux 6.*', '6.0', '7.0', 2010, 2024, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 7', '7', 'Red Hat Enterprise Linux 7', 'RHEL 7', '$regex$Red Hat Enterprise Linux 7.*', '7.0', '8.0', 2014, 2026, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 8', '8', 'Red Hat Enterprise Linux 8', 'RHEL 8', '$regex$Red Hat Enterprise Linux 8.*', '8.0', '9.0', 2019, 2029, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('RHEL 9', '9', 'Red Hat Enterprise Linux 9', 'RHEL 9', '$regex$Red Hat Enterprise Linux 9.*', '9.0', '10.0', 2022, 2032, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('SUSE Linux', '', 'SUSE Linux distribution', 'SUSE Linux', '$regex$SUSE Linux.*', '', '', 1994, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('SUSE Linux 10', '10', 'SUSE Linux 10', 'SUSE Linux 10', '$regex$SUSE Linux 10.*', '10.0', '11.0', 2005, 2013, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('SUSE Linux 11', '11', 'SUSE Linux 11', 'SUSE Linux 11', '$regex$SUSE Linux 11.*', '11.0', '12.0', 2009, 2019, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('SUSE Linux 12', '12', 'SUSE Linux 12', 'SUSE Linux 12', '$regex$SUSE Linux 12.*', '12.0', '13.0', 2014, 2024, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('SUSE Linux 15', '15', 'SUSE Linux 15', 'SUSE Linux 15', '$regex$SUSE Linux 15.*', '15.0', '16.0', 2018, 2030, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS', '', 'Apple iOS operating system', 'iOS', '$regex$iPhone OS|CPU iPhone OS.*', '', '', 2007, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 1', '1', 'Apple iPhone OS 1', 'iOS 1', '$regex$CPU iPhone OS 1.*', '1.0', '2.0', 2007, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 2', '2', 'Apple iPhone OS 2', 'iOS 2', '$regex$CPU iPhone OS 2.*', '2.0', '3.0', 2008, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 3', '3', 'Apple iPhone OS 3', 'iOS 3', '$regex$CPU iPhone OS 3.*', '3.0', '4.0', 2009, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 4', '4', 'Apple iOS 4', 'iOS 4', '$regex$CPU iPhone OS 4.*', '4.0', '5.0', 2010, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 9', '9', 'Apple iOS 9', 'iOS 9', '$regex$CPU iPhone OS 9.*', '9.0', '10.0', 2015, 2021, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 12', '12', 'Apple iOS 12', 'iOS 12', '$regex$CPU iPhone OS 12.*', '12.0', '13.0', 2018, 2025, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 15', '15', 'Apple iOS 15', 'iOS 15', '$regex$CPU iPhone OS 15.*', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 16', '16', 'Apple iOS 16', 'iOS 16', '$regex$CPU iPhone OS 16.*', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('iOS 17', '17', 'Apple iOS 17', 'iOS 17', '$regex$CPU iPhone OS 17.*', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS', '', 'Apple tvOS operating system', 'tvOS', '$regex$AppleTV|tvOS.*', '', '', 2015, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 9', '9', 'Apple tvOS 9', 'tvOS 9', '$regex$tvOS 9.*', '9.0', '10.0', 2015, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 10', '10', 'Apple tvOS 10', 'tvOS 10', '$regex$tvOS 10.*', '10.0', '11.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 11', '11', 'Apple tvOS 11', 'tvOS 11', '$regex$tvOS 11.*', '11.0', '12.0', 2017, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 13', '13', 'Apple tvOS 13', 'tvOS 13', '$regex$tvOS 13.*', '13.0', '14.0', 2019, 2024, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 14', '14', 'Apple tvOS 14', 'tvOS 14', '$regex$tvOS 14.*', '14.0', '15.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 15', '15', 'Apple tvOS 15', 'tvOS 15', '$regex$tvOS 15.*', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 16', '16', 'Apple tvOS 16', 'tvOS 16', '$regex$tvOS 16.*', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('tvOS 17', '17', 'Apple tvOS 17', 'tvOS 17', '$regex$tvOS 17.*', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS', '', 'Apple watchOS operating system', 'watchOS', '$regex$watchOS.*', '', '', 2015, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 1', '1', 'Apple watchOS 1', 'watchOS 1', '$regex$watchOS 1.*', '1.0', '2.0', 2015, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 3', '3', 'Apple watchOS 3', 'watchOS 3', '$regex$watchOS 3.*', '3.0', '4.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 5', '5', 'Apple watchOS 5', 'watchOS 5', '$regex$watchOS 5.*', '5.0', '6.0', 2018, 2023, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 6', '6', 'Apple watchOS 6', 'watchOS 6', '$regex$watchOS 6.*', '6.0', '7.0', 2019, 2024, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 7', '7', 'Apple watchOS 7', 'watchOS 7', '$regex$watchOS 7.*', '7.0', '8.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 8', '8', 'Apple watchOS 8', 'watchOS 8', '$regex$watchOS 8.*', '8.0', '9.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 9', '9', 'Apple watchOS 9', 'watchOS 9', '$regex$watchOS 9.*', '9.0', '10.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('watchOS 10', '10', 'Apple watchOS 10', 'watchOS 10', '$regex$watchOS 10.*', '10.0', '11.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android', '', 'Google Android operating system', 'Android', '$regex$Android.*', '', '', 2008, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 1.0', '1.0', 'Android 1.0', 'Android 1.0', '$regex$Android 1.*', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 4.4 (KitKat)', '4.4', 'Android 4.4 KitKat', 'Android 4.4', '$regex$Android 4.4.*', '4.4', '5.0', 2013, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 7.0 (Nougat)', '7.0', 'Android 7.0 Nougat', 'Android 7.0', '$regex$Android 7.*', '7.0', '8.0', 2016, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 10', '10', 'Android 10', 'Android 10', '$regex$Android 10.*', '10.0', '11.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 11', '11', 'Android 11', 'Android 11', '$regex$Android 11.*', '11.0', '12.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 12', '12', 'Android 12', 'Android 12', '$regex$Android 12.*', '12.0', '13.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 13', '13', 'Android 13', 'Android 13', '$regex$Android 13.*', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android 14', '14', 'Android 14', 'Android 14', '$regex$Android 14.*', '14.0', '15.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('HarmonyOS', '', 'Huawei HarmonyOS operating system', 'HarmonyOS', '$regex$HarmonyOS.*', '', '', 2019, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('HarmonyOS 1', '1', 'Huawei HarmonyOS 1', 'HarmonyOS 1', '$regex$HarmonyOS 1.*', '1.0', '2.0', 2019, 2022, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('HarmonyOS 2', '2', 'Huawei HarmonyOS 2', 'HarmonyOS 2', '$regex$HarmonyOS 2.*', '2.0', '3.0', 2021, 2024, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('HarmonyOS 3', '3', 'Huawei HarmonyOS 3', 'HarmonyOS 3', '$regex$HarmonyOS 3.*', '3.0', '4.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('HarmonyOS 4', '4', 'Huawei HarmonyOS 4', 'HarmonyOS 4', '$regex$HarmonyOS 4.*', '4.0', '5.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS', '', 'Google Chrome OS operating system', 'Chrome OS', '$regex$CrOS.*', '', '', 2011, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS 50', '50', 'Google Chrome OS 50', 'Chrome OS 50', '$regex$CrOS 50.*', '50.0', '51.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS 70', '70', 'Google Chrome OS 70', 'Chrome OS 70', '$regex$CrOS 70.*', '70.0', '71.0', 2018, 2023, 'pause', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS 90', '90', 'Google Chrome OS 90', 'Chrome OS 90', '$regex$CrOS 90.*', '90.0', '91.0', 2021, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS 100', '100', 'Google Chrome OS 100', 'Chrome OS 100', '$regex$CrOS 100.*', '100.0', '101.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome OS 110', '110', 'Google Chrome OS 110', 'Chrome OS 110', '$regex$CrOS 110.*', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV', '', 'Google Android TV operating system', 'Android TV', '$regex$Android TV.*', '', '', 2014, 0, 'active', NULL);
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 5.0', '5.0', 'Android TV 5.0 Lollipop', 'Android TV 5.0', '$regex$Android TV 5.*', '5.0', '6.0', 2014, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 6.0', '6.0', 'Android TV 6.0 Marshmallow', 'Android TV 6.0', '$regex$Android TV 6.*', '6.0', '7.0', 2015, 2021, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 9.0', '9.0', 'Android TV 9.0 Pie', 'Android TV 9.0', '$regex$Android TV 9.*', '9.0', '10.0', 2018, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 10', '10', 'Android TV 10', 'Android TV 10', '$regex$Android TV 10.*', '10.0', '11.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 11', '11', 'Android TV 11', 'Android TV 11', '$regex$Android TV 11.*', '11.0', '12.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 12', '12', 'Android TV 12', 'Android TV 12', '$regex$Android TV 12.*', '12.0', '13.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
-INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android TV 13', '13', 'Android TV 13', 'Android TV 13', '$regex$Android TV 13.*', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1));
+-- Generated by osfix.py from os.json — do not edit by hand.
+BEGIN;
+
+CREATE UNIQUE INDEX IF NOT EXISTS type_os_name_key ON type_os (name);
+
+-- Root operating systems
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Windows', '', 'Microsoft Windows operating system', 'Windows', '$regex$Windows NT.*', '', '', 1985, 0, 'active', NULL),
+  ('macOS', '', 'Apple macOS operating system', 'macOS', '$regex$Mac OS X|macOS.*', '', '', 2001, 0, 'active', NULL),
+  ('Ubuntu', '', 'Ubuntu Linux distribution', 'Ubuntu', '$regex$Ubuntu/.*', '', '', 2004, 0, 'active', NULL),
+  ('Debian', '', 'Debian Linux distribution', 'Debian', '$regex$Debian/.*', '', '', 1993, 0, 'active', NULL),
+  ('RHEL', '', 'Red Hat Enterprise Linux distribution', 'RHEL', '$regex$Red Hat Enterprise Linux.*', '', '', 2000, 0, 'active', NULL),
+  ('SUSE Linux', '', 'SUSE Linux distribution', 'SUSE Linux', '$regex$SUSE Linux.*', '', '', 1994, 0, 'active', NULL),
+  ('iOS', '', 'Apple iOS operating system', 'iOS', '$regex$iPhone OS|CPU iPhone OS.*', '', '', 2007, 0, 'active', NULL),
+  ('tvOS', '', 'Apple tvOS operating system', 'tvOS', '$regex$AppleTV|tvOS.*', '', '', 2015, 0, 'active', NULL),
+  ('watchOS', '', 'Apple watchOS operating system', 'watchOS', '$regex$watchOS.*', '', '', 2015, 0, 'active', NULL),
+  ('Android', '', 'Google Android operating system', 'Android', '$regex$Android.*', '', '', 2008, 0, 'active', NULL),
+  ('HarmonyOS', '', 'Huawei HarmonyOS operating system', 'HarmonyOS', '$regex$HarmonyOS.*', '', '', 2019, 0, 'active', NULL),
+  ('Chrome OS', '', 'Google Chrome OS operating system', 'Chrome OS', '$regex$CrOS.*', '', '', 2011, 0, 'active', NULL),
+  ('Android TV', '', 'Google Android TV operating system', 'Android TV', '$regex$Android TV.*', '', '', 2014, 0, 'active', NULL),
+  ('Linux', '', 'Generic Linux operating system', 'Linux', '$regex$Linux', '', '', 1991, 0, 'active', NULL),
+  ('Fedora', '', 'Fedora Linux distribution', 'Fedora', '$regex$Fedora', '', '', 2003, 0, 'active', NULL),
+  ('CentOS', '', 'CentOS Linux distribution', 'CentOS', '$regex$CentOS', '', '', 2004, 0, 'active', NULL),
+  ('Fire OS', '', 'Amazon Fire OS', 'Fire OS', '$regex$KF[A-Z]{2,}|Silk/', '', '', 2011, 0, 'active', NULL),
+  ('Tizen', '', 'Samsung Tizen operating system', 'Tizen', '$regex$Tizen', '', '', 2012, 0, 'active', NULL),
+  ('webOS', '', 'LG webOS operating system', 'webOS', '$regex$Web0S|webOS', '', '', 2014, 0, 'active', NULL),
+  ('PlayStation', '', 'Sony PlayStation system software', 'PlayStation', '$regex$PlayStation|PS4|PS5', '', '', 2006, 0, 'active', NULL),
+  ('Xbox', '', 'Microsoft Xbox system software', 'Xbox', '$regex$Xbox', '', '', 2001, 0, 'active', NULL),
+  ('KaiOS', '', 'KaiOS feature-phone operating system', 'KaiOS', '$regex$KAIOS', '', '', 2017, 0, 'active', NULL),
+  ('iPadOS', '', 'Apple iPadOS operating system', 'iPadOS', '$regex$iPad', '', '', 2019, 0, 'active', NULL)
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Windows
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Windows 95', '95', 'Microsoft Windows 95', 'Windows 95', '$regex$Windows 95', '4.0', '4.5', 1995, 2001, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 98', '98', 'Microsoft Windows 98', 'Windows 98', '$regex$Windows 98', '4.1', '4.9', 1998, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 2000', '2000', 'Microsoft Windows 2000', 'Windows 2000', '$regex$Windows NT 5.0', '5.0', '5.1', 2000, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows ME', '4.9', 'Microsoft Windows ME', 'Windows ME', '$regex$Windows ME|Win 9x 4.90', '4.9', '5.0', 2000, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows XP', '5.1', 'Microsoft Windows XP', 'Windows XP', '$regex$Windows NT 5.1', '5.1', '6.0', 2001, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows Vista', '6.0', 'Microsoft Windows Vista', 'Windows Vista', '$regex$Windows NT 6.0', '6.0', '6.1', 2007, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 7', '7', 'Microsoft Windows 7', 'Windows 7', '$regex$Windows NT 6.1', '6.1', '6.2', 2009, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows Phone', '7.0', 'Microsoft Windows Phone', 'Windows Phone', '$regex$Windows Phone', '7.0', '11.0', 2010, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 8', '8', 'Microsoft Windows 8', 'Windows 8', '$regex$Windows NT 6.2', '6.2', '6.3', 2012, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 8.1', '8.1', 'Microsoft Windows 8.1', 'Windows 8.1', '$regex$Windows NT 6.3', '6.3', '10.0', 2013, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 10', '10', 'Microsoft Windows 10', 'Windows 10', '$regex$Windows NT 10.0', '10.0', '11.0', 2015, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1)),
+  ('Windows 11', '11', 'Microsoft Windows 11', 'Windows 11', '$regex$Windows NT 11.0', '11.0', '12.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Windows' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of macOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Mac OS X Cheetah', '10.0', 'Apple Mac OS X Cheetah', 'Mac OS X 10.0', '$regex$Mac OS X 10_0', '10.0', '10.1', 2001, 2004, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Puma', '10.1', 'Apple Mac OS X Puma', 'Mac OS X 10.1', '$regex$Mac OS X 10_1', '10.1', '10.2', 2001, 2005, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Jaguar', '10.2', 'Apple Mac OS X Jaguar', 'Mac OS X 10.2', '$regex$Mac OS X 10_2', '10.2', '10.3', 2002, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Panther', '10.3', 'Apple Mac OS X Panther', 'Mac OS X 10.3', '$regex$Mac OS X 10_3', '10.3', '10.4', 2003, 2007, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Tiger', '10.4', 'Apple Mac OS X Tiger', 'Mac OS X 10.4', '$regex$Mac OS X 10_4', '10.4', '10.5', 2005, 2009, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Leopard', '10.5', 'Apple Mac OS X Leopard', 'Mac OS X 10.5', '$regex$Mac OS X 10_5', '10.5', '10.6', 2007, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Snow Leopard', '10.6', 'Apple Mac OS X Snow Leopard', 'Mac OS X 10.6', '$regex$Mac OS X 10_6', '10.6', '10.7', 2009, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Lion', '10.7', 'Apple Mac OS X Lion', 'Mac OS X 10.7', '$regex$Mac OS X 10_7', '10.7', '10.8', 2011, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('Mac OS X Mountain Lion', '10.8', 'Apple Mac OS X Mountain Lion', 'Mac OS X 10.8', '$regex$Mac OS X 10_8', '10.8', '10.9', 2012, 2015, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('OS X Mavericks', '10.9', 'Apple OS X Mavericks', 'OS X 10.9', '$regex$Mac OS X 10_9', '10.9', '10.10', 2013, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('OS X Yosemite', '10.10', 'Apple OS X Yosemite', 'OS X 10.10', '$regex$Mac OS X 10_10', '10.10', '10.11', 2014, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('OS X El Capitan', '10.11', 'Apple OS X El Capitan', 'OS X 10.11', '$regex$Mac OS X 10_11', '10.11', '10.12', 2015, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Sierra', '10.12', 'Apple macOS Sierra', 'macOS 10.12', '$regex$Mac OS X 10_12', '10.12', '10.13', 2016, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS High Sierra', '10.13', 'Apple macOS High Sierra', 'macOS 10.13', '$regex$Mac OS X 10_13', '10.13', '10.14', 2017, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Mojave', '10.14', 'Apple macOS Mojave', 'macOS 10.14', '$regex$Mac OS X 10_14', '10.14', '10.15', 2018, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Catalina', '10.15', 'Apple macOS Catalina', 'macOS 10.15', '$regex$Mac OS X 10_15', '10.15', '11.0', 2019, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Big Sur', '11', 'Apple macOS Big Sur', 'macOS 11', '$regex$Mac OS X 11', '11.0', '12.0', 2020, 2023, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Monterey', '12', 'Apple macOS Monterey', 'macOS 12', '$regex$Mac OS X 12', '12.0', '13.0', 2021, 2024, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Ventura', '13', 'Apple macOS Ventura', 'macOS 13', '$regex$Mac OS X 13', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Sonoma', '14', 'Apple macOS Sonoma', 'macOS 14', '$regex$Mac OS X 14', '14.0', '15.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Sequoia', '15', 'Apple macOS Sequoia', 'macOS 15', '$regex$Mac OS X 15', '15.0', '16.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1)),
+  ('macOS Tahoe', '26', 'Apple macOS Tahoe', 'macOS 26', '$regex$Mac OS X 26', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'macOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Ubuntu
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Ubuntu 4.10', '4.10', 'Ubuntu 4.10 Warty Warthog', 'Ubuntu 4.10', '$regex$Ubuntu/4.10', '4.10', '5.04', 2004, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 5.04', '5.04', 'Ubuntu 5.04 Hoary Hedgehog', 'Ubuntu 5.04', '$regex$Ubuntu/5.04', '5.04', '5.10', 2005, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 5.10', '5.10', 'Ubuntu 5.10 Breezy Badger', 'Ubuntu 5.10', '$regex$Ubuntu/5.10', '5.10', '6.04', 2005, 2007, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 6.06', '6.06', 'Ubuntu 6.06 Dapper Drake', 'Ubuntu 6.06', '$regex$Ubuntu/6.06', '6.06', '6.10', 2006, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 6.10', '6.10', 'Ubuntu 6.10 Edgy Eft', 'Ubuntu 6.10', '$regex$Ubuntu/6.10', '6.10', '7.04', 2006, 2008, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 7.04', '7.04', 'Ubuntu 7.04 Feisty Fawn', 'Ubuntu 7.04', '$regex$Ubuntu/7.04', '7.04', '7.10', 2007, 2008, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 7.10', '7.10', 'Ubuntu 7.10 Gutsy Gibbon', 'Ubuntu 7.10', '$regex$Ubuntu/7.10', '7.10', '8.04', 2007, 2009, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 8.04 LTS', '8.04', 'Ubuntu 8.04 Hardy Heron', 'Ubuntu 8.04', '$regex$Ubuntu/8.04', '8.04', '8.10', 2008, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 8.10', '8.10', 'Ubuntu 8.10 Intrepid Ibex', 'Ubuntu 8.10', '$regex$Ubuntu/8.10', '8.10', '9.04', 2008, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 9.04', '9.04', 'Ubuntu 9.04 Jaunty Jackalope', 'Ubuntu 9.04', '$regex$Ubuntu/9.04', '9.04', '9.10', 2009, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 9.10', '9.10', 'Ubuntu 9.10 Karmic Koala', 'Ubuntu 9.10', '$regex$Ubuntu/9.10', '9.10', '10.04', 2009, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 10.04 LTS', '10.04', 'Ubuntu 10.04 Lucid Lynx', 'Ubuntu 10.04', '$regex$Ubuntu/10.04', '10.04', '10.10', 2010, 2015, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 10.10', '10.10', 'Ubuntu 10.10 Maverick Meerkat', 'Ubuntu 10.10', '$regex$Ubuntu/10.10', '10.10', '11.04', 2010, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 11.04', '11.04', 'Ubuntu 11.04 Natty Narwhal', 'Ubuntu 11.04', '$regex$Ubuntu/11.04', '11.04', '11.10', 2011, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 11.10', '11.10', 'Ubuntu 11.10 Oneiric Ocelot', 'Ubuntu 11.10', '$regex$Ubuntu/11.10', '11.10', '12.04', 2011, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 12.04 LTS', '12.04', 'Ubuntu 12.04 Precise Pangolin', 'Ubuntu 12.04', '$regex$Ubuntu/12.04', '12.04', '12.10', 2012, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 12.10', '12.10', 'Ubuntu 12.10 Quantal Quetzal', 'Ubuntu 12.10', '$regex$Ubuntu/12.10', '12.10', '13.04', 2012, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 13.04', '13.04', 'Ubuntu 13.04 Raring Ringtail', 'Ubuntu 13.04', '$regex$Ubuntu/13.04', '13.04', '13.10', 2013, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 13.10', '13.10', 'Ubuntu 13.10 Saucy Salamander', 'Ubuntu 13.10', '$regex$Ubuntu/13.10', '13.10', '14.04', 2013, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 14.04 LTS', '14.04', 'Ubuntu 14.04 Trusty Tahr', 'Ubuntu 14.04', '$regex$Ubuntu/14.04', '14.04', '14.10', 2014, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 14.10', '14.10', 'Ubuntu 14.10 Utopic Unicorn', 'Ubuntu 14.10', '$regex$Ubuntu/14.10', '14.10', '15.04', 2014, 2015, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 15.04', '15.04', 'Ubuntu 15.04 Vivid Vervet', 'Ubuntu 15.04', '$regex$Ubuntu/15.04', '15.04', '15.10', 2015, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 15.10', '15.10', 'Ubuntu 15.10 Wily Werewolf', 'Ubuntu 15.10', '$regex$Ubuntu/15.10', '15.10', '16.04', 2015, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 16.04 LTS', '16.04', 'Ubuntu 16.04 Xenial Xerus', 'Ubuntu 16.04', '$regex$Ubuntu/16.04', '16.04', '16.10', 2016, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 16.10', '16.10', 'Ubuntu 16.10 Yakkety Yak', 'Ubuntu 16.10', '$regex$Ubuntu/16.10', '16.10', '17.04', 2016, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 17.04', '17.04', 'Ubuntu 17.04 Zesty Zapus', 'Ubuntu 17.04', '$regex$Ubuntu/17.04', '17.04', '17.10', 2017, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 17.10', '17.10', 'Ubuntu 17.10 Artful Aardvark', 'Ubuntu 17.10', '$regex$Ubuntu/17.10', '17.10', '18.04', 2017, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 18.04 LTS', '18.04', 'Ubuntu 18.04 Bionic Beaver', 'Ubuntu 18.04', '$regex$Ubuntu/18.04', '18.04', '18.10', 2018, 2028, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 18.10', '18.10', 'Ubuntu 18.10 Cosmic Cuttlefish', 'Ubuntu 18.10', '$regex$Ubuntu/18.10', '18.10', '19.04', 2018, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 19.04', '19.04', 'Ubuntu 19.04 Disco Dingo', 'Ubuntu 19.04', '$regex$Ubuntu/19.04', '19.04', '19.10', 2019, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 19.10', '19.10', 'Ubuntu 19.10 Eoan Ermine', 'Ubuntu 19.10', '$regex$Ubuntu/19.10', '19.10', '20.04', 2019, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 20.04 LTS', '20.04', 'Ubuntu 20.04 Focal Fossa', 'Ubuntu 20.04', '$regex$Ubuntu/20.04', '20.04', '20.10', 2020, 2030, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 20.10', '20.10', 'Ubuntu 20.10 Groovy Gorilla', 'Ubuntu 20.10', '$regex$Ubuntu/20.10', '20.10', '21.04', 2020, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 21.04', '21.04', 'Ubuntu 21.04 Hirsute Hippo', 'Ubuntu 21.04', '$regex$Ubuntu/21.04', '21.04', '21.10', 2021, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 21.10', '21.10', 'Ubuntu 21.10 Impish Indri', 'Ubuntu 21.10', '$regex$Ubuntu/21.10', '21.10', '22.04', 2021, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 22.04 LTS', '22.04', 'Ubuntu 22.04 Jammy Jellyfish', 'Ubuntu 22.04', '$regex$Ubuntu/22.04', '22.04', '22.10', 2022, 2032, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 22.10', '22.10', 'Ubuntu 22.10 Kinetic Kudu', 'Ubuntu 22.10', '$regex$Ubuntu/22.10', '22.10', '23.04', 2022, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 23.04', '23.04', 'Ubuntu 23.04 Lunar Lobster', 'Ubuntu 23.04', '$regex$Ubuntu/23.04', '23.04', '23.10', 2023, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 23.10', '23.10', 'Ubuntu 23.10 Mantic Minotaur', 'Ubuntu 23.10', '$regex$Ubuntu/23.10', '23.10', '24.04', 2023, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 24.04 LTS', '24.04', 'Ubuntu 24.04 Noble Numbat', 'Ubuntu 24.04', '$regex$Ubuntu/24.04', '24.04', '24.10', 2024, 2034, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 24.10', '24.10', 'Ubuntu 24.10 Oracular Oriole', 'Ubuntu 24.10', '$regex$Ubuntu/24.10', '24.10', '25.04', 2024, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 25.04', '25.04', 'Ubuntu 25.04 Plucky Puffin', 'Ubuntu 25.04', '$regex$Ubuntu/25.04', '25.04', '25.10', 2025, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 25.10', '25.10', 'Ubuntu 25.10 Questing Quokka', 'Ubuntu 25.10', '$regex$Ubuntu/25.10', '25.10', '26.04', 2025, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1)),
+  ('Ubuntu 26.04 LTS', '26.04', 'Ubuntu 26.04 Resolute Raccoon', 'Ubuntu 26.04', '$regex$Ubuntu/26.04', '26.04', '26.10', 2026, 2036, 'active', (SELECT id FROM type_os WHERE name = 'Ubuntu' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Debian
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Debian 1.1 (Buzz)', '1.1', 'Debian 1.1 Buzz', 'Debian 1.1', '$regex$Debian/1.1.*', '1.1', '2.0', 1996, 1997, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 2.0 (Hamm)', '2.0', 'Debian 2.0 Hamm', 'Debian 2.0', '$regex$Debian/2.0.*', '2.0', '2.1', 1998, 2000, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 2.1 (Slink)', '2.1', 'Debian 2.1 Slink', 'Debian 2.1', '$regex$Debian/2.1.*', '2.1', '2.2', 1999, 2001, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 2.2 (Potato)', '2.2', 'Debian 2.2 Potato', 'Debian 2.2', '$regex$Debian/2.2.*', '2.2', '3.0', 2000, 2003, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 3.0 (Woody)', '3.0', 'Debian 3.0 Woody', 'Debian 3.0', '$regex$Debian/3.0.*', '3.0', '3.1', 2002, 2006, 'pause', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 3.1 (Sarge)', '3.1', 'Debian 3.1 Sarge', 'Debian 3.1', '$regex$Debian/3.1.*', '3.1', '4.0', 2005, 2008, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 4.0 (Etch)', '4.0', 'Debian 4.0 Etch', 'Debian 4.0', '$regex$Debian/4.0.*', '4.0', '5.0', 2007, 2010, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 5.0 (Lenny)', '5.0', 'Debian 5.0 Lenny', 'Debian 5.0', '$regex$Debian/5.0.*', '5.0', '6.0', 2009, 2012, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 6.0 (Squeeze)', '6.0', 'Debian 6.0 Squeeze', 'Debian 6.0', '$regex$Debian/6.0.*', '6.0', '7.0', 2011, 2016, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 7.0 (Wheezy)', '7.0', 'Debian 7.0 Wheezy', 'Debian 7.0', '$regex$Debian/7.0.*', '7.0', '7.0.999', 2013, 2018, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 8.0 (Jessie)', '8.0', 'Debian 8.0 Jessie', 'Debian 8.0', '$regex$Debian/8.0.*', '8.0', '8.0.999', 2015, 2020, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 9.0 (Stretch)', '9.0', 'Debian 9.0 Stretch', 'Debian 9.0', '$regex$Debian/9.0.*', '9.0', '9.0.999', 2017, 2022, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 10.0 (Buster)', '10.0', 'Debian 10.0 Buster', 'Debian 10.0', '$regex$Debian/10.0.*', '10', '11', 2019, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 11.0 (Bullseye)', '11.0', 'Debian 11.0 Bullseye', 'Debian 11.0', '$regex$Debian/11.0.*', '11', '12', 2021, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 12.0 (Bookworm)', '12.0', 'Debian 12.0 Bookworm', 'Debian 12.0', '$regex$Debian/12.0.*', '12', '13', 2023, 2028, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1)),
+  ('Debian 13.0 (Trixie)', '13.0', 'Debian 13.0 Trixie', 'Debian 13.0', '$regex$Debian/13.0.*', '13', '14', 2025, 2030, 'active', (SELECT id FROM type_os WHERE name = 'Debian' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of RHEL
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('RHEL 2.1', '2.1', 'Red Hat Enterprise Linux 2.1', 'RHEL 2.1', '$regex$Red Hat Enterprise Linux 2.1.*', '2.1', '3.0', 2002, 2009, 'pause', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 3', '3', 'Red Hat Enterprise Linux 3', 'RHEL 3', '$regex$Red Hat Enterprise Linux 3.*', '3.0', '4.0', 2003, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 4', '4', 'Red Hat Enterprise Linux 4', 'RHEL 4', '$regex$Red Hat Enterprise Linux 4.*', '4.0', '5.0', 2005, 2012, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 5', '5', 'Red Hat Enterprise Linux 5', 'RHEL 5', '$regex$Red Hat Enterprise Linux 5.*', '5.0', '6.0', 2007, 2017, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 6', '6', 'Red Hat Enterprise Linux 6', 'RHEL 6', '$regex$Red Hat Enterprise Linux 6.*', '6.0', '7.0', 2010, 2024, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 7', '7', 'Red Hat Enterprise Linux 7', 'RHEL 7', '$regex$Red Hat Enterprise Linux 7.*', '7.0', '8.0', 2014, 2026, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 8', '8', 'Red Hat Enterprise Linux 8', 'RHEL 8', '$regex$Red Hat Enterprise Linux 8.*', '8.0', '9.0', 2019, 2029, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 9', '9', 'Red Hat Enterprise Linux 9', 'RHEL 9', '$regex$Red Hat Enterprise Linux 9.*', '9.0', '10.0', 2022, 2032, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1)),
+  ('RHEL 10', '10', 'Red Hat Enterprise Linux 10', 'RHEL 10', '$regex$Red Hat Enterprise Linux 10.*', '10.0', '11.0', 2025, 2035, 'active', (SELECT id FROM type_os WHERE name = 'RHEL' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of SUSE Linux
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('SUSE Linux 10', '10', 'SUSE Linux 10', 'SUSE Linux 10', '$regex$SUSE Linux 10', '10.0', '11.0', 2005, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1)),
+  ('SUSE Linux 11', '11', 'SUSE Linux 11', 'SUSE Linux 11', '$regex$SUSE Linux 11', '11.0', '12.0', 2009, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1)),
+  ('SUSE Linux 12', '12', 'SUSE Linux 12', 'SUSE Linux 12', '$regex$SUSE Linux 12', '12.0', '15.0', 2014, 2024, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1)),
+  ('SUSE Linux 15', '15', 'SUSE Linux 15', 'SUSE Linux 15', '$regex$SUSE Linux 15', '15.0', '16.0', 2018, 2030, 'active', (SELECT id FROM type_os WHERE name = 'SUSE Linux' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of iOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('iOS 1', '1', 'Apple iPhone OS 1', 'iOS 1', '$regex$CPU iPhone OS 1_', '1.0', '2.0', 2007, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 2', '2', 'Apple iPhone OS 2', 'iOS 2', '$regex$CPU iPhone OS 2_', '2.0', '3.0', 2008, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 3', '3', 'Apple iPhone OS 3', 'iOS 3', '$regex$CPU iPhone OS 3_', '3.0', '4.0', 2009, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 4', '4', 'Apple iOS 4', 'iOS 4', '$regex$CPU iPhone OS 4_', '4.0', '5.0', 2010, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 5', '5', 'Apple iOS 5', 'iOS 5', '$regex$CPU iPhone OS 5_', '5.0', '6.0', 2011, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 6', '6', 'Apple iOS 6', 'iOS 6', '$regex$CPU iPhone OS 6_', '6.0', '7.0', 2012, 2015, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 7', '7', 'Apple iOS 7', 'iOS 7', '$regex$CPU iPhone OS 7_', '7.0', '8.0', 2013, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 8', '8', 'Apple iOS 8', 'iOS 8', '$regex$CPU iPhone OS 8_', '8.0', '9.0', 2014, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 9', '9', 'Apple iOS 9', 'iOS 9', '$regex$CPU iPhone OS 9_', '9.0', '10.0', 2015, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 10', '10', 'Apple iOS 10', 'iOS 10', '$regex$CPU iPhone OS 10_', '10.0', '11.0', 2016, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 11', '11', 'Apple iOS 11', 'iOS 11', '$regex$CPU iPhone OS 11_', '11.0', '12.0', 2017, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 12', '12', 'Apple iOS 12', 'iOS 12', '$regex$CPU iPhone OS 12_', '12.0', '13.0', 2018, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 13', '13', 'Apple iOS 13', 'iOS 13', '$regex$CPU iPhone OS 13_', '13.0', '14.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 14', '14', 'Apple iOS 14', 'iOS 14', '$regex$CPU iPhone OS 14_', '14.0', '15.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 15', '15', 'Apple iOS 15', 'iOS 15', '$regex$CPU iPhone OS 15_', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 16', '16', 'Apple iOS 16', 'iOS 16', '$regex$CPU iPhone OS 16_', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 17', '17', 'Apple iOS 17', 'iOS 17', '$regex$CPU iPhone OS 17_', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 18', '18', 'Apple iOS 18', 'iOS 18', '$regex$CPU iPhone OS 18_', '18.0', '19.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1)),
+  ('iOS 26', '26', 'Apple iOS 26', 'iOS 26', '$regex$CPU iPhone OS 26_', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'iOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of tvOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('tvOS 9', '9', 'Apple tvOS 9', 'tvOS 9', '$regex$tvOS 9', '9.0', '10.0', 2015, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 10', '10', 'Apple tvOS 10', 'tvOS 10', '$regex$tvOS 10', '10.0', '11.0', 2016, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 11', '11', 'Apple tvOS 11', 'tvOS 11', '$regex$tvOS 11', '11.0', '12.0', 2017, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 12', '12', 'Apple tvOS 12', 'tvOS 12', '$regex$tvOS 12', '12.0', '13.0', 2018, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 13', '13', 'Apple tvOS 13', 'tvOS 13', '$regex$tvOS 13', '13.0', '14.0', 2019, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 14', '14', 'Apple tvOS 14', 'tvOS 14', '$regex$tvOS 14', '14.0', '15.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 15', '15', 'Apple tvOS 15', 'tvOS 15', '$regex$tvOS 15', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 16', '16', 'Apple tvOS 16', 'tvOS 16', '$regex$tvOS 16', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 17', '17', 'Apple tvOS 17', 'tvOS 17', '$regex$tvOS 17', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 18', '18', 'Apple tvOS 18', 'tvOS 18', '$regex$tvOS 18', '18.0', '19.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1)),
+  ('tvOS 26', '26', 'Apple tvOS 26', 'tvOS 26', '$regex$tvOS 26', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'tvOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of watchOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('watchOS 1', '1', 'Apple watchOS 1', 'watchOS 1', '$regex$watchOS 1', '1.0', '2.0', 2015, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 2', '2', 'Apple watchOS 2', 'watchOS 2', '$regex$watchOS 2', '2.0', '3.0', 2016, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 3', '3', 'Apple watchOS 3', 'watchOS 3', '$regex$watchOS 3', '3.0', '4.0', 2017, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 4', '4', 'Apple watchOS 4', 'watchOS 4', '$regex$watchOS 4', '4.0', '5.0', 2018, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 5', '5', 'Apple watchOS 5', 'watchOS 5', '$regex$watchOS 5', '5.0', '6.0', 2019, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 6', '6', 'Apple watchOS 6', 'watchOS 6', '$regex$watchOS 6', '6.0', '7.0', 2020, 2023, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 7', '7', 'Apple watchOS 7', 'watchOS 7', '$regex$watchOS 7', '7.0', '8.0', 2021, 2024, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 8', '8', 'Apple watchOS 8', 'watchOS 8', '$regex$watchOS 8', '8.0', '9.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 9', '9', 'Apple watchOS 9', 'watchOS 9', '$regex$watchOS 9', '9.0', '10.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 10', '10', 'Apple watchOS 10', 'watchOS 10', '$regex$watchOS 10', '10.0', '11.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 11', '11', 'Apple watchOS 11', 'watchOS 11', '$regex$watchOS 11', '11.0', '12.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1)),
+  ('watchOS 26', '26', 'Apple watchOS 26', 'watchOS 26', '$regex$watchOS 26', '26.0', '27.0', 2026, 0, 'active', (SELECT id FROM type_os WHERE name = 'watchOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Android
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Android 1.0', '1.0', 'Android 1.0', 'Android 1.0', '$regex$Android 1\.0', '1.0', '1.1', 2008, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 1.1', '1.1', 'Android 1.1', 'Android 1.1', '$regex$Android 1\.1', '1.1', '1.5', 2009, 2010, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 1.5 (Cupcake)', '1.5', 'Android 1.5 Cupcake', 'Android 1.5', '$regex$Android 1\.5', '1.5', '1.6', 2009, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 1.6 (Donut)', '1.6', 'Android 1.6 Donut', 'Android 1.6', '$regex$Android 1\.6', '1.6', '2.0', 2009, 2011, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 2.0 (Eclair)', '2.0', 'Android 2.0 Eclair', 'Android 2.0', '$regex$Android 2\.0', '2.0', '2.1', 2009, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 2.1 (Eclair)', '2.1', 'Android 2.1 Eclair', 'Android 2.1', '$regex$Android 2\.1', '2.1', '2.2', 2010, 2012, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 2.2 (Froyo)', '2.2', 'Android 2.2 Froyo', 'Android 2.2', '$regex$Android 2\.2', '2.2', '2.3', 2010, 2013, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 2.3 (Gingerbread)', '2.3', 'Android 2.3 Gingerbread', 'Android 2.3', '$regex$Android 2\.3', '2.3', '3.0', 2010, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 3.0 (Honeycomb)', '3.0', 'Android 3.0 Honeycomb', 'Android 3.0', '$regex$Android 3\.', '3.0', '4.0', 2011, 2014, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 4.0 (Ice Cream Sandwich)', '4.0', 'Android 4.0 Ice Cream Sandwich', 'Android 4.0', '$regex$Android 4\.0', '4.0', '4.1', 2011, 2015, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 4.1 (Jelly Bean)', '4.1', 'Android 4.1 Jelly Bean', 'Android 4.1', '$regex$Android 4\.[123]', '4.1', '4.4', 2012, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 4.4 (KitKat)', '4.4', 'Android 4.4 KitKat', 'Android 4.4', '$regex$Android 4\.4', '4.4', '5.0', 2013, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 5.0 (Lollipop)', '5.0', 'Android 5.0 Lollipop', 'Android 5.0', '$regex$Android 5\.', '5.0', '6.0', 2014, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 6.0 (Marshmallow)', '6.0', 'Android 6.0 Marshmallow', 'Android 6.0', '$regex$Android 6\.', '6.0', '7.0', 2015, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 7.0 (Nougat)', '7.0', 'Android 7.0 Nougat', 'Android 7.0', '$regex$Android 7\.', '7.0', '8.0', 2016, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 8.0 (Oreo)', '8.0', 'Android 8.0 Oreo', 'Android 8.0', '$regex$Android 8\.', '8.0', '9.0', 2017, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 9.0 (Pie)', '9.0', 'Android 9.0 Pie', 'Android 9.0', '$regex$Android 9\.', '9.0', '10.0', 2018, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 10', '10', 'Android 10', 'Android 10', '$regex$Android 10(\.|$)', '10.0', '11.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 11', '11', 'Android 11', 'Android 11', '$regex$Android 11(\.|$)', '11.0', '12.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 12', '12', 'Android 12', 'Android 12', '$regex$Android 12(\.|$)', '12.0', '13.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 13', '13', 'Android 13', 'Android 13', '$regex$Android 13(\.|$)', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 14', '14', 'Android 14', 'Android 14', '$regex$Android 14(\.|$)', '14.0', '15.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 15', '15', 'Android 15', 'Android 15', '$regex$Android 15(\.|$)', '15.0', '16.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1)),
+  ('Android 16', '16', 'Android 16', 'Android 16', '$regex$Android 16(\.|$)', '16.0', '17.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of HarmonyOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('HarmonyOS 1', '1', 'Huawei HarmonyOS 1', 'HarmonyOS 1', '$regex$HarmonyOS 1', '1.0', '2.0', 2019, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1)),
+  ('HarmonyOS 2', '2', 'Huawei HarmonyOS 2', 'HarmonyOS 2', '$regex$HarmonyOS 2', '2.0', '3.0', 2021, 2024, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1)),
+  ('HarmonyOS 3', '3', 'Huawei HarmonyOS 3', 'HarmonyOS 3', '$regex$HarmonyOS 3', '3.0', '4.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1)),
+  ('HarmonyOS 4', '4', 'Huawei HarmonyOS 4', 'HarmonyOS 4', '$regex$HarmonyOS 4', '4.0', '5.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1)),
+  ('HarmonyOS 5', '5', 'Huawei HarmonyOS 5', 'HarmonyOS 5', '$regex$HarmonyOS 5', '5.0', '6.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'HarmonyOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Chrome OS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Chrome OS 50', '50', 'Google Chrome OS 50', 'Chrome OS 50', '$regex$CrOS 50(\.|$)', '50.0', '51.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 60', '60', 'Google Chrome OS 60', 'Chrome OS 60', '$regex$CrOS 60(\.|$)', '60.0', '61.0', 2017, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 70', '70', 'Google Chrome OS 70', 'Chrome OS 70', '$regex$CrOS 70(\.|$)', '70.0', '71.0', 2018, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 80', '80', 'Google Chrome OS 80', 'Chrome OS 80', '$regex$CrOS 80(\.|$)', '80.0', '81.0', 2019, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 90', '90', 'Google Chrome OS 90', 'Chrome OS 90', '$regex$CrOS 90(\.|$)', '90.0', '91.0', 2021, 2026, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 100', '100', 'Google Chrome OS 100', 'Chrome OS 100', '$regex$CrOS 100(\.|$)', '100.0', '101.0', 2022, 2027, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 110', '110', 'Google Chrome OS 110', 'Chrome OS 110', '$regex$CrOS 110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 120', '120', 'Google Chrome OS 120', 'Chrome OS 120', '$regex$CrOS 120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 130', '130', 'Google Chrome OS 130', 'Chrome OS 130', '$regex$CrOS 130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1)),
+  ('Chrome OS 140', '140', 'Google Chrome OS 140', 'Chrome OS 140', '$regex$CrOS 140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_os WHERE name = 'Chrome OS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Android TV
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Android TV 5.0', '5.0', 'Android TV 5.0 Lollipop', 'Android TV 5.0', '$regex$Android TV 5(\.|$)', '5.0', '6.0', 2014, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 6.0', '6.0', 'Android TV 6.0 Marshmallow', 'Android TV 6.0', '$regex$Android TV 6(\.|$)', '6.0', '7.0', 2015, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 7.0', '7.0', 'Android TV 7.0 Nougat', 'Android TV 7.0', '$regex$Android TV 7(\.|$)', '7.0', '8.0', 2016, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 8.0', '8.0', 'Android TV 8.0 Oreo', 'Android TV 8.0', '$regex$Android TV 8(\.|$)', '8.0', '9.0', 2017, 2023, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 9.0', '9.0', 'Android TV 9.0 Pie', 'Android TV 9.0', '$regex$Android TV 9(\.|$)', '9.0', '10.0', 2018, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 10', '10', 'Android TV 10', 'Android TV 10', '$regex$Android TV 10(\.|$)', '10.0', '11.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 11', '11', 'Android TV 11', 'Android TV 11', '$regex$Android TV 11(\.|$)', '11.0', '12.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 12', '12', 'Android TV 12', 'Android TV 12', '$regex$Android TV 12(\.|$)', '12.0', '13.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 13', '13', 'Android TV 13', 'Android TV 13', '$regex$Android TV 13(\.|$)', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1)),
+  ('Android TV 14', '14', 'Android TV 14', 'Android TV 14', '$regex$Android TV 14(\.|$)', '14.0', '15.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'Android TV' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Linux
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Linux x86_64', '', 'Linux x86_64', 'Linux x86_64', '$regex$Linux x86_64', '0', '99', 2003, 0, 'active', (SELECT id FROM type_os WHERE name = 'Linux' LIMIT 1)),
+  ('Linux aarch64', '', 'Linux ARM64', 'Linux aarch64', '$regex$Linux aarch64|Linux arm64', '0', '99', 2012, 0, 'active', (SELECT id FROM type_os WHERE name = 'Linux' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Fedora
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Fedora 38', '38', 'Fedora Linux 38', 'Fedora 38', '$regex$Fedora/38', '38', '39', 2023, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Fedora' LIMIT 1)),
+  ('Fedora 39', '39', 'Fedora Linux 39', 'Fedora 39', '$regex$Fedora/39', '39', '40', 2023, 2024, 'active', (SELECT id FROM type_os WHERE name = 'Fedora' LIMIT 1)),
+  ('Fedora 40', '40', 'Fedora Linux 40', 'Fedora 40', '$regex$Fedora/40', '40', '41', 2024, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Fedora' LIMIT 1)),
+  ('Fedora 41', '41', 'Fedora Linux 41', 'Fedora 41', '$regex$Fedora/41', '41', '42', 2024, 2025, 'active', (SELECT id FROM type_os WHERE name = 'Fedora' LIMIT 1)),
+  ('Fedora 42', '42', 'Fedora Linux 42', 'Fedora 42', '$regex$Fedora/42', '42', '43', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'Fedora' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of CentOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('CentOS 6', '6', 'CentOS Linux 6', 'CentOS 6', '$regex$CentOS.* 6', '6.0', '7.0', 2011, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'CentOS' LIMIT 1)),
+  ('CentOS 7', '7', 'CentOS Linux 7', 'CentOS 7', '$regex$CentOS.* 7', '7.0', '8.0', 2014, 2024, 'pause', (SELECT id FROM type_os WHERE name = 'CentOS' LIMIT 1)),
+  ('CentOS 8', '8', 'CentOS Linux 8', 'CentOS 8', '$regex$CentOS.* 8', '8.0', '9.0', 2019, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'CentOS' LIMIT 1)),
+  ('CentOS Stream 9', '9', 'CentOS Stream 9', 'CentOS Stream 9', '$regex$CentOS Stream 9', '9.0', '10.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'CentOS' LIMIT 1)),
+  ('CentOS Stream 10', '10', 'CentOS Stream 10', 'CentOS Stream 10', '$regex$CentOS Stream 10', '10.0', '11.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'CentOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Fire OS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Fire OS 3', '3', 'Amazon Fire OS 3', 'Fire OS 3', '$regex$Fire OS 3', '3.0', '4.0', 2013, 2018, 'pause', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1)),
+  ('Fire OS 4', '4', 'Amazon Fire OS 4', 'Fire OS 4', '$regex$Fire OS 4', '4.0', '5.0', 2014, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1)),
+  ('Fire OS 5', '5', 'Amazon Fire OS 5', 'Fire OS 5', '$regex$Fire OS 5', '5.0', '6.0', 2015, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1)),
+  ('Fire OS 6', '6', 'Amazon Fire OS 6', 'Fire OS 6', '$regex$Fire OS 6', '6.0', '7.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1)),
+  ('Fire OS 7', '7', 'Amazon Fire OS 7', 'Fire OS 7', '$regex$Fire OS 7', '7.0', '8.0', 2017, 0, 'active', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1)),
+  ('Fire OS 8', '8', 'Amazon Fire OS 8', 'Fire OS 8', '$regex$Fire OS 8', '8.0', '9.0', 2018, 0, 'active', (SELECT id FROM type_os WHERE name = 'Fire OS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Tizen
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Tizen 2', '2', 'Tizen 2', 'Tizen 2', '$regex$Tizen 2', '2.0', '3.0', 2014, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 3', '3', 'Tizen 3', 'Tizen 3', '$regex$Tizen 3', '3.0', '4.0', 2015, 2020, 'pause', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 4', '4', 'Tizen 4', 'Tizen 4', '$regex$Tizen 4', '4.0', '5.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 5', '5', 'Tizen 5', 'Tizen 5', '$regex$Tizen 5', '5.0', '6.0', 2017, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 6', '6', 'Tizen 6', 'Tizen 6', '$regex$Tizen 6', '6.0', '7.0', 2018, 0, 'active', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 7', '7', 'Tizen 7', 'Tizen 7', '$regex$Tizen 7', '7.0', '8.0', 2019, 0, 'active', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1)),
+  ('Tizen 8', '8', 'Tizen 8', 'Tizen 8', '$regex$Tizen 8', '8.0', '9.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Tizen' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of webOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('webOS 3', '3', 'LG webOS 3', 'webOS 3', '$regex$Web0S; Linux/SmartTV', '3.0', '4.0', 2016, 2021, 'pause', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 4', '4', 'LG webOS 4', 'webOS 4', '$regex$webOS.TV-4|Web0S 4', '4.0', '5.0', 2018, 2023, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 5', '5', 'LG webOS 5', 'webOS 5', '$regex$webOS.TV-5', '5.0', '6.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 6', '6', 'LG webOS 6', 'webOS 6', '$regex$webOS.TV-6', '6.0', '7.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 7', '7', 'LG webOS 7', 'webOS 7', '$regex$webOS.TV-7', '7.0', '22.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 22', '22', 'LG webOS 22', 'webOS 22', '$regex$webOS.TV-22', '22.0', '23.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 23', '23', 'LG webOS 23', 'webOS 23', '$regex$webOS.TV-23', '23.0', '24.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 24', '24', 'LG webOS 24', 'webOS 24', '$regex$webOS.TV-24', '24.0', '25.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1)),
+  ('webOS 25', '25', 'LG webOS 25', 'webOS 25', '$regex$webOS.TV-25', '25.0', '26.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'webOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of PlayStation
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('PlayStation 3', '3', 'PlayStation 3', 'PlayStation 3', '$regex$PlayStation 3', '3.0', '4.0', 2006, 2017, 'pause', (SELECT id FROM type_os WHERE name = 'PlayStation' LIMIT 1)),
+  ('PlayStation 4', '4', 'PlayStation 4', 'PlayStation 4', '$regex$PlayStation 4', '4.0', '5.0', 2013, 0, 'active', (SELECT id FROM type_os WHERE name = 'PlayStation' LIMIT 1)),
+  ('PlayStation 5', '5', 'PlayStation 5', 'PlayStation 5', '$regex$PlayStation 5', '5.0', '6.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'PlayStation' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Xbox
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Xbox 360', '360', 'Xbox 360', 'Xbox 360', '$regex$Xbox 360', '1.0', '2.0', 2005, 2016, 'pause', (SELECT id FROM type_os WHERE name = 'Xbox' LIMIT 1)),
+  ('Xbox One', '1', 'Xbox One', 'Xbox One', '$regex$Xbox One', '1.0', '2.0', 2013, 0, 'active', (SELECT id FROM type_os WHERE name = 'Xbox' LIMIT 1)),
+  ('Xbox Series', '2', 'Xbox Series X/S', 'Xbox Series', '$regex$Xbox Series', '1.0', '2.0', 2020, 0, 'active', (SELECT id FROM type_os WHERE name = 'Xbox' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of KaiOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('KaiOS 1', '1', 'KaiOS 1', 'KaiOS 1', '$regex$KAIOS/1', '1.0', '2.0', 2017, 2019, 'pause', (SELECT id FROM type_os WHERE name = 'KaiOS' LIMIT 1)),
+  ('KaiOS 2', '2', 'KaiOS 2', 'KaiOS 2', '$regex$KAIOS/2', '2.0', '3.0', 2017, 2023, 'pause', (SELECT id FROM type_os WHERE name = 'KaiOS' LIMIT 1)),
+  ('KaiOS 3', '3', 'KaiOS 3', 'KaiOS 3', '$regex$KAIOS/3', '3.0', '4.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'KaiOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of iPadOS
+INSERT INTO type_os (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('iPadOS 13', '13', 'Apple iPadOS 13', 'iPadOS 13', '$regex$iPad.*CPU OS 13_', '13.0', '14.0', 2019, 2022, 'pause', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 14', '14', 'Apple iPadOS 14', 'iPadOS 14', '$regex$iPad.*CPU OS 14_', '14.0', '15.0', 2020, 2023, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 15', '15', 'Apple iPadOS 15', 'iPadOS 15', '$regex$iPad.*CPU OS 15_', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 16', '16', 'Apple iPadOS 16', 'iPadOS 16', '$regex$iPad.*CPU OS 16_', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 17', '17', 'Apple iPadOS 17', 'iPadOS 17', '$regex$iPad.*CPU OS 17_', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 18', '18', 'Apple iPadOS 18', 'iPadOS 18', '$regex$iPad.*CPU OS 18_', '18.0', '19.0', 2024, 0, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1)),
+  ('iPadOS 26', '26', 'Apple iPadOS 26', 'iPadOS 26', '$regex$iPad.*CPU OS 26_', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_os WHERE name = 'iPadOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+COMMIT;

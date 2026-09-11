@@ -1,61 +1,778 @@
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Internet Explorer', '', 'Microsoft Internet Explorer', 'Internet Explorer', '$regex$MSIE', '', '', 1995, 2022, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('IE 6', '6.0', 'Internet Explorer 6', 'IE 6', '$regex$MSIE 6', '6.0', '7.0', 2001, 2014, 'active', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('IE 7', '7.0', 'Internet Explorer 7', 'IE 7', '$regex$MSIE 7', '7.0', '8.0', 2006, 2016, 'active', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('IE 8', '8.0', 'Internet Explorer 8', 'IE 8', '$regex$MSIE 8', '8.0', '9.0', 2009, 2016, 'active', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mozilla Firefox', '', 'Mozilla Firefox Web Browser', 'Firefox', '$regex$Firefox', '', '', 2002, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Firefox 3', '3.0', 'Mozilla Firefox 3', 'Firefox 3', '$regex$Firefox/3', '3.0', '4.0', 2008, 2012, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Firefox 4', '4.0', 'Mozilla Firefox 4', 'Firefox 4', '$regex$Firefox/4', '4.0', '5.0', 2011, 2013, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Google Chrome', '', 'Google Chrome Web Browser', 'Chrome', '$regex$Chrome', '', '', 2008, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 1', '1.0', 'Google Chrome 1', 'Chrome 1', '$regex$Chrome/1', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 50', '50.0', 'Google Chrome 50', 'Chrome 50', '$regex$Chrome/50', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 60', '60.0', 'Google Chrome 60', 'Chrome 60', '$regex$Chrome/60', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 70', '70.0', 'Google Chrome 70', 'Chrome 70', '$regex$Chrome/70', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 80', '80.0', 'Google Chrome 80', 'Chrome 80', '$regex$Chrome/80', '80.0', '81.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chrome 100', '100.0', 'Google Chrome 100', 'Chrome 100', '$regex$Chrome/100', '100.0', '101.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Safari', '', 'Apple Safari Web Browser', 'Safari', '$regex$Safari', '', '', 2003, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Safari 1', '1.0', 'Safari 1', 'Safari 1', '$regex$Safari/1', '1.0', '2.0', 2003, 2005, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Safari 5', '5.0', 'Safari 5', 'Safari 5', '$regex$Safari/5', '5.0', '6.0', 2010, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Safari 10', '10.0', 'Safari 10', 'Safari 10', '$regex$Safari/10', '10.0', '11.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Safari 15', '15.0', 'Safari 15', 'Safari 15', '$regex$Safari/15', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser', '', 'Default web browser for Android', 'Android Browser', '$regex$Android Browser', '', '', 2008, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 1', '1.0', 'Android Browser 1', 'Android Browser 1', '$regex$Android Browser/1', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 2', '2.0', 'Android Browser 2', 'Android Browser 2', '$regex$Android Browser/2', '2.0', '3.0', 2010, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 3', '3.0', 'Android Browser 3', 'Android Browser 3', '$regex$Android Browser/3', '3.0', '4.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 4', '4.0', 'Android Browser 4', 'Android Browser 4', '$regex$Android Browser/4', '4.0', '5.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 5', '5.0', 'Android Browser 5', 'Android Browser 5', '$regex$Android Browser/5', '5.0', '6.0', 2013, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 6', '6.0', 'Android Browser 6', 'Android Browser 6', '$regex$Android Browser/6', '6.0', '7.0', 2015, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 7', '7.0', 'Android Browser 7', 'Android Browser 7', '$regex$Android Browser/7', '7.0', '8.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 8', '8.0', 'Android Browser 8', 'Android Browser 8', '$regex$Android Browser/8', '8.0', '9.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 9', '9.0', 'Android Browser 9', 'Android Browser 9', '$regex$Android Browser/9', '9.0', '10.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Android Browser 10', '10.0', 'Android Browser 10', 'Android Browser 10', '$regex$Android Browser/10', '10.0', '11.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mobile Safari', '', 'Default web browser for iOS', 'Mobile Safari', '$regex$Mobile Safari', '', '', 2007, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mobile Safari 1', '1.0', 'Mobile Safari 1', 'Mobile Safari 1', '$regex$Version/1', '1.0', '2.0', 2007, 2008, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mobile Safari 5', '5.0', 'Mobile Safari 5', 'Mobile Safari 5', '$regex$Version/5', '5.0', '6.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mobile Safari 10', '10.0', 'Mobile Safari 10', 'Mobile Safari 10', '$regex$Version/10', '10.0', '11.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Mobile Safari 15', '15.0', 'Mobile Safari 15', 'Mobile Safari 15', '$regex$Version/15', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Yandex Browser', '', 'Yandex''s proprietary web browser', 'Yandex Browser', '$regex$YaBrowser', '', '', 2012, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Yandex Browser 1', '1.0', 'Yandex Browser 1', 'Yandex Browser 1', '$regex$YaBrowser/1', '1.0', '2.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Yandex Browser 10', '10.0', 'Yandex Browser 10', 'Yandex Browser 10', '$regex$YaBrowser/10', '10.0', '11.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Yandex Browser 20', '20.0', 'Yandex Browser 20', 'Yandex Browser 20', '$regex$YaBrowser/20', '20.0', '21.0', 2021, 2023, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Yandex Browser 23', '23.0', 'Yandex Browser 23', 'Yandex Browser 23', '$regex$YaBrowser/23', '23.0', '24.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Microsoft Edge', '', 'Microsoft''s modern web browser', 'Edge', '$regex$Edg', '', '', 2015, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Edge Legacy', '15.0', 'Edge Legacy', 'Edge Legacy', '$regex$Edge/15', '15.0', '18.0', 2017, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Edge Chromium 79', '79.0', 'First Chromium-based Edge', 'Edge Chromium 79', '$regex$Edg/79', '79.0', '80.0', 2020, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Edge Chromium 90', '90.0', 'Edge Chromium 90', 'Edge Chromium 90', '$regex$Edg/90', '90.0', '91.0', 2021, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Edge Chromium 110', '110.0', 'Edge Chromium 110', 'Edge Chromium 110', '$regex$Edg/110', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chromium', '', 'Open-source web browser project by Google', 'Chromium', '$regex$Chromium', '', '', 2008, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chromium 1', '1.0', 'First release of Chromium', 'Chromium 1', '$regex$Chromium/1', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chromium 50', '50.0', 'Chromium 50', 'Chromium 50', '$regex$Chromium/50', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chromium 90', '90.0', 'Chromium 90', 'Chromium 90', '$regex$Chromium/90', '90.0', '91.0', 2021, 2023, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Chromium 110', '110.0', 'Chromium 110', 'Chromium 110', '$regex$Chromium/110', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Brave', '', 'Privacy-focused web browser based on Chromium', 'Brave', '$regex$Brave', '', '', 2016, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Brave 1', '1.0', 'First stable release of Brave', 'Brave 1', '$regex$Brave/1', '1.0', '2.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Brave 1.50', '1.50', 'Brave 1.50', 'Brave 1.50', '$regex$Brave/1.50', '1.50', '1.51', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('UC Browser', '', 'Web browser developed by UCWeb, a subsidiary of Alibaba Group', 'UC Browser', '$regex$UCBrowser', '', '', 2004, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('UC Browser 7', '7.0', 'UC Browser 7', 'UC Browser 7', '$regex$UCBrowser/7', '7.0', '8.0', 2010, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('UC Browser 10', '10.0', 'UC Browser 10', 'UC Browser 10', '$regex$UCBrowser/10', '10.0', '11.0', 2014, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('UC Browser 13', '13.0', 'UC Browser 13', 'UC Browser 13', '$regex$UCBrowser/13', '13.0', '14.0', 2020, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Vivaldi', '', 'A privacy-focused web browser developed by Vivaldi Technologies', 'Vivaldi', '$regex$Vivaldi', '', '', 2016, 0, 'active', NULL);
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Vivaldi 1', '1.0', 'Vivaldi 1', 'Vivaldi 1', '$regex$Vivaldi/1', '1.0', '2.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Vivaldi 3', '3.0', 'Vivaldi 3', 'Vivaldi 3', '$regex$Vivaldi/3', '3.0', '4.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1));
-INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id) VALUES ('Vivaldi 5', '5.0', 'Vivaldi 5', 'Vivaldi 5', '$regex$Vivaldi/5', '5.0', '6.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1));
+-- Generated by browserfix.py from browsers.json — do not edit by hand.
+BEGIN;
+
+CREATE UNIQUE INDEX IF NOT EXISTS type_browser_name_key ON type_browser (name);
+
+-- Root browsers
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Internet Explorer', '', 'Microsoft Internet Explorer', 'Internet Explorer', '$regex$MSIE', '', '', 1995, 2022, 'active', NULL),
+  ('Mozilla Firefox', '', 'Mozilla Firefox Web Browser', 'Firefox', '$regex$Firefox', '', '', 2002, 0, 'active', NULL),
+  ('Google Chrome', '', 'Google Chrome Web Browser', 'Chrome', '$regex$Chrome', '', '', 2008, 0, 'active', NULL),
+  ('Safari', '', 'Apple Safari Web Browser', 'Safari', '$regex$Safari', '', '', 2003, 0, 'active', NULL),
+  ('Android Browser', '', 'Default web browser for Android', 'Android Browser', '$regex$Android Browser', '', '', 2008, 0, 'active', NULL),
+  ('Mobile Safari', '', 'Default web browser for iOS', 'Mobile Safari', '$regex$Mobile Safari', '', '', 2007, 0, 'active', NULL),
+  ('Yandex Browser', '', 'Yandex''s proprietary web browser', 'Yandex Browser', '$regex$YaBrowser', '', '', 2012, 0, 'active', NULL),
+  ('Microsoft Edge', '', 'Microsoft''s modern web browser', 'Edge', '$regex$Edg', '', '', 2015, 0, 'active', NULL),
+  ('Chromium', '', 'Open-source web browser project by Google', 'Chromium', '$regex$Chromium', '', '', 2008, 0, 'active', NULL),
+  ('Brave', '', 'Privacy-focused web browser based on Chromium', 'Brave', '$regex$Brave', '', '', 2016, 0, 'active', NULL),
+  ('UC Browser', '', 'Web browser developed by UCWeb, a subsidiary of Alibaba Group', 'UC Browser', '$regex$UCBrowser', '', '', 2004, 0, 'active', NULL),
+  ('Vivaldi', '', 'A privacy-focused web browser developed by Vivaldi Technologies', 'Vivaldi', '$regex$Vivaldi', '', '', 2016, 0, 'active', NULL),
+  ('Opera', '', 'Opera web browser', 'Opera', '$regex$OPR/|Opera/', '', '', 1995, 0, 'active', NULL),
+  ('Opera Mini', '', 'Opera Mini mobile browser', 'Opera Mini', '$regex$Opera Mini', '', '', 2005, 0, 'active', NULL),
+  ('Samsung Internet', '', 'Samsung Internet Browser', 'Samsung Internet', '$regex$SamsungBrowser', '', '', 2012, 0, 'active', NULL),
+  ('Android WebView', '', 'Android System WebView', 'Android WebView', '$regex$; wv\)', '', '', 2014, 0, 'active', NULL),
+  ('Amazon Silk', '', 'Amazon Silk browser', 'Amazon Silk', '$regex$Silk/', '', '', 2011, 0, 'active', NULL),
+  ('Huawei Browser', '', 'Huawei Browser', 'Huawei Browser', '$regex$HuaweiBrowser', '', '', 2019, 0, 'active', NULL),
+  ('MIUI Browser', '', 'Xiaomi MIUI Browser', 'MIUI Browser', '$regex$MiuiBrowser|XiaoMi', '', '', 2014, 0, 'active', NULL),
+  ('QQ Browser', '', 'Tencent QQ Browser', 'QQ Browser', '$regex$MQQBrowser|QQBrowser', '', '', 2010, 0, 'active', NULL),
+  ('Naver Whale', '', 'Naver Whale browser', 'Whale', '$regex$Whale/', '', '', 2016, 0, 'active', NULL),
+  ('DuckDuckGo', '', 'DuckDuckGo Privacy Browser', 'DuckDuckGo', '$regex$DuckDuckGo|Ddg/', '', '', 2018, 0, 'active', NULL),
+  ('Facebook', '', 'Facebook in-app browser', 'Facebook', '$regex$FBAN|FBAV|FB_IAB', '', '', 2012, 0, 'active', NULL),
+  ('Instagram', '', 'Instagram in-app browser', 'Instagram', '$regex$Instagram', '', '', 2013, 0, 'active', NULL),
+  ('Chrome iOS', '', 'Google Chrome for iOS', 'Chrome iOS', '$regex$CriOS', '', '', 2012, 0, 'active', NULL),
+  ('Firefox iOS', '', 'Mozilla Firefox for iOS', 'Firefox iOS', '$regex$FxiOS', '', '', 2015, 0, 'active', NULL),
+  ('Coc Coc', '', 'Coc Coc browser (Vietnam)', 'Coc Coc', '$regex$coc_coc_browser', '', '', 2013, 0, 'active', NULL)
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Internet Explorer
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('IE 4', '4.0', 'Internet Explorer 4', 'IE 4', '$regex$MSIE 4', '4.0', '5.0', 1997, 2008, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 5', '5.0', 'Internet Explorer 5', 'IE 5', '$regex$MSIE 5', '5.0', '6.0', 1999, 2008, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 6', '6.0', 'Internet Explorer 6', 'IE 6', '$regex$MSIE 6', '6.0', '7.0', 2001, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 7', '7.0', 'Internet Explorer 7', 'IE 7', '$regex$MSIE 7', '7.0', '8.0', 2006, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 8', '8.0', 'Internet Explorer 8', 'IE 8', '$regex$MSIE 8', '8.0', '9.0', 2009, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 9', '9.0', 'Internet Explorer 9', 'IE 9', '$regex$MSIE 9', '9.0', '10.0', 2011, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 10', '10.0', 'Internet Explorer 10', 'IE 10', '$regex$MSIE 10', '10.0', '11.0', 2012, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1)),
+  ('IE 11', '11.0', 'Internet Explorer 11', 'IE 11', '$regex$MSIE 11|Trident/7', '11.0', '12.0', 2013, 2022, 'active', (SELECT id FROM type_browser WHERE name = 'Internet Explorer' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Mozilla Firefox
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Firefox 3', '3.0', 'Mozilla Firefox 3', 'Firefox 3', '$regex$Firefox/3(\.|$)', '3.0', '4.0', 2008, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 4', '4.0', 'Mozilla Firefox 4', 'Firefox 4', '$regex$Firefox/4(\.|$)', '4.0', '5.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 5', '5.0', 'Mozilla Firefox 5', 'Firefox 5', '$regex$Firefox/5(\.|$)', '5.0', '6.0', 2011, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 6', '6.0', 'Mozilla Firefox 6', 'Firefox 6', '$regex$Firefox/6(\.|$)', '6.0', '7.0', 2011, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 7', '7.0', 'Mozilla Firefox 7', 'Firefox 7', '$regex$Firefox/7(\.|$)', '7.0', '8.0', 2011, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 8', '8.0', 'Mozilla Firefox 8', 'Firefox 8', '$regex$Firefox/8(\.|$)', '8.0', '9.0', 2011, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 9', '9.0', 'Mozilla Firefox 9', 'Firefox 9', '$regex$Firefox/9(\.|$)', '9.0', '10.0', 2011, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 10', '10.0', 'Mozilla Firefox 10', 'Firefox 10', '$regex$Firefox/10(\.|$)', '10.0', '11.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 20', '20.0', 'Mozilla Firefox 20', 'Firefox 20', '$regex$Firefox/20(\.|$)', '20.0', '21.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 30', '30.0', 'Mozilla Firefox 30', 'Firefox 30', '$regex$Firefox/30(\.|$)', '30.0', '31.0', 2013, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 40', '40.0', 'Mozilla Firefox 40', 'Firefox 40', '$regex$Firefox/40(\.|$)', '40.0', '41.0', 2014, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 50', '50.0', 'Mozilla Firefox 50', 'Firefox 50', '$regex$Firefox/50(\.|$)', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 60', '60.0', 'Mozilla Firefox 60', 'Firefox 60', '$regex$Firefox/60(\.|$)', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 70', '70.0', 'Mozilla Firefox 70', 'Firefox 70', '$regex$Firefox/70(\.|$)', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 80', '80.0', 'Mozilla Firefox 80', 'Firefox 80', '$regex$Firefox/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 90', '90.0', 'Mozilla Firefox 90', 'Firefox 90', '$regex$Firefox/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 100', '100.0', 'Mozilla Firefox 100', 'Firefox 100', '$regex$Firefox/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 110', '110.0', 'Mozilla Firefox 110', 'Firefox 110', '$regex$Firefox/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 115 ESR', '115.0', 'Mozilla Firefox 115 ESR', 'Firefox 115', '$regex$Firefox/115(\.|$)', '115.0', '116.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 120', '120.0', 'Mozilla Firefox 120', 'Firefox 120', '$regex$Firefox/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 128 ESR', '128.0', 'Mozilla Firefox 128 ESR', 'Firefox 128', '$regex$Firefox/128(\.|$)', '128.0', '129.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 130', '130.0', 'Mozilla Firefox 130', 'Firefox 130', '$regex$Firefox/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1)),
+  ('Firefox 140', '140.0', 'Mozilla Firefox 140', 'Firefox 140', '$regex$Firefox/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mozilla Firefox' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Google Chrome
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Chrome 1', '1.0', 'Google Chrome 1', 'Chrome 1', '$regex$Chrome/1(\.|$)', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 10', '10.0', 'Google Chrome 10', 'Chrome 10', '$regex$Chrome/10(\.|$)', '10.0', '11.0', 2009, 2011, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 20', '20.0', 'Google Chrome 20', 'Chrome 20', '$regex$Chrome/20(\.|$)', '20.0', '21.0', 2010, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 30', '30.0', 'Google Chrome 30', 'Chrome 30', '$regex$Chrome/30(\.|$)', '30.0', '31.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 40', '40.0', 'Google Chrome 40', 'Chrome 40', '$regex$Chrome/40(\.|$)', '40.0', '41.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 50', '50.0', 'Google Chrome 50', 'Chrome 50', '$regex$Chrome/50(\.|$)', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 60', '60.0', 'Google Chrome 60', 'Chrome 60', '$regex$Chrome/60(\.|$)', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 70', '70.0', 'Google Chrome 70', 'Chrome 70', '$regex$Chrome/70(\.|$)', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 80', '80.0', 'Google Chrome 80', 'Chrome 80', '$regex$Chrome/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 90', '90.0', 'Google Chrome 90', 'Chrome 90', '$regex$Chrome/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 100', '100.0', 'Google Chrome 100', 'Chrome 100', '$regex$Chrome/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 110', '110.0', 'Google Chrome 110', 'Chrome 110', '$regex$Chrome/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 120', '120.0', 'Google Chrome 120', 'Chrome 120', '$regex$Chrome/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 130', '130.0', 'Google Chrome 130', 'Chrome 130', '$regex$Chrome/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1)),
+  ('Chrome 140', '140.0', 'Google Chrome 140', 'Chrome 140', '$regex$Chrome/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Google Chrome' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Safari
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Safari 1', '1.0', 'Safari 1', 'Safari 1', '$regex$Version/1(\.|$).*Safari', '1.0', '2.0', 2003, 2006, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 2', '2.0', 'Safari 2', 'Safari 2', '$regex$Version/2(\.|$).*Safari', '2.0', '3.0', 2005, 2008, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 3', '3.0', 'Safari 3', 'Safari 3', '$regex$Version/3(\.|$).*Safari', '3.0', '4.0', 2007, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 4', '4.0', 'Safari 4', 'Safari 4', '$regex$Version/4(\.|$).*Safari', '4.0', '5.0', 2009, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 5', '5.0', 'Safari 5', 'Safari 5', '$regex$Version/5(\.|$).*Safari', '5.0', '6.0', 2010, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 6', '6.0', 'Safari 6', 'Safari 6', '$regex$Version/6(\.|$).*Safari', '6.0', '7.0', 2012, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 7', '7.0', 'Safari 7', 'Safari 7', '$regex$Version/7(\.|$).*Safari', '7.0', '8.0', 2013, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 8', '8.0', 'Safari 8', 'Safari 8', '$regex$Version/8(\.|$).*Safari', '8.0', '9.0', 2014, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 9', '9.0', 'Safari 9', 'Safari 9', '$regex$Version/9(\.|$).*Safari', '9.0', '10.0', 2015, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 10', '10.0', 'Safari 10', 'Safari 10', '$regex$Version/10(\.|$).*Safari', '10.0', '11.0', 2016, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 11', '11.0', 'Safari 11', 'Safari 11', '$regex$Version/11(\.|$).*Safari', '11.0', '12.0', 2017, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 12', '12.0', 'Safari 12', 'Safari 12', '$regex$Version/12(\.|$).*Safari', '12.0', '13.0', 2018, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 13', '13.0', 'Safari 13', 'Safari 13', '$regex$Version/13(\.|$).*Safari', '13.0', '14.0', 2019, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 14', '14.0', 'Safari 14', 'Safari 14', '$regex$Version/14(\.|$).*Safari', '14.0', '15.0', 2020, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 15', '15.0', 'Safari 15', 'Safari 15', '$regex$Version/15(\.|$).*Safari', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 16', '16.0', 'Safari 16', 'Safari 16', '$regex$Version/16(\.|$).*Safari', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 17', '17.0', 'Safari 17', 'Safari 17', '$regex$Version/17(\.|$).*Safari', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 18', '18.0', 'Safari 18', 'Safari 18', '$regex$Version/18(\.|$).*Safari', '18.0', '19.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1)),
+  ('Safari 26', '26.0', 'Safari 26', 'Safari 26', '$regex$Version/26(\.|$).*Safari', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Safari' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Android Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Android Browser 1', '1.0', 'Android Browser 1', 'Android Browser 1', '$regex$Android 1.*AppleWebKit', '1.0', '2.0', 2008, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 2', '2.0', 'Android Browser 2', 'Android Browser 2', '$regex$Android 2.*AppleWebKit', '2.0', '3.0', 2009, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 3', '3.0', 'Android Browser 3', 'Android Browser 3', '$regex$Android 3.*AppleWebKit', '3.0', '4.0', 2010, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 4', '4.0', 'Android Browser 4', 'Android Browser 4', '$regex$Android 4.*AppleWebKit', '4.0', '5.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 5', '5.0', 'Android Browser 5', 'Android Browser 5', '$regex$Android 5.*AppleWebKit', '5.0', '6.0', 2012, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 6', '6.0', 'Android Browser 6', 'Android Browser 6', '$regex$Android 6.*AppleWebKit', '6.0', '7.0', 2013, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 7', '7.0', 'Android Browser 7', 'Android Browser 7', '$regex$Android 7.*AppleWebKit', '7.0', '8.0', 2014, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 8', '8.0', 'Android Browser 8', 'Android Browser 8', '$regex$Android 8.*AppleWebKit', '8.0', '9.0', 2015, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 9', '9.0', 'Android Browser 9', 'Android Browser 9', '$regex$Android 9.*AppleWebKit', '9.0', '10.0', 2016, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1)),
+  ('Android Browser 10', '10.0', 'Android Browser 10', 'Android Browser 10', '$regex$Android 10.*AppleWebKit', '10.0', '11.0', 2017, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Android Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Mobile Safari
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Mobile Safari 1', '1.0', 'Mobile Safari 1', 'Mobile Safari 1', '$regex$Version/1(\.|$).*Mobile.*Safari', '1.0', '2.0', 2003, 2006, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 2', '2.0', 'Mobile Safari 2', 'Mobile Safari 2', '$regex$Version/2(\.|$).*Mobile.*Safari', '2.0', '3.0', 2005, 2008, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 3', '3.0', 'Mobile Safari 3', 'Mobile Safari 3', '$regex$Version/3(\.|$).*Mobile.*Safari', '3.0', '4.0', 2007, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 4', '4.0', 'Mobile Safari 4', 'Mobile Safari 4', '$regex$Version/4(\.|$).*Mobile.*Safari', '4.0', '5.0', 2009, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 5', '5.0', 'Mobile Safari 5', 'Mobile Safari 5', '$regex$Version/5(\.|$).*Mobile.*Safari', '5.0', '6.0', 2010, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 6', '6.0', 'Mobile Safari 6', 'Mobile Safari 6', '$regex$Version/6(\.|$).*Mobile.*Safari', '6.0', '7.0', 2012, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 7', '7.0', 'Mobile Safari 7', 'Mobile Safari 7', '$regex$Version/7(\.|$).*Mobile.*Safari', '7.0', '8.0', 2013, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 8', '8.0', 'Mobile Safari 8', 'Mobile Safari 8', '$regex$Version/8(\.|$).*Mobile.*Safari', '8.0', '9.0', 2014, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 9', '9.0', 'Mobile Safari 9', 'Mobile Safari 9', '$regex$Version/9(\.|$).*Mobile.*Safari', '9.0', '10.0', 2015, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 10', '10.0', 'Mobile Safari 10', 'Mobile Safari 10', '$regex$Version/10(\.|$).*Mobile.*Safari', '10.0', '11.0', 2016, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 11', '11.0', 'Mobile Safari 11', 'Mobile Safari 11', '$regex$Version/11(\.|$).*Mobile.*Safari', '11.0', '12.0', 2017, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 12', '12.0', 'Mobile Safari 12', 'Mobile Safari 12', '$regex$Version/12(\.|$).*Mobile.*Safari', '12.0', '13.0', 2018, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 13', '13.0', 'Mobile Safari 13', 'Mobile Safari 13', '$regex$Version/13(\.|$).*Mobile.*Safari', '13.0', '14.0', 2019, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 14', '14.0', 'Mobile Safari 14', 'Mobile Safari 14', '$regex$Version/14(\.|$).*Mobile.*Safari', '14.0', '15.0', 2020, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 15', '15.0', 'Mobile Safari 15', 'Mobile Safari 15', '$regex$Version/15(\.|$).*Mobile.*Safari', '15.0', '16.0', 2021, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 16', '16.0', 'Mobile Safari 16', 'Mobile Safari 16', '$regex$Version/16(\.|$).*Mobile.*Safari', '16.0', '17.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 17', '17.0', 'Mobile Safari 17', 'Mobile Safari 17', '$regex$Version/17(\.|$).*Mobile.*Safari', '17.0', '18.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 18', '18.0', 'Mobile Safari 18', 'Mobile Safari 18', '$regex$Version/18(\.|$).*Mobile.*Safari', '18.0', '19.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1)),
+  ('Mobile Safari 26', '26.0', 'Mobile Safari 26', 'Mobile Safari 26', '$regex$Version/26(\.|$).*Mobile.*Safari', '26.0', '27.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Mobile Safari' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Yandex Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Yandex Browser 1', '1.0', 'Yandex Browser 1', 'Yandex Browser 1', '$regex$YaBrowser/1(\.|$)', '1.0', '2.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 10', '10.0', 'Yandex Browser 10', 'Yandex Browser 10', '$regex$YaBrowser/10(\.|$)', '10.0', '11.0', 2014, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 11', '11.0', 'Yandex Browser 11', 'Yandex Browser 11', '$regex$YaBrowser/11(\.|$)', '11.0', '12.0', 2015, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 12', '12.0', 'Yandex Browser 12', 'Yandex Browser 12', '$regex$YaBrowser/12(\.|$)', '12.0', '13.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 13', '13.0', 'Yandex Browser 13', 'Yandex Browser 13', '$regex$YaBrowser/13(\.|$)', '13.0', '14.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 14', '14.0', 'Yandex Browser 14', 'Yandex Browser 14', '$regex$YaBrowser/14(\.|$)', '14.0', '15.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 15', '15.0', 'Yandex Browser 15', 'Yandex Browser 15', '$regex$YaBrowser/15(\.|$)', '15.0', '16.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 16', '16.0', 'Yandex Browser 16', 'Yandex Browser 16', '$regex$YaBrowser/16(\.|$)', '16.0', '17.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 17', '17.0', 'Yandex Browser 17', 'Yandex Browser 17', '$regex$YaBrowser/17(\.|$)', '17.0', '18.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 18', '18.0', 'Yandex Browser 18', 'Yandex Browser 18', '$regex$YaBrowser/18(\.|$)', '18.0', '19.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 19', '19.0', 'Yandex Browser 19', 'Yandex Browser 19', '$regex$YaBrowser/19(\.|$)', '19.0', '20.0', 2023, 2025, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 20', '20.0', 'Yandex Browser 20', 'Yandex Browser 20', '$regex$YaBrowser/20(\.|$)', '20.0', '21.0', 2024, 2026, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 21', '21.0', 'Yandex Browser 21', 'Yandex Browser 21', '$regex$YaBrowser/21(\.|$)', '21.0', '22.0', 2025, 2027, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 22', '22.0', 'Yandex Browser 22', 'Yandex Browser 22', '$regex$YaBrowser/22(\.|$)', '22.0', '23.0', 2026, 2028, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 23', '23.0', 'Yandex Browser 23', 'Yandex Browser 23', '$regex$YaBrowser/23(\.|$)', '23.0', '24.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 24', '24.0', 'Yandex Browser 24', 'Yandex Browser 24', '$regex$YaBrowser/24(\.|$)', '24.0', '25.0', 2028, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1)),
+  ('Yandex Browser 25', '25.0', 'Yandex Browser 25', 'Yandex Browser 25', '$regex$YaBrowser/25(\.|$)', '25.0', '26.0', 2029, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Yandex Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Microsoft Edge
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Edge Legacy', '15.0', 'Edge Legacy (EdgeHTML)', 'Edge Legacy', '$regex$Edge/', '12.0', '19.0', 2015, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 79', '79.0', 'Edge Chromium 79', 'Edge Chromium 79', '$regex$Edg/79(\.|$)', '79.0', '80.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 80', '80.0', 'Edge Chromium 80', 'Edge Chromium 80', '$regex$Edg/80(\.|$)', '80.0', '81.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 90', '90.0', 'Edge Chromium 90', 'Edge Chromium 90', '$regex$Edg/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 100', '100.0', 'Edge Chromium 100', 'Edge Chromium 100', '$regex$Edg/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 110', '110.0', 'Edge Chromium 110', 'Edge Chromium 110', '$regex$Edg/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 120', '120.0', 'Edge Chromium 120', 'Edge Chromium 120', '$regex$Edg/120(\.|$)', '120.0', '121.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 130', '130.0', 'Edge Chromium 130', 'Edge Chromium 130', '$regex$Edg/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1)),
+  ('Edge Chromium 140', '140.0', 'Edge Chromium 140', 'Edge Chromium 140', '$regex$Edg/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Microsoft Edge' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Chromium
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Chromium 1', '1.0', 'Chromium 1', 'Chromium 1', '$regex$Chromium/1(\.|$)', '1.0', '2.0', 2008, 2010, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 10', '10.0', 'Chromium 10', 'Chromium 10', '$regex$Chromium/10(\.|$)', '10.0', '11.0', 2009, 2011, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 20', '20.0', 'Chromium 20', 'Chromium 20', '$regex$Chromium/20(\.|$)', '20.0', '21.0', 2010, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 30', '30.0', 'Chromium 30', 'Chromium 30', '$regex$Chromium/30(\.|$)', '30.0', '31.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 40', '40.0', 'Chromium 40', 'Chromium 40', '$regex$Chromium/40(\.|$)', '40.0', '41.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 50', '50.0', 'Chromium 50', 'Chromium 50', '$regex$Chromium/50(\.|$)', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 60', '60.0', 'Chromium 60', 'Chromium 60', '$regex$Chromium/60(\.|$)', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 70', '70.0', 'Chromium 70', 'Chromium 70', '$regex$Chromium/70(\.|$)', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 80', '80.0', 'Chromium 80', 'Chromium 80', '$regex$Chromium/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 90', '90.0', 'Chromium 90', 'Chromium 90', '$regex$Chromium/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 100', '100.0', 'Chromium 100', 'Chromium 100', '$regex$Chromium/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 110', '110.0', 'Chromium 110', 'Chromium 110', '$regex$Chromium/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 120', '120.0', 'Chromium 120', 'Chromium 120', '$regex$Chromium/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 130', '130.0', 'Chromium 130', 'Chromium 130', '$regex$Chromium/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1)),
+  ('Chromium 140', '140.0', 'Chromium 140', 'Chromium 140', '$regex$Chromium/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chromium' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Brave
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Brave 1.0', '1.0', 'Brave 1.0', 'Brave 1.0', '$regex$Brave/1.0(\.|$)', '1.0', '1.1', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.10', '1.10', 'Brave 1.10', 'Brave 1.10', '$regex$Brave/1.10(\.|$)', '1.10', '1.11', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.20', '1.20', 'Brave 1.20', 'Brave 1.20', '$regex$Brave/1.20(\.|$)', '1.20', '1.21', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.30', '1.30', 'Brave 1.30', 'Brave 1.30', '$regex$Brave/1.30(\.|$)', '1.30', '1.31', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.40', '1.40', 'Brave 1.40', 'Brave 1.40', '$regex$Brave/1.40(\.|$)', '1.40', '1.41', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.50', '1.50', 'Brave 1.50', 'Brave 1.50', '$regex$Brave/1.50(\.|$)', '1.50', '1.51', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.60', '1.60', 'Brave 1.60', 'Brave 1.60', '$regex$Brave/1.60(\.|$)', '1.60', '1.61', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.70', '1.70', 'Brave 1.70', 'Brave 1.70', '$regex$Brave/1.70(\.|$)', '1.70', '1.71', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1)),
+  ('Brave 1.80', '1.80', 'Brave 1.80', 'Brave 1.80', '$regex$Brave/1.80(\.|$)', '1.80', '1.81', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Brave' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of UC Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('UC Browser 7', '7.0', 'UC Browser 7', 'UC Browser 7', '$regex$UCBrowser/7(\.|$)', '7.0', '8.0', 2010, 2012, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 8', '8.0', 'UC Browser 8', 'UC Browser 8', '$regex$UCBrowser/8(\.|$)', '8.0', '9.0', 2011, 2013, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 9', '9.0', 'UC Browser 9', 'UC Browser 9', '$regex$UCBrowser/9(\.|$)', '9.0', '10.0', 2012, 2014, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 10', '10.0', 'UC Browser 10', 'UC Browser 10', '$regex$UCBrowser/10(\.|$)', '10.0', '11.0', 2013, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 11', '11.0', 'UC Browser 11', 'UC Browser 11', '$regex$UCBrowser/11(\.|$)', '11.0', '12.0', 2014, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 12', '12.0', 'UC Browser 12', 'UC Browser 12', '$regex$UCBrowser/12(\.|$)', '12.0', '13.0', 2015, 2017, 'pause', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 13', '13.0', 'UC Browser 13', 'UC Browser 13', '$regex$UCBrowser/13(\.|$)', '13.0', '14.0', 2016, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 14', '14.0', 'UC Browser 14', 'UC Browser 14', '$regex$UCBrowser/14(\.|$)', '14.0', '15.0', 2017, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 15', '15.0', 'UC Browser 15', 'UC Browser 15', '$regex$UCBrowser/15(\.|$)', '15.0', '16.0', 2018, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 16', '16.0', 'UC Browser 16', 'UC Browser 16', '$regex$UCBrowser/16(\.|$)', '16.0', '17.0', 2019, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1)),
+  ('UC Browser 17', '17.0', 'UC Browser 17', 'UC Browser 17', '$regex$UCBrowser/17(\.|$)', '17.0', '18.0', 2020, 0, 'active', (SELECT id FROM type_browser WHERE name = 'UC Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Vivaldi
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Vivaldi 1', '1.0', 'Vivaldi 1', 'Vivaldi 1', '$regex$Vivaldi/1(\.|$)', '1.0', '2.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 2', '2.0', 'Vivaldi 2', 'Vivaldi 2', '$regex$Vivaldi/2(\.|$)', '2.0', '3.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 3', '3.0', 'Vivaldi 3', 'Vivaldi 3', '$regex$Vivaldi/3(\.|$)', '3.0', '4.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 4', '4.0', 'Vivaldi 4', 'Vivaldi 4', '$regex$Vivaldi/4(\.|$)', '4.0', '5.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 5', '5.0', 'Vivaldi 5', 'Vivaldi 5', '$regex$Vivaldi/5(\.|$)', '5.0', '6.0', 2020, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 6', '6.0', 'Vivaldi 6', 'Vivaldi 6', '$regex$Vivaldi/6(\.|$)', '6.0', '7.0', 2021, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1)),
+  ('Vivaldi 7', '7.0', 'Vivaldi 7', 'Vivaldi 7', '$regex$Vivaldi/7(\.|$)', '7.0', '8.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Vivaldi' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Opera
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Opera 12', '12.0', 'Opera 12 Presto', 'Opera 12', '$regex$Opera/9.80.*Version/12', '12.0', '13.0', 2012, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 15', '15.0', 'Opera 15', 'Opera 15', '$regex$OPR/15(\.|$)', '15.0', '16.0', 2013, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 20', '20.0', 'Opera 20', 'Opera 20', '$regex$OPR/20(\.|$)', '20.0', '21.0', 2013, 2015, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 30', '30.0', 'Opera 30', 'Opera 30', '$regex$OPR/30(\.|$)', '30.0', '31.0', 2014, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 40', '40.0', 'Opera 40', 'Opera 40', '$regex$OPR/40(\.|$)', '40.0', '41.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 50', '50.0', 'Opera 50', 'Opera 50', '$regex$OPR/50(\.|$)', '50.0', '51.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 60', '60.0', 'Opera 60', 'Opera 60', '$regex$OPR/60(\.|$)', '60.0', '61.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 70', '70.0', 'Opera 70', 'Opera 70', '$regex$OPR/70(\.|$)', '70.0', '71.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 80', '80.0', 'Opera 80', 'Opera 80', '$regex$OPR/80(\.|$)', '80.0', '81.0', 2021, 2023, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 90', '90.0', 'Opera 90', 'Opera 90', '$regex$OPR/90(\.|$)', '90.0', '91.0', 2022, 2024, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 100', '100.0', 'Opera 100', 'Opera 100', '$regex$OPR/100(\.|$)', '100.0', '101.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 110', '110.0', 'Opera 110', 'Opera 110', '$regex$OPR/110(\.|$)', '110.0', '111.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1)),
+  ('Opera 120', '120.0', 'Opera 120', 'Opera 120', '$regex$OPR/120(\.|$)', '120.0', '121.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Opera Mini
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Opera Mini 7', '7.0', 'Opera Mini 7', 'Opera Mini 7', '$regex$Opera Mini/7(\.|$)', '7.0', '8.0', 2012, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 8', '8.0', 'Opera Mini 8', 'Opera Mini 8', '$regex$Opera Mini/8(\.|$)', '8.0', '9.0', 2012, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 9', '9.0', 'Opera Mini 9', 'Opera Mini 9', '$regex$Opera Mini/9(\.|$)', '9.0', '10.0', 2012, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 10', '10.0', 'Opera Mini 10', 'Opera Mini 10', '$regex$Opera Mini/10(\.|$)', '10.0', '11.0', 2012, 2016, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 20', '20.0', 'Opera Mini 20', 'Opera Mini 20', '$regex$Opera Mini/20(\.|$)', '20.0', '21.0', 2014, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 30', '30.0', 'Opera Mini 30', 'Opera Mini 30', '$regex$Opera Mini/30(\.|$)', '30.0', '31.0', 2016, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 40', '40.0', 'Opera Mini 40', 'Opera Mini 40', '$regex$Opera Mini/40(\.|$)', '40.0', '41.0', 2018, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 50', '50.0', 'Opera Mini 50', 'Opera Mini 50', '$regex$Opera Mini/50(\.|$)', '50.0', '51.0', 2020, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 60', '60.0', 'Opera Mini 60', 'Opera Mini 60', '$regex$Opera Mini/60(\.|$)', '60.0', '61.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 70', '70.0', 'Opera Mini 70', 'Opera Mini 70', '$regex$Opera Mini/70(\.|$)', '70.0', '71.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1)),
+  ('Opera Mini 80', '80.0', 'Opera Mini 80', 'Opera Mini 80', '$regex$Opera Mini/80(\.|$)', '80.0', '81.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Opera Mini' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Samsung Internet
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Samsung Internet 4', '4.0', 'Samsung Internet 4', 'Samsung Internet 4', '$regex$SamsungBrowser/4(\.|$)', '4.0', '5.0', 2015, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 5', '5.0', 'Samsung Internet 5', 'Samsung Internet 5', '$regex$SamsungBrowser/5(\.|$)', '5.0', '6.0', 2015, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 6', '6.0', 'Samsung Internet 6', 'Samsung Internet 6', '$regex$SamsungBrowser/6(\.|$)', '6.0', '7.0', 2016, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 7', '7.0', 'Samsung Internet 7', 'Samsung Internet 7', '$regex$SamsungBrowser/7(\.|$)', '7.0', '8.0', 2016, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 8', '8.0', 'Samsung Internet 8', 'Samsung Internet 8', '$regex$SamsungBrowser/8(\.|$)', '8.0', '9.0', 2017, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 9', '9.0', 'Samsung Internet 9', 'Samsung Internet 9', '$regex$SamsungBrowser/9(\.|$)', '9.0', '10.0', 2017, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 10', '10.0', 'Samsung Internet 10', 'Samsung Internet 10', '$regex$SamsungBrowser/10(\.|$)', '10.0', '11.0', 2018, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 11', '11.0', 'Samsung Internet 11', 'Samsung Internet 11', '$regex$SamsungBrowser/11(\.|$)', '11.0', '12.0', 2018, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 12', '12.0', 'Samsung Internet 12', 'Samsung Internet 12', '$regex$SamsungBrowser/12(\.|$)', '12.0', '13.0', 2019, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 13', '13.0', 'Samsung Internet 13', 'Samsung Internet 13', '$regex$SamsungBrowser/13(\.|$)', '13.0', '14.0', 2019, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 14', '14.0', 'Samsung Internet 14', 'Samsung Internet 14', '$regex$SamsungBrowser/14(\.|$)', '14.0', '15.0', 2020, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 15', '15.0', 'Samsung Internet 15', 'Samsung Internet 15', '$regex$SamsungBrowser/15(\.|$)', '15.0', '16.0', 2020, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 16', '16.0', 'Samsung Internet 16', 'Samsung Internet 16', '$regex$SamsungBrowser/16(\.|$)', '16.0', '17.0', 2021, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 17', '17.0', 'Samsung Internet 17', 'Samsung Internet 17', '$regex$SamsungBrowser/17(\.|$)', '17.0', '18.0', 2021, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 18', '18.0', 'Samsung Internet 18', 'Samsung Internet 18', '$regex$SamsungBrowser/18(\.|$)', '18.0', '19.0', 2022, 2025, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 19', '19.0', 'Samsung Internet 19', 'Samsung Internet 19', '$regex$SamsungBrowser/19(\.|$)', '19.0', '20.0', 2022, 2025, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 20', '20.0', 'Samsung Internet 20', 'Samsung Internet 20', '$regex$SamsungBrowser/20(\.|$)', '20.0', '21.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 21', '21.0', 'Samsung Internet 21', 'Samsung Internet 21', '$regex$SamsungBrowser/21(\.|$)', '21.0', '22.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 22', '22.0', 'Samsung Internet 22', 'Samsung Internet 22', '$regex$SamsungBrowser/22(\.|$)', '22.0', '23.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 23', '23.0', 'Samsung Internet 23', 'Samsung Internet 23', '$regex$SamsungBrowser/23(\.|$)', '23.0', '24.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 24', '24.0', 'Samsung Internet 24', 'Samsung Internet 24', '$regex$SamsungBrowser/24(\.|$)', '24.0', '25.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 25', '25.0', 'Samsung Internet 25', 'Samsung Internet 25', '$regex$SamsungBrowser/25(\.|$)', '25.0', '26.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 26', '26.0', 'Samsung Internet 26', 'Samsung Internet 26', '$regex$SamsungBrowser/26(\.|$)', '26.0', '27.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 27', '27.0', 'Samsung Internet 27', 'Samsung Internet 27', '$regex$SamsungBrowser/27(\.|$)', '27.0', '28.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1)),
+  ('Samsung Internet 28', '28.0', 'Samsung Internet 28', 'Samsung Internet 28', '$regex$SamsungBrowser/28(\.|$)', '28.0', '29.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Samsung Internet' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Android WebView
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Android WebView 50', '50.0', 'Android WebView 50', 'Android WebView 50', '$regex$; wv\).*Chrome/50(\.|$)', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 60', '60.0', 'Android WebView 60', 'Android WebView 60', '$regex$; wv\).*Chrome/60(\.|$)', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 70', '70.0', 'Android WebView 70', 'Android WebView 70', '$regex$; wv\).*Chrome/70(\.|$)', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 80', '80.0', 'Android WebView 80', 'Android WebView 80', '$regex$; wv\).*Chrome/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 90', '90.0', 'Android WebView 90', 'Android WebView 90', '$regex$; wv\).*Chrome/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 100', '100.0', 'Android WebView 100', 'Android WebView 100', '$regex$; wv\).*Chrome/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 110', '110.0', 'Android WebView 110', 'Android WebView 110', '$regex$; wv\).*Chrome/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 120', '120.0', 'Android WebView 120', 'Android WebView 120', '$regex$; wv\).*Chrome/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 130', '130.0', 'Android WebView 130', 'Android WebView 130', '$regex$; wv\).*Chrome/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1)),
+  ('Android WebView 140', '140.0', 'Android WebView 140', 'Android WebView 140', '$regex$; wv\).*Chrome/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Android WebView' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Amazon Silk
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Silk 50', '50.0', 'Amazon Silk 50', 'Silk 50', '$regex$Silk/50(\.|$)', '50.0', '51.0', 2016, 2018, 'pause', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 60', '60.0', 'Amazon Silk 60', 'Silk 60', '$regex$Silk/60(\.|$)', '60.0', '61.0', 2017, 2019, 'pause', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 70', '70.0', 'Amazon Silk 70', 'Silk 70', '$regex$Silk/70(\.|$)', '70.0', '71.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 80', '80.0', 'Amazon Silk 80', 'Silk 80', '$regex$Silk/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 90', '90.0', 'Amazon Silk 90', 'Silk 90', '$regex$Silk/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 100', '100.0', 'Amazon Silk 100', 'Silk 100', '$regex$Silk/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 110', '110.0', 'Amazon Silk 110', 'Silk 110', '$regex$Silk/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 120', '120.0', 'Amazon Silk 120', 'Silk 120', '$regex$Silk/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 130', '130.0', 'Amazon Silk 130', 'Silk 130', '$regex$Silk/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1)),
+  ('Silk 140', '140.0', 'Amazon Silk 140', 'Silk 140', '$regex$Silk/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Amazon Silk' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Huawei Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Huawei Browser 10', '10.0', 'Huawei Browser 10', 'Huawei Browser 10', '$regex$HuaweiBrowser/10(\.|$)', '10.0', '11.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 11', '11.0', 'Huawei Browser 11', 'Huawei Browser 11', '$regex$HuaweiBrowser/11(\.|$)', '11.0', '12.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 12', '12.0', 'Huawei Browser 12', 'Huawei Browser 12', '$regex$HuaweiBrowser/12(\.|$)', '12.0', '13.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 13', '13.0', 'Huawei Browser 13', 'Huawei Browser 13', '$regex$HuaweiBrowser/13(\.|$)', '13.0', '14.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 14', '14.0', 'Huawei Browser 14', 'Huawei Browser 14', '$regex$HuaweiBrowser/14(\.|$)', '14.0', '15.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 15', '15.0', 'Huawei Browser 15', 'Huawei Browser 15', '$regex$HuaweiBrowser/15(\.|$)', '15.0', '16.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1)),
+  ('Huawei Browser 16', '16.0', 'Huawei Browser 16', 'Huawei Browser 16', '$regex$HuaweiBrowser/16(\.|$)', '16.0', '17.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Huawei Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of MIUI Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('MIUI Browser 10', '10.0', 'MIUI Browser 10', 'MIUI Browser 10', '$regex$MiuiBrowser/10(\.|$)', '10.0', '11.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 11', '11.0', 'MIUI Browser 11', 'MIUI Browser 11', '$regex$MiuiBrowser/11(\.|$)', '11.0', '12.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 12', '12.0', 'MIUI Browser 12', 'MIUI Browser 12', '$regex$MiuiBrowser/12(\.|$)', '12.0', '13.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 13', '13.0', 'MIUI Browser 13', 'MIUI Browser 13', '$regex$MiuiBrowser/13(\.|$)', '13.0', '14.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 14', '14.0', 'MIUI Browser 14', 'MIUI Browser 14', '$regex$MiuiBrowser/14(\.|$)', '14.0', '15.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 15', '15.0', 'MIUI Browser 15', 'MIUI Browser 15', '$regex$MiuiBrowser/15(\.|$)', '15.0', '16.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 16', '16.0', 'MIUI Browser 16', 'MIUI Browser 16', '$regex$MiuiBrowser/16(\.|$)', '16.0', '17.0', 2025, 0, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1)),
+  ('MIUI Browser 17', '17.0', 'MIUI Browser 17', 'MIUI Browser 17', '$regex$MiuiBrowser/17(\.|$)', '17.0', '18.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'MIUI Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of QQ Browser
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('QQ Browser 10', '10.0', 'QQ Browser 10', 'QQ Browser 10', '$regex$MQQBrowser/10(\.|$)', '10.0', '11.0', 2018, 2020, 'pause', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 11', '11.0', 'QQ Browser 11', 'QQ Browser 11', '$regex$MQQBrowser/11(\.|$)', '11.0', '12.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 12', '12.0', 'QQ Browser 12', 'QQ Browser 12', '$regex$MQQBrowser/12(\.|$)', '12.0', '13.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 13', '13.0', 'QQ Browser 13', 'QQ Browser 13', '$regex$MQQBrowser/13(\.|$)', '13.0', '14.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 14', '14.0', 'QQ Browser 14', 'QQ Browser 14', '$regex$MQQBrowser/14(\.|$)', '14.0', '15.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 15', '15.0', 'QQ Browser 15', 'QQ Browser 15', '$regex$MQQBrowser/15(\.|$)', '15.0', '16.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1)),
+  ('QQ Browser 16', '16.0', 'QQ Browser 16', 'QQ Browser 16', '$regex$MQQBrowser/16(\.|$)', '16.0', '17.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'QQ Browser' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Naver Whale
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Whale 1', '1.0', 'Naver Whale 1', 'Whale 1', '$regex$Whale/1(\.|$)', '1.0', '2.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Naver Whale' LIMIT 1)),
+  ('Whale 2', '2.0', 'Naver Whale 2', 'Whale 2', '$regex$Whale/2(\.|$)', '2.0', '3.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Naver Whale' LIMIT 1)),
+  ('Whale 3', '3.0', 'Naver Whale 3', 'Whale 3', '$regex$Whale/3(\.|$)', '3.0', '4.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Naver Whale' LIMIT 1)),
+  ('Whale 4', '4.0', 'Naver Whale 4', 'Whale 4', '$regex$Whale/4(\.|$)', '4.0', '5.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Naver Whale' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of DuckDuckGo
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('DuckDuckGo 5', '5.0', 'DuckDuckGo 5', 'DuckDuckGo 5', '$regex$DuckDuckGo/5(\.|$)', '5.0', '6.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'DuckDuckGo' LIMIT 1)),
+  ('DuckDuckGo 6', '6.0', 'DuckDuckGo 6', 'DuckDuckGo 6', '$regex$DuckDuckGo/6(\.|$)', '6.0', '7.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'DuckDuckGo' LIMIT 1)),
+  ('DuckDuckGo 7', '7.0', 'DuckDuckGo 7', 'DuckDuckGo 7', '$regex$DuckDuckGo/7(\.|$)', '7.0', '8.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'DuckDuckGo' LIMIT 1)),
+  ('DuckDuckGo 8', '8.0', 'DuckDuckGo 8', 'DuckDuckGo 8', '$regex$DuckDuckGo/8(\.|$)', '8.0', '9.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'DuckDuckGo' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Facebook
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Facebook 200', '200.0', 'Facebook in-app 200', 'Facebook 200', '$regex$FBAV/200(\.|$)', '200.0', '201.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 250', '250.0', 'Facebook in-app 250', 'Facebook 250', '$regex$FBAV/250(\.|$)', '250.0', '251.0', 2020, 2022, 'pause', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 300', '300.0', 'Facebook in-app 300', 'Facebook 300', '$regex$FBAV/300(\.|$)', '300.0', '301.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 350', '350.0', 'Facebook in-app 350', 'Facebook 350', '$regex$FBAV/350(\.|$)', '350.0', '351.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 400', '400.0', 'Facebook in-app 400', 'Facebook 400', '$regex$FBAV/400(\.|$)', '400.0', '401.0', 2022, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 450', '450.0', 'Facebook in-app 450', 'Facebook 450', '$regex$FBAV/450(\.|$)', '450.0', '451.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1)),
+  ('Facebook 500', '500.0', 'Facebook in-app 500', 'Facebook 500', '$regex$FBAV/500(\.|$)', '500.0', '501.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Facebook' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Instagram
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Instagram 200', '200.0', 'Instagram in-app 200', 'Instagram 200', '$regex$Instagram 200', '200.0', '201.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 220', '220.0', 'Instagram in-app 220', 'Instagram 220', '$regex$Instagram 220', '220.0', '221.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 240', '240.0', 'Instagram in-app 240', 'Instagram 240', '$regex$Instagram 240', '240.0', '241.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 260', '260.0', 'Instagram in-app 260', 'Instagram 260', '$regex$Instagram 260', '260.0', '261.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 280', '280.0', 'Instagram in-app 280', 'Instagram 280', '$regex$Instagram 280', '280.0', '281.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 300', '300.0', 'Instagram in-app 300', 'Instagram 300', '$regex$Instagram 300', '300.0', '301.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 320', '320.0', 'Instagram in-app 320', 'Instagram 320', '$regex$Instagram 320', '320.0', '321.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 340', '340.0', 'Instagram in-app 340', 'Instagram 340', '$regex$Instagram 340', '340.0', '341.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1)),
+  ('Instagram 360', '360.0', 'Instagram in-app 360', 'Instagram 360', '$regex$Instagram 360', '360.0', '361.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Instagram' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Chrome iOS
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Chrome iOS 80', '80.0', 'Chrome iOS 80', 'Chrome iOS 80', '$regex$CriOS/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 90', '90.0', 'Chrome iOS 90', 'Chrome iOS 90', '$regex$CriOS/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 100', '100.0', 'Chrome iOS 100', 'Chrome iOS 100', '$regex$CriOS/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 110', '110.0', 'Chrome iOS 110', 'Chrome iOS 110', '$regex$CriOS/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 120', '120.0', 'Chrome iOS 120', 'Chrome iOS 120', '$regex$CriOS/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 130', '130.0', 'Chrome iOS 130', 'Chrome iOS 130', '$regex$CriOS/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1)),
+  ('Chrome iOS 140', '140.0', 'Chrome iOS 140', 'Chrome iOS 140', '$regex$CriOS/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Chrome iOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Firefox iOS
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Firefox iOS 80', '80.0', 'Firefox iOS 80', 'Firefox iOS 80', '$regex$FxiOS/80(\.|$)', '80.0', '81.0', 2019, 2021, 'pause', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 90', '90.0', 'Firefox iOS 90', 'Firefox iOS 90', '$regex$FxiOS/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 100', '100.0', 'Firefox iOS 100', 'Firefox iOS 100', '$regex$FxiOS/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 110', '110.0', 'Firefox iOS 110', 'Firefox iOS 110', '$regex$FxiOS/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 120', '120.0', 'Firefox iOS 120', 'Firefox iOS 120', '$regex$FxiOS/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 130', '130.0', 'Firefox iOS 130', 'Firefox iOS 130', '$regex$FxiOS/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1)),
+  ('Firefox iOS 140', '140.0', 'Firefox iOS 140', 'Firefox iOS 140', '$regex$FxiOS/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Firefox iOS' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+-- Versions of Coc Coc
+INSERT INTO type_browser (name, version, description, match_name_exp, match_ua_exp, match_ver_min_exp, match_ver_max_exp, year_release, year_end_support, active, parent_id)
+VALUES
+  ('Coc Coc 90', '90.0', 'Coc Coc 90', 'Coc Coc 90', '$regex$coc_coc_browser/90(\.|$)', '90.0', '91.0', 2021, 2023, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1)),
+  ('Coc Coc 100', '100.0', 'Coc Coc 100', 'Coc Coc 100', '$regex$coc_coc_browser/100(\.|$)', '100.0', '101.0', 2022, 2024, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1)),
+  ('Coc Coc 110', '110.0', 'Coc Coc 110', 'Coc Coc 110', '$regex$coc_coc_browser/110(\.|$)', '110.0', '111.0', 2023, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1)),
+  ('Coc Coc 120', '120.0', 'Coc Coc 120', 'Coc Coc 120', '$regex$coc_coc_browser/120(\.|$)', '120.0', '121.0', 2024, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1)),
+  ('Coc Coc 130', '130.0', 'Coc Coc 130', 'Coc Coc 130', '$regex$coc_coc_browser/130(\.|$)', '130.0', '131.0', 2026, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1)),
+  ('Coc Coc 140', '140.0', 'Coc Coc 140', 'Coc Coc 140', '$regex$coc_coc_browser/140(\.|$)', '140.0', '141.0', 2027, 0, 'active', (SELECT id FROM type_browser WHERE name = 'Coc Coc' LIMIT 1))
+ON CONFLICT (name) DO UPDATE SET
+    version = EXCLUDED.version,
+    description = EXCLUDED.description,
+    match_name_exp = EXCLUDED.match_name_exp,
+    match_ua_exp = EXCLUDED.match_ua_exp,
+    match_ver_min_exp = EXCLUDED.match_ver_min_exp,
+    match_ver_max_exp = EXCLUDED.match_ver_max_exp,
+    year_release = EXCLUDED.year_release,
+    year_end_support = EXCLUDED.year_end_support,
+    active = EXCLUDED.active,
+    parent_id = EXCLUDED.parent_id,
+    updated_at = NOW();
+
+COMMIT;

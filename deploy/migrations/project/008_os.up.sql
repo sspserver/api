@@ -21,7 +21,7 @@
 
 CREATE TABLE IF NOT EXISTS type_os
 ( id                     BIGSERIAL                  PRIMARY KEY
-, name                   VARCHAR(255)               NOT NULL
+, name                   VARCHAR(255)               NOT NULL        UNIQUE
 , version                VARCHAR(255)               NOT NULL
 , description            TEXT                       NOT NULL
 
