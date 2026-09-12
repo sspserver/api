@@ -1,9 +1,13 @@
 package models
 
 import (
+	"context"
 	"time"
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
+	"github.com/geniusrabbit/blaze-api/pkg/context/session"
+	"github.com/geniusrabbit/blaze-api/repository"
+	"github.com/geniusrabbit/blaze-api/repository/account/extra"
 	"github.com/geniusrabbit/gosql/v2"
 	"gorm.io/gorm"
 )
@@ -57,4 +61,14 @@ func (tr *TrafficRouter) TableName() string {
 // RBACResourceName returns the name of the resource for the RBAC
 func (tr *TrafficRouter) RBACResourceName() string {
 	return "traffic_router"
+}
+
+// OwnerAccountID returns the ID of the owner account
+func (tr *TrafficRouter) OwnerAccountID() uint64 {
+	return tr.AccountID
+}
+
+// ACLWithOwningObject returns the owning object and options for the TrafficRouter.
+func (tr *TrafficRouter) ACLWithOwningObject(ctx context.Context) (any, []repository.QOption, error) {
+	return &TrafficRouter{AccountID: session.AccountID(ctx)}, []repository.QOption{extra.CurrentAccountFilter(ctx)}, nil
 }

@@ -1,9 +1,13 @@
 package models
 
 import (
+	"context"
 	"time"
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
+	"github.com/geniusrabbit/blaze-api/pkg/context/session"
+	"github.com/geniusrabbit/blaze-api/repository"
+	"github.com/geniusrabbit/blaze-api/repository/account/extra"
 	"github.com/geniusrabbit/gosql/v2"
 	"gorm.io/gorm"
 )
@@ -58,4 +62,14 @@ func (app *Application) TableName() string {
 // RBACResourceName returns the name of the resource for the RBAC
 func (app *Application) RBACResourceName() string {
 	return "adv_application"
+}
+
+// OwnerAccountID returns the ID of the owner account
+func (app *Application) OwnerAccountID() uint64 {
+	return app.AccountID
+}
+
+// ACLWithOwningObject returns the owning object and options for the AdFileAsset.
+func (app *Application) ACLWithOwningObject(ctx context.Context) (any, []repository.QOption, error) {
+	return &Application{AccountID: session.AccountID(ctx)}, []repository.QOption{extra.CurrentAccountFilter(ctx)}, nil
 }

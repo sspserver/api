@@ -40,7 +40,7 @@ func (uc *Usecase) FetchList(ctx context.Context, qops ...trafficrouter.Option) 
 	if !acl.HaveAccessList(ctx, &models.TrafficRouter{}) {
 		accountID := session.AccountID(ctx)
 		if acl.HaveAccessList(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
+			qops = trafficrouter.Options(qops).Append(&trafficrouter.Filter{AccountID: accountID})
 		} else {
 			return nil, acl.ErrNoPermissions.WithMessage("fetch list")
 		}
@@ -53,7 +53,7 @@ func (uc *Usecase) Count(ctx context.Context, qops ...trafficrouter.Option) (int
 	if !acl.HaveAccessCount(ctx, &models.TrafficRouter{}) {
 		accountID := session.AccountID(ctx)
 		if acl.HaveAccessCount(ctx, &models.TrafficRouter{AccountID: accountID}) {
-			qops = trafficrouter.Options(qops).With(&trafficrouter.Filter{AccountID: accountID})
+			qops = trafficrouter.Options(qops).Append(&trafficrouter.Filter{AccountID: accountID})
 		} else {
 			return 0, acl.ErrNoPermissions.WithMessage("count")
 		}

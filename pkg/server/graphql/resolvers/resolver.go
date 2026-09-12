@@ -52,9 +52,10 @@ type Resolver struct {
 	general *generalResolver
 
 	// Basic resolvers
-	users             wiring.UserQueryResolver
-	accAuth           accountgraphql.AuthQueryHandler
-	accLogin          accountgraphql.AccountLoginHandler
+	users    wiring.UserQueryResolver
+	accAuth  accountgraphql.AuthQueryHandler
+	accLogin accountgraphql.AccountLoginHandler
+	//nolint:unused
 	loginHandler      wiring.EmailPasswordLoginHandler
 	accounts          wiring.AccountQueryHandler
 	members           accountgraphql.MemberQueryHandler

@@ -41,7 +41,7 @@ func (u *Usecase) FetchList(ctx context.Context, qops ...rtbsource.Option) ([]*m
 	if !acl.HaveAccessList(ctx, &models.RTBSource{}) {
 		accountID := session.AccountID(ctx)
 		if acl.HaveAccessList(ctx, &models.RTBSource{AccountID: accountID}) {
-			qops = rtbsource.Options(qops).With(&rtbsource.Filter{
+			qops = rtbsource.Options(qops).Append(&rtbsource.Filter{
 				AccountID: accountID,
 			})
 		} else {
@@ -55,7 +55,7 @@ func (u *Usecase) Count(ctx context.Context, qops ...rtbsource.Option) (int64, e
 	if !acl.HaveAccessCount(ctx, &models.RTBSource{}) {
 		accountID := session.AccountID(ctx)
 		if acl.HaveAccessCount(ctx, &models.RTBSource{AccountID: accountID}) {
-			qops = rtbsource.Options(qops).With(&rtbsource.Filter{
+			qops = rtbsource.Options(qops).Append(&rtbsource.Filter{
 				AccountID: accountID,
 			})
 		} else {
