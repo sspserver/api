@@ -11,7 +11,7 @@ require (
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
 	github.com/geniusrabbit/adcorelib v0.0.0-20260911141745-9bb81a349b7f
-	github.com/geniusrabbit/blaze-api v0.5.2-0.20260912113903-216968414554
+	github.com/geniusrabbit/blaze-api v0.5.2-0.20260914085518-03bdfb244d22
 	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
 	github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243
 	github.com/geniusrabbit/gosql/v2 v2.3.2
@@ -113,7 +113,7 @@ require (
 	github.com/mcuadros/go-defaults v1.2.0 // indirect
 	github.com/microsoft/go-mssqldb v1.11.0 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
-	github.com/molecule-man/go-brrr v1.0.1 // indirect
+	github.com/molecule-man/go-brrr v1.1.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	github.com/ory/go-acc v0.2.9-0.20230103102148-6b1c9a70dbbe // indirect
