@@ -10,12 +10,12 @@ require (
 	github.com/demdxx/rbac v0.1.8
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
-	github.com/geniusrabbit/adcorelib v0.0.0-20260911141745-9bb81a349b7f
+	github.com/geniusrabbit/adcorelib v0.0.0-20260914203015-d23e2af13fd7
 	github.com/geniusrabbit/blaze-api v0.5.2-0.20260914085518-03bdfb244d22
-	github.com/geniusrabbit/gogeo v0.0.0-20190430153311-59b5dca35b92
+	github.com/geniusrabbit/gogeo v0.0.0-20260914182346-207e3fa202e7
 	github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243
 	github.com/geniusrabbit/gosql/v2 v2.3.2
-	github.com/geniusrabbit/udetect v0.0.0-20251009164230-11a5e0a2d3b8
+	github.com/geniusrabbit/udetect v0.0.0-20260914204742-d82643a7930f
 	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-faster/errors v0.8.0
 	github.com/go-playground/validator/v10 v10.30.4
@@ -144,7 +144,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	github.com/urfave/cli/v3 v3.11.0 // indirect
+	github.com/urfave/cli/v3 v3.12.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.74.0 // indirect
 	go.elastic.co/apm v1.15.0 // indirect
@@ -189,7 +189,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/clickhouse v0.7.0 // indirect
 	gorm.io/driver/mysql v1.6.0 // indirect
-	gorm.io/driver/postgres v1.6.2 // indirect
+	gorm.io/driver/postgres v1.6.3 // indirect
 	gorm.io/driver/sqlite v1.6.0 // indirect
 	gorm.io/driver/sqlserver v1.6.4 // indirect
 	howett.net/plist v1.0.1 // indirect
