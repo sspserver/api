@@ -8,8 +8,19 @@ package resolvers
 import (
 	"context"
 
+	"github.com/sspserver/api/pkg/server/graphql/generated"
 	"github.com/sspserver/api/pkg/server/graphql/models"
 )
+
+// Countries is the resolver for the countries field.
+func (r *continentResolver) Countries(ctx context.Context, obj *models.Continent) ([]*models.Country, error) {
+	return r.geo.ContinentCountries(ctx, obj)
+}
+
+// Regions is the resolver for the regions field.
+func (r *countryResolver) Regions(ctx context.Context, obj *models.Country) ([]*models.Region, error) {
+	return r.geo.CountryRegions(ctx, obj)
+}
 
 // Continents is the resolver for the continents field.
 func (r *queryResolver) Continents(ctx context.Context) ([]*models.Continent, error) {
@@ -20,3 +31,36 @@ func (r *queryResolver) Continents(ctx context.Context) ([]*models.Continent, er
 func (r *queryResolver) Countries(ctx context.Context) ([]*models.Country, error) {
 	return r.geo.Countries(ctx)
 }
+
+// Regions is the resolver for the regions field.
+func (r *queryResolver) Regions(ctx context.Context, countryCode *string) ([]*models.Region, error) {
+	return r.geo.Regions(ctx, countryCode)
+}
+
+// Region is the resolver for the region field.
+func (r *queryResolver) Region(ctx context.Context, code string) (*models.Region, error) {
+	return r.geo.Region(ctx, code)
+}
+
+// Country is the resolver for the country field.
+func (r *regionResolver) Country(ctx context.Context, obj *models.Region) (*models.Country, error) {
+	return r.geo.RegionCountry(ctx, obj)
+}
+
+// Parent is the resolver for the parent field.
+func (r *regionResolver) Parent(ctx context.Context, obj *models.Region) (*models.Region, error) {
+	return r.geo.RegionParent(ctx, obj)
+}
+
+// Continent returns generated.ContinentResolver implementation.
+func (r *Resolver) Continent() generated.ContinentResolver { return &continentResolver{r} }
+
+// Country returns generated.CountryResolver implementation.
+func (r *Resolver) Country() generated.CountryResolver { return &countryResolver{r} }
+
+// Region returns generated.RegionResolver implementation.
+func (r *Resolver) Region() generated.RegionResolver { return &regionResolver{r} }
+
+type continentResolver struct{ *Resolver }
+type countryResolver struct{ *Resolver }
+type regionResolver struct{ *Resolver }

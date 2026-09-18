@@ -91,8 +91,12 @@ func InitModelPermissions(pm *permissions.Manager) {
 	// Register basic permissions for the HistoryAction model
 	_ = pm.RegisterNewOwningPermissions(&models.HistoryAction{}, []string{acl.PermView, acl.PermList, acl.PermCount})
 
-	// Register basic permissions for the Option model
-	_ = pm.RegisterNewOwningPermissions(&models.Option{}, []string{acl.PermGet, acl.PermSet, acl.PermList, acl.PermCount})
+	// Register basic permissions for the Option model.
+	// Custom check is required: GraphQL @hasPermissions synthesizes a blank Option
+	// (no Type/TargetID), and default owning ACL would also allow ACCOUNT options
+	// via .owner. Keep USER on .owner and ACCOUNT on .account.
+	_ = pm.RegisterNewOwningPermissions(&models.Option{}, []string{acl.PermGet, acl.PermSet, acl.PermList, acl.PermCount},
+		rbac.WithCustomCheck(optionCustomCheck))
 
 	// Register basic permissions for the DirectAccessToken model
 	_ = pm.RegisterNewOwningPermissions(&models.DirectAccessToken{}, []string{acl.PermGet, acl.PermList, acl.PermCount, acl.PermCreate, acl.PermDelete})
@@ -198,4 +202,27 @@ func accountCustomCheck(ctx context.Context, resource any, perm rbac.Permission)
 		return members.IsAdmin(ctx, user.GetID(), accountObj.ID)
 	}
 	return false
+}
+
+func optionCustomCheck(ctx context.Context, resource any, perm rbac.Permission) bool {
+	if strings.HasSuffix(perm.Name(), `.system`) || strings.HasSuffix(perm.Name(), `.all`) {
+		return true
+	}
+	opt, _ := resource.(*models.Option)
+	if opt == nil {
+		return false
+	}
+	// GraphQL @hasPermissions builds a zero Option without Type/TargetID.
+	if opt.Type == "" || opt.Type == models.UndefinedOptionType {
+		return true
+	}
+	user, account := session.UserAccount(ctx)
+	switch opt.Type {
+	case models.UserOptionType:
+		return strings.HasSuffix(perm.Name(), `.owner`) && opt.TargetID == user.GetID()
+	case models.AccountOptionType:
+		return strings.HasSuffix(perm.Name(), `.account`) && opt.TargetID == account.GetID()
+	default:
+		return false
+	}
 }

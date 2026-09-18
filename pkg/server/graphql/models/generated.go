@@ -476,6 +476,8 @@ type Country struct {
 	Coordinates *Coordinates `json:"coordinates"`
 	// List of currencies
 	Currency []string `json:"currency,omitempty"`
+	// ISO 3166-2 subdivisions
+	Regions []*Region `json:"regions,omitempty"`
 }
 
 // Device maker schema
@@ -985,6 +987,25 @@ type RTBSourceUpdateInput struct {
 	PrivateBrowsing       *AnyOnlyExclude       `json:"privateBrowsing,omitempty"`
 	IP                    *AnyIPv4IPv6          `json:"IP,omitempty"`
 	Config                *types.NullableJSON   `json:"config,omitempty"`
+}
+
+type Region struct {
+	// Region ID
+	ID uint64 `json:"ID"`
+	// ISO 3166-2 code (for example US-CA)
+	Code string `json:"code"`
+	// Default English name
+	Name string `json:"name"`
+	// Default name first, then unique alternatives
+	Names []string `json:"names,omitempty"`
+	// Subdivision type (State, Province, Parish, ...)
+	SubdivisionType string `json:"subdivisionType"`
+	// Centroid when known
+	Coordinates *Coordinates `json:"coordinates,omitempty"`
+	// Parent country
+	Country *Country `json:"country"`
+	// Parent subdivision, if any
+	Parent *Region `json:"parent,omitempty"`
 }
 
 type StatisticAdItem struct {

@@ -137,6 +137,20 @@ models:
   Account:
     model: github.com/sspserver/api/pkg/server/graphql/accounts.Account
   # Extensions
+  Continent:
+    fields:
+      countries:
+        resolver: true
+  Country:
+    fields:
+      regions:
+        resolver: true
+  Region:
+    fields:
+      country:
+        resolver: true
+      parent:
+        resolver: true
   Category:
     fields:
       childrens:

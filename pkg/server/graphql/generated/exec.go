@@ -35,11 +35,14 @@ type Config = graphql.Config[ResolverRoot, DirectiveRoot, ComplexityRoot]
 
 type ResolverRoot interface {
 	Category() CategoryResolver
+	Continent() ContinentResolver
+	Country() CountryResolver
 	DeviceModel() DeviceModelResolver
 	Mutation() MutationResolver
 	OS() OSResolver
 	Query() QueryResolver
 	RTBSource() RTBSourceResolver
+	Region() RegionResolver
 	StatisticItemKey() StatisticItemKeyResolver
 	TrafficRouter() TrafficRouterResolver
 }
@@ -324,6 +327,7 @@ type ComplexityRoot struct {
 		Name          func(childComplexity int) int
 		NativeName    func(childComplexity int) int
 		PhoneCodes    func(childComplexity int) int
+		Regions       func(childComplexity int) int
 		TimeZones     func(childComplexity int) int
 	}
 
@@ -658,6 +662,8 @@ type ComplexityRoot struct {
 		Option                         func(childComplexity int, name string, typeArg models1.OptionType, targetID uint64) int
 		Os                             func(childComplexity int, id uint64) int
 		RTBSource                      func(childComplexity int, id uint64) int
+		Region                         func(childComplexity int, code string) int
+		Regions                        func(childComplexity int, countryCode *string) int
 		Role                           func(childComplexity int, id uint64) int
 		ServiceVersion                 func(childComplexity int) int
 		SocialAccount                  func(childComplexity int, id uint64) int
@@ -765,6 +771,17 @@ type ComplexityRoot struct {
 		ClientMutationID func(childComplexity int) int
 		Source           func(childComplexity int) int
 		SourceID         func(childComplexity int) int
+	}
+
+	Region struct {
+		Code            func(childComplexity int) int
+		Coordinates     func(childComplexity int) int
+		Country         func(childComplexity int) int
+		ID              func(childComplexity int) int
+		Name            func(childComplexity int) int
+		Names           func(childComplexity int) int
+		Parent          func(childComplexity int) int
+		SubdivisionType func(childComplexity int) int
 	}
 
 	SessionToken struct {
@@ -976,6 +993,12 @@ type ComplexityRoot struct {
 type CategoryResolver interface {
 	Childrens(ctx context.Context, obj *models.Category) ([]*models.Category, error)
 }
+type ContinentResolver interface {
+	Countries(ctx context.Context, obj *models.Continent) ([]*models.Country, error)
+}
+type CountryResolver interface {
+	Regions(ctx context.Context, obj *models.Country) ([]*models.Region, error)
+}
 type DeviceModelResolver interface {
 	Versions(ctx context.Context, obj *models.DeviceModel, filter *models.DeviceModelListFilter, order []*models.DeviceModelListOrder) ([]*models.DeviceModel, error)
 }
@@ -1104,6 +1127,8 @@ type QueryResolver interface {
 	ListDeviceTypes(ctx context.Context) ([]*models.DeviceType, error)
 	Continents(ctx context.Context) ([]*models.Continent, error)
 	Countries(ctx context.Context) ([]*models.Country, error)
+	Regions(ctx context.Context, countryCode *string) ([]*models.Region, error)
+	Region(ctx context.Context, code string) (*models.Region, error)
 	Languages(ctx context.Context, filter *models.LangListFilter) ([]*models.Lang, error)
 	Os(ctx context.Context, id uint64) (*models.OSPayload, error)
 	ListOs(ctx context.Context, filter *models.OSListFilter, order []*models.OSListOrder, page *models1.Page) (*connectors.CollectionConnection[*models.Os], error)
@@ -1137,6 +1162,10 @@ type RTBSourceResolver interface {
 	Applications(ctx context.Context, obj *models.RTBSource) ([]*models.Application, error)
 
 	Zones(ctx context.Context, obj *models.RTBSource) ([]*models.Zone, error)
+}
+type RegionResolver interface {
+	Country(ctx context.Context, obj *models.Region) (*models.Country, error)
+	Parent(ctx context.Context, obj *models.Region) (*models.Region, error)
 }
 type StatisticItemKeyResolver interface {
 	Text(ctx context.Context, obj *models.StatisticItemKey) (string, error)
@@ -2350,6 +2379,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Country.PhoneCodes(childComplexity), true
+	case "Country.regions":
+		if e.ComplexityRoot.Country.Regions == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Country.Regions(childComplexity), true
 	case "Country.timeZones":
 		if e.ComplexityRoot.Country.TimeZones == nil {
 			break
@@ -4483,6 +4518,28 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Query.RTBSource(childComplexity, args["ID"].(uint64)), true
+	case "Query.region":
+		if e.ComplexityRoot.Query.Region == nil {
+			break
+		}
+
+		args, err := ec.field_Query_region_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.ComplexityRoot.Query.Region(childComplexity, args["code"].(string)), true
+	case "Query.regions":
+		if e.ComplexityRoot.Query.Regions == nil {
+			break
+		}
+
+		args, err := ec.field_Query_regions_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.ComplexityRoot.Query.Regions(childComplexity, args["countryCode"].(*string)), true
 	case "Query.role":
 		if e.ComplexityRoot.Query.Role == nil {
 			break
@@ -5036,6 +5093,55 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.RTBSourcePayload.SourceID(childComplexity), true
+
+	case "Region.code":
+		if e.ComplexityRoot.Region.Code == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Code(childComplexity), true
+	case "Region.coordinates":
+		if e.ComplexityRoot.Region.Coordinates == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Coordinates(childComplexity), true
+	case "Region.country":
+		if e.ComplexityRoot.Region.Country == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Country(childComplexity), true
+	case "Region.ID":
+		if e.ComplexityRoot.Region.ID == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.ID(childComplexity), true
+	case "Region.name":
+		if e.ComplexityRoot.Region.Name == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Name(childComplexity), true
+	case "Region.names":
+		if e.ComplexityRoot.Region.Names == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Names(childComplexity), true
+	case "Region.parent":
+		if e.ComplexityRoot.Region.Parent == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.Parent(childComplexity), true
+	case "Region.subdivisionType":
+		if e.ComplexityRoot.Region.SubdivisionType == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Region.SubdivisionType(childComplexity), true
 
 	case "SessionToken.expiresAt":
 		if e.ComplexityRoot.SessionToken.ExpiresAt == nil {
@@ -9766,6 +9872,53 @@ type Country {
   List of currencies
   """
   currency: [String!]
+
+  """
+  ISO 3166-2 subdivisions
+  """
+  regions: [Region!]
+}
+
+type Region {
+  """
+  Region ID
+  """
+  ID: ID64!
+
+  """
+  ISO 3166-2 code (for example US-CA)
+  """
+  code: String!
+
+  """
+  Default English name
+  """
+  name: String!
+
+  """
+  Default name first, then unique alternatives
+  """
+  names: [String!]
+
+  """
+  Subdivision type (State, Province, Parish, ...)
+  """
+  subdivisionType: String!
+
+  """
+  Centroid when known
+  """
+  coordinates: Coordinates
+
+  """
+  Parent country
+  """
+  country: Country!
+
+  """
+  Parent subdivision, if any
+  """
+  parent: Region
 }
 
 ###############################################################################
@@ -9782,6 +9935,16 @@ extend type Query {
   List of countries
   """
   countries: [Country!]
+
+  """
+  List of ISO 3166-2 regions, optionally filtered by country ISO-2 code
+  """
+  regions(countryCode: String): [Region!]
+
+  """
+  Region by ISO 3166-2 code
+  """
+  region(code: String!): Region
 }
 `, BuiltIn: false},
 	{Name: "../../../repository/languages/delivery/graphql/language.graphql", Input: `"""
@@ -11841,6 +12004,8 @@ func (ec *executionContext) childFields_Country(ctx context.Context, field graph
 		return ec.fieldContext_Country_coordinates(ctx, field)
 	case "currency":
 		return ec.fieldContext_Country_currency(ctx, field)
+	case "regions":
+		return ec.fieldContext_Country_regions(ctx, field)
 	}
 	return nil, fmt.Errorf("no field named %q was found under type Country", field.Name)
 }
@@ -12441,6 +12606,28 @@ func (ec *executionContext) childFields_RTBSourcePayload(ctx context.Context, fi
 		return ec.fieldContext_RTBSourcePayload_source(ctx, field)
 	}
 	return nil, fmt.Errorf("no field named %q was found under type RTBSourcePayload", field.Name)
+}
+
+func (ec *executionContext) childFields_Region(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+	switch field.Name {
+	case "ID":
+		return ec.fieldContext_Region_ID(ctx, field)
+	case "code":
+		return ec.fieldContext_Region_code(ctx, field)
+	case "name":
+		return ec.fieldContext_Region_name(ctx, field)
+	case "names":
+		return ec.fieldContext_Region_names(ctx, field)
+	case "subdivisionType":
+		return ec.fieldContext_Region_subdivisionType(ctx, field)
+	case "coordinates":
+		return ec.fieldContext_Region_coordinates(ctx, field)
+	case "country":
+		return ec.fieldContext_Region_country(ctx, field)
+	case "parent":
+		return ec.fieldContext_Region_parent(ctx, field)
+	}
+	return nil, fmt.Errorf("no field named %q was found under type Region", field.Name)
 }
 
 func (ec *executionContext) childFields_SessionToken(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
@@ -15697,6 +15884,34 @@ func (ec *executionContext) field_Query_option_args(ctx context.Context, rawArgs
 		return nil, err
 	}
 	args["targetID"] = arg2
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_region_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "code",
+		func(ctx context.Context, v any) (string, error) {
+			return ec.unmarshalNString2string(ctx, v)
+		})
+	if err != nil {
+		return nil, err
+	}
+	args["code"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_regions_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "countryCode",
+		func(ctx context.Context, v any) (*string, error) {
+			return ec.unmarshalOString2ᚖstring(ctx, v)
+		})
+	if err != nil {
+		return nil, err
+	}
+	args["countryCode"] = arg0
 	return args, nil
 }
 
@@ -20494,7 +20709,7 @@ func (ec *executionContext) _Continent_countries(ctx context.Context, field grap
 			return ec.fieldContext_Continent_countries(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.Countries, nil
+			return ec.Resolvers.Continent().Countries(ctx, obj)
 		},
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
@@ -20510,8 +20725,8 @@ func (ec *executionContext) fieldContext_Continent_countries(_ context.Context, 
 	fc = &graphql.FieldContext{
 		Object:     "Continent",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_Country(ctx, field)
 		},
@@ -20919,6 +21134,40 @@ func (ec *executionContext) _Country_currency(ctx context.Context, field graphql
 }
 func (ec *executionContext) fieldContext_Country_currency(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	return graphql.NewScalarFieldContext("Country", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Country_regions(ctx context.Context, field graphql.CollectedField, obj *models.Country) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Country_regions(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return ec.Resolvers.Country().Regions(ctx, obj)
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.Region) graphql.Marshaler {
+			return ec.marshalORegion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegionᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Country_regions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Country",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Region(ctx, field)
+		},
+	}
+	return fc, nil
 }
 
 func (ec *executionContext) _DeviceMaker_ID(ctx context.Context, field graphql.CollectedField, obj *models.DeviceMaker) (ret graphql.Marshaler) {
@@ -31694,6 +31943,98 @@ func (ec *executionContext) fieldContext_Query_countries(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_regions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Query_regions(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			fc := graphql.GetFieldContext(ctx)
+			return ec.Resolvers.Query().Regions(ctx, fc.Args["countryCode"].(*string))
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, nil, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []*models.Region) graphql.Marshaler {
+			return ec.marshalORegion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegionᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Query_regions(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Region(ctx, field)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_regions_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_region(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Query_region(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			fc := graphql.GetFieldContext(ctx)
+			return ec.Resolvers.Query().Region(ctx, fc.Args["code"].(string))
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, nil, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Region) graphql.Marshaler {
+			return ec.marshalORegion2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegion(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Query_region(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Region(ctx, field)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_region_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_languages(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -34519,6 +34860,233 @@ func (ec *executionContext) fieldContext_RTBSourcePayload_source(_ context.Conte
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return ec.childFields_RTBSource(ctx, field)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Region_ID(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_ID(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.ID, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v uint64) graphql.Marshaler {
+			return ec.marshalNID642uint64(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_Region_ID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Region", field, false, false, errors.New("field of type ID64 does not have child fields"))
+}
+
+func (ec *executionContext) _Region_code(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_code(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Code, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
+			return ec.marshalNString2string(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_Region_code(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Region", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Region_name(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_name(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Name, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
+			return ec.marshalNString2string(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_Region_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Region", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Region_names(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_names(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Names, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v []string) graphql.Marshaler {
+			return ec.marshalOString2ᚕstringᚄ(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Region_names(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Region", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Region_subdivisionType(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_subdivisionType(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.SubdivisionType, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
+			return ec.marshalNString2string(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_Region_subdivisionType(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Region", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Region_coordinates(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_coordinates(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Coordinates, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Coordinates) graphql.Marshaler {
+			return ec.marshalOCoordinates2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCoordinates(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Region_coordinates(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Region",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Coordinates(ctx, field)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Region_country(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_country(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return ec.Resolvers.Region().Country(ctx, obj)
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Country) graphql.Marshaler {
+			return ec.marshalNCountry2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCountry(ctx, selections, v)
+		},
+		true,
+		true,
+	)
+}
+func (ec *executionContext) fieldContext_Region_country(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Region",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Country(ctx, field)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Region_parent(ctx context.Context, field graphql.CollectedField, obj *models.Region) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Region_parent(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return ec.Resolvers.Region().Parent(ctx, obj)
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *models.Region) graphql.Marshaler {
+			return ec.marshalORegion2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegion(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Region_parent(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Region",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.childFields_Region(ctx, field)
 		},
 	}
 	return fc, nil
@@ -50287,23 +50855,56 @@ func (ec *executionContext) _Continent(ctx context.Context, sel ast.SelectionSet
 		case "ID":
 			out.Values[i] = ec._Continent_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "code2":
 			out.Values[i] = ec._Continent_code2(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Continent_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "countries":
-			out.Values[i] = ec._Continent_countries(ctx, field, obj)
-			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Continent_countries(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -50383,68 +50984,106 @@ func (ec *executionContext) _Country(ctx context.Context, sel ast.SelectionSet, 
 		case "ID":
 			out.Values[i] = ec._Country_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "code2":
 			out.Values[i] = ec._Country_code2(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "code3":
 			out.Values[i] = ec._Country_code3(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Country_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "nativeName":
 			out.Values[i] = ec._Country_nativeName(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "continentCode":
 			out.Values[i] = ec._Country_continentCode(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "continent":
 			out.Values[i] = ec._Country_continent(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "capital":
 			out.Values[i] = ec._Country_capital(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "languages":
 			out.Values[i] = ec._Country_languages(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "phoneCodes":
 			out.Values[i] = ec._Country_phoneCodes(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "timeZones":
 			out.Values[i] = ec._Country_timeZones(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "coordinates":
 			out.Values[i] = ec._Country_coordinates(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "currency":
 			out.Values[i] = ec._Country_currency(ctx, field, obj)
 			if out.Values[i] == graphql.RequiredNull {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "regions":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Country_regions(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -53528,6 +54167,50 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "regions":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_regions(ctx, field)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "region":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_region(ctx, field)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "languages":
 			field := field
 
@@ -54751,6 +55434,145 @@ func (ec *executionContext) _RTBSourcePayload(ctx context.Context, sel ast.Selec
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.Deferred, int32(min(len(deferLabelToView), math.MaxInt32)))
+
+	ec.ProcessDeferredGroup(graphql.DeferredGroup{
+		Defers:   deferLabelToView,
+		Path:     graphql.GetPath(ctx),
+		FieldSet: deferredFieldSet,
+		Context:  ctx,
+	})
+
+	return out
+}
+
+var regionImplementors = []string{"Region"}
+
+func (ec *executionContext) _Region(ctx context.Context, sel ast.SelectionSet, obj *models.Region) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, regionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferredFieldSet := graphql.NewFieldSet(nil)
+	deferLabelToView := make(map[string]*graphql.FieldSetView)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Region")
+		case "ID":
+			out.Values[i] = ec._Region_ID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "code":
+			out.Values[i] = ec._Region_code(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "name":
+			out.Values[i] = ec._Region_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "names":
+			out.Values[i] = ec._Region_names(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "subdivisionType":
+			out.Values[i] = ec._Region_subdivisionType(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "coordinates":
+			out.Values[i] = ec._Region_coordinates(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "country":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Region_country(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "parent":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Region_parent(ctx, field, obj)
+				if res == graphql.RequiredNull {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.IsDeferred() {
+				deferredFieldSet.AddField(field)
+				fieldIndex := len(deferredFieldSet.Values) - 1
+				deferredFieldSet.Concurrently(fieldIndex, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, deferredFieldSet)
+				})
+
+				for _, deferrable := range field.Deferrables {
+					view, ok := deferLabelToView[deferrable.Label]
+					if !ok {
+						view = deferredFieldSet.NewView()
+						deferLabelToView[deferrable.Label] = view
+					}
+					view.AddIndices(fieldIndex)
+				}
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -57399,6 +58221,10 @@ func (ec *executionContext) marshalNCoordinates2ᚖgithubᚗcomᚋsspserverᚋap
 	return ec._Coordinates(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNCountry2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCountry(ctx context.Context, sel ast.SelectionSet, v models.Country) graphql.Marshaler {
+	return ec._Country(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNCountry2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCountry(ctx context.Context, sel ast.SelectionSet, v *models.Country) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -57952,6 +58778,16 @@ func (ec *executionContext) marshalNRTBSourcePayload2ᚖgithubᚗcomᚋsspserver
 func (ec *executionContext) unmarshalNRTBSourceUpdateInput2githubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRTBSourceUpdateInput(ctx context.Context, v any) (models.RTBSourceUpdateInput, error) {
 	res, err := ec.unmarshalInputRTBSourceUpdateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNRegion2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegion(ctx context.Context, sel ast.SelectionSet, v *models.Region) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Region(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNResponseStatus2githubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐResponseStatus(ctx context.Context, v any) (models1.ResponseStatus, error) {
@@ -59183,6 +60019,13 @@ func (ec *executionContext) marshalOContinent2ᚕᚖgithubᚗcomᚋsspserverᚋa
 	return ret
 }
 
+func (ec *executionContext) marshalOCoordinates2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCoordinates(ctx context.Context, sel ast.SelectionSet, v *models.Coordinates) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Coordinates(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalOCountry2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐCountryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Country) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -60168,6 +61011,32 @@ func (ec *executionContext) marshalORTBSourcePayload2ᚖgithubᚗcomᚋsspserver
 		return graphql.Null
 	}
 	return ec._RTBSourcePayload(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalORegion2ᚕᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Region) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := graphql.MarshalSliceConcurrently(ctx, len(v), 0, false, func(ctx context.Context, i int) graphql.Marshaler {
+		fc := graphql.GetFieldContext(ctx)
+		fc.Result = &v[i]
+		return ec.marshalNRegion2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegion(ctx, sel, v[i])
+	})
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalORegion2ᚖgithubᚗcomᚋsspserverᚋapiᚋpkgᚋserverᚋgraphqlᚋmodelsᚐRegion(ctx context.Context, sel ast.SelectionSet, v *models.Region) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Region(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOSocialAccount2ᚕᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐSocialAccountᚄ(ctx context.Context, sel ast.SelectionSet, v []*models1.SocialAccount) graphql.Marshaler {

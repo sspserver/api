@@ -95,6 +95,53 @@ type Country {
   List of currencies
   """
   currency: [String!]
+
+  """
+  ISO 3166-2 subdivisions
+  """
+  regions: [Region!]
+}
+
+type Region {
+  """
+  Region ID
+  """
+  ID: ID64!
+
+  """
+  ISO 3166-2 code (for example US-CA)
+  """
+  code: String!
+
+  """
+  Default English name
+  """
+  name: String!
+
+  """
+  Default name first, then unique alternatives
+  """
+  names: [String!]
+
+  """
+  Subdivision type (State, Province, Parish, ...)
+  """
+  subdivisionType: String!
+
+  """
+  Centroid when known
+  """
+  coordinates: Coordinates
+
+  """
+  Parent country
+  """
+  country: Country!
+
+  """
+  Parent subdivision, if any
+  """
+  parent: Region
 }
 
 ###############################################################################
@@ -111,4 +158,14 @@ extend type Query {
   List of countries
   """
   countries: [Country!]
+
+  """
+  List of ISO 3166-2 regions, optionally filtered by country ISO-2 code
+  """
+  regions(countryCode: String): [Region!]
+
+  """
+  Region by ISO 3166-2 code
+  """
+  region(code: String!): Region
 }

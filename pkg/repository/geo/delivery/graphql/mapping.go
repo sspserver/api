@@ -2,24 +2,21 @@ package graphql
 
 import (
 	"github.com/demdxx/xtypes"
-	"github.com/geniusrabbit/gogeo"
+
+	"github.com/geniusrabbit/adcorelib/geo"
 
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
 func FromGeoContinentByCode(code string) *gqlmodels.Continent {
-	if code == "" {
+	c := geo.ContinentByCode2(code)
+	if c == nil {
 		return nil
 	}
-	for _, c := range gogeo.Continents {
-		if c.Code2 == code {
-			return FromGeoContinentModel(c)
-		}
-	}
-	return nil
+	return FromGeoContinentModel(*c)
 }
 
-func FromGeoContinentModel(c gogeo.Continent) *gqlmodels.Continent {
+func FromGeoContinentModel(c geo.Continent) *gqlmodels.Continent {
 	return &gqlmodels.Continent{
 		ID:    uint64(c.ID),
 		Code2: c.Code2,
@@ -27,7 +24,7 @@ func FromGeoContinentModel(c gogeo.Continent) *gqlmodels.Continent {
 	}
 }
 
-func FromGeoCountryModel(c gogeo.Country) *gqlmodels.Country {
+func FromGeoCountryModel(c geo.Country) *gqlmodels.Country {
 	return &gqlmodels.Country{
 		ID:            uint64(c.ID),
 		Code2:         c.ISO2(),
@@ -40,7 +37,7 @@ func FromGeoCountryModel(c gogeo.Country) *gqlmodels.Country {
 		Languages:     c.Languages(),
 		PhoneCodes:    c.Phones(),
 		Currency:      c.Currency(),
-		TimeZones: xtypes.SliceApply(c.TimeZones(), func(tz gogeo.TimeZone) *gqlmodels.TimeZone {
+		TimeZones: xtypes.SliceApply(c.TimeZones(), func(tz geo.TimeZone) *gqlmodels.TimeZone {
 			return &gqlmodels.TimeZone{
 				Name: tz.ZoneName,
 				Lon:  float64(tz.Lon),
@@ -53,10 +50,31 @@ func FromGeoCountryModel(c gogeo.Country) *gqlmodels.Country {
 	}
 }
 
-func FromGeoCountryModelList(c []gogeo.Country) []*gqlmodels.Country {
+func FromGeoRegionModel(r geo.Region) *gqlmodels.Region {
+	out := &gqlmodels.Region{
+		ID:              uint64(r.ID),
+		Code:            r.Code(),
+		Name:            r.Name,
+		Names:           r.Names(),
+		SubdivisionType: r.Type(),
+	}
+	if r.HasCoordinates() {
+		out.Coordinates = &gqlmodels.Coordinates{
+			Lat: float64(r.Coordinates.Lat),
+			Lon: float64(r.Coordinates.Lon),
+		}
+	}
+	return out
+}
+
+func FromGeoCountryModelList(c []geo.Country) []*gqlmodels.Country {
 	return xtypes.SliceApply(c, FromGeoCountryModel)
 }
 
-func FromGeoContinentModelList(c []gogeo.Continent) []*gqlmodels.Continent {
+func FromGeoContinentModelList(c []geo.Continent) []*gqlmodels.Continent {
 	return xtypes.SliceApply(c, FromGeoContinentModel)
+}
+
+func FromGeoRegionModelList(r []geo.Region) []*gqlmodels.Region {
+	return xtypes.SliceApply(r, FromGeoRegionModel)
 }
