@@ -151,8 +151,8 @@ github.com/gabriel-vasile/mimetype v1.4.15 h1:05iP/CYtZ/w455R/KZM6rZ5ieAdh99UPtd
 github.com/gabriel-vasile/mimetype v1.4.15/go.mod h1:azpTcoLcDZRNgFou5j+APrqQx9HqVPWa6ijYQIIVswQ=
 github.com/geniusrabbit/adcorelib v0.0.0-20260917184552-f13f3752c529 h1:vonhkNlDs9rDpicYVQIjOaarYsltnLPMSfSqEvhoSxI=
 github.com/geniusrabbit/adcorelib v0.0.0-20260917184552-f13f3752c529/go.mod h1:4Kth7gGd2C5qiac70sKs2FlmbKUC1l5MtvTvTBO3OZg=
-github.com/geniusrabbit/blaze-api v0.5.2-0.20260918134948-823c11cf66d5 h1:tfRzfe9SEodv1pF1bUCB0IS/twgoyA7+X0BVoa2Wam8=
-github.com/geniusrabbit/blaze-api v0.5.2-0.20260918134948-823c11cf66d5/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
+github.com/geniusrabbit/blaze-api v0.5.2-0.20260918144410-8d1df3dbb527 h1:eRL079QTN6EqfWSNw0AQtwoCGmaeKz5z9nnfKKtUf18=
+github.com/geniusrabbit/blaze-api v0.5.2-0.20260918144410-8d1df3dbb527/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
 github.com/geniusrabbit/gogeo v1.0.0 h1:4DmJ9i1gpHZpLb8V7dM2JBKWOAk/F2q37GZapmoJ0wY=
 github.com/geniusrabbit/gogeo v1.0.0/go.mod h1:SO7efiKnlpC/PxX5OfxM5PFTCbypoA0UhFBPbjR8dc4=
 github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243 h1:Zekf3uImIg61JR2szZJau/9jZYBfRKnBHTXibONR7f8=
