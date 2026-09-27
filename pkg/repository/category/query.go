@@ -14,6 +14,9 @@ type Filter struct {
 	Name     []string
 	ParentID []uint64
 	IABCode  []string
+	R0Code   []string
+	C31Code  []string
+	CatTax   []string
 	Active   *types.ActiveStatus
 }
 
@@ -41,6 +44,15 @@ func (fl *Filter) PrepareQuery(query *gorm.DB) *gorm.DB {
 	if len(fl.IABCode) > 0 {
 		query = query.Where(`iab_code IN (?)`, fl.IABCode)
 	}
+	if len(fl.R0Code) > 0 {
+		query = query.Where(`r0_code IN (?)`, fl.R0Code)
+	}
+	if len(fl.C31Code) > 0 {
+		query = query.Where(`c3_1_code IN (?)`, fl.C31Code)
+	}
+	if len(fl.CatTax) > 0 {
+		query = query.Where(`cattax IN (?)`, fl.CatTax)
+	}
 	if fl.Active != nil {
 		query = query.Where(`active = ?`, fl.Active.Name())
 	}
@@ -52,6 +64,9 @@ type ListOrder struct {
 	ID        models.Order
 	Name      models.Order
 	IABCode   models.Order
+	R0Code    models.Order
+	C31Code   models.Order
+	CatTax    models.Order
 	ParentID  models.Order
 	Position  models.Order
 	Active    models.Order
@@ -66,6 +81,9 @@ func (ol *ListOrder) PrepareQuery(query *gorm.DB) *gorm.DB {
 	query = ol.ID.PrepareQuery(query, `id`)
 	query = ol.Name.PrepareQuery(query, `name`)
 	query = ol.IABCode.PrepareQuery(query, `iab_code`)
+	query = ol.R0Code.PrepareQuery(query, `r0_code`)
+	query = ol.C31Code.PrepareQuery(query, `c3_1_code`)
+	query = ol.CatTax.PrepareQuery(query, `cattax`)
 	query = ol.ParentID.PrepareQuery(query, `parent_id`)
 	query = ol.Position.PrepareQuery(query, `position`)
 	query = ol.Active.PrepareQuery(query, `active`)

@@ -18,7 +18,10 @@ func FillCategoryInputModel(input gqlmodels.CategoryInput, trg *models.Category)
 	trg.Name = gocast.PtrAsValue(input.Name, trg.Name)
 	trg.Description = gocast.PtrAsValue(input.Description, trg.Description)
 	trg.ParentID = sql.Null[uint64]{V: gocast.PtrAsValue(input.ParentID, 0), Valid: input.ParentID != nil && *input.ParentID > 0}
-	trg.IABCode = gocast.PtrAsValue(input.IABCode, trg.IABCode)
+	trg.IABCode = nullStringValue(input.IABCode)
+	trg.R0Code = gocast.PtrAsValue(input.R0Code, trg.R0Code)
+	trg.C31Code = nullStringValue(input.C3_1Code)
+	trg.CatTax = nullStringValue(input.Cattax)
 	if input.Keywords != nil {
 		trg.Keywords = input.Keywords
 	}
@@ -37,6 +40,9 @@ func CategoryFilterFromGraphQL(fl *gqlmodels.CategoryListFilter) *category.Filte
 		Name:     fl.Name,
 		ParentID: fl.ParentID,
 		IABCode:  fl.IABCode,
+		R0Code:   fl.R0Code,
+		C31Code:  fl.C3_1Code,
+		CatTax:   fl.Cattax,
 		Active: gocast.IfThenExec(len(fl.Active) > 0,
 			func() *types.ActiveStatus { return &[]types.ActiveStatus{activeStatusFromGraphQL(fl.Active[0])}[0] },
 			func() *types.ActiveStatus { return nil },
@@ -59,6 +65,9 @@ func CategoryOrderFromGraphQL(src *gqlmodels.CategoryListOrder) *category.ListOr
 		ID:        src.ID.AsOrder(),
 		Name:      src.Name.AsOrder(),
 		IABCode:   src.IABCode.AsOrder(),
+		R0Code:    src.R0Code.AsOrder(),
+		C31Code:   src.C3_1Code.AsOrder(),
+		CatTax:    src.Cattax.AsOrder(),
 		ParentID:  src.ParentID.AsOrder(),
 		Position:  src.Position.AsOrder(),
 		Active:    src.Active.AsOrder(),

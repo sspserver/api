@@ -20,7 +20,22 @@ type Category {
   """
   IAB category code of OpenRTB
   """
-  IABCode: String!
+  IABCode: String
+
+  """
+  Hierarchy code. Unique key of the category tree.
+  """
+  R0Code: String!
+
+  """
+  IAB Content Taxonomy 3.1 code
+  """
+  C3_1Code: String
+
+  """
+  Ad Product Taxonomy 2.0 identifier
+  """
+  Cattax: String
 
   """
   Keywords used to match this category
@@ -110,6 +125,9 @@ input CategoryListFilter {
   ID: [ID64!]
   name: [String!]
   IABCode: [String!]
+  R0Code: [String!]
+  C3_1Code: [String!]
+  Cattax: [String!]
   parentID: [ID64!]
   active: [ActiveStatus!]
 }
@@ -118,6 +136,9 @@ input CategoryListOrder {
   ID: Ordering
   name: Ordering
   IABCode: Ordering
+  R0Code: Ordering
+  C3_1Code: Ordering
+  Cattax: Ordering
   parentID: Ordering
   position: Ordering
   active: Ordering
@@ -143,6 +164,21 @@ input CategoryInput {
   IAB category code of OpenRTB
   """
   IABCode: String
+
+  """
+  Hierarchy code. Unique key of the category tree.
+  """
+  R0Code: String
+
+  """
+  IAB Content Taxonomy 3.1 code
+  """
+  C3_1Code: String
+
+  """
+  Ad Product Taxonomy 2.0 identifier
+  """
+  Cattax: String
 
   """
   Keywords used to match this category

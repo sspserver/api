@@ -366,7 +366,13 @@ type Category struct {
 	// Description of the category
 	Description string `json:"description"`
 	// IAB category code of OpenRTB
-	IABCode string `json:"IABCode"`
+	IABCode *string `json:"IABCode,omitempty"`
+	// Hierarchy code. Unique key of the category tree.
+	R0Code string `json:"R0Code"`
+	// IAB Content Taxonomy 3.1 code
+	C3_1Code *string `json:"C3_1Code,omitempty"`
+	// Ad Product Taxonomy 2.0 identifier
+	Cattax *string `json:"Cattax,omitempty"`
 	// Keywords used to match this category
 	Keywords []string `json:"keywords,omitempty"`
 	// Parent category ID
@@ -395,6 +401,12 @@ type CategoryInput struct {
 	Description *string `json:"description,omitempty"`
 	// IAB category code of OpenRTB
 	IABCode *string `json:"IABCode,omitempty"`
+	// Hierarchy code. Unique key of the category tree.
+	R0Code *string `json:"R0Code,omitempty"`
+	// IAB Content Taxonomy 3.1 code
+	C3_1Code *string `json:"C3_1Code,omitempty"`
+	// Ad Product Taxonomy 2.0 identifier
+	Cattax *string `json:"Cattax,omitempty"`
 	// Keywords used to match this category
 	Keywords []string `json:"keywords,omitempty"`
 	// Parent category ID
@@ -409,6 +421,9 @@ type CategoryListFilter struct {
 	ID       []uint64              `json:"ID,omitempty"`
 	Name     []string              `json:"name,omitempty"`
 	IABCode  []string              `json:"IABCode,omitempty"`
+	R0Code   []string              `json:"R0Code,omitempty"`
+	C3_1Code []string              `json:"C3_1Code,omitempty"`
+	Cattax   []string              `json:"Cattax,omitempty"`
 	ParentID []uint64              `json:"parentID,omitempty"`
 	Active   []models.ActiveStatus `json:"active,omitempty"`
 }
@@ -417,6 +432,9 @@ type CategoryListOrder struct {
 	ID        *models.Ordering `json:"ID,omitempty"`
 	Name      *models.Ordering `json:"name,omitempty"`
 	IABCode   *models.Ordering `json:"IABCode,omitempty"`
+	R0Code    *models.Ordering `json:"R0Code,omitempty"`
+	C3_1Code  *models.Ordering `json:"C3_1Code,omitempty"`
+	Cattax    *models.Ordering `json:"Cattax,omitempty"`
 	ParentID  *models.Ordering `json:"parentID,omitempty"`
 	Position  *models.Ordering `json:"position,omitempty"`
 	Active    *models.Ordering `json:"active,omitempty"`

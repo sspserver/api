@@ -15,7 +15,10 @@ type Category struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 
-	IABCode  string                    `json:"iab_code"` // IAB category code of OpenRTB
+	IABCode  sql.Null[string]          `gorm:"column:iab_code" json:"iab_code"` // IAB Content Taxonomy 1.0; invalid when unset
+	R0Code   string                    `gorm:"column:r0_code" json:"r0_code"`
+	C31Code  sql.Null[string]          `gorm:"column:c3_1_code" json:"c3_1_code"` // IAB Content Taxonomy 3.1; invalid when unset
+	CatTax   sql.Null[string]          `gorm:"column:cattax" json:"cattax"`       // Ad Product Taxonomy 2.0 id; invalid when unset
 	Keywords gosql.NullableStringArray `gorm:"type:TEXT[]" json:"keywords,omitempty"`
 
 	ParentID  sql.Null[uint64] `json:"parent_id" gorm:"column:parent_id"`

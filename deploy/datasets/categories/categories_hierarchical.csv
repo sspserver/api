@@ -1,0 +1,1472 @@
+name,r0_parent,r0_code,iab_code,c3_1_code,cattax
+Adult Products and Content,,adl,,,1001
+Adult & Explicit Sexual Content,adl,adl.a,,Rm3SiT,
+Pornography,adl.a,adl.a.p,IAB25-3,,
+Straight Porn,adl.a.p,adl.a.p.s,,,
+Gay Porn,adl.a.p,adl.a.p.g,,,
+Lesbian Porn,adl.a.p,adl.a.p.l,,,
+Trans / Shemale Porn,adl.a.p,adl.a.p.t,,,
+Adult AI Companions,adl,adl.a1,,,
+Adult Creator Platforms,adl,adl.a2,,,
+Adult Live Cams,adl,adl.a3,,,
+Adult Content Subscriptions,adl,adl.a4,,,
+Adult AI Chat,adl,adl.a5,,,
+Adult Toys & Accessories,adl,adl.a6,,,
+Arts and Culture,,art,,,1008
+Books and Literature,art,art.b,IAB1-1,42,
+Art and Photography,art.b,art.b.a,,43,
+Comics and Graphic Novels,art.b,art.b.c,,46,
+Fiction,art.b,art.b.f,,48,
+Poetry,art.b,art.b.p,,49,
+Fine Art,art,art.f,IAB1-3,201,
+Costume,art.f,art.f.c,,202,
+Dance,art.f,art.f.d,,203,
+Design,art.f,art.f.d1,,204,
+Digital Arts,art.f,art.f.d2,,205,
+Fine Art Photography,art.f,art.f.f,,206,
+Modern Art,art.f,art.f.m,,207,
+Opera,art.f,art.f.o,,208,
+Theater,art.f,art.f.t,,209,
+Business and Industry,,bus,,,1010
+Business and Finance,bus,bus.b,,52,
+Business,bus.b,bus.b.b,IAB3,53,
+Business Accounting & Finance,bus.b.b,bus.b.b.b1,,54,
+Business Administration,bus.b.b,bus.b.b.b2,,62,
+Business Banking & Finance,bus.b.b,bus.b.b.b3,,63,
+Angel Investment,bus.b.b.b3,bus.b.b.b3.a,,64,
+Bankruptcy,bus.b.b.b3,bus.b.b.b3.b,,65,
+Business Loans,bus.b.b.b3,bus.b.b.b3.b1,,66,
+Debt Factoring & Invoice Discounting,bus.b.b.b3,bus.b.b.b3.d,,67,
+Mergers and Acquisitions,bus.b.b.b3,bus.b.b.b3.m,,68,
+Private Equity,bus.b.b.b3,bus.b.b.b3.p,,69,
+Sale & Lease Back,bus.b.b.b3,bus.b.b.b3.s,,70,
+Venture Capital,bus.b.b.b3,bus.b.b.b3.v,,71,
+Business I.T.,bus.b.b,bus.b.b.b4,,72,
+Business Operations,bus.b.b,bus.b.b.b5,,73,
+Business Software,bus.b.b,bus.b.b.b6,IAB3-4,,
+CRM Software,bus.b.b.b6,bus.b.b.b6.c,,,
+Project Management Software,bus.b.b.b6,bus.b.b.b6.p,,,
+Marketing Automation,bus.b.b.b6,bus.b.b.b6.m,,,
+Customer Support Software,bus.b.b.b6,bus.b.b.b6.c1,,,
+Business Utilities,bus.b.b,bus.b.b.b7,,79,
+Consumer Issues,bus.b.b,bus.b.b.c,,74,
+Recalls,bus.b.b.c,bus.b.b.c.r,,75,
+Executive Leadership & Management,bus.b.b,bus.b.b.e,,76,
+Forestry,bus.b.b,bus.b.b.f,IAB3-6,,
+Government,bus.b.b,bus.b.b.g,IAB3-7,,
+Government Business,bus.b.b,bus.b.b.g1,,77,
+Green Solutions,bus.b.b,bus.b.b.g2,IAB3-8,78,
+Human Resources,bus.b.b,bus.b.b.h,IAB3-9,55,
+Large Business,bus.b.b,bus.b.b.l,,56,
+Logistics,bus.b.b,bus.b.b.l1,IAB3-10,57,
+Marketing and Advertising,bus.b.b,bus.b.b.m,,58,1011
+Advertising,bus.b.b.m,bus.b.b.m.a,IAB3-1,,
+Marketing,bus.b.b.m,bus.b.b.m.m,IAB3-11,,
+Multi-Level Marketing,bus.b.b.m,bus.b.b.m.m1,,,1310
+Promotional Sweepstakes,bus.b.b.m,bus.b.b.m.p,,,
+Sales,bus.b.b,bus.b.b.s,,59,
+Small and Medium-sized Business,bus.b.b,bus.b.b.s1,,60,
+Startups,bus.b.b,bus.b.b.s2,,61,
+Industries,bus.b,bus.b.i,,90,
+Advertising Industry,bus.b.i,bus.b.i.a,,91,
+Agriculture,bus.b.i,bus.b.i.a1,IAB3-2,102,
+Apparel Industry,bus.b.i,bus.b.i.a2,,113,
+Automotive Industry,bus.b.i,bus.b.i.a3,,117,
+Aviation Industry,bus.b.i,bus.b.i.a4,,118,
+Biotech and Biomedical Industry,bus.b.i,bus.b.i.b,IAB3-3,119,
+Civil Engineering Industry,bus.b.i,bus.b.i.c,,120,
+Construction Industry,bus.b.i,bus.b.i.c1,IAB3-5,121,1028
+Defense Industry,bus.b.i,bus.b.i.d,,122,
+Education industry,bus.b.i,bus.b.i.e,,92,
+Entertainment Industry,bus.b.i,bus.b.i.e1,,93,
+Environmental Services Industry,bus.b.i,bus.b.i.e2,,94,
+Financial Industry,bus.b.i,bus.b.i.f,,95,
+Food Industry,bus.b.i,bus.b.i.f1,,96,
+Healthcare Industry,bus.b.i,bus.b.i.h,,97,
+Hospitality Industry,bus.b.i,bus.b.i.h1,,98,
+Information Services Industry,bus.b.i,bus.b.i.i,,99,
+Legal Services Industry,bus.b.i,bus.b.i.l,,100,
+Logistics and Transportation Industry,bus.b.i,bus.b.i.l1,,101,
+Management Consulting Industry,bus.b.i,bus.b.i.m,,103,
+Manufacturing Industry,bus.b.i,bus.b.i.m1,,104,
+Mechanical and Industrial Engineering Industry,bus.b.i,bus.b.i.m2,,105,
+Media Industry,bus.b.i,bus.b.i.m3,,106,
+Metals Industry,bus.b.i,bus.b.i.m4,IAB3-12,107,1443
+Coin Trade In,bus.b.i.m4,bus.b.i.m4.c,,,1444
+Gold Trade In,bus.b.i.m4,bus.b.i.m4.g,,,1445
+Platinum Trade In,bus.b.i.m4,bus.b.i.m4.p,,,1446
+Silver Trade In,bus.b.i.m4,bus.b.i.m4.s,,,1447
+Non-Profit Organizations,bus.b.i,bus.b.i.n,,108,
+Pharmaceutical Industry,bus.b.i,bus.b.i.p,,109,
+Power and Energy Industry,bus.b.i,bus.b.i.p1,,110,
+Publishing Industry,bus.b.i,bus.b.i.p2,,111,
+Real Estate Industry,bus.b.i,bus.b.i.r,,112,
+Retail Industry,bus.b.i,bus.b.i.r1,,114,
+Technology Industry,bus.b.i,bus.b.i.t,,115,
+Telecommunications Industry,bus.b.i,bus.b.i.t1,,116,
+Business Services,bus,bus.b1,,,1012
+Consulting,bus.b1,bus.b1.c,,,1013
+Employee Expense and Time Tracking Services,bus.b1,bus.b1.e,,,1014
+Event Planning,bus.b1,bus.b1.e1,,,1015
+Human Resources and Recruiting,bus.b1,bus.b1.h,,,1016
+Information Technology Services,bus.b1,bus.b1.i,,,1017
+Laundry and Dry Cleaning Services,bus.b1,bus.b1.l,,,1018
+Logistics and Delivery,bus.b1,bus.b1.l1,,,1019
+Office Equipment and Supplies,bus.b1,bus.b1.o,,,1020
+Photographers,bus.b1,bus.b1.p,,,1021
+Printing/Fax/WiFi Services,bus.b1,bus.b1.p1,,,1022
+Public Relations and Strategic Communication,bus.b1,bus.b1.p2,,,1023
+Security and Protection,bus.b1,bus.b1.s,,,1024
+Storage Facilities,bus.b1,bus.b1.s1,,,1025
+Telecom Services,bus.b1,bus.b1.t,,,1026
+Web Hosting and Cloud Computing,bus.b1,bus.b1.w,,,1027
+Energy Industry,bus,bus.e,,,1029
+Electric Power Industry,bus.e,bus.e.e,,,1030
+Energy Services,bus.e,bus.e.e1,,,1031
+Green Energy,bus.e,bus.e.g,,,1032
+"Oil, Gas and Consumable Fuels",bus.e,bus.e.o,,,1033
+Forestry and Logging,bus,bus.f,,,1034
+Industrial Storage,bus,bus.i,,,1035
+Industrials,bus,bus.i1,,,1036
+Aerospace and Defense,bus.i1,bus.i1.a,,,1037
+Construction and Engineering,bus.i1.a,bus.i1.a.c,,,1038
+Industrial Conglomerates,bus.i1.a,bus.i1.a.i,,,1039
+Trading Companies and Distributors,bus.i1.a,bus.i1.a.t,,,1040
+Transportation,bus.i1.a,bus.i1.a.t1,,,1041
+Manufacturing,bus,bus.m,,,1042
+Medical and Biotechnology,bus,bus.m1,,,1043
+Mining and Quarrying,bus,bus.m2,,,1044
+Signage,bus,bus.s,,,1046
+Small Business,bus,bus.s1,,,1047
+Waste Disposal and Recycling,bus,bus.w,,,1048
+Careers and Employment,,car,IAB4,123,
+Apprenticeships,car,car.a,,124,
+Career Advice,car,car.c,IAB4-11,125,
+Career Planning,car,car.c1,IAB4-1,126,
+College,car,car.c2,IAB4-2,,
+Education and Careers,car,car.e,,,1295
+Employment Agencies,car.e,car.e.e,,,1301
+Financial Aid,car,car.f,IAB4-3,,
+Job Search,car,car.j,IAB4-5,127,
+Job Fairs,car.j,car.j.j,IAB4-4,128,
+Resume Writing and Advice,car.j,car.j.r,IAB4-6,129,
+Nursing,car,car.n,IAB4-7,,
+Remote Working,car,car.r,IAB4-9,130,1311
+U.S. Military,car,car.u,IAB4-10,,
+Vocational Training,car,car.v,,131,
+Dating,,dat,IAB14-1,188,1259
+Casual Relationships,dat,dat.c,,,1260
+Serious Relationships,dat,dat.s,,,1261
+Dating Apps,dat,dat.d,,,
+Matchmaking Services,dat,dat.m,,,
+Adult Dating,dat,dat.a,,,
+Education,,edu,IAB5,132,
+7-12 Education,edu,edu.e,IAB5-1,,
+Adult Education,edu,edu.a,IAB5-2,133,1296
+Art History,edu,edu.a1,IAB5-3,,
+Certification Programs,edu,edu.c,,,1297
+Colledge Administration,edu,edu.c1,IAB5-4,,
+College Education,edu,edu.c2,,137,
+College Planning,edu.c2,edu.c2.c,,138,
+Postgraduate Education,edu.c2,edu.c2.p,IAB5-9,139,
+Professional School,edu.c2.p,edu.c2.p.p,,140,
+Undergraduate Education,edu.c2,edu.c2.u,,141,
+College Life,edu,edu.c3,IAB5-5,,
+Colleges and Universities,edu,edu.c4,,,1298
+Post-Graduate Education,edu.c4,edu.c4.p,,,1299
+Early Childhood Education,edu,edu.e1,,142,
+Education Applications,edu,edu.e2,,,1300
+Educational Assessment,edu,edu.e3,,143,
+Standardized Testing,edu.e3,edu.e3.s,,144,
+English as a 2nd Language,edu,edu.e4,IAB5-7,,
+Higher Education,edu,edu.h,,,1302
+Homeschooling,edu,edu.h1,IAB5-10,145,1308
+Homework and Study,edu,edu.h2,IAB5-11,146,
+K-6 Educators,edu,edu.k,IAB5-12,,
+Language Learning,edu,edu.l,IAB5-8,147,1303
+Online Education,edu,edu.o,,148,1304
+Online Course Platforms,edu.o,edu.o.o,,,
+Online Tutoring,edu.o,edu.o.o1,,,
+Primary Education,edu,edu.p,,149,1305
+Private School,edu,edu.p1,IAB5-13,134,
+Remote work and school,edu,edu.r,,,1306
+Distance learning,edu.r,edu.r.d,IAB5-6,,1307
+Online Surveys,edu.r,edu.r.o,,,1309
+Secondary Education,edu,edu.s,,135,
+Special Education,edu,edu.s1,IAB5-14,136,
+Study Skills,edu,edu.s2,,,1312
+Studying Business,edu,edu.s3,IAB5-15,,
+Teaching Resources,edu,edu.t,,,1313
+Trade Schools,edu,edu.t1,,,1314
+Coding Bootcamps,edu,edu.c5,,,
+AI Learning Assistants,edu,edu.a2,,,
+Entertainment and Media,,ent,IAB19-29,JLBCU7,
+Arts & Entertainment,ent,ent.a,IAB1,,
+Celebrity Fan/Gossip,ent.a,ent.a.c,IAB1-2,,
+Humor,ent.a,ent.a.h,IAB1-4,,
+Genres,ent,ent.g,,SPSHQ5,
+Action/Adventure,ent.g,ent.g.a,,325,
+Animation & Anime,ent.g,ent.g.a1,,641,
+Biographies,ent.g,ent.g.b,,44,
+Comedy,ent.g,ent.g.c,,646,
+Documentary,ent.g,ent.g.d,,332,
+Drama,ent.g,ent.g.d1,,647,
+Factual,ent.g,ent.g.f,,648,
+Family/Children,ent.g,ent.g.f1,,645,
+Fantasy,ent.g,ent.g.f2,,335,
+History,ent.g,ent.g.h,,EZWB7V,
+Holiday,ent.g,ent.g.h1,,649,
+Horror,ent.g,ent.g.h2,,336,
+Lifestyle,ent.g,ent.g.l,,TIFQA5,
+Music Video,ent.g,ent.g.m,,650,
+Musical,ent.g,ent.g.m1,,156,
+Mystery,ent.g,ent.g.m2,,331,
+Nature,ent.g,ent.g.n,,VKIV56,
+Public Radio,ent.g,ent.g.p,,376,
+Reality TV,ent.g,ent.g.r,,651,
+Romance,ent.g,ent.g.r1,,326,
+Science Fiction,ent.g,ent.g.s,,652,
+Soap Opera,ent.g,ent.g.s1,,642,
+Special Interest (Indie/Art House),ent.g,ent.g.s2,,643,
+Sports Radio,ent.g,ent.g.s3,,370,
+Talk Radio,ent.g,ent.g.t,,371,
+Talk Show,ent.g,ent.g.t1,,A0AH3G,
+Thriller,ent.g,ent.g.t2,,700,
+True Crime,ent.g,ent.g.t3,,KHPC5A,
+Western,ent.g,ent.g.w,,KHPC6A,
+Young Adult,ent.g,ent.g.y,,51,
+Media,ent,ent.m,,,1419
+Blogs/Forums/Social Networks,ent.m,ent.m.b,,,1420
+Book Reading and Review Applications,ent.m,ent.m.b1,,,1421
+Books and Audio Books,ent.m,ent.m.b2,,,1422
+CDs and Vinyl Records,ent.m,ent.m.c,,,1427
+DVDs,ent.m,ent.m.d,,,1428
+Live Television,ent.m,ent.m.l,,,1429
+Magazines and Newspapers,ent.m,ent.m.m,,,1430
+Music and Video Streaming Services,ent.m,ent.m.m1,,,1431
+News and Analysis,ent.m,ent.m.n,,,1432
+Radio and Podcasts,ent.m,ent.m.r,,,1433
+Utilities Apps,ent.m,ent.m.u,,,1438
+Productivity Apps,ent.m.u,ent.m.u.p,,,1439
+Reference Apps,ent.m.u,ent.m.u.r,,,1440
+Search Engine Apps,ent.m.u,ent.m.u.s,,,1441
+Weather Apps,ent.m.u,ent.m.u.w,,,1442
+Movies,ent,ent.m1,IAB1-5,324,
+Music,ent,ent.m2,IAB1-6,338,
+Adult Album Alternative,ent.m2,ent.m2.a,,342,
+Adult Contemporary Music,ent.m2,ent.m2.a1,,339,
+Soft AC Music,ent.m2.a1,ent.m2.a1.s,,340,
+Urban AC Music,ent.m2.a1,ent.m2.a1.u,,341,
+Alternative Music,ent.m2,ent.m2.a2,,343,
+Blues,ent.m2,ent.m2.b,,360,
+Children's Music,ent.m2,ent.m2.c,,344,
+Classic Hits,ent.m2,ent.m2.c1,,345,
+Classical Music,ent.m2,ent.m2.c2,,346,
+College Radio,ent.m2,ent.m2.c3,,347,
+Comedy (Music and Audio),ent.m2,ent.m2.c4,,348,
+Contemporary Hits/Pop/Top 40,ent.m2,ent.m2.c5,,349,
+Country Music,ent.m2,ent.m2.c6,,350,
+Dance and Electronic Music,ent.m2,ent.m2.d,,351,
+Gospel Music,ent.m2,ent.m2.g,,354,
+Hip Hop Music,ent.m2,ent.m2.h,,355,
+Inspirational/New Age Music,ent.m2,ent.m2.i,,356,
+Jazz,ent.m2,ent.m2.j,,357,
+Oldies/Adult Standards,ent.m2,ent.m2.o,,358,
+R&B/Soul/Funk,ent.m2,ent.m2.r,,362,
+Reggae,ent.m2,ent.m2.r1,,359,
+Religious (Music and Audio),ent.m2,ent.m2.r2,,361,
+Rock Music,ent.m2,ent.m2.r3,,363,
+Album-oriented Rock,ent.m2.r3,ent.m2.r3.a,,364,
+Alternative Rock,ent.m2.r3,ent.m2.r3.a1,,365,
+Classic Rock,ent.m2.r3,ent.m2.r3.c,,366,
+Hard Rock,ent.m2.r3,ent.m2.r3.h,,367,
+Soft Rock,ent.m2.r3,ent.m2.r3.s,,368,
+Songwriters/Folk,ent.m2,ent.m2.s,,353,
+"Soundtracks, TV and Showtunes",ent.m2,ent.m2.s1,,369,
+Urban Contemporary Music,ent.m2,ent.m2.u,,377,
+Variety (Music and Audio),ent.m2,ent.m2.v,,378,
+World/International Music,ent.m2,ent.m2.w,,352,
+Pop Culture,ent,ent.p,,432,
+Celebrity Deaths,ent.p,ent.p.c,,433,
+Celebrity Families,ent.p,ent.p.c1,,434,
+Celebrity Homes,ent.p,ent.p.c2,,435,
+Celebrity Pregnancy,ent.p,ent.p.c3,,436,
+Celebrity Relationships,ent.p,ent.p.c4,,437,
+Celebrity Scandal,ent.p,ent.p.c5,,438,
+Celebrity Style,ent.p,ent.p.c6,,439,
+Humor and Satire,ent.p,ent.p.h,,440,
+Sports Highlights,ent,ent.s,,,1436
+Team News and Analysis,ent,ent.t,,,1437
+Television,ent,ent.t1,IAB1-7,640,
+AI Companions,ent,ent.a1,,,
+AI Roleplay,ent,ent.a2,,,
+Creator Subscription Platforms,ent,ent.c2,,,
+Live Streaming Platforms,ent,ent.l,,,
+Events and Celebrations,,evt,,8VZQHL,
+Awards Shows,evt,evt.a,,162,
+Business Expos & Conferences,evt,evt.b,,180,
+Events and Performances,evt,evt.e,,,1315
+Auctions,evt.e,evt.e.a,,,1316
+Cinemas and Movie Events,evt.e,evt.e.c,,,1317
+Comedy Events,evt.e,evt.e.c1,,,1318
+Concerts,evt.e,evt.e.c2,,,1319
+"Conferences, Lectures and Workshops",evt.e,evt.e.c3,,,1320
+Exhibitions,evt.e,evt.e.e,,,1321
+Fashion Events,evt.e,evt.e.f,,,1323
+Nightlife Experiences,evt.e,evt.e.n,,,1324
+Seasonal and Holiday Events,evt.e,evt.e.s,,,1326
+Sporting Events,evt.e,evt.e.s1,,,1325
+Theatre and Musicals,evt.e,evt.e.t,,,1327
+Fan Conventions,evt,evt.f,,185,1322
+Gifts and Holiday Items,evt,evt.g,,,1371
+Flowers,evt.g,evt.g.f,,,1372
+Gift Baskets,evt.g,evt.g.g,,,1373
+Gift Cards and Coupons,evt.g,evt.g.g1,,,1374
+Gift Certificates,evt.g,evt.g.g2,,,1375
+Greeting Cards,evt.g,evt.g.g3,,,1376
+Party Goods,evt.g,evt.g.p,,,1377
+Holidays,evt,evt.h,,1KXCLD,
+National & Civic Holidays,evt.h,evt.h.n,,157,
+Personal Celebrations & Life Events,evt,evt.p,,163,
+Anniversary,evt.p,evt.p.a,,164,
+Baby Shower,evt.p,evt.p.b,,166,
+Bachelor Party,evt.p,evt.p.b1,,167,
+Bachelorette Party,evt.p,evt.p.b2,,168,
+Birth,evt.p,evt.p.b3,,169,
+Birthday,evt.p,evt.p.b4,,170,
+Funeral,evt.p,evt.p.f,,171,
+Graduation,evt.p,evt.p.g,,172,
+Prom,evt.p,evt.p.p,,173,
+Wedding,evt.p,evt.p.w,IAB14-7,165,
+Family and Relationships,,fam,,186,
+Bereavement,fam,fam.b,,187,
+Divorce,fam,fam.d,,189,
+Eldercare,fam,fam.e,IAB6-9,190,
+Family and Parenting,fam,fam.f,IAB6,,1328
+Adoption,fam.f,fam.f.a,IAB6-1,,
+Childcare,fam.f,fam.f.c,,,1329
+Day Care Centers,fam.f.c,fam.f.c.d,,,1330
+Nanny Services,fam.f.c,fam.f.c.n,,,1331
+Family Internet,fam.f,fam.f.f,IAB6-4,,
+Genealogy and Family Trees,fam.f,fam.f.g,,,1332
+Kids Activities,fam.f,fam.f.k,,,1333
+Parenting - K-6 Kids,fam.f,fam.f.p,IAB6-5,,
+Senior Living,fam.f,fam.f.s,IAB14-5,,1334
+Marriage and Civil Unions,fam,fam.m,,191,
+Parenting,fam,fam.p,,192,
+Adoption and Fostering,fam.p,fam.p.a,,193,
+Daycare and Pre-School,fam.p,fam.p.d,IAB6-3,194,
+Internet Safety,fam.p,fam.p.i,,195,
+Parenting Babies and Toddlers,fam.p,fam.p.p,IAB6-2,196,
+Parenting Children Aged 4-11,fam.p,fam.p.p1,,197,
+Parenting Teens,fam.p,fam.p.p2,IAB6-6,198,
+Special Needs Kids,fam.p,fam.p.s,IAB6-8,199,
+Single Life,fam,fam.s,,200,
+Fashion and Beauty,,fas,IAB18,552,
+Accessories,fas,fas.a,IAB18-6,,
+Beauty,fas,fas.b,IAB18-1,553,
+Hair Care,fas.b,fas.b.h,,554,1179
+Hair Accessories,fas.b.h,fas.b.h.h,,,1180
+Hair Coloring,fas.b.h,fas.b.h.h1,,,1181
+Hair Conditioner,fas.b.h,fas.b.h.h2,,,1182
+Hair Growth Products,fas.b.h,fas.b.h.h3,,,1183
+Hair Spray/Spritz,fas.b.h,fas.b.h.h4,,,1184
+Hair Styling Gel/Mousse,fas.b.h,fas.b.h.h5,,,1185
+Home Permanent/Relaxer Kits,fas.b.h,fas.b.h.h6,,,1186
+Shampoo,fas.b.h,fas.b.h.s,,,1187
+Makeup and Accessories,fas.b,fas.b.m,,555,
+Nail Care,fas.b,fas.b.n,,556,
+Natural and Organic Beauty,fas.b,fas.b.n1,,557,
+Perfume and Fragrance,fas.b,fas.b.p,,558,
+Skin Care,fas.b,fas.b.s,,559,1244
+Hand and Body Lotion,fas.b.s,fas.b.s.h,,,1245
+Skin Care,fas.b.s,fas.b.s.s,,,1246
+Suntan Products,fas.b.s,fas.b.s.s1,,,1247
+Body Art,fas,fas.b1,IAB18-2,574,
+Children's Clothing,fas,fas.c,,575,1060
+Clothing and Accessories,fas,fas.c1,,,1058
+Clothing,fas.c1,fas.c1.c,IAB18-5,,1059
+Maternity Clothing,fas.c1.c,fas.c1.c.m,,,1061
+Sportswear,fas.c1.c,fas.c1.c.s,,,1063
+Swimwear,fas.c1.c,fas.c1.c.s1,,,1064
+Underwear and Lingerie,fas.c1.c,fas.c1.c.u,,,1065
+Wedding Dresses/Bridal Wear/Tuxedos,fas.c1.c,fas.c1.c.w,,,1066
+Clothing Accessories,fas.c1,fas.c1.c1,,,1068
+Costumes and Accessories,fas.c1,fas.c1.c2,,,1069
+Footwear,fas.c1,fas.c1.f,,,1070
+Footwear Accessories,fas.c1,fas.c1.f1,,,1071
+Handbags and Wallets,fas.c1,fas.c1.h,,,1072
+Jewelry and Watches,fas.c1,fas.c1.j,,,1073
+Sunglasses,fas.c1,fas.c1.s,,,1074
+Cosmetic Services,fas,fas.c2,,,1088
+Beauty Salons,fas.c2,fas.c2.b,,,1089
+Hair Removal,fas.c2,fas.c2.h,,,1091
+Hair Restoration,fas.c2,fas.c2.h1,,,1092
+Hair Salons,fas.c2,fas.c2.h2,,,1090
+Med Spas,fas.c2,fas.c2.m,,,1094
+Nail Salons,fas.c2,fas.c2.n,,,1093
+Piercing and Tattooing,fas.c2,fas.c2.p,,,1095
+Tanning Salons,fas.c2,fas.c2.t,,,1096
+Cosmetics,fas,fas.c3,,,1138
+Cosmetics Accessories,fas.c3,fas.c3.c,,,1139
+Cosmetics-Nail,fas.c3,fas.c3.c1,,,1140
+Eye,fas.c3,fas.c3.e,,,1141
+Facial,fas.c3,fas.c3.f,,,1142
+Lip,fas.c3,fas.c3.l,,,1143
+Storage,fas.c3,fas.c3.s,,,1144
+Designer Clothing,fas,fas.d,,576,
+Fashion,fas,fas.f,IAB18-3,,
+Fashion Trends,fas,fas.f1,,577,
+Grooming Supplies,fas,fas.g,,,1178
+Grooming Supplies,fas,fas.g1,,,1271
+Electric Shaver Groomer,fas.g1,fas.g1.e,,,1272
+Hair Appliances,fas.g1,fas.g1.h,,,1273
+High Fashion,fas,fas.h,,578,
+Jewelry,fas,fas.j,IAB18-4,,
+Men's Fashion,fas,fas.m,,579,
+Men's Accessories,fas.m,fas.m.m,,580,
+Men's Jewelry and Watches,fas.m.m,fas.m.m.m,,581,
+Men's Clothing,fas.m,fas.m.m1,,582,1062
+Men's Business Wear,fas.m.m1,fas.m.m1.m,,583,
+Men's Casual Wear,fas.m.m1,fas.m.m1.m1,,584,
+Men's Formal Wear,fas.m.m1,fas.m.m1.m2,,585,
+Men's Outerwear,fas.m.m1,fas.m.m1.m3,,586,
+Men's Sportswear,fas.m.m1,fas.m.m1.m4,,587,
+Men's Underwear and Sleepwear,fas.m.m1,fas.m.m1.m5,,588,
+Men's Shoes and Footwear,fas.m,fas.m.m2,,589,
+Personal Care,fas,fas.p,,590,1214
+Bath and Shower,fas.p,fas.p.b,,591,
+Deodorant and Antiperspirant,fas.p,fas.p.d,,592,
+Oral care,fas.p,fas.p.o,,593,
+Shaving,fas.p,fas.p.s,,594,1240
+Blades,fas.p.s,fas.p.s.b,,,1241
+Razors,fas.p.s,fas.p.s.r,,,1242
+Shaving Cream,fas.p.s,fas.p.s.s,,,1243
+Shaving Lotion/Men's Fragrance,fas,fas.s,,,1154
+Street Style,fas,fas.s1,,595,
+Women's Fashion,fas,fas.w,,560,
+Women's Accessories,fas.w,fas.w.w,,561,
+Women's Glasses,fas.w.w,fas.w.w.w,,562,
+Women's Handbags and Wallets,fas.w.w,fas.w.w.w1,,563,
+Women's Hats and Scarves,fas.w.w,fas.w.w.w2,,564,
+Women's Jewelry and Watches,fas.w.w,fas.w.w.w3,,565,
+Women's Clothing,fas.w,fas.w.w1,,566,1067
+Women's Business Wear,fas.w.w1,fas.w.w1.w,,567,
+Women's Casual Wear,fas.w.w1,fas.w.w1.w1,,568,
+Women's Formal Wear,fas.w.w1,fas.w.w1.w2,,569,
+Women's Intimates and Sleepwear,fas.w.w1,fas.w.w1.w3,,570,
+Women's Outerwear,fas.w.w1,fas.w.w1.w4,,571,
+Women's Sportswear,fas.w.w1,fas.w.w1.w5,,572,
+Women's Shoes and Footwear,fas.w,fas.w.w2,,573,
+Finance and Insurance,,fin,,,1335
+Accountants and Bookkeepers,fin,fin.a,,,1336
+Banking,fin,fin.b,,,1337
+Digital Banking,fin.b,fin.b.d,,,
+Buy Now Pay Later,fin,fin.b1,,,
+Credit and Debt Repair/Credit Reporting,fin,fin.c,,,1338
+Economy,fin,fin.e,,80,
+Commodities,fin.e,fin.e.c,,81,
+Currencies,fin.e,fin.e.c1,,82,
+Financial Crisis,fin.e,fin.e.f,,83,
+Financial Reform,fin.e,fin.e.f1,,84,
+Financial Regulation,fin.e,fin.e.f2,,85,
+Gasoline Prices,fin.e,fin.e.g,,86,
+Housing Market,fin.e,fin.e.h,,87,
+Interest Rates,fin.e,fin.e.i,,88,
+Job Market,fin.e,fin.e.j,,89,
+Financial Investment and Management Applications,fin,fin.f,,,1352
+Insurance,fin,fin.i1,IAB13-6,398,1340
+Auto Insurance,fin.i1,fin.i1.a,,31,1341
+Health Insurance,fin.i1,fin.i1.h,,399,
+Home Insurance,fin.i1,fin.i1.h1,,400,1342
+Life Insurance,fin.i1,fin.i1.l,,401,1343
+Medical Insurance,fin.i1,fin.i1.m,,,1344
+Pet Insurance,fin.i1,fin.i1.p,,403,1345
+Travel Insurance,fin.i1,fin.i1.t,,404,1346
+Insurance Coverage Apps,fin,fin.i,,,1347
+Money Transfers,fin,fin.m1,,,
+Mortgage Lenders and Brokers,fin,fin.m,,,1348
+Non-Fiat Currency,fin,fin.n,,,1448
+Cryptocurrency Exchanges,fin.n,fin.n.c,,,1449
+Cryptocurrency Stock,fin.n,fin.n.c1,,,1450
+NFTs,fin.n,fin.n.n,,,1451
+Software Crypto Wallets,fin.n,fin.n.s,,,
+Hardware Crypto Wallets,fin.n,fin.n.h,,,
+Crypto Payment Services,fin.n,fin.n.c2,,,
+Payday and Emergency Loans,fin,fin.p,,,1349
+Payment Wallets,fin,fin.p2,,,
+Personal Finance,fin,fin.p1,IAB13,391,
+Beginning Investing,fin.p1,fin.p1.b,IAB13-1,,
+Consumer Banking,fin.p1,fin.p1.c,,392,
+Credit/Debt & Loans,fin.p1,fin.p1.c1,IAB13-2,,
+Financial Assistance,fin.p1,fin.p1.f,,393,
+Government Support and Welfare,fin.p1.f,fin.p1.f.g,,394,
+Student Financial Aid,fin.p1.f,fin.p1.f.s,,395,1353
+Financial News,fin.p1,fin.p1.f1,IAB13-3,,
+Financial Planning,fin.p1,fin.p1.f2,IAB13-4,396,
+Frugal Living,fin.p1,fin.p1.f3,,397,
+Home Utilities,fin.p1,fin.p1.h1,,417,
+Gas and Electric,fin.p1.h1,fin.p1.h1.g,,418,
+Internet Service Providers,fin.p1.h1,fin.p1.h1.i,,419,
+Phone Services,fin.p1.h1,fin.p1.h1.p,,420,
+Water Services,fin.p1.h1,fin.p1.h1.w,,421,1414
+Investing,fin.p1,fin.p1.i1,IAB13-7,,
+Personal Debt,fin.p1,fin.p1.p,,405,
+Credit Cards,fin.p1.p,fin.p1.p.c,,406,1339
+Home Financing,fin.p1.p,fin.p1.p.h,,407,
+Personal Loans,fin.p1.p,fin.p1.p.p,,408,
+Student Loans,fin.p1.p,fin.p1.p.s,,409,
+Personal Investing,fin.p1,fin.p1.p1,,410,
+Hedge Funds,fin.p1.p1,fin.p1.p1.h,IAB13-5,411,
+Mutual Funds,fin.p1.p1,fin.p1.p1.m,IAB13-8,412,
+Options,fin.p1.p1,fin.p1.p1.o,IAB13-9,413,
+Stocks and Bonds,fin.p1.p1,fin.p1.p1.s,,414,
+Personal Taxes,fin.p1,fin.p1.p2,,415,
+Retirement Planning,fin.p1,fin.p1.r,IAB13-10,416,1350
+Stocks,fin.p1,fin.p1.s,IAB13-11,,
+Tax Planning,fin.p1,fin.p1.t,IAB13-12,,
+Stocks and Investments,fin,fin.s,,,1351
+Online Brokerages,fin.s,fin.s.o,,,
+Trading Platforms,fin.s,fin.s.t,,,
+Robo-Advisors,fin.s,fin.s.r,,,
+Forex & CFD Trading,fin.s,fin.s.f,,,
+Tax Preparation Services,fin,fin.t,,,1354
+Fitness and Wellbeing,,fit,,223,
+Children's Health,fit,fit.c,,224,
+Dieting and Weightloss,fit,fit.d,,,1291
+Food Logging,fit.d,fit.d.f,,,1292
+Weightloss Services,fit.d,fit.d.w,,,1293
+Workout and Step Tracking Applications,fit.d,fit.d.w1,,,1294
+Fitness Activities,fit,fit.f,,,1510
+Dance Studios,fit.f,fit.f.d,,,1511
+Gyms and Health Clubs,fit.f,fit.f.g,,,1512
+Participant Sports Leagues,fit.f,fit.f.p,,,1513
+Personal Trainers,fit.f,fit.f.p1,,,1514
+Self Defense and Martial Arts Classes,fit.f,fit.f.s,,,1515
+Swimming Facilities,fit.f,fit.f.s1,,,1516
+Workout and Step Tracking Applications,fit.f,fit.f.w,,,1517
+Yoga Studios,fit.f,fit.f.y,,,1518
+Fitness and Exercise,fit,fit.f1,,225,
+Participant Sports,fit.f1,fit.f1.p,,226,
+Running and Jogging,fit.f1,fit.f1.r,IAB17-30,227,
+Health & Fitness,fit,fit.h,IAB7,,
+A.D.D.,fit.h,fit.h.a,IAB7-2,,
+AIDS/HIV,fit.h,fit.h.a1,IAB7-3,,
+Arthritis,fit.h,fit.h.a2,IAB7-6,,
+Asthma,fit.h,fit.h.a3,IAB7-7,,
+Autism/PDD,fit.h,fit.h.a4,IAB7-8,,
+Bipolar Disorder,fit.h,fit.h.b,IAB7-9,,
+Brain Tumor,fit.h,fit.h.b1,IAB7-10,,
+Cholesterol,fit.h,fit.h.c,IAB7-12,,
+Chronic Fatigue Syndrome,fit.h,fit.h.c1,IAB7-13,,
+Chronic Pain,fit.h,fit.h.c2,IAB7-14,,
+Deafness,fit.h,fit.h.d,IAB7-16,,
+Depression,fit.h,fit.h.d1,IAB7-18,,
+Epilepsy,fit.h,fit.h.e,IAB7-21,,
+Exercise,fit.h,fit.h.e1,IAB7-1,,
+GERD/Acid Reflux,fit.h,fit.h.g,IAB7-22,,
+Headaches/Migraines,fit.h,fit.h.h,IAB7-23,,
+Heart Disease,fit.h,fit.h.h1,IAB7-24,,
+Herbs for Health,fit.h,fit.h.h2,IAB7-25,,
+Holistic Healing,fit.h,fit.h.h3,IAB7-26,,
+IBS/Crohn's Disease,fit.h,fit.h.i,IAB7-27,,
+Incest/Abuse Support,fit.h,fit.h.i1,IAB7-28,,
+Incontinence,fit.h,fit.h.i2,IAB7-29,,
+Orthopedics,fit.h,fit.h.o,IAB7-33,,
+Panic/Anxiety Disorders,fit.h,fit.h.p,IAB7-34,,
+Pediatrics,fit.h,fit.h.p1,IAB7-35,,
+Psychology/Psychiatry,fit.h,fit.h.p2,IAB7-37,,
+Sexuality,fit.h,fit.h.s1,IAB7-39,,
+Men's Health,fit,fit.m,IAB7-31,228,
+Nutrition,fit,fit.n,IAB7-32,229,
+Senior Health,fit,fit.s,IAB7-38,230,
+Weight Loss,fit,fit.w,IAB7-44,231,
+Wellness,fit,fit.w1,,232,
+Alternative Medicine,fit.w1,fit.w1.a,IAB7-5,233,
+Herbs and Supplements,fit.w1.a,fit.w1.a.h,,234,
+Holistic Health,fit.w1.a,fit.w1.a.h1,,235,
+Physical Therapy,fit.w1,fit.w1.p,IAB7-36,236,
+Smoking Cessation,fit.w1,fit.w1.s,IAB7-41,237,
+Women's Health,fit,fit.w2,IAB7-45,238,
+Meditation Apps,fit,fit.m1,,,
+Sleep Apps,fit,fit.s1,,,
+Nutrition Tracking Apps,fit,fit.n1,,,
+Fitness Coaching Apps,fit,fit.f2,,,
+Food and Drink,,fod,IAB8,210,
+Alcohol,fod,fod.a,,,1002
+Bars,fod.a,fod.a.b,,,1003
+Beer,fod.a,fod.a.b1,,,1004
+"Hard Sodas, Seltzers, Alco Pops",fod.a,fod.a.h,,,1005
+Spirits,fod.a,fod.a.s,,,1006
+Wine,fod.a,fod.a.w,IAB8-18,,1007
+Alcoholic Beverages,fod,fod.a1,,211,
+American Cuisine,fod,fod.a2,IAB8-1,,
+Barbecues and Grilling,fod,fod.b,IAB8-2,215,
+Beverages,fod,fod.b1,,,1131
+Carbonated Soft Drinks,fod.b1,fod.b1.c,,,1132
+Coffee and Tea,fod.b1,fod.b1.c1,,,1133
+Drink Mixes,fod.b1,fod.b1.d,,,1134
+Juices,fod.b1,fod.b1.j,,,1135
+Sports/Energy Drinks,fod.b1,fod.b1.s,,,1136
+Water,fod.b1,fod.b1.w,,,1137
+Cajun/Creole,fod,fod.c,IAB8-3,,
+Chinese Cuisine,fod,fod.c1,IAB8-4,,
+Cocktails/Beer,fod,fod.c2,IAB8-5,,
+Coffee/Tea,fod,fod.c3,IAB8-6,,
+Cooking,fod,fod.c4,,216,
+Cuisine-Specific,fod,fod.c5,IAB8-7,,
+Dairy,fod,fod.d,,,1230
+Desserts and Baking,fod,fod.d1,IAB8-8,217,
+Dining Out,fod,fod.d2,IAB8-9,218,
+Food Allergies,fod,fod.f,IAB8-10,219,
+Food and Beverage Services,fod,fod.f1,,,1355
+Bakeries,fod.f1,fod.f1.b,,,1356
+Catering,fod.f1,fod.f1.c,,,1357
+Fast Food,fod.f1,fod.f1.f,,,1358
+Food Delivery Services,fod.f1,fod.f1.f1,,,1359
+Restaurants,fod.f1,fod.f1.r,,,1360
+Food and Trash Bags,fod,fod.f2,,,1151
+Food Movements,fod,fod.f3,,220,
+French Cuisine,fod,fod.f4,IAB8-11,,
+Frozen Beverages,fod,fod.f5,,,1157
+Frozen Meals,fod,fod.f6,,,1161
+Frozen Meat/Poultry/Seafood,fod,fod.f7,,,1162
+Frozen Snacks,fod,fod.f8,,,1163
+General Food,fod,fod.g,,,1165
+Baby Food,fod.g,fod.g.b,,,1166
+Bakery,fod.g,fod.g.b1,,,1167
+Baking,fod.g,fod.g.b2,,,1168
+Breakfast,fod.g,fod.g.b3,,,1169
+Candy,fod.g,fod.g.c,,,1170
+Condiments and Sauces,fod.g,fod.g.c1,,,1171
+Cookies and Crackers,fod.g,fod.g.c2,,,1172
+Fruit,fod.g,fod.g.f,,,1173
+Meals,fod.g,fod.g.m,,,1174
+Snacks,fod.g,fod.g.s,,,1175
+Vegetables,fod.g,fod.g.v,,,1176
+Health/Lowfat Cooking,fod,fod.h,IAB8-12,,
+Healthy Cooking and Eating,fod,fod.h1,,221,
+Italian Cuisine,fod,fod.i,IAB8-13,,
+Japanese Cuisine,fod,fod.j,IAB8-14,,
+Mexican Cuisine,fod,fod.m,IAB8-15,,
+Non-Alcoholic Beverages,fod,fod.n,,222,
+Pet Food,fod,fod.p,,,1226
+Refrigerated Beverages,fod,fod.r,,,1232
+Refrigerated Meals,fod,fod.r1,,,1236
+Refrigerated Meats,fod,fod.r2,,,1237
+Vegan Diets,fod,fod.v1,IAB8-16,212,
+Vegetarian Diets,fod,fod.v3,IAB8-17,213,
+World Cuisines,fod,fod.w,,214,
+Gambling and Betting,,gam,,,1361
+Casinos,gam,gam.c,,,1362
+Casinos & Gambling,gam,gam.c1,,181,
+Contests,gam,gam.c2,,,1363
+Give Aways,gam,gam.g,,,1364
+Lottery,gam,gam.l,,,1365
+Poker and Professional Gambling,gam,gam.p,,524,
+Sports Betting,gam,gam.s,,,1366
+Virtual Betting,gam,gam.v,,,1367
+Online Casinos,gam,gam.o,,,
+Online Poker,gam,gam.o1,,,
+Online Bingo,gam,gam.o2,,,
+Sweepstakes Casinos,gam,gam.s1,,,
+Health and Medicine,,med,,286,
+Cosmetic Medical Services,med,med.c,,323,1383
+Diseases and Conditions,med,med.d,,287,
+Allergies,med.d,med.d.a,IAB7-4,288,
+Blood Disorders,med.d,med.d.b,,306,
+Bone and Joint Conditions,med.d,med.d.b1,,312,
+Brain and Nervous System Disorders,med.d,med.d.b2,,313,
+Cancer,med.d,med.d.c,IAB7-11,314,
+Cold and Flu,med.d,med.d.c1,IAB7-15,315,
+Dental Health,med.d,med.d.d,,316,
+Diabetes,med.d,med.d.d1,IAB7-20,317,
+Digestive Disorders,med.d,med.d.d2,,318,
+"Ear, Nose and Throat Conditions",med.d,med.d.e,,289,
+Endocrine and Metabolic Diseases,med.d,med.d.e1,,290,
+Hormonal Disorders,med.d.e1,med.d.e1.h,,291,
+Menopause,med.d.e1,med.d.e1.m,,292,
+Thyroid Disorders,med.d.e1,med.d.e1.t,IAB7-43,293,
+Eye and Vision Conditions,med.d,med.d.e2,,294,
+Foot Health,med.d,med.d.f,,295,
+Heart and Cardiovascular Diseases,med.d,med.d.h,,296,
+Infectious Diseases,med.d,med.d.i,,297,
+Injuries,med.d,med.d.i1,,298,
+First Aid,med.d.i1,med.d.i1.f,,299,
+Lung and Respiratory Health,med.d,med.d.l,,300,
+Mental Health,med.d,med.d.m,,301,1391
+Online Therapy,med.d.m,med.d.m.o,,,
+Reproductive Health,med.d,med.d.r,,302,
+Birth Control,med.d.r,med.d.r.b,,303,
+Infertility,med.d.r,med.d.r.i,IAB7-30,304,
+Pregnancy,med.d.r,med.d.r.p,IAB6-7,305,
+Sexual Health,med.d,med.d.s,,307,1519
+Contraceptives,med.d.s,med.d.s.c,,,1520
+Doctor Perscribed Medicines,med.d.s,med.d.s.d,,,1521
+Fertility Tracking Applications,med.d.s,med.d.s.f,,,1522
+Non-perscribed Performance Enhancers,med.d.s,med.d.s.n,,,1523
+Sexual Conditions,med.d.s,med.d.s.s,,308,
+Skin and Dermatology,med.d,med.d.s1,,309,
+Sleep Disorders,med.d,med.d.s2,IAB7-40,310,
+Substance Abuse,med.d,med.d.s3,IAB7-42,311,
+Health and Medical Services,med,med.h,,,1378
+Alternative and Natural Medicine,med.h,med.h.a,,,1379
+Assisted Living,med.h,med.h.a1,,,1380
+Chiropractors,med.h,med.h.c,,,1381
+Clinical Research,med.h,med.h.c1,,,1382
+Dental Care,med.h,med.h.d,IAB7-17,,1384
+Dermatology,med.h,med.h.d1,IAB7-19,,1385
+Drugstores and Pharmacies,med.h,med.h.d2,,,1386
+Online Pharmacy Services,med.h.d2,med.h.d2.o,,,
+Fertility and Family Planning,med.h,med.h.f,,,1387
+General Practitioners,med.h,med.h.g,,,1388
+Home Healthcare,med.h,med.h.h,,,1389
+Hospitals,med.h,med.h.h1,,,1390
+Physical Therapists,med.h,med.h.p,,,1392
+Service Provider Search and Scheduling,med.h,med.h.s,,,1393
+Symptom Monitoring Apps,med.h,med.h.s1,,,1394
+Vision Care,med.h,med.h.v,,,1395
+Medical Tests,med,med.m,,319,
+Pharmaceutical Drugs,med,med.p,,320,
+Pharmaceuticals,med,med.p1,,,1473
+Surgery,med,med.s,,321,
+Vaccines,med,med.v,,322,
+Vitamins and Supplements,med,med.v1,,,1253
+Digestive Supplements,med.v1,med.v1.d,,,1254
+Weightloss Supplements,med.v1,med.v1.w,,,1255
+Telemedicine,med,med.t,,,
+Hobbies and Collecting,,hob,IAB9,239,
+Antiquing and Antiques,hob,hob.a,,240,
+Art/Technology,hob,hob.a1,IAB9-1,,
+Arts and Crafts,hob,hob.a2,IAB9-2,248,
+Beadwork,hob.a2,hob.a2.b,IAB9-3,249,
+Candle and Soap Making,hob.a2,hob.a2.c,IAB9-6,250,
+Drawing and Sketching,hob.a2,hob.a2.d,IAB9-12,251,
+Jewelry Making,hob.a2,hob.a2.j,IAB9-19,252,
+Needlework,hob.a2,hob.a2.n,IAB9-21,253,
+Painting,hob.a2,hob.a2.p,IAB9-22,254,
+Photography,hob.a2,hob.a2.p1,IAB9-23,255,
+Scrapbooking,hob.a2,hob.a2.s,IAB9-27,256,
+Woodworking,hob.a2,hob.a2.w,IAB9-31,257,
+Beekeeping,hob,hob.b,,258,
+Birdwatching,hob,hob.b1,IAB9-4,259,
+Chess,hob,hob.c,IAB9-8,,
+Cigars,hob,hob.c1,IAB9-9,260,1545
+Collectables and Antiques,hob,hob.c2,,,1075
+Antiques,hob.c2,hob.c2.a,,,1076
+Coins and Paper Money,hob.c2,hob.c2.c,,,1077
+Collectibles,hob.c2,hob.c2.c1,,,1078
+Entertainment Memorabilia,hob.c2,hob.c2.e,,,1079
+Sports Memorabilia and Trading Cards,hob.c2,hob.c2.s,,,1080
+Stamps,hob.c2,hob.c2.s1,,,1081
+Collecting,hob,hob.c3,IAB9-10,261,
+Comic Books,hob.c3,hob.c3.c,IAB9-11,262,
+Stamps and Coins,hob.c3,hob.c3.s,IAB9-29,263,
+Content Production,hob,hob.c4,,264,
+Audio Production,hob.c4,hob.c4.a,,265,
+Freelance Writing,hob.c4,hob.c4.f,IAB9-13,266,
+Screenwriting,hob.c4,hob.c4.s,IAB9-28,267,
+Video Production,hob.c4,hob.c4.v,,268,
+Games and Puzzles,hob,hob.g,,269,
+Board Games and Puzzles,hob.g,hob.g.b,IAB9-5,270,
+Card Games,hob.g,hob.g.c,IAB9-7,271,
+Roleplaying Games,hob.g,hob.g.r,IAB9-25,272,
+Genealogy and Ancestry,hob,hob.g2,IAB9-14,273,
+Getting Published,hob,hob.g3,IAB9-15,,
+Guitar,hob,hob.g4,IAB9-16,,
+Home Recording,hob,hob.h,IAB9-17,,
+Investors & Patents,hob,hob.i,IAB9-18,,
+Magic and Illusion,hob,hob.m,IAB9-20,241,
+Model Toys,hob,hob.m1,,242,
+Musical Instruments,hob,hob.m2,,243,
+Paranormal Phenomena,hob,hob.p,IAB15-5,244,
+Radio,hob,hob.r,IAB9-24,,
+Radio Control,hob,hob.r1,,245,
+Sci-fi and Fantasy,hob,hob.s,IAB9-26,246,
+Workshops and Classes,hob,hob.w,,247,
+Home and Garden,,hom,IAB10,274,
+Environmental Safety,hom,hom.e1,IAB10-3,,
+Furniture,hom,hom.f,,,1268
+Indoor Furniture,hom.f,hom.f.i,,,1269
+Outdoor Furniture,hom.f,hom.f.o,,,1270
+Gardening,hom,hom.g,IAB10-4,275,
+Home and Garden Products,hom,hom.h,,,1277
+Bathroom Accessories,hom.h,hom.h.b,,,1278
+Bedroom Furniture and Accessories,hom.h,hom.h.b1,,,1279
+Carpets and Rugs,hom.h,hom.h.c,,,1280
+Fireplaces,hom.h,hom.h.f,,,1281
+Home Decor,hom.h,hom.h.h,,,1282
+Housewares,hom.h,hom.h.h1,,,1283
+Kitchen and Dining Products,hom.h,hom.h.k,,,1284
+Lawn and Garden Products,hom.h,hom.h.l,,,1285
+Lighting,hom.h,hom.h.l1,,,1286
+Linens and Bedding,hom.h,hom.h.l2,,,1287
+Plants,hom.h,hom.h.p,,,1288
+Home and Garden Services,hom,hom.h1,,,1396
+Appliance Repair,hom.h1,hom.h1.a,,,1397
+Business and Home Security Services,hom.h1,hom.h1.b,,,1398
+Carpeting and Flooring Services,hom.h1,hom.h1.c,,,1399
+Do It Yourself Applications,hom.h1,hom.h1.d,,,1400
+Emergency Preparedness,hom.h1,hom.h1.e,,,1401
+"Flood, Fire and Gas Safety",hom.h1,hom.h1.f,,,1402
+Gas and Electric Services,hom.h1,hom.h1.g,,,1403
+Home Improvement and Repair,hom.h1,hom.h1.h,,,1404
+Home Security and Monitoring Applications,hom.h1,hom.h1.h1,,,1405
+Home Service Provider Review,hom.h1,hom.h1.h2,,,1406
+Housekeeping Services,hom.h1,hom.h1.h3,,,1407
+Landscaping Services,hom.h1,hom.h1.l,,,1408
+Lawn and Garden Services,hom.h1,hom.h1.l1,,,1409
+Pest Exterminators,hom.h1,hom.h1.p,,,1410
+Plumbers,hom.h1,hom.h1.p1,,,1411
+Pool and Spa Installation and Maintenance,hom.h1,hom.h1.p2,,,1412
+Window Installation and Treatments,hom.h1,hom.h1.w,,,1415
+Home Appliances,hom,hom.h2,IAB10-1,278,
+Home Entertaining,hom,hom.h3,IAB10-2,279,
+Home Improvement,hom,hom.h4,,280,
+Home Repair,hom,hom.h5,IAB10-5,,
+Home Security,hom,hom.h6,,281,
+Home Theater,hom,hom.h7,IAB10-6,,
+Household Appliances,hom,hom.h8,,,1289
+Household Cleaning,hom,hom.h9,,,1190
+Household/Plastics/Storage,hom,hom.h10,,,1196
+Bottles,hom.h10,hom.h10.b,,,1197
+Drinkware,hom.h10,hom.h10.d,,,1198
+Household Plastics,hom.h10,hom.h10.h,,,1199
+Kitchen Storage,hom.h10,hom.h10.k,,,1200
+Indoor Environmental Quality,hom,hom.i,,282,
+Interior Decorating,hom,hom.i1,IAB10-7,283,
+Landscaping,hom,hom.l,IAB10-8,284,
+Laundry,hom,hom.l1,,,1191
+Outdoor Decorating,hom,hom.o,,285,
+Remodeling & Construction,hom,hom.r,IAB10-9,276,1413
+Smart Home,hom,hom.s,,277,
+Water Treatment,hom,hom.w,,,1256
+Water Filter/Devices,hom.w,hom.w.w,,,1257
+Water Softeners/Treatment,hom.w,hom.w.w1,,,1258
+Law and Legal Services,,law,,383,
+Crime,law,law.c,,380,
+Legal Services,law,law.l,,,1416
+Bail Bonds,law.l,law.l.b,,,1418
+Lawyers,law.l,law.l.l,,,1417
+Pets,,pet,IAB16,422,1460
+Aquariums,pet,pet.a,IAB16-1,,
+Birds,pet,pet.b,IAB16-2,423,
+Cats,pet,pet.c,IAB16-3,424,
+Dogs,pet,pet.d,IAB16-4,425,
+Fish and Aquariums,pet,pet.f,,426,
+Large Animals,pet,pet.l,IAB16-5,427,
+Pet Adoption,pet,pet.p,,,1461
+Pet Adoptions,pet,pet.p1,,428,
+Pet Breeders,pet,pet.p2,,,1462
+Pet Care and Supply Applications,pet,pet.p3,,,1463
+Pet Grooming,pet,pet.p4,,,1464
+Pet Sitting,pet,pet.p5,,,1465
+Pet Supplies,pet,pet.p6,,431,1227
+Reptiles,pet,pet.r,IAB16-6,429,
+Veterinary Medicine,pet,pet.v,IAB16-7,430,
+Veterinary Services,pet,pet.v1,,,1466
+Politics and Government,,pol,IAB11-4,386,1474
+Ballot measures,pol,pol.b,,,1475
+Civic affairs,pol,pol.c,,8YPBBL,
+Elections,pol,pol.e,,387,1476
+"Law, Gov't & Politics",pol,pol.l,IAB11,,
+Commentary,pol.l,pol.l.c,IAB11-5,,
+Immigration,pol.l,pol.l.i,IAB11-1,,
+Legal Issues,pol.l,pol.l.l,IAB11-2,,
+U.S. Government Resources,pol.l,pol.l.u,IAB11-3,,
+Political Action Committees,pol,pol.p,,,1477
+Political Analysis and Opinion,pol,pol.p1,,,1478
+Political candidates,pol,pol.p2,,,1479
+Political Donations,pol,pol.p3,,,1480
+Political Issues & Policy,pol,pol.p4,,388,
+"Referendums or promoting causes; eg: Healthcare reform, energy trades (Oil/Solar), etc...",pol,pol.r,,,1481
+Real Estate,,rea,IAB21,441,1482
+Apartments,rea,rea.a,IAB21-1,442,
+Architects,rea,rea.a1,IAB21-2,,
+Buying/Selling Homes,rea,rea.b,IAB21-3,,
+Commercial Real Estate,rea,rea.c,,,1483
+Developmental Sites,rea,rea.d,,445,
+Hotel Properties,rea,rea.h,,446,
+Houses,rea,rea.h1,,447,
+Industrial Property,rea,rea.i,,448,
+Land and Farms,rea,rea.l,,449,
+Office Property,rea,rea.o,,450,
+Real Estate Buying and Selling,rea,rea.r,,451,
+Real Estate Rentals,rea,rea.r1,,,1484
+Real Estate Renting and Leasing,rea,rea.r2,,452,
+Real Estate Sales,rea,rea.r3,,,1485
+Real Estate Services For Owners,rea,rea.r4,,,1486
+Retail Property,rea,rea.r5,,443,
+Vacation Properties,rea,rea.v,,444,
+Religion and Spirituality,,rel,IAB23,453,1487
+Agnosticism,rel,rel.a,,454,
+Alternative Religions,rel,rel.a1,IAB23-1,,
+Astrology,rel,rel.a2,IAB15-1,456,1488
+Atheism,rel,rel.a3,,457,
+Atheism/Agnosticism,rel,rel.a4,IAB23-2,,
+Buddhism,rel,rel.b,IAB23-3,458,
+Catholicism,rel,rel.c,IAB23-4,,
+Christianity,rel,rel.c1,IAB23-5,459,
+Hinduism,rel,rel.h,IAB23-6,460,
+Islam,rel,rel.i,IAB23-7,461,
+Judaism,rel,rel.j,IAB23-8,462,
+Latter-Day Saints,rel,rel.l,IAB23-9,,
+Pagan/Wiccan,rel,rel.p,IAB23-10,,
+Prayer and Mindfullness Applications,rel,rel.p1,,,1489
+Prayer and worship services,rel,rel.p2,,,1490
+Religious causes,rel,rel.r,,,1491
+Religious charities,rel,rel.r1,,,1492
+Religious organizations,rel,rel.r2,,,1493
+Sikhism,rel,rel.s,,463,
+Spirituality,rel,rel.s1,,455,
+Science and Environment,,sci,IAB15,464,
+Biological Sciences,sci,sci.b,IAB15-2,465,
+Botany,sci,sci.b2,IAB15-9,,
+Chemistry,sci,sci.c,IAB15-3,466,
+Environment,sci,sci.e,,467,
+Genetics,sci,sci.g,,468,
+Geography,sci,sci.g1,IAB15-8,469,
+Geology,sci,sci.g2,IAB15-4,470,
+Green/Eco,sci,sci.g3,,,1368
+Green/Eco Products,sci.g3,sci.g3.g,,,1369
+Green/Eco Services,sci.g3,sci.g3.g1,,,1370
+Physics,sci,sci.p,IAB15-6,471,
+Science and Laboratory,sci,sci.s,,,1045
+Space and Astronomy,sci,sci.s1,IAB15-7,472,
+Weather,sci,sci.w,IAB15-10,390,
+Sensitive Topics and Content Safety,,sen,,v9i3On,
+Ad Safety Risk,sen,sen.a,,,1000
+Arms & Ammunition,sen,sen.a1,,avbNf2,
+Cannabis,sen,sen.c,,,1049
+Cannabis Consumables,sen.c,sen.c.c,,,1050
+Cannabis Drinks,sen.c.c,sen.c.c.c,,,1051
+Cannabis Edibles,sen.c.c,sen.c.c.c1,,,1052
+Cannabis Equipment,sen.c,sen.c.c1,,,1053
+Cannabis Stocks,sen.c,sen.c.c2,,,1055
+Cannabis Stores,sen.c,sen.c.c3,,,1054
+CBD Consumables,sen.c,sen.c.c4,,,1056
+CBD Topicals,sen.c,sen.c.c5,,,1057
+"Crime & Harmful Acts to Individuals, Society & Human Right Violations",sen,sen.c1,,XtODT3,
+"Death, Injury, or Military Conflict",sen,sen.d,,I4GWl6,
+Debated Sensitive Social Issue,sen,sen.d1,,,1262
+Debated Sensitive Social Issues,sen,sen.d2,,Z7rJBM,
+Disasters,sen,sen.d3,,381,
+Hate Speech and Acts of Aggression,sen,sen.h,,HxqYV1,
+Illegal Content,sen,sen.i,IAB26,,
+Copyright Infringement,sen.i,sen.i.c,IAB26-4,,
+Illegal Content,sen.i,sen.i.i,IAB26-1,,
+Spyware/Malware,sen.i,sen.i.s,IAB26-3,,
+Warez,sen.i,sen.i.w,IAB26-2,,
+"Illegal Drugs, Tobacco, eCigarettes, Vaping, Alcohol",sen,sen.i1,,pg0WhF,
+Non-Standard Content,sen,sen.n,IAB25,,
+Extreme Graphic/Explicit Violence,sen.n,sen.n.e,IAB25-2,,
+Hate Content,sen.n,sen.n.h,IAB25-5,,
+Incentivized,sen.n,sen.n.i,IAB25-7,,
+Profane Content,sen.n,sen.n.p,IAB25-4,,
+Under Construction,sen.n,sen.n.u,IAB25-6,,
+Unmoderated UGC,sen.n,sen.n.u1,IAB25-1,,
+Obscenity and Profanity,sen,sen.o,,j9PaO9,
+Online Piracy,sen,sen.o1,,mm3UXx,
+Spam or Harmful Content,sen,sen.s,,6i4dB6,
+Terrorism,sen,sen.t,,8FD8nI,
+Tobacco,sen,sen.t1,,,1544
+Cigarettes,sen.t1,sen.t1.c,,,1546
+Smokeless Tobacco,sen.t1,sen.t1.s,,,1547
+Vaping,sen.t1,sen.t1.v,,,1548
+Vaping Cartridges,sen.t1,sen.t1.v1,,,1549
+Vaporizors,sen.t1,sen.t1.v2,,,1550
+War and Conflicts,sen,sen.w,,389,
+Weapons and Ammunition,sen,sen.w1,,,1576
+Ammunition,sen.w1,sen.w1.a,,,1577
+Gun Accessories,sen.w1,sen.w1.g,,,1579
+Gun Shows and Auctions,sen.w1,sen.w1.g1,,,1580
+Guns,sen.w1,sen.w1.g2,,,1578
+Non-Projectile Weapons,sen.w1,sen.w1.n,,,1581
+Taser and Stun Guns,sen.w1,sen.w1.t,,,1582
+Shopping and Consumer Goods,,shp,IAB22,473,
+Children's Games and Toys,shp,shp.c,,482,
+Comparison,shp,shp.c1,IAB22-3,,
+Consumer Packaged Goods,shp,shp.c2,,,1123
+Baby and Toddler Products,shp.c2,shp.c2.b,,,1124
+Diapers,shp.c2.b,shp.c2.b.d,,,1125
+Nursing and Feeding Products,shp.c2.b,shp.c2.b.n,,,1126
+Back to School Supplies,shp.c2,shp.c2.b1,,,1127
+Barbeque,shp.c2,shp.c2.b2,,,1128
+Charcoal,shp.c2.b2,shp.c2.b2.c,,,1129
+Charcoal Lighter Fluids,shp.c2.b2,shp.c2.b2.c1,,,1130
+Disposable Tableware,shp.c2,shp.c2.d,,,1145
+Cups and Plates,shp.c2.d,shp.c2.d.c,,,1146
+Disposable Tableware,shp.c2.d,shp.c2.d.d,,,1147
+"Foils, Wraps, and Bags",shp.c2,shp.c2.f,,,1148
+Foil Pans,shp.c2.f,shp.c2.f.f,,,1149
+Foils and Wraps,shp.c2.f,shp.c2.f.f1,,,1150
+Fragrance,shp.c2,shp.c2.f1,,,1152
+Fragrances - Women's,shp.c2.f1,shp.c2.f1.f,,,1153
+Frozen,shp.c2,shp.c2.f2,,,1155
+Frozen Baked Goods,shp.c2.f2,shp.c2.f2.f,,,1156
+Frozen Desserts,shp.c2.f2,shp.c2.f2.f1,,,1158
+Frozen Fruits and Vegetables,shp.c2.f2,shp.c2.f2.f2,,,1159
+Frozen Juices,shp.c2.f2,shp.c2.f2.f3,,,1160
+Other Frozen,shp.c2.f2,shp.c2.f2.o,,,1164
+General Merchandise,shp.c2,shp.c2.g,,,1177
+"HFSS Products [High Fat, Sugar, Salt]",shp.c2,shp.c2.h,,,1188
+Home Care,shp.c2,shp.c2.h1,,,1189
+Hosiery,shp.c2,shp.c2.h2,,,1192
+Pantyhose/Nylons,shp.c2.h2,shp.c2.h2.p,,,1193
+Socks,shp.c2.h2,shp.c2.h2.s,,,1194
+Tights,shp.c2.h2,shp.c2.h2.t,,,1195
+Meal Kits,shp.c2,shp.c2.m,,,1201
+Miscellaneous General Merch,shp.c2,shp.c2.m1,,,1202
+Office/School Supplies,shp.c2,shp.c2.o,,,1203
+Children's Art Supplies,shp.c2.o,shp.c2.o.c,,,1204
+Computer Disks Frmtd/UnFrmtd,shp.c2.o,shp.c2.o.c1,,,1205
+Office Products,shp.c2.o,shp.c2.o.o,,,1206
+Writing Instruments,shp.c2.o,shp.c2.o.w,,,1207
+Over the Counter Medication,shp.c2,shp.c2.o1,,,1208
+Paper Products,shp.c2,shp.c2.p,,,1209
+Facial Tissue,shp.c2.p,shp.c2.p.f,,,1210
+Paper Napkins,shp.c2.p,shp.c2.p.p,,,1211
+Paper Towels,shp.c2.p,shp.c2.p.p1,,,1212
+Toilet Tissue,shp.c2.p,shp.c2.p.t,,,1213
+Personal Cleansing,shp.c2,shp.c2.p1,,,1215
+Bath Products,shp.c2.p1,shp.c2.p1.b,,,1216
+Bath/Body Scrubbers/Massagers,shp.c2.p1,shp.c2.p1.b1,,,1217
+Deodorant,shp.c2.p1,shp.c2.p1.d,,,1218
+Moist Towelettes,shp.c2.p1,shp.c2.p1.m,,,1219
+Soap,shp.c2.p1,shp.c2.p1.s,,,1220
+Pest Control,shp.c2,shp.c2.p2,,,1221
+Outdoor Insect/Rodent Control Chem,shp.c2.p2,shp.c2.p2.o,,,1222
+Pest Control,shp.c2.p2,shp.c2.p2.p,,,1223
+Pet Care,shp.c2,shp.c2.p3,,,1224
+Cat/Dog Litter,shp.c2.p3,shp.c2.p3.c,,,1225
+Pet Treats,shp.c2.p3,shp.c2.p3.p,,,1228
+Refrigerated,shp.c2,shp.c2.r,,,1229
+Refrigerated Baked Goods,shp.c2.r,shp.c2.r.r,,,1231
+Refrigerated Condiments,shp.c2.r,shp.c2.r.r1,,,1233
+Refrigerated Desserts,shp.c2.r,shp.c2.r.r2,,,1234
+Refrigerated Dough,shp.c2.r,shp.c2.r.r3,,,1235
+Refrigerated Miscellaneous,shp.c2.r,shp.c2.r.r4,,,1238
+Religious Items,shp.c2,shp.c2.r1,,,1239
+Toys and Games,shp.c2,shp.c2.t,,,1248
+Games,shp.c2.t,shp.c2.t.g,,,1249
+Outdoor Play Equipment,shp.c2.t,shp.c2.t.o,,,1250
+Puzzles,shp.c2.t,shp.c2.t.p,,,1251
+Toys,shp.c2.t,shp.c2.t.t,,,1252
+Contests & Freebies,shp,shp.c3,IAB22-1,,
+Couponing,shp,shp.c4,IAB22-2,,
+Coupons and Discounts,shp,shp.c5,,474,
+Durable Goods,shp,shp.d,,,1263
+Luggage and Bags,shp.d,shp.d.l,,,1290
+Tools and Hardware,shp.d,shp.d.t,,,1274
+Consumer Hardware Supplies,shp.d.t,shp.d.t.c,,,1275
+Industrial Hardware Supplies,shp.d.t,shp.d.t.i,,,1276
+Engines,shp,shp.e,IAB22-4,,
+Flower Shopping,shp,shp.f,,475,
+Gifts and Greetings Cards,shp,shp.g,,476,
+Grocery Shopping,shp,shp.g1,,477,
+Holiday Shopping,shp,shp.h,,478,
+Household Supplies,shp,shp.h1,,479,
+Lotteries and Scratchcards,shp,shp.l,,480,
+Party Supplies and Decorations,shp,shp.p,,161,
+Retail,shp,shp.r,,,1494
+Arts and Crafts Supplies,shp.r,shp.r.a,,,1495
+Cell Phone Stores,shp.r,shp.r.c,,,1496
+Clothing Stores,shp.r,shp.r.c1,,,1497
+Department Stores,shp.r,shp.r.d,,,1498
+eCommerce,shp.r,shp.r.e,,,1499
+Factory Outlet Stores,shp.r,shp.r.f,,,1500
+Grocery Stores and Supermarkets,shp.r,shp.r.g,,,1501
+Hardware Stores,shp.r,shp.r.h,,,1502
+Musical Instruments and Record Stores,shp.r,shp.r.m,,,1503
+Pawn Shops,shp.r,shp.r.p,,,1504
+Pet and Pet Supply Stores,shp.r,shp.r.p1,,,1505
+Shopping Malls,shp.r,shp.r.s,,,1506
+Specialty Stores,shp.r,shp.r.s1,,,1507
+Sporting Goods Stores,shp.r,shp.r.s2,,,1508
+Ticket Services,shp.r,shp.r.t,,,1509
+Sales and Promotions,shp,shp.s,,481,
+Online Marketplaces,shp,shp.o,,,
+Cashback Services,shp,shp.c6,,,
+Coupon & Deal Aggregators,shp,shp.c7,,,
+Price Comparison Services,shp,shp.p1,,,
+Society and Nonprofits,,soc,IAB14,,
+Divorce Support,soc,soc.d,IAB14-2,,
+Ethnic Specific,soc,soc.e,IAB14-8,,
+Gay Life,soc,soc.g,IAB14-3,,
+Marriage,soc,soc.m,IAB14-4,,
+News,soc,soc.n,IAB12,,
+International News,soc.n,soc.n.i,IAB12-1,,
+Local News,soc.n,soc.n.l,IAB12-3,,
+National News,soc.n,soc.n.n,IAB12-2,,
+Non-Profits,soc,soc.n1,,,1452
+Charities and Donations,soc.n1,soc.n1.c,,,1453
+Civic Organizations,soc.n1,soc.n1.c1,,,1454
+Federations and Professional Associations,soc.n1,soc.n1.f,,,1455
+Military Organizations,soc.n1,soc.n1.m,,,1456
+Non-Governmental Organizations,soc.n1,soc.n1.n,,,1457
+Public Service Announcements,soc.n1,soc.n1.p,,,1458
+Scholarships,soc.n1,soc.n1.s,IAB4-8,,1459
+Teens,soc,soc.t,IAB14-6,,
+Sports,,spo,IAB17,483,1434
+American Football,spo,spo.a,IAB17-12,484,
+Australian Rules Football,spo,spo.a1,,507,
+Auto Racing,spo,spo.a2,IAB17-1,518,
+Motorcycle Sports,spo.a2,spo.a2.m,,519,
+Badminton,spo,spo.b,,534,
+Baseball,spo,spo.b1,IAB17-2,545,
+Basketball,spo,spo.b2,,547,
+Beach Volleyball,spo,spo.b3,,548,
+Bodybuilding,spo,spo.b5,IAB17-4,549,
+Bowling,spo,spo.b6,,550,
+Boxing,spo,spo.b7,IAB17-5,485,
+Cheerleading,spo,spo.c1,IAB17-7,486,
+College Sports,spo,spo.c2,,487,
+College Baseball,spo.c2,spo.c2.c,,490,
+College Basketball,spo.c2,spo.c2.c1,,489,
+College Football,spo.c2,spo.c2.c2,,488,
+Cricket,spo,spo.c3,IAB17-9,491,
+Cycling,spo,spo.c4,IAB17-3,492,
+Darts,spo,spo.d,,493,
+Disabled Sports,spo,spo.d1,,494,
+Diving,spo,spo.d2,,495,
+Equine Sports,spo,spo.e,,496,
+Extreme Sports,spo,spo.e1,,498,
+Canoeing and Kayaking,spo.e1,spo.e1.c,IAB17-6,499,
+Climbing,spo.e1,spo.e1.c1,IAB17-8,500,
+Paintball,spo.e1,spo.e1.p,IAB17-24,501,
+Scuba Diving,spo.e1,spo.e1.s,IAB17-33,502,
+Skateboarding,spo.e1,spo.e1.s1,IAB17-34,503,
+Snowboarding,spo.e1,spo.e1.s2,IAB17-36,504,
+Surfing and Bodyboarding,spo.e1,spo.e1.s3,IAB17-37,505,
+Waterskiing and Wakeboarding,spo.e1,spo.e1.w,IAB17-43,506,
+Fantasy Sports,spo,spo.f,,508,1435
+Field Hockey,spo,spo.f1,,509,
+Figure Skating,spo,spo.f2,IAB17-10,510,
+Fishing Sports,spo,spo.f3,,511,
+Fly Fishing,spo,spo.f4,IAB17-11,,
+Freshwater Fishing,spo,spo.f6,IAB17-13,,
+Game & Fish,spo,spo.g,IAB17-14,,
+Golf,spo,spo.g1,IAB17-15,512,
+Gymnastics,spo,spo.g2,,513,
+Horse Racing,spo,spo.h,IAB17-16,497,
+Horses,spo,spo.h1,IAB17-17,,
+Hunting and Shooting,spo,spo.h2,IAB17-18,514,
+Ice Hockey,spo,spo.i,,515,
+Inline Skating,spo,spo.i1,IAB17-19,516,
+Lacrosse,spo,spo.l,,517,
+Martial Arts,spo,spo.m,IAB17-20,520,
+Mountain Biking,spo,spo.m1,IAB17-21,,
+NASCAR Racing,spo,spo.n,IAB17-22,,
+Olympic Sports,spo,spo.o,IAB17-23,521,
+Summer Olympic Sports,spo.o,spo.o.s,,522,
+Winter Olympic Sports,spo.o,spo.o.w,,523,
+Power & Motorcycles,spo,spo.p,IAB17-25,,
+Pro Basketball,spo,spo.p1,IAB17-26,,
+Pro Ice Hockey,spo,spo.p2,IAB17-27,,
+Rodeo,spo,spo.r,IAB17-28,525,
+Rowing,spo,spo.r1,,526,
+Rugby,spo,spo.r2,IAB17-29,527,
+Rugby League,spo.r2,spo.r2.r,,528,
+Rugby Union,spo.r2,spo.r2.r1,,529,
+Sailing,spo,spo.s,IAB17-31,530,
+Saltwater Fishing,spo,spo.s1,IAB17-32,,
+Skiing,spo,spo.s2,IAB17-35,531,
+Snooker/Pool/Billiards,spo,spo.s3,,532,
+Soccer,spo,spo.s4,IAB17-44,533,
+Softball,spo,spo.s5,,535,
+Sporting Goods,spo,spo.s6,,,1524
+Athletics Equipment,spo.s6,spo.s6.a,,,1525
+Exercise and Fitness Equipment,spo.s6,spo.s6.e,,,1526
+Indoor Games Equipment,spo.s6,spo.s6.i,,,1527
+Outdoor Recreation Equipment,spo.s6,spo.s6.o,,,1528
+Sports Equipment,spo,spo.s7,,551,
+Squash,spo,spo.s8,,536,
+Swimming,spo,spo.s10,IAB17-38,537,
+Table Tennis,spo,spo.t,IAB17-39,538,
+Tennis,spo,spo.t2,IAB17-40,539,
+Track and Field,spo,spo.t3,,540,
+Volleyball,spo,spo.v,IAB17-41,541,
+Walking,spo,spo.w,IAB17-42,542,
+Water Polo,spo,spo.w1,,543,
+Weightlifting,spo,spo.w3,,544,
+Wrestling,spo,spo.w5,,546,
+Technology and Communications,,tec,IAB19,596,
+Animation,tec,tec.a,IAB19-2,,
+Artificial Intelligence,tec,tec.a1,,597,
+AI Chat & Assistants,tec.a1,tec.a1.a,,,
+AI Image Generation,tec.a1,tec.a1.a1,,,
+AI Video Generation,tec.a1,tec.a1.a2,,,
+AI Writing Tools,tec.a1,tec.a1.a3,,,
+AI Coding Assistants,tec.a1,tec.a1.a4,,,
+Augmented Reality,tec,tec.a2,,598,
+C/C++,tec,tec.c,IAB19-4,,
+Cell Phones,tec,tec.c1,IAB19-6,,
+Communication,tec,tec.c2,,80DV8O,
+Travel eSIM,tec.c2,tec.c2.t,,,
+International Mobile Data Plans,tec.c2,tec.c2.i,,,
+Computer Certification,tec,tec.c3,IAB19-7,,
+Computer Reviews,tec,tec.c4,IAB19-10,,
+Computing,tec,tec.c5,,599,
+Computer Networking,tec.c5,tec.c5.c,IAB19-8,600,
+Computer Peripherals,tec.c5,tec.c5.c1,IAB19-9,601,
+Computer Software and Applications,tec.c5,tec.c5.c2,,602,1082
+3-D Graphics,tec.c5.c2,tec.c5.c2.d,IAB19-1,603,
+Antivirus Software,tec.c5.c2,tec.c5.c2.a,IAB19-3,608,
+Browser Extensions,tec.c5.c2,tec.c5.c2.b,,,1083
+Browsers,tec.c5.c2,tec.c5.c2.b1,,609,
+Computer Animation,tec.c5.c2,tec.c5.c2.c,,610,
+Databases,tec.c5.c2,tec.c5.c2.d1,IAB19-12,611,
+Desktop Publishing,tec.c5.c2,tec.c5.c2.d2,IAB19-13,612,
+Digital Audio,tec.c5.c2,tec.c5.c2.d3,,613,
+Downloadable Utilities,tec.c5.c2,tec.c5.c2.d4,,,1084
+Enterprise Computer Software,tec.c5.c2,tec.c5.c2.e,,,1085
+Graphics Software,tec.c5.c2,tec.c5.c2.g,IAB19-16,614,
+Maps & Navigation,tec.c5.c2,tec.c5.c2.m,,WQC6HR,
+Operating Systems,tec.c5.c2,tec.c5.c2.o,,615,
+Personal Computer Software,tec.c5.c2,tec.c5.c2.p,,,1086
+Photo Editing Software,tec.c5.c2,tec.c5.c2.p1,,604,
+Productivity,tec.c5.c2,tec.c5.c2.p2,,W3CW2J,
+Shareware and Freeware,tec.c5.c2,tec.c5.c2.s,IAB19-30,605,
+Toolbars,tec.c5.c2,tec.c5.c2.t,,,1087
+Video Software,tec.c5.c2,tec.c5.c2.v,,606,
+Web Conferencing,tec.c5.c2,tec.c5.c2.w,IAB19-23,607,
+VPN Services,tec.c5.c2,tec.c5.c2.v1,,,
+Password Managers,tec.c5.c2,tec.c5.c2.p3,,,
+Device Cleanup Tools,tec.c5.c2,tec.c5.c2.d5,,,
+Data Storage and Warehousing,tec.c5,tec.c5.d,,616,
+Desktops,tec.c5,tec.c5.d1,,617,1108
+Information and Network Security,tec.c5,tec.c5.i,,618,
+Identity Theft Protection,tec.c5.i,tec.c5.i.i,,,
+Business Endpoint Security,tec.c5.i,tec.c5.i.b,,,
+Fraud Prevention Services,tec.c5.i,tec.c5.i.f,,,
+Internet,tec.c5,tec.c5.i1,,619,
+Cloud Computing,tec.c5.i1,tec.c5.i1.c,,620,
+Email,tec.c5.i1,tec.c5.i1.e,IAB19-15,623,
+Internet for Beginners,tec.c5.i1,tec.c5.i1.i,IAB19-24,624,
+Internet of Things,tec.c5.i1,tec.c5.i1.i1,,625,
+IT and Internet Support,tec.c5.i1,tec.c5.i1.i2,,626,
+Search,tec.c5.i1,tec.c5.i1.s,IAB19-35,627,
+Social Networking,tec.c5.i1,tec.c5.i1.s1,,628,
+Web Design and HTML,tec.c5.i1,tec.c5.i1.w,IAB19-34,629,
+Web Development,tec.c5.i1,tec.c5.i1.w1,,621,
+Web Hosting,tec.c5.i1,tec.c5.i1.w2,,622,
+Laptops,tec.c5,tec.c5.l,,630,1107
+Programming Languages,tec.c5,tec.c5.p,,631,
+Consumer Electronics,tec,tec.c6,,632,1097
+Arcade Equipment,tec.c6,tec.c6.a,,,1098
+Camcorders,tec.c6,tec.c6.c,,,1099
+Cameras and Camcorders,tec.c6,tec.c6.c1,IAB19-5,633,
+Cameras and Photo,tec.c6,tec.c6.c2,,,1100
+Camera and Photo Accessories,tec.c6.c2,tec.c6.c2.c,,,1101
+Cameras,tec.c6.c2,tec.c6.c2.c1,,,1102
+Photo Applications,tec.c6.c2,tec.c6.c2.p,,,1103
+Circuit Boards and Components,tec.c6,tec.c6.c3,,,1104
+Communications Electronics,tec.c6,tec.c6.c4,,,1105
+Computers,tec.c6,tec.c6.c5,,,1106
+E-Readers,tec.c6,tec.c6.e,,,1109
+Electronics Accessories,tec.c6,tec.c6.e1,,,1110
+Headphones,tec.c6,tec.c6.h,,,1111
+Home Entertainment Systems,tec.c6,tec.c6.h1,,634,
+Home Theater Systems,tec.c6,tec.c6.h2,,,1112
+Marine Electronics,tec.c6,tec.c6.m,,,1113
+Mobile Phones and Accessories,tec.c6,tec.c6.m1,,,1114
+Networking,tec.c6,tec.c6.n,,,1115
+Printers/Copiers/Scanners/Fax,tec.c6,tec.c6.p,,,1116
+Security Devices,tec.c6,tec.c6.s,,,1117
+Smartphones,tec.c6,tec.c6.s1,,635,
+Tablets,tec.c6,tec.c6.t,,,1118
+Tablets and E-readers,tec.c6,tec.c6.t1,,636,
+Televisions,tec.c6,tec.c6.t2,,,1119
+Wearable Technology,tec.c6,tec.c6.w,,637,
+Data Centers,tec,tec.d,IAB19-11,,
+Desktop Video,tec,tec.d1,IAB19-14,,
+Electronics/Photography,tec,tec.e,,,1264
+Batteries,tec.e,tec.e.b,,,1265
+Blank Audio/Video Media,tec.e,tec.e.b1,,,1266
+Photography Supplies,tec.e,tec.e.p,,,1267
+Home Video/DVD,tec,tec.h,IAB19-17,,
+Internet Technology,tec,tec.i,IAB19-18,,
+Java,tec,tec.j,IAB19-19,,
+JavaScript,tec,tec.j1,IAB19-20,,
+Mac Support,tec,tec.m,IAB19-21,,
+MP3/MIDI,tec,tec.m1,IAB19-22,,
+Network Security,tec,tec.n2,IAB19-25,,
+Palmtops/PDAs,tec,tec.p,IAB19-26,,
+PC Support,tec,tec.p1,IAB19-27,,
+Personal/Consumer Telcom,tec,tec.p2,,,1467
+Home Internet Services,tec.p2,tec.p2.h,,,1468
+Home Phone Services,tec.p2,tec.p2.h1,,,1469
+Home Television Services,tec.p2,tec.p2.h2,,,1470
+Mobile Phone Plans,tec.p2,tec.p2.m,,,1471
+Prepaid International Phone Services,tec.p2,tec.p2.p,,,1472
+Portable,tec,tec.p3,IAB19-28,,
+Robotics,tec,tec.r,,638,
+Unix,tec,tec.u,IAB19-31,,
+Virtual Reality,tec,tec.v,,639,
+Visual Basic,tec,tec.v1,IAB19-32,,
+Web Clip Art,tec,tec.w,IAB19-33,,
+Windows,tec,tec.w3,IAB19-36,,
+Cloud Storage,tec,tec.c7,,,
+Travel and Attractions,,tra,IAB20,653,1529
+Accommodations,tra,tra.a,,,1530
+Camping and Camp Grounds,tra.a,tra.a.c,,,1532
+Hotels and Resorts,tra.a,tra.a.h,,,1533
+Motels,tra.a,tra.a.m,,,1534
+Timeshares,tra.a,tra.a.t,,,1535
+Vacation Rentals,tra.a,tra.a.v,,,1536
+Attractions,tra,tra.a2,,150,
+Amusement and Theme Parks,tra.a2,tra.a2.a,,151,
+Bars & Restaurants,tra.a2,tra.a2.b,,179,
+Historic Site and Landmark Tours,tra.a2,tra.a2.h,,153,
+Malls & Shopping Centers,tra.a2,tra.a2.m,,154,
+Museums & Galleries,tra.a2,tra.a2.m1,,155,1009
+Nightclubs,tra.a2,tra.a2.n,,158,
+Outdoor Activities,tra.a2,tra.a2.o,,159,
+Parks & Nature,tra.a2,tra.a2.p,,160,
+Theater Venues,tra.a2,tra.a2.t,,177,
+Zoos & Aquariums,tra.a2,tra.a2.z,,178,
+Australia & New Zealand,tra,tra.a3,IAB20-4,,
+By US Locale,tra,tra.b,IAB20-8,,
+Canada,tra,tra.c,IAB20-10,,
+Caribbean,tra,tra.c1,IAB20-11,,
+Eastern Europe,tra,tra.e,IAB20-13,,
+France,tra,tra.f,IAB20-15,,
+Greece,tra,tra.g,IAB20-16,,
+Hotels,tra,tra.h1,IAB20-18,,
+Italy,tra,tra.i,IAB20-19,,
+Japan,tra,tra.j,IAB20-20,,
+Mexico & Central America,tra,tra.m,IAB20-21,,
+National Parks,tra,tra.n,IAB20-22,,
+Sightseeing Tours and Activities,tra,tra.s,,,1540
+Theme Parks,tra,tra.t,IAB20-25,,
+Travel Accessories,tra,tra.t1,,654,
+Travel Agents and Online Travel Services,tra,tra.t2,,,1541
+Travel Locations,tra,tra.t3,,655,
+Africa Travel,tra.t3,tra.t3.a,IAB20-2,656,
+Asia Travel,tra.t3,tra.t3.a1,,657,
+Australia and Oceania Travel,tra.t3,tra.t3.a2,,658,
+Europe Travel,tra.t3,tra.t3.e,IAB20-14,659,
+North America Travel,tra.t3,tra.t3.n,,660,
+Polar Travel,tra.t3,tra.t3.p,,661,
+South America Travel,tra.t3,tra.t3.s,IAB20-23,662,
+Travel Packages,tra,tra.t4,,,1542
+Travel Planning and Itinerary Management Applications,tra,tra.t5,,,1543
+Travel Preparation and Advice,tra,tra.t6,,663,
+Travel Type,tra,tra.t7,,664,
+Adventure Travel,tra.t7,tra.t7.a,IAB20-1,665,
+Air Travel,tra.t7,tra.t7.a1,IAB20-3,672,1537
+Beach Travel,tra.t7,tra.t7.b,,673,
+Bed & Breakfasts,tra.t7,tra.t7.b1,IAB20-5,674,1531
+Budget Travel,tra.t7,tra.t7.b2,IAB20-6,675,
+Business Travel,tra.t7,tra.t7.b3,IAB20-7,676,
+Camping,tra.t7,tra.t7.c,IAB20-9,677,
+Cruises,tra.t7,tra.t7.c1,IAB20-12,678,1538
+Day Trips,tra.t7,tra.t7.d,,679,
+Family Travel,tra.t7,tra.t7.f,,666,
+Honeymoons and Getaways,tra.t7,tra.t7.h,IAB20-17,667,
+Hotels and Motels,tra.t7,tra.t7.h1,,668,
+Rail Travel,tra.t7,tra.t7.r,,669,1539
+Road Trips,tra.t7,tra.t7.r1,,670,
+Spas,tra.t7,tra.t7.s,IAB20-24,671,
+Traveling with Kids,tra,tra.t8,IAB20-26,,
+United Kingdom,tra,tra.u,IAB20-27,,
+Uncategorized,,unc,IAB24,,
+Vehicles and Transportation,,veh,,,1551
+Automotive,veh,veh.a,IAB2,1,
+Auto Body Styles,veh.a,veh.a.a,,2,
+Commercial Trucks,veh.a.a,veh.a.a.c,,3,
+Convertible,veh.a.a,veh.a.a.c1,IAB2-6,8,
+Coupe,veh.a.a,veh.a.a.c2,IAB2-7,9,
+Crossover,veh.a.a,veh.a.a.c3,IAB2-8,10,
+Hatchback,veh.a.a,veh.a.a.h,IAB2-11,11,
+Microcar,veh.a.a,veh.a.a.m,,12,
+Minivan,veh.a.a,veh.a.a.m1,IAB2-14,13,
+Off-Road Vehicles,veh.a.a,veh.a.a.o,IAB2-16,14,
+Pickup Trucks,veh.a.a,veh.a.a.p,IAB2-18,15,
+Sedan,veh.a.a,veh.a.a.s,IAB2-20,4,
+Station Wagon,veh.a.a,veh.a.a.s1,IAB2-23,5,
+SUV,veh.a.a,veh.a.a.s2,,6,
+Van,veh.a.a,veh.a.a.v,,7,
+Auto Buying and Selling,veh.a,veh.a.a1,IAB2-3,30,
+Auto Parts,veh.a,veh.a.a3,IAB2-1,32,
+Auto Recalls,veh.a,veh.a.a4,,33,
+Auto Rentals,veh.a,veh.a.a5,,41,
+Auto Repair,veh.a,veh.a.a6,IAB2-2,34,1562
+Auto Safety,veh.a,veh.a.a7,,35,
+Auto Shows,veh.a,veh.a.a8,,36,
+Auto Technology,veh.a,veh.a.a9,,37,
+Auto Infotainment Technologies,veh.a.a9,veh.a.a9.a,,38,
+Auto Navigation Systems,veh.a.a9,veh.a.a9.a1,,39,
+Auto Safety Technologies,veh.a.a9,veh.a.a9.a2,,40,
+Auto Type,veh.a,veh.a.a10,,16,
+Budget Cars,veh.a.a10,veh.a.a10.b,,17,
+Certified Pre-Owned Cars,veh.a.a10,veh.a.a10.c,IAB2-5,18,
+Classic Cars,veh.a.a10,veh.a.a10.c1,IAB2-22,19,
+Concept Cars,veh.a.a10,veh.a.a10.c2,,20,
+Driverless Cars,veh.a.a10,veh.a.a10.d,,21,
+Green Vehicles,veh.a.a10,veh.a.a10.g,,22,
+Luxury Cars,veh.a.a10,veh.a.a10.l,IAB2-13,23,
+Performance Cars,veh.a.a10,veh.a.a10.p,,24,
+Car Culture,veh.a,veh.a.c,IAB2-4,25,
+Dash Cam Videos,veh.a,veh.a.d,,26,
+Diesel,veh.a,veh.a.d1,IAB2-9,,
+Electric Vehicle,veh.a,veh.a.e,IAB2-10,,
+Hybrid,veh.a,veh.a.h,IAB2-12,,
+Motorcycles,veh.a,veh.a.m1,IAB2-15,27,
+Performance Vehicles,veh.a,veh.a.p,IAB2-17,,
+Road-Side Assistance,veh.a,veh.a.r,IAB2-19,28,
+Scooters,veh.a,veh.a.s,,29,
+Trucks & Accessories,veh.a,veh.a.t,IAB2-21,,
+Automotive Leasing,veh,veh.a1,,,1552
+Automotive Ownership,veh,veh.a2,,,1553
+New vehicle Ownership,veh.a2,veh.a2.n,,,1554
+Pre-owned Automotive Ownership,veh.a2,veh.a2.p,,,1555
+Automotive Products,veh,veh.a3,,,1556
+Aftermarket Parts and Accessories,veh.a3,veh.a3.a,,,1559
+Automotive Care Products,veh.a3,veh.a3.a1,,,1557
+Automotive Parts and Accessories,veh.a3,veh.a3.a2,,,1558
+Automotive Sales Applications,veh,veh.a4,,,1564
+Automotive Services,veh,veh.a5,,,1560
+Auto Towing,veh.a5,veh.a5.a,,,1561
+Car Wash,veh.a5,veh.a5.c,,,1563
+Ride-sharing Services,veh,veh.r,,,1565
+Taxi Services,veh,veh.t,,,1566
+Vehicle Rental,veh,veh.v,,,1567
+Vehicle Type,veh,veh.v1,,,1568
+Boats,veh.v1,veh.v1.b,,,1569
+Diesel Vehicles,veh.v1,veh.v1.d,,,1570
+Electric Vehicles,veh.v1,veh.v1.e,,,1571
+Gas Vehicles,veh.v1,veh.v1.g,,,1572
+Hybrid Vehicles,veh.v1,veh.v1.h,,,1573
+Recreational Vehicles,veh.v1,veh.v1.r,,,1574
+"Scooters, Motorbikes, and E-bikes",veh.v1,veh.v1.s,,,1575
+Video Gaming,,vid,IAB9-30,680,1120
+Console Games,vid,vid.c,,681,
+Core Gaming,vid,vid.c1,,,1425
+Core Gaming Apps,vid.c1,vid.c1.a,,,1426
+eSports,vid,vid.e,,682,
+Mobile Games,vid,vid.m,,683,
+PC Games,vid,vid.p,,684,
+Video Game Genres,vid,vid.v,,685,
+Action Video Games,vid.v,vid.v.a,,686,
+Action-Adventure Video Games,vid.v,vid.v.a1,,691,
+Adult Video Games,vid.v,vid.v.a2,,MQ2XML,
+Adventure Video Games,vid.v,vid.v.a3,,692,
+Casino and Gambling Video Games,vid.v,vid.v.c,,ZJG29S,
+Social Casino Games,vid.v.c,vid.v.c.s,,,
+Casual Games,vid.v,vid.v.c1,,693,1423
+Casual Games Apps,vid.v.c1,vid.v.c1.a,,,1424
+Educational Video Games,vid.v,vid.v.e,,694,
+Exercise and Fitness Video Games,vid.v,vid.v.e1,,695,
+Family Video Games,vid.v,vid.v.f,,VWGKS7,
+Horror Video Games,vid.v,vid.v.h,,II436J,
+MMOs,vid.v,vid.v.m,,696,
+Music and Party Video Games,vid.v,vid.v.m1,,697,
+Puzzle Video Games,vid.v,vid.v.p,,698,
+Racing Video Games,vid.v,vid.v.r,,VK7KD0,
+Role-Playing Video Games,vid.v,vid.v.r1,,687,
+Simulation Video Games,vid.v,vid.v.s,,688,
+Sports Video Games,vid.v,vid.v.s1,,689,
+Strategy Video Games,vid.v,vid.v.s2,,690,
+Video Games and Consoles,vid,vid.v1,,,1121
+Video Game Console Accessories,vid.v1,vid.v1.a,,,1122

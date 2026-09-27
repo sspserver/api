@@ -270,6 +270,8 @@ type ComplexityRoot struct {
 
 	Category struct {
 		Active      func(childComplexity int) int
+		C3_1Code    func(childComplexity int) int
+		Cattax      func(childComplexity int) int
 		Childrens   func(childComplexity int) int
 		CreatedAt   func(childComplexity int) int
 		DeletedAt   func(childComplexity int) int
@@ -281,6 +283,7 @@ type ComplexityRoot struct {
 		Parent      func(childComplexity int) int
 		ParentID    func(childComplexity int) int
 		Position    func(childComplexity int) int
+		R0Code      func(childComplexity int) int
 		UpdatedAt   func(childComplexity int) int
 	}
 
@@ -2139,6 +2142,18 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Category.Active(childComplexity), true
+	case "Category.C3_1Code":
+		if e.ComplexityRoot.Category.C3_1Code == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Category.C3_1Code(childComplexity), true
+	case "Category.Cattax":
+		if e.ComplexityRoot.Category.Cattax == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Category.Cattax(childComplexity), true
 	case "Category.childrens":
 		if e.ComplexityRoot.Category.Childrens == nil {
 			break
@@ -2205,6 +2220,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Category.Position(childComplexity), true
+	case "Category.R0Code":
+		if e.ComplexityRoot.Category.R0Code == nil {
+			break
+		}
+
+		return e.ComplexityRoot.Category.R0Code(childComplexity), true
 	case "Category.updatedAt":
 		if e.ComplexityRoot.Category.UpdatedAt == nil {
 			break
@@ -9005,7 +9026,22 @@ type Category {
   """
   IAB category code of OpenRTB
   """
-  IABCode: String!
+  IABCode: String
+
+  """
+  Hierarchy code. Unique key of the category tree.
+  """
+  R0Code: String!
+
+  """
+  IAB Content Taxonomy 3.1 code
+  """
+  C3_1Code: String
+
+  """
+  Ad Product Taxonomy 2.0 identifier
+  """
+  Cattax: String
 
   """
   Keywords used to match this category
@@ -9095,6 +9131,9 @@ input CategoryListFilter {
   ID: [ID64!]
   name: [String!]
   IABCode: [String!]
+  R0Code: [String!]
+  C3_1Code: [String!]
+  Cattax: [String!]
   parentID: [ID64!]
   active: [ActiveStatus!]
 }
@@ -9103,6 +9142,9 @@ input CategoryListOrder {
   ID: Ordering
   name: Ordering
   IABCode: Ordering
+  R0Code: Ordering
+  C3_1Code: Ordering
+  Cattax: Ordering
   parentID: Ordering
   position: Ordering
   active: Ordering
@@ -9128,6 +9170,21 @@ input CategoryInput {
   IAB category code of OpenRTB
   """
   IABCode: String
+
+  """
+  Hierarchy code. Unique key of the category tree.
+  """
+  R0Code: String
+
+  """
+  IAB Content Taxonomy 3.1 code
+  """
+  C3_1Code: String
+
+  """
+  Ad Product Taxonomy 2.0 identifier
+  """
+  Cattax: String
 
   """
   Keywords used to match this category
@@ -11894,6 +11951,12 @@ func (ec *executionContext) childFields_Category(ctx context.Context, field grap
 		return ec.fieldContext_Category_description(ctx, field)
 	case "IABCode":
 		return ec.fieldContext_Category_IABCode(ctx, field)
+	case "R0Code":
+		return ec.fieldContext_Category_R0Code(ctx, field)
+	case "C3_1Code":
+		return ec.fieldContext_Category_C3_1Code(ctx, field)
+	case "Cattax":
+		return ec.fieldContext_Category_Cattax(ctx, field)
 	case "keywords":
 		return ec.fieldContext_Category_keywords(ctx, field)
 	case "parentID":
@@ -20119,6 +20182,31 @@ func (ec *executionContext) _Category_IABCode(ctx context.Context, field graphql
 		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
 			return ec._fieldMiddleware(ctx, obj, next)
 		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Category_IABCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Category_R0Code(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Category_R0Code(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.R0Code, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v string) graphql.Marshaler {
 			return ec.marshalNString2string(ctx, selections, v)
 		},
@@ -20126,7 +20214,57 @@ func (ec *executionContext) _Category_IABCode(ctx context.Context, field graphql
 		true,
 	)
 }
-func (ec *executionContext) fieldContext_Category_IABCode(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Category_R0Code(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Category_C3_1Code(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Category_C3_1Code(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.C3_1Code, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Category_C3_1Code(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
+}
+
+func (ec *executionContext) _Category_Cattax(ctx context.Context, field graphql.CollectedField, obj *models.Category) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return ec.fieldContext_Category_Cattax(ctx, field)
+		},
+		func(ctx context.Context) (any, error) {
+			return obj.Cattax, nil
+		},
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			return ec._fieldMiddleware(ctx, obj, next)
+		},
+		func(ctx context.Context, selections ast.SelectionSet, v *string) graphql.Marshaler {
+			return ec.marshalOString2ᚖstring(ctx, selections, v)
+		},
+		true,
+		false,
+	)
+}
+func (ec *executionContext) fieldContext_Category_Cattax(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	return graphql.NewScalarFieldContext("Category", field, false, false, errors.New("field of type String does not have child fields"))
 }
 
@@ -43178,7 +43316,7 @@ func (ec *executionContext) unmarshalInputCategoryInput(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "description", "IABCode", "keywords", "parentID", "position", "active"}
+	fieldsInOrder := [...]string{"name", "description", "IABCode", "R0Code", "C3_1Code", "Cattax", "keywords", "parentID", "position", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -43206,6 +43344,27 @@ func (ec *executionContext) unmarshalInputCategoryInput(ctx context.Context, obj
 				return it, err
 			}
 			it.IABCode = data
+		case "R0Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("R0Code"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.R0Code = data
+		case "C3_1Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("C3_1Code"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.C3_1Code = data
+		case "Cattax":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("Cattax"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cattax = data
 		case "keywords":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keywords"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
@@ -43250,7 +43409,7 @@ func (ec *executionContext) unmarshalInputCategoryListFilter(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "IABCode", "parentID", "active"}
+	fieldsInOrder := [...]string{"ID", "name", "IABCode", "R0Code", "C3_1Code", "Cattax", "parentID", "active"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -43278,6 +43437,27 @@ func (ec *executionContext) unmarshalInputCategoryListFilter(ctx context.Context
 				return it, err
 			}
 			it.IABCode = data
+		case "R0Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("R0Code"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.R0Code = data
+		case "C3_1Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("C3_1Code"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.C3_1Code = data
+		case "Cattax":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("Cattax"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cattax = data
 		case "parentID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
 			data, err := ec.unmarshalOID642ᚕuint64ᚄ(ctx, v)
@@ -43308,7 +43488,7 @@ func (ec *executionContext) unmarshalInputCategoryListOrder(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"ID", "name", "IABCode", "parentID", "position", "active", "createdAt", "updatedAt"}
+	fieldsInOrder := [...]string{"ID", "name", "IABCode", "R0Code", "C3_1Code", "Cattax", "parentID", "position", "active", "createdAt", "updatedAt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -43336,6 +43516,27 @@ func (ec *executionContext) unmarshalInputCategoryListOrder(ctx context.Context,
 				return it, err
 			}
 			it.IABCode = data
+		case "R0Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("R0Code"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.R0Code = data
+		case "C3_1Code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("C3_1Code"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.C3_1Code = data
+		case "Cattax":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("Cattax"))
+			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cattax = data
 		case "parentID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("parentID"))
 			data, err := ec.unmarshalOOrdering2ᚖgithubᚗcomᚋgeniusrabbitᚋblazeᚑapiᚋserverᚋgraphqlᚋmodelsᚐOrdering(ctx, v)
@@ -50594,7 +50795,22 @@ func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "IABCode":
 			out.Values[i] = ec._Category_IABCode(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "R0Code":
+			out.Values[i] = ec._Category_R0Code(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "C3_1Code":
+			out.Values[i] = ec._Category_C3_1Code(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "Cattax":
+			out.Values[i] = ec._Category_Cattax(ctx, field, obj)
+			if out.Values[i] == graphql.RequiredNull {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "keywords":
