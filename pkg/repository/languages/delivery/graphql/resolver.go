@@ -5,8 +5,8 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/demdxx/langlib"
 	"github.com/demdxx/xtypes"
-	"github.com/geniusrabbit/adcorelib/i18n/languages"
 	gqlmodels "github.com/sspserver/api/pkg/server/graphql/models"
 )
 
@@ -18,11 +18,11 @@ func NewQueryResolver() *QueryResolver {
 }
 
 func (r *QueryResolver) Languages(ctx context.Context, filter *gqlmodels.LangListFilter) ([]*gqlmodels.Lang, error) {
-	list := languages.Languages
+	list := langlib.Languages
 
 	if filter != nil {
-		list = xtypes.Slice[languages.Language](languages.Languages).
-			Filter(func(lang languages.Language) bool {
+		list = xtypes.Slice[langlib.Language](langlib.Languages).
+			Filter(func(lang langlib.Language) bool {
 				if slices.Contains(filter.ID, uint64(lang.ID)) {
 					return true
 				}
@@ -43,7 +43,7 @@ func (r *QueryResolver) Languages(ctx context.Context, filter *gqlmodels.LangLis
 			})
 	}
 
-	return xtypes.SliceApply(list, func(lang languages.Language) *gqlmodels.Lang {
+	return xtypes.SliceApply(list, func(lang langlib.Language) *gqlmodels.Lang {
 		return &gqlmodels.Lang{
 			ID:         uint64(lang.ID),
 			Iso2:       string(lang.Code[:]),
