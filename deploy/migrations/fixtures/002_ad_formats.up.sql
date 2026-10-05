@@ -51,7 +51,7 @@ VALUES
               "min_width": 150,
               "min_height": 150,
               "animated": false,
-              "allowed_types": ["image/jpeg", "image/png"]
+              "allowed_types": ["image/jpeg", "image/png", "image/webp"]
             },
             {
               "id": 3,
@@ -63,7 +63,7 @@ VALUES
               "min_height": 50,
               "animated": false,
               "sound": false,
-              "allowed_types": ["image/jpeg", "image/png"]
+              "allowed_types": ["image/jpeg", "image/png", "image/webp"]
             }
           ],
           "fields": [
@@ -121,7 +121,7 @@ VALUES
               "animated": false,
               "sound": false,
               "thumbs": ["250x", "350x", "500x"],
-              "allowed_types": ["image/jpeg", "image/png", "video/mp4", "video/webm"]
+              "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
             },
             {
               "id": 2,
@@ -133,7 +133,7 @@ VALUES
               "min_height": 50,
               "animated": false,
               "sound": false,
-              "allowed_types": ["image/jpeg", "image/png"]
+              "allowed_types": ["image/jpeg", "image/png", "image/webp"]
             }
           ],
           "fields": [
@@ -173,7 +173,8 @@ VALUES
               "required": false,
               "title": "Phone",
               "name": "phone",
-              "type": "phone"
+              "type": "phone",
+              "multilang": true
             },
             {
               "id": 105,
@@ -181,7 +182,8 @@ VALUES
               "title": "Promotion URL",
               "description": "Click-through landing page URL",
               "name": "url",
-              "type": "url"
+              "type": "url",
+              "editable": false
             }
           ]
         }
@@ -192,6 +194,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -210,6 +213,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -228,6 +232,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -246,6 +251,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -264,6 +270,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -282,6 +289,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -300,6 +308,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -318,6 +327,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -336,6 +346,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -354,6 +365,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -372,6 +384,7 @@ VALUES
           {
             "id": 1,
             "name": "main",
+            "required": false,
             "allowed_types": ["text/html"]
           }
         ],
@@ -395,7 +408,7 @@ VALUES
             "adjust_size": true,
             "width": 250,
             "height": 250,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -408,7 +421,7 @@ VALUES
             "adjust_size": true,
             "width": 200,
             "height": 200,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -421,7 +434,7 @@ VALUES
             "adjust_size": true,
             "width": 468,
             "height": 60,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -434,7 +447,7 @@ VALUES
             "adjust_size": true,
             "width": 728,
             "height": 90,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -447,7 +460,7 @@ VALUES
             "adjust_size": true,
             "width": 300,
             "height": 250,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -460,7 +473,7 @@ VALUES
             "adjust_size": true,
             "width": 336,
             "height": 280,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -473,7 +486,7 @@ VALUES
             "adjust_size": true,
             "width": 120,
             "height": 600,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -486,7 +499,7 @@ VALUES
             "adjust_size": true,
             "width": 160,
             "height": 600,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -499,7 +512,7 @@ VALUES
             "adjust_size": true,
             "width": 300,
             "height": 600,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -512,7 +525,7 @@ VALUES
             "adjust_size": true,
             "width": 970,
             "height": 90,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb),
@@ -525,7 +538,7 @@ VALUES
             "adjust_size": true,
             "width": 320,
             "height": 50,
-            "allowed_types": ["image/jpeg", "image/png"]
+            "allowed_types": ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm"]
           }
         ]
       }$json$::jsonb)
