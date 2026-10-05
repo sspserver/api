@@ -1,11 +1,11 @@
 BEGIN;
 
 INSERT INTO adv_format
-    (id, codename, type, title, active, width, height, min_width, min_height, config)
+    (id, codename, type, title, description, active, width, height, min_width, min_height, config)
 VALUES
-    (1, 'direct', 'direct', 'Direct', 'active', NULL, NULL, NULL, NULL, '{}'::jsonb),
+    (1, 'direct', 'direct', 'Direct', 'Direct placement with no creative template (Popunder, Direct, Tab-click, etc.)', 'active', NULL, NULL, NULL, NULL, '{}'::jsonb),
 
-    (2, 'proxy', 'proxy', 'Proxy Stretch', 'active', 0, 0, 10, 10, $json${
+    (2, 'proxy', 'proxy', 'Proxy Stretch', 'Stretchable HTML creative that fills the placement. Minimum size 10×10.', 'active', 0, 0, 10, 10, $json${
         "assets": [
           {
             "id": 1,
@@ -24,7 +24,7 @@ VALUES
         ]
       }$json$::jsonb),
 
-    (3, 'video', 'video', 'Video', 'active', NULL, NULL, NULL, NULL,
+    (3, 'video', 'video', 'Video', 'Video creative with optional preview image, logo, and title.', 'active', NULL, NULL, NULL, NULL,
         $json$
         {
           "assets": [
@@ -105,7 +105,7 @@ VALUES
         }
         $json$::jsonb),
 
-    (4, 'native', 'native', 'Native', 'active', NULL, NULL, NULL, NULL,
+    (4, 'native', 'native', 'Native', 'Native ad with image or video, title, body text, and optional brand, phone, and landing URL.', 'active', NULL, NULL, NULL, NULL,
         $json$
         {
           "assets": [
@@ -189,7 +189,7 @@ VALUES
         }
         $json$::jsonb),
 
-    (5, 'proxy_250x250', 'proxy', 'Proxy (Square)', 'active', 250, 250, NULL, NULL, $json${
+    (5, 'proxy_250x250', 'proxy', 'Proxy (Square)', 'Fixed-size HTML creative, 250×250 (Square).', 'active', 250, 250, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -208,7 +208,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (6, 'proxy_200x200', 'proxy', 'Proxy (Small Square)', 'active', 200, 200, NULL, NULL, $json${
+    (6, 'proxy_200x200', 'proxy', 'Proxy (Small Square)', 'Fixed-size HTML creative, 200×200 (Small Square).', 'active', 200, 200, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -227,7 +227,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (7, 'proxy_468x60', 'proxy', 'Proxy (Banner)', 'active', 468, 60, NULL, NULL, $json${
+    (7, 'proxy_468x60', 'proxy', 'Proxy (Banner)', 'Fixed-size HTML creative, 468×60 (Banner).', 'active', 468, 60, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -246,7 +246,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (8, 'proxy_728x90', 'proxy', 'Proxy (Leaderboard)', 'active', 728, 90, NULL, NULL, $json${
+    (8, 'proxy_728x90', 'proxy', 'Proxy (Leaderboard)', 'Fixed-size HTML creative, 728×90 (Leaderboard).', 'active', 728, 90, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -265,7 +265,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (9, 'proxy_300x250', 'proxy', 'Proxy (Inline Rectangle)', 'active', 300, 250, NULL, NULL, $json${
+    (9, 'proxy_300x250', 'proxy', 'Proxy (Inline Rectangle)', 'Fixed-size HTML creative, 300×250 (Inline Rectangle).', 'active', 300, 250, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -284,7 +284,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (10, 'proxy_336x280', 'proxy', 'Proxy (Large Rectangle)', 'active', 336, 280, NULL, NULL, $json${
+    (10, 'proxy_336x280', 'proxy', 'Proxy (Large Rectangle)', 'Fixed-size HTML creative, 336×280 (Large Rectangle).', 'active', 336, 280, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -303,7 +303,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (11, 'proxy_120x600', 'proxy', 'Proxy (Skyscraper)', 'active', 120, 600, NULL, NULL, $json${
+    (11, 'proxy_120x600', 'proxy', 'Proxy (Skyscraper)', 'Fixed-size HTML creative, 120×600 (Skyscraper).', 'active', 120, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -322,7 +322,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (12, 'proxy_160x600', 'proxy', 'Proxy (Wide Skyscraper)', 'active', 160, 600, NULL, NULL, $json${
+    (12, 'proxy_160x600', 'proxy', 'Proxy (Wide Skyscraper)', 'Fixed-size HTML creative, 160×600 (Wide Skyscraper).', 'active', 160, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -341,7 +341,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (13, 'proxy_300x600', 'proxy', 'Proxy (Half-Page Ad)', 'active', 300, 600, NULL, NULL, $json${
+    (13, 'proxy_300x600', 'proxy', 'Proxy (Half-Page Ad)', 'Fixed-size HTML creative, 300×600 (Half-Page Ad).', 'active', 300, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -360,7 +360,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (14, 'proxy_970x90', 'proxy', 'Proxy (Large Leaderboard)', 'active', 970, 90, NULL, NULL, $json${
+    (14, 'proxy_970x90', 'proxy', 'Proxy (Large Leaderboard)', 'Fixed-size HTML creative, 970×90 (Large Leaderboard).', 'active', 970, 90, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -379,7 +379,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (15, 'proxy_320x50', 'proxy', 'Proxy (Mobile Leaderboard)', 'active', 320, 50, NULL, NULL, $json${
+    (15, 'proxy_320x50', 'proxy', 'Proxy (Mobile Leaderboard)', 'Fixed-size HTML creative, 320×50 (Mobile Leaderboard).', 'active', 320, 50, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -399,7 +399,7 @@ VALUES
         ]
       }$json$::jsonb),
 
-    (16, 'banner_250x250', 'banner', 'Square', 'active', 250, 250, NULL, NULL, $json${
+    (16, 'banner_250x250', 'banner', 'Square', 'Image or video creative, 250×250 (Square).', 'active', 250, 250, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -412,7 +412,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (17, 'banner_200x200', 'banner', 'Small Square', 'active', 200, 200, NULL, NULL, $json${
+    (17, 'banner_200x200', 'banner', 'Small Square', 'Image or video creative, 200×200 (Small Square).', 'active', 200, 200, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -425,7 +425,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (18, 'banner_468x60', 'banner', 'Banner', 'active', 468, 60, NULL, NULL, $json${
+    (18, 'banner_468x60', 'banner', 'Banner', 'Image or video creative, 468×60 (Banner).', 'active', 468, 60, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -438,7 +438,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (19, 'banner_728x90', 'banner', 'Leaderboard', 'active', 728, 90, NULL, NULL, $json${
+    (19, 'banner_728x90', 'banner', 'Leaderboard', 'Image or video creative, 728×90 (Leaderboard).', 'active', 728, 90, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -451,7 +451,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (20, 'banner_300x250', 'banner', 'Inline Rectangle', 'active', 300, 250, NULL, NULL, $json${
+    (20, 'banner_300x250', 'banner', 'Inline Rectangle', 'Image or video creative, 300×250 (Inline Rectangle).', 'active', 300, 250, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -464,7 +464,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (21, 'banner_336x280', 'banner', 'Large Rectangle', 'active', 336, 280, NULL, NULL, $json${
+    (21, 'banner_336x280', 'banner', 'Large Rectangle', 'Image or video creative, 336×280 (Large Rectangle).', 'active', 336, 280, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -477,7 +477,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (22, 'banner_120x600', 'banner', 'Skyscraper', 'active', 120, 600, NULL, NULL, $json${
+    (22, 'banner_120x600', 'banner', 'Skyscraper', 'Image or video creative, 120×600 (Skyscraper).', 'active', 120, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -490,7 +490,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (23, 'banner_160x600', 'banner', 'Wide Skyscraper', 'active', 160, 600, NULL, NULL, $json${
+    (23, 'banner_160x600', 'banner', 'Wide Skyscraper', 'Image or video creative, 160×600 (Wide Skyscraper).', 'active', 160, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -503,7 +503,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (24, 'banner_300x600', 'banner', 'Half-Page Ad', 'active', 300, 600, NULL, NULL, $json${
+    (24, 'banner_300x600', 'banner', 'Half-Page Ad', 'Image or video creative, 300×600 (Half-Page Ad).', 'active', 300, 600, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -516,7 +516,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (25, 'banner_970x90', 'banner', 'Large Leaderboard', 'active', 970, 90, NULL, NULL, $json${
+    (25, 'banner_970x90', 'banner', 'Large Leaderboard', 'Image or video creative, 970×90 (Large Leaderboard).', 'active', 970, 90, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -529,7 +529,7 @@ VALUES
           }
         ]
       }$json$::jsonb),
-    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'active', 320, 50, NULL, NULL, $json${
+    (26, 'banner_320x50', 'banner', 'Mobile Leaderboard', 'Image or video creative, 320×50 (Mobile Leaderboard).', 'active', 320, 50, NULL, NULL, $json${
         "assets": [
           {
             "id": 1,
@@ -546,6 +546,7 @@ ON CONFLICT (codename) DO UPDATE
 SET
     type = EXCLUDED.type,
     title = EXCLUDED.title,
+    description = EXCLUDED.description,
     active = EXCLUDED.active,
     width = EXCLUDED.width,
     height = EXCLUDED.height,
