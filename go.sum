@@ -155,6 +155,8 @@ github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619 h1:FMrmWXT4
 github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619/go.mod h1:P3wHt5lncyhP13kKpLa3GqTDZg584r7D+e9zGdzy98Y=
 github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd h1:LJuLtudW4pqwzJPtAORAWtcT/eMKo0wmRyfwgInMtz4=
 github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
+github.com/geniusrabbit/blaze-api v0.5.2-0.20261006093411-04ecd1d50468 h1:F6FaK3CwZJh4V9Yj7oO3GqNTIgKCT188KGpwK1FvukU=
+github.com/geniusrabbit/blaze-api v0.5.2-0.20261006093411-04ecd1d50468/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
 github.com/geniusrabbit/gogeo v1.1.1 h1:8R/jiIVIlEGQCI5/cvv6tOXFrNlN4n4SILhdqY/vrp4=
 github.com/geniusrabbit/gogeo v1.1.1/go.mod h1:SO7efiKnlpC/PxX5OfxM5PFTCbypoA0UhFBPbjR8dc4=
 github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243 h1:Zekf3uImIg61JR2szZJau/9jZYBfRKnBHTXibONR7f8=

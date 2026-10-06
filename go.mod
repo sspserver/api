@@ -12,7 +12,7 @@ require (
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
 	github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619
-	github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd
+	github.com/geniusrabbit/blaze-api v0.5.2-0.20261006093411-04ecd1d50468
 	github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243
 	github.com/geniusrabbit/gosql/v2 v2.3.2
 	github.com/geniusrabbit/udetect v0.0.0-20261003082446-9c8bfb7c4862
