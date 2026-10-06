@@ -23,5 +23,6 @@ go.work.sum
 
 .build
 .tmp
+.vscode
 *.DS_Store
 .idea
