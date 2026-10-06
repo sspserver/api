@@ -11476,7 +11476,7 @@ extend input UserListOrder {
 }
 
 enum AuctionType {
-  UNDEFINED
+  AUTO
   FIRST_PRICE
   SECOND_PRICE
 }

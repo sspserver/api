@@ -151,10 +151,8 @@ github.com/fsnotify/fsnotify v1.10.1 h1:b0/UzAf9yR5rhf3RPm9gf3ehBPpf0oZKIjtpKrx5
 github.com/fsnotify/fsnotify v1.10.1/go.mod h1:TLheqan6HD6GBK6PrDWyDPBaEV8LspOxvPSjC+bVfgo=
 github.com/gabriel-vasile/mimetype v1.4.15 h1:05iP/CYtZ/w455R/KZM6rZ5ieAdh99UPtd+d3YzLmaI=
 github.com/gabriel-vasile/mimetype v1.4.15/go.mod h1:azpTcoLcDZRNgFou5j+APrqQx9HqVPWa6ijYQIIVswQ=
-github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619 h1:FMrmWXT4SCycdhZXtLifRxSpEfnrL9KMchFRbVPI6n8=
-github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619/go.mod h1:P3wHt5lncyhP13kKpLa3GqTDZg584r7D+e9zGdzy98Y=
-github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd h1:LJuLtudW4pqwzJPtAORAWtcT/eMKo0wmRyfwgInMtz4=
-github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
+github.com/geniusrabbit/adcorelib v0.0.0-20261006182247-3c71ba9bcb40 h1:6Zlr8YPn5H+m5A6uduHf+8IaC9XChpC8LHPz7zKSCTo=
+github.com/geniusrabbit/adcorelib v0.0.0-20261006182247-3c71ba9bcb40/go.mod h1:P3wHt5lncyhP13kKpLa3GqTDZg584r7D+e9zGdzy98Y=
 github.com/geniusrabbit/blaze-api v0.5.2-0.20261006093411-04ecd1d50468 h1:F6FaK3CwZJh4V9Yj7oO3GqNTIgKCT188KGpwK1FvukU=
 github.com/geniusrabbit/blaze-api v0.5.2-0.20261006093411-04ecd1d50468/go.mod h1:Kzo7O/OJZxQnvXBvdYQupGQVGdHB/PuSIzCeUQF9uHw=
 github.com/geniusrabbit/gogeo v1.1.1 h1:8R/jiIVIlEGQCI5/cvv6tOXFrNlN4n4SILhdqY/vrp4=

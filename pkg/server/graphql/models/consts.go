@@ -101,7 +101,7 @@ func FromAuctionType(t types.AuctionType) AuctionType {
 	case types.SecondPriceAuctionType:
 		return AuctionTypeSecondPrice
 	}
-	return AuctionTypeUndefined
+	return AuctionTypeAuto
 }
 
 func (e *AuctionType) AuctionType() types.AuctionType {

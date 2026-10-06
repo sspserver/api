@@ -5,7 +5,7 @@ enum RTBRequestFormatType {
 }
 
 enum AuctionType {
-  UNDEFINED
+  AUTO
   FIRST_PRICE
   SECOND_PRICE
 }

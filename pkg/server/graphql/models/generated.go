@@ -1559,20 +1559,20 @@ func (e ApplicationType) MarshalJSON() ([]byte, error) {
 type AuctionType string
 
 const (
-	AuctionTypeUndefined   AuctionType = "UNDEFINED"
+	AuctionTypeAuto        AuctionType = "AUTO"
 	AuctionTypeFirstPrice  AuctionType = "FIRST_PRICE"
 	AuctionTypeSecondPrice AuctionType = "SECOND_PRICE"
 )
 
 var AllAuctionType = []AuctionType{
-	AuctionTypeUndefined,
+	AuctionTypeAuto,
 	AuctionTypeFirstPrice,
 	AuctionTypeSecondPrice,
 }
 
 func (e AuctionType) IsValid() bool {
 	switch e {
-	case AuctionTypeUndefined, AuctionTypeFirstPrice, AuctionTypeSecondPrice:
+	case AuctionTypeAuto, AuctionTypeFirstPrice, AuctionTypeSecondPrice:
 		return true
 	}
 	return false
