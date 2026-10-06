@@ -29,6 +29,7 @@ import (
 	accountlogin "github.com/geniusrabbit/blaze-api/repository/account/delivery/graphql/account_login"
 	accountrepo "github.com/geniusrabbit/blaze-api/repository/account/repository"
 	accountuc "github.com/geniusrabbit/blaze-api/repository/account/usecase"
+	"github.com/geniusrabbit/blaze-api/repository/generated"
 	"github.com/geniusrabbit/blaze-api/repository/historylog/middleware/gormlog"
 	optionrp "github.com/geniusrabbit/blaze-api/repository/option/repository"
 	optionuc "github.com/geniusrabbit/blaze-api/repository/option/usecase"
@@ -37,6 +38,7 @@ import (
 	socialauthrepo "github.com/geniusrabbit/blaze-api/repository/socialauth/repository"
 	socialauthuc "github.com/geniusrabbit/blaze-api/repository/socialauth/usecase"
 
+	"github.com/geniusrabbit/blaze-api/pkg/sysops"
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/appinit"
 	"github.com/sspserver/api/cmd/api/server"
@@ -48,7 +50,6 @@ import (
 	gqlaccounts "github.com/sspserver/api/pkg/server/graphql/accounts"
 	"github.com/sspserver/api/pkg/server/graphql/resolvers"
 	"github.com/sspserver/api/pkg/server/graphql/wiring"
-	"github.com/sspserver/api/pkg/sysops"
 	"github.com/sspserver/api/pkg/user"
 	"github.com/sspserver/api/private/emails"
 )
@@ -143,9 +144,9 @@ func apiCommand(ctx context.Context, _ []string, conf *appcontext.ConfigType) er
 	}))
 
 	// Init system options
-	sysops.Set(`system.hostname`, conf.Hostname)
-	sysops.Set(`system.datacenter`, conf.DatacenterName)
-	sysops.Set(`logic.crud.default.approval`, true)
+	sysops.Set(ctx, `system.hostname`, conf.Hostname)
+	sysops.Set(ctx, `system.datacenter`, conf.DatacenterName)
+	sysops.Set(ctx, generated.AutoApproveOption, true)
 
 	// Prepare context
 	ctx = ctxlogger.WithLogger(ctx, loggerObj)

@@ -11,8 +11,8 @@ require (
 	github.com/demdxx/rbac v1.0.0
 	github.com/demdxx/sendmsg v0.0.0-20240126132054-834dad9e9d6e
 	github.com/demdxx/xtypes v0.3.1
-	github.com/geniusrabbit/adcorelib v0.0.0-20261003084634-3fe4985c77bc
-	github.com/geniusrabbit/blaze-api v0.5.2-0.20260918144410-8d1df3dbb527
+	github.com/geniusrabbit/adcorelib v0.0.0-20261005200359-145a469ee619
+	github.com/geniusrabbit/blaze-api v0.5.2-0.20261006085041-ff9f6bb784dd
 	github.com/geniusrabbit/gosql/gorm v0.0.0-20260824152254-865e27365243
 	github.com/geniusrabbit/gosql/v2 v2.3.2
 	github.com/geniusrabbit/udetect v0.0.0-20261003082446-9c8bfb7c4862
@@ -26,7 +26,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.24.1
 	github.com/segmentio/ksuid v1.0.4
-	github.com/vektah/gqlparser/v2 v2.5.37
+	github.com/vektah/gqlparser/v2 v2.5.60
 	github.com/yuin/goldmark v1.8.6
 	go.abhg.dev/goldmark/frontmatter v0.3.0
 	go.uber.org/mock v0.6.0
@@ -146,7 +146,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	github.com/urfave/cli/v3 v3.12.0 // indirect
+	github.com/urfave/cli/v3 v3.14.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.74.0 // indirect
 	go.elastic.co/apm v1.15.0 // indirect
@@ -179,9 +179,9 @@ require (
 	golang.org/x/net v0.59.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260910141331-15ceca2b0a1f // indirect
+	golang.org/x/telemetry v0.0.0-20260924152758-ed294f943157 // indirect
 	golang.org/x/text v0.42.0 // indirect
-	golang.org/x/tools v0.50.0 // indirect
+	golang.org/x/tools v0.51.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260928230214-8a89bd6388cc // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260928230214-8a89bd6388cc // indirect
 	google.golang.org/grpc v1.84.0 // indirect

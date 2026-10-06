@@ -16,9 +16,9 @@ import (
 	"github.com/geniusrabbit/blaze-api/pkg/migratedb"
 	"github.com/geniusrabbit/blaze-api/pkg/zlogger"
 
+	"github.com/geniusrabbit/blaze-api/pkg/sysops"
 	"github.com/sspserver/api/cmd/api/appcontext"
 	"github.com/sspserver/api/cmd/api/commands"
-	"github.com/sspserver/api/pkg/sysops"
 )
 
 var (
@@ -87,9 +87,9 @@ func main() {
 	zap.ReplaceGlobals(loggerObj)
 
 	// Set build-time system options
-	sysops.Set(`system.version`, buildVersion)
-	sysops.Set(`system.commit`, buildCommit)
-	sysops.Set(`system.build_date`, buildDate)
+	sysops.Set(ctx, `system.version`, buildVersion)
+	sysops.Set(ctx, `system.commit`, buildCommit)
+	sysops.Set(ctx, `system.build_date`, buildDate)
 
 	// Application with command list
 	app := &appcmd.App{

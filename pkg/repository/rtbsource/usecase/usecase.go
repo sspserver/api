@@ -5,14 +5,15 @@ import (
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
+	"github.com/geniusrabbit/blaze-api/repository/generated"
 	"github.com/geniusrabbit/blaze-api/repository/historylog"
 	"github.com/go-faster/errors"
 
+	"github.com/geniusrabbit/blaze-api/pkg/sysops"
 	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/repository/rtbsource"
 	"github.com/sspserver/api/pkg/repository/rtbsource/models"
 	"github.com/sspserver/api/pkg/repository/rtbsource/repository"
-	"github.com/sspserver/api/pkg/sysops"
 )
 
 type Usecase struct {
@@ -72,9 +73,11 @@ func (u *Usecase) Create(ctx context.Context, source *models.RTBSource) (uint64,
 	if !acl.HaveAccessCreate(ctx, source) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
-	source.Status = types.ApproveStatus(
-		sysops.Get(`logic.crud.default.approval`, int(types.StatusPending)).
-			Int())
+	if sysops.Get(ctx, generated.AutoApproveOption).Bool() {
+		source.Status = types.StatusApproved
+	} else {
+		source.Status = types.StatusPending
+	}
 	return u.repo.Create(ctx, source)
 }
 

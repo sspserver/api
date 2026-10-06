@@ -5,11 +5,12 @@ import (
 
 	"github.com/geniusrabbit/adcorelib/admodels/types"
 	"github.com/geniusrabbit/blaze-api/pkg/context/session"
+	"github.com/geniusrabbit/blaze-api/repository/generated"
 
+	"github.com/geniusrabbit/blaze-api/pkg/sysops"
 	"github.com/sspserver/api/pkg/acl"
 	"github.com/sspserver/api/pkg/repository/trafficrouter"
 	"github.com/sspserver/api/pkg/repository/trafficrouter/models"
-	"github.com/sspserver/api/pkg/sysops"
 )
 
 type Usecase struct {
@@ -69,9 +70,11 @@ func (uc *Usecase) Create(ctx context.Context, router *models.TrafficRouter) (ui
 	if !acl.HaveAccessCreate(ctx, router) {
 		return 0, acl.ErrNoPermissions.WithMessage("create")
 	}
-	router.Status = types.ApproveStatus(
-		sysops.Get(`logic.crud.default.approval`, int(types.StatusPending)).
-			Int())
+	if sysops.Get(ctx, generated.AutoApproveOption).Bool() {
+		router.Status = types.StatusApproved
+	} else {
+		router.Status = types.StatusPending
+	}
 	return uc.repo.Create(ctx, router)
 }
 
